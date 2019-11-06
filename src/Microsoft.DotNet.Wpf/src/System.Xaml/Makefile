@@ -11,6 +11,9 @@ LIB_SRCS=$(shell cat sources.list)
 
 all: System.Xaml.dll
 
+SRID.generated.cs: Resources/Strings.resx
+	($(RESX2SR) $< > $@ && sed -e 's/class SR$$/class SRID/' -i $@) || rm -f $@
+
 %.resources: %.resx
 	resgen $< $@
 
