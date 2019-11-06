@@ -92,6 +92,7 @@ System/Xaml/InfosetObjects/XamlObjectWriterSettings.cs
 System/Xaml/InfosetObjects/XamlReaderSettings.cs
 System/Xaml/InfosetObjects/XamlTextReaderSettings.cs
 System/Xaml/InfosetObjects/XamlXmlReader.cs
+System/Xaml/InfosetObjects/XamlXmlReaderSettings.cs
 System/Xaml/IRootObjectProvider.cs
 System/Xaml/IXamlLineInfoConsumer.cs
 System/Xaml/IXamlLineInfo.cs
