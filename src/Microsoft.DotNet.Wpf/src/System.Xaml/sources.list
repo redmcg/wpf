@@ -124,6 +124,8 @@ System/Xaml/Parser/XamlScanner.cs
 System/Xaml/Parser/XamlScannerNode.cs
 System/Xaml/Parser/XamlScannerStack.cs
 System/Xaml/Parser/XamlText.cs
+System/Xaml/Permissions/XamlAccessLevel.cs
+System/Xaml/Permissions/XamlLoadPermission.cs
 System/Xaml/Primitives/LineInfo.cs
 System/Xaml/Primitives/ReaderBaseDelegate.cs
 System/Xaml/Primitives/ReaderDelegate.cs
