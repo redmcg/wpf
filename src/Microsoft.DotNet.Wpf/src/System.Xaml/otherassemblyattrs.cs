@@ -6,12 +6,15 @@
 // This file specifies various assembly level attributes.
 //
 
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows.Markup;
 
 [assembly:Dependency("mscorlib,", LoadHint.Always)]
 [assembly:Dependency("System,", LoadHint.Always)]
 [assembly:Dependency("System.Xml,", LoadHint.Sometimes)]
+
+[assembly: AssemblyVersion ("4.0.0.0")]
 
 //[assembly: TypeForwardedTo(typeof(System.Xaml.Permissions.XamlAccessLevel))]
 //[assembly: TypeForwardedTo(typeof(System.Xaml.Permissions.XamlLoadPermission))]
