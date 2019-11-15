@@ -1,6 +1,4 @@
 
-RESX2SR=mono $(WINE_MONO_SRCDIR)/mono/mcs/class/lib/build-linux/resx2sr.exe
-
 COMPILE_LIB=csc -target:library
 
 LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../ecma.pub -define:OLDRESOURCES -define:SYSTEM_XAML -langversion:8.0 -nostdlib -noconfig -lib:$(MONO_PREFIX)/lib/mono/4.5-api
@@ -11,8 +9,8 @@ LIB_SRCS=$(shell cat sources.list)
 
 all: System.Xaml.dll
 
-SRID.generated.cs: Resources/Strings.resx
-	($(RESX2SR) $< > $@ && sed -e 's/class SR$$/class SRID/' -i $@) || rm -f $@
+SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
+	mono $(RESX2SRID) $< > $@ || rm -f $@
 
 %.resources: %.resx
 	resgen $< $@
