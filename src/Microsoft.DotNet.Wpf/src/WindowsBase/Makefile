@@ -27,6 +27,6 @@ EMBEDDED_RES_PATHS=$(foreach f,$(EMBEDDED_RESOURCES),Resources/$(f))
 embeddedresources.flags: embeddedresources.list
 	for i in `cat embeddedresources.list`; do printf -- '-resource:Resources/%s,%s\n' $$i `echo $$i|sed "s:/:.:g"|sed "s:Strings.resources:SR.resources:g"`; done > $@ || rm -f $@
 
-WindowsBase.dll: sources.list $(LIB_SRCS) embeddedresources.flags $(EMBEDDED_RES_PATHS) $(SIP_DLL)
-	$(COMPILE_LIB) $(LIB_FLAGS) $(LIB_REFS) -r:$(SIP_DLL) -out:$@ @sources.list @embeddedresources.flags
+WindowsBase.dll: sources.list $(LIB_SRCS) embeddedresources.flags $(EMBEDDED_RES_PATHS) $(SIP_DLL) $(ACCESSIBILITY_DLL)
+	$(COMPILE_LIB) $(LIB_FLAGS) $(LIB_REFS) -r:$(SIP_DLL) -r:$(ACCESSIBILITY_DLL) -out:$@ @sources.list @embeddedresources.flags
 	sn -R $@ ../../mono.snk
