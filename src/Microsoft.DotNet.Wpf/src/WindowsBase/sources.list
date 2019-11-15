@@ -325,3 +325,4 @@ System/Security/Permissions/MediaPermissionVideo.cs
 System/Security/Permissions/WebBrowserPermissionAttribute.cs
 System/Security/Permissions/WebBrowserPermissionLevel.cs
 System/Security/Permissions/WebBrowserPermission.cs
+SRID.generated.cs
