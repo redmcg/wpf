@@ -22,7 +22,7 @@ EMBEDDED_RESOURCES=$(shell cat embeddedresources.list)
 EMBEDDED_RES_PATHS=$(foreach f,$(EMBEDDED_RESOURCES),Resources/$(f))
 
 embeddedresources.flags: embeddedresources.list
-	for i in `cat embeddedresources.list`; do printf -- '-resource:Resources/%s,%s\n' $$i `echo $$i|sed "s:/ToolStrip/:/:g"|sed "s:\\.ico$$::g"|sed "s:/:.:g"`; done > $@ || rm -f $@
+	for i in `cat embeddedresources.list`; do printf -- '-resource:Resources/%s,%s\n' $$i `echo $$i|sed "s:/:.:g"|sed "s:Strings.resources:SR.resources:g"`; done > $@ || rm -f $@
 
 System.Xaml.dll: sources.list $(LIB_SRCS) embeddedresources.flags $(EMBEDDED_RES_PATHS)
 	$(COMPILE_LIB) $(LIB_FLAGS) $(LIB_REFS) -out:$@ @sources.list @embeddedresources.flags
