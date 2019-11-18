@@ -8,12 +8,14 @@
 
 using System;
 using MS.Internal.WindowsBase;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Windows.Markup;
 
+[assembly:AssemblyVersionAttribute("4.0.0.0")]
 
 [assembly:DependencyAttribute("System,", LoadHint.Always)]
 [assembly:DependencyAttribute("System.Xaml,", LoadHint.Sometimes)]
