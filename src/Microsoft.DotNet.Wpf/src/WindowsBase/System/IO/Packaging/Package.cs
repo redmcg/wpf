@@ -39,6 +39,11 @@ namespace System.IO.Packaging
             _disposed = false;
         }
 
+		protected Package(FileAccess openFileAccess, bool streaming)
+			: this(openFileAccess)
+		{
+		}
+
         #endregion Protected Constructor
         
         #region Public Properties
