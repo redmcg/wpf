@@ -326,3 +326,4 @@ System/Security/Permissions/WebBrowserPermissionAttribute.cs
 System/Security/Permissions/WebBrowserPermissionLevel.cs
 System/Security/Permissions/WebBrowserPermission.cs
 SRID.generated.cs
+../System.Xaml/SRID.cs
