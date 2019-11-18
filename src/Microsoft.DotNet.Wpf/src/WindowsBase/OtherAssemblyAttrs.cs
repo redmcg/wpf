@@ -71,6 +71,7 @@ using System.Windows.Markup;
 [assembly:TypeForwardedTo(typeof(System.Windows.Markup.XmlnsPrefixAttribute))]
 [assembly:TypeForwardedTo(typeof(System.Windows.Markup.RuntimeNamePropertyAttribute))]
 
+/* System.IO.Packaging types imported from corefx for now
 [assembly:TypeForwardedTo(typeof(System.IO.FileFormatException))]
 [assembly:TypeForwardedTo(typeof(System.IO.Packaging.Package))]
 [assembly:TypeForwardedTo(typeof(System.IO.Packaging.PackagePart))] 
@@ -86,6 +87,7 @@ using System.Windows.Markup;
 [assembly:TypeForwardedTo(typeof(System.IO.Packaging.EncryptionOption))] 
 [assembly:TypeForwardedTo(typeof(System.IO.Packaging.PackageRelationshipSelector))] 
 [assembly:TypeForwardedTo(typeof(System.IO.Packaging.PackageRelationshipSelectorType))]
+*/
 
 /* System.Security.Permissions types imported from mono for now
 [assembly: TypeForwardedTo(typeof(System.Security.Permissions.MediaPermissionAudio))]
