@@ -35,12 +35,6 @@ namespace MS.Internal.Drt
     {
         private const string PresentationNativeDll = "PresentationNative_cor3.dll";
 
-		static bool IsWin64 {
-			get {
-				return IntPtr.Size == 8;
-			}
-		}
-
 #if WINDOWSFORMSINTEGRATION     // WinFormsIntegration
 
         [DllImport(PresentationNativeDll, EntryPoint="EnableWindowWrapper", SetLastError = true, ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
@@ -148,34 +142,22 @@ namespace MS.Internal.Drt
         [DllImport(PresentationNativeDll, EntryPoint="SetFocusWrapper", SetLastError = true)]
         public static extern IntPtr SetFocus(HandleRef hWnd);
 
-        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Auto)]
+        [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode)]
         public static extern Int32 SetWindowLong(HandleRef hWnd, int nIndex, Int32 dwNewLong);
 
-        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Auto)]
+        [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode)]
         public static extern Int32 SetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
 
         [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
-        public static extern Int32 Win32SetWindowLong(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
+        public static extern Int32 SetWindowLongWndProc(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode, SetLastError=true)]
-        public static extern Int32 Win32SetWindowLongPtr(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
-
-        // [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Auto, SetLastError=true)]
-        public static Int32 SetWindowLongWndProc(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong)
-		{
-			if (IsWin64)
-				return Win32SetWindowLongPtr(hWnd, nIndex, dwNewLong);
-			else
-				return Win32SetWindowLong(hWnd, nIndex, dwNewLong);
-		}
-
-        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Auto)]
+        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode)]
         public static extern IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Auto)]
+        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode)]
         public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Auto, SetLastError=true)]
+        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern IntPtr SetWindowLongPtrWndProc(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
 
 #endif
