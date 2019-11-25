@@ -1,2 +1,6 @@
 CPP/DWriteWrapper/DWriteFontFeature.cs
 CPP/DWriteWrapper/DWriteFontFeatureTag.cs
+CPP/DWriteWrapper/DWriteScriptAnalysis.cs
+CPP/DWriteWrapper/DWriteScriptShapes.cs
+CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
+CPP/DWriteWrapper/ItemProps.cs
