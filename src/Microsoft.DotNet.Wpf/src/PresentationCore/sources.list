@@ -1333,3 +1333,4 @@ System/Windows/Media3D/Generated/Vector3DConverter.cs
 System/Windows/Media3D/Generated/Visual3D.cs
 System/Windows/Navigation/BaseUriHelper.cs
 System/Windows/Resources/AssemblyAssociatedContentFileAttribute.cs
+SRID.generated.cs
