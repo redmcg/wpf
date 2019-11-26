@@ -3,5 +3,6 @@ CPP/DWriteWrapper/DWriteFontFeatureTag.cs
 CPP/DWriteWrapper/DWriteInterfaces.cs
 CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
+CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
 CPP/DWriteWrapper/ItemProps.cs
