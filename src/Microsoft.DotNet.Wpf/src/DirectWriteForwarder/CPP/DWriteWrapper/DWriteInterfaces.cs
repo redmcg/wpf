@@ -59,7 +59,7 @@ namespace MS.Internal.Text.TextInterface
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
 		public int GetCurrentFontFile(
-			[Out] out IntPtr font_file); /* IDWriteFontFile* */
+			[Out, MarshalAs(UnmanagedType.Interface)] out IDWriteFontFile font_file);
 	}
 
 	[Guid ("cca920e4-52f0-492b-bfa8-29c72ee0a468")]
