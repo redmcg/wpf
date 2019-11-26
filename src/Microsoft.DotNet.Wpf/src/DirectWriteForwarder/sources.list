@@ -5,5 +5,6 @@ CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
 CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/FontFaceType.cs
+CPP/DWriteWrapper/FontFileType.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
 CPP/DWriteWrapper/ItemProps.cs
