@@ -55,8 +55,6 @@ namespace MS.Internal.Text.TextInterface
 			bool isLatin
 			)
 		{
-			ItemProps result = new ItemProps();
-
 			DigitCulture          = digitCulture;
 			HasCombiningMark      = hasCombiningMark;
 			HasExtendedCharacter  = hasExtendedCharacter;
