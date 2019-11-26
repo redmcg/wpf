@@ -7,5 +7,6 @@ CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/FontFaceType.cs
 CPP/DWriteWrapper/FontFileType.cs
 CPP/DWriteWrapper/IDWriteFontFile.cs
+CPP/DWriteWrapper/IDWriteLocalFontFileLoader.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
 CPP/DWriteWrapper/ItemProps.cs
