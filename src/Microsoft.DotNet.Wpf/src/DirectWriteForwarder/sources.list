@@ -1,6 +1,7 @@
 CPP/DWriteWrapper/CharAttribute.cs
 CPP/DWriteWrapper/DWriteFontFeature.cs
 CPP/DWriteWrapper/DWriteFontFeatureTag.cs
+CPP/DWriteWrapper/DWriteGlyphOffset.cs
 CPP/DWriteWrapper/DWriteInterfaces.cs
 CPP/DWriteWrapper/DWriteMatrix.cs
 CPP/DWriteWrapper/DWriteScriptAnalysis.cs
