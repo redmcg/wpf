@@ -19,4 +19,5 @@ CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
 CPP/DWriteWrapper/ItemProps.cs
 CPP/DWriteWrapper/ItemSpan.cs
 CPP/DWriteWrapper/LocalizedErrorMsgs.cs
+CPP/DWriteWrapper/LocalizedStrings.cs
 CPP/DWriteWrapper/TextItemizer.cs

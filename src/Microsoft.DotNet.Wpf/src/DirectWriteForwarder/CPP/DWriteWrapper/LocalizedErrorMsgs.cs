@@ -8,11 +8,11 @@ namespace MS.Internal.Text.TextInterface
 {
 public sealed class LocalizedErrorMsgs
 {
-	private string _localizedExceptionMsgEnumeratorNotStarted;
-	private string _localizedExceptionMsgEnumeratorReachedEnd;
-	private object _staticLockForLocalizedExceptionMsgs = new object();
+	static private string _localizedExceptionMsgEnumeratorNotStarted;
+	static private string _localizedExceptionMsgEnumeratorReachedEnd;
+	static private object _staticLockForLocalizedExceptionMsgs = new object();
 
-	public string EnumeratorNotStarted
+	static public string EnumeratorNotStarted
 	{
 		get {
 			Monitor.Enter(_staticLockForLocalizedExceptionMsgs);
@@ -39,7 +39,7 @@ public sealed class LocalizedErrorMsgs
 		}
     }
 
-	public string EnumeratorReachedEnd
+	static public string EnumeratorReachedEnd
 	{
 		get {
 			Monitor.Enter(_staticLockForLocalizedExceptionMsgs);
