@@ -230,7 +230,7 @@ internal class TextItemizer
             bool isLatin = (strongCharCount > 0) && (latinCount == strongCharCount);
 
             ItemProps itemProps = new ItemProps(
-                    pScriptAnalysisListPrevious.Value, // TODO: Should pass a reference to the node
+                    pScriptAnalysisListPrevious.Value,
                     pNumberSubstitution,
                     _isDigitList[(int)isDigitIndexOld] ? numberCulture : null,
                     hasCombiningMark,
