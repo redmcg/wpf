@@ -10,6 +10,7 @@ CPP/DWriteWrapper/FontFile.cs
 CPP/DWriteWrapper/FontFileType.cs
 CPP/DWriteWrapper/FontMetrics.cs
 CPP/DWriteWrapper/FontSimulation.cs
+CPP/DWriteWrapper/FontStretch.cs
 CPP/DWriteWrapper/FontStyle.cs
 CPP/DWriteWrapper/FontWeight.cs
 CPP/DWriteWrapper/GlyphOffset.cs
