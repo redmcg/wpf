@@ -11,6 +11,7 @@ CPP/DWriteWrapper/FontFileType.cs
 CPP/DWriteWrapper/FontSimulation.cs
 CPP/DWriteWrapper/FontWeight.cs
 CPP/DWriteWrapper/GlyphOffset.cs
+CPP/DWriteWrapper/IClassification.cs
 CPP/DWriteWrapper/IDWriteFontFile.cs
 CPP/DWriteWrapper/IDWriteLocalFontFileLoader.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
