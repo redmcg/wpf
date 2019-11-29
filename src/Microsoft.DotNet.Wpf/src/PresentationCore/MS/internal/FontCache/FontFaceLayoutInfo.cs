@@ -651,12 +651,18 @@ namespace MS.Internal.FontCache
                 unsafe
                 {
                     uint uKey = checked((uint)key);
-                    uint *pKey = &uKey;
 
                     MS.Internal.Text.TextInterface.FontFace fontFace = _font.GetFontFace();
                     try
                     {
-                        fontFace.GetArrayOfGlyphIndices(pKey, 1, &localValue);
+						// Must use fixed here because C# can't pin this for us.
+						fixed (ushort* pLocalValue = &localValue)
+						{
+							fixed (uint* pKey = &uKey)
+							{
+                        		fontFace.GetArrayOfGlyphIndices(pKey, 1, pLocalValue);
+							}
+						}
                     }
                     finally
                     {
@@ -670,7 +676,8 @@ namespace MS.Internal.FontCache
                 return (value != 0);
             }
 
-            internal unsafe void TryGetValues(uint *pKeys, uint characterCount, ushort *pIndices)
+			// Renamed from TryGetValues due to added requirement that pKeys and pIndices be fixed.
+            internal unsafe void TryGetValues2(uint *pKeys, uint characterCount, ushort *pIndices)
             {
                 MS.Internal.Text.TextInterface.FontFace fontFace = _font.GetFontFace();
                 try
