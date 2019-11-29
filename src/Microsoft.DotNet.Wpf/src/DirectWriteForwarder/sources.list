@@ -4,6 +4,7 @@ CPP/DWriteWrapper/DWriteFontFeatureTag.cs
 CPP/DWriteWrapper/DWriteGlyphOffset.cs
 CPP/DWriteWrapper/DWriteInterfaces.cs
 CPP/DWriteWrapper/DWriteMatrix.cs
+CPP/DWriteWrapper/DWriteReadingDirection.cs
 CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
 CPP/DWriteWrapper/FactoryType.cs
