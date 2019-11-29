@@ -2,12 +2,15 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Runtime.InteropServices;
+
 namespace MS.Internal.Text.TextInterface
 {
     /// <summary>
     /// Optional adjustment to a glyph's position. An glyph offset changes the position of a glyph without affecting
     /// the pen position. Offsets are in logical, pre-transform units.
     /// </summary>
+	[StructLayout (LayoutKind.Sequential)]
     public struct DWriteGlyphOffset
     {       
         /// <summary>
