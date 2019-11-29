@@ -24,6 +24,7 @@ CPP/DWriteWrapper/IDWriteFontFile.cs
 CPP/DWriteWrapper/IDWriteLocalFontFileLoader.cs
 CPP/DWriteWrapper/IDWriteLocalizedStrings.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
+CPP/DWriteWrapper/IDWriteTextAnalysisSource.cs
 CPP/DWriteWrapper/InformationalStringID.cs
 CPP/DWriteWrapper/ItemProps.cs
 CPP/DWriteWrapper/ItemSpan.cs
