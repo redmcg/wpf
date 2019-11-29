@@ -15,12 +15,12 @@ namespace MS.Internal.Text.TextInterface
     {
         void GetCharAttribute(
             int unicodeScalar,
-            [Out] bool isCombining,
-            [Out] bool needsCaretInfo,
-            [Out] bool isIndic,
-            [Out] bool isDigit,
-            [Out] bool isLatin,
-            [Out] bool isStrong
+            [Out] out bool isCombining,
+            [Out] out bool needsCaretInfo,
+            [Out] out bool isIndic,
+            [Out] out bool isDigit,
+            [Out] out bool isLatin,
+            [Out] out bool isStrong
             );
     }
 }
