@@ -26,6 +26,7 @@ CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
 CPP/DWriteWrapper/InformationalStringID.cs
 CPP/DWriteWrapper/ItemProps.cs
 CPP/DWriteWrapper/ItemSpan.cs
+CPP/DWriteWrapper/ItemizerHelper.cs
 CPP/DWriteWrapper/LocalizedErrorMsgs.cs
 CPP/DWriteWrapper/LocalizedStrings.cs
 CPP/DWriteWrapper/OpenTypeTableTag.cs
