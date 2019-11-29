@@ -7,6 +7,7 @@ CPP/DWriteWrapper/DWriteMatrix.cs
 CPP/DWriteWrapper/DWriteReadingDirection.cs
 CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
+CPP/DWriteWrapper/DWriteTypographicFeatures.cs
 CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
