@@ -36,10 +36,8 @@ public sealed class FontFile
 		var localFontFileLoader = fontFileLoader as IDWriteLocalFontFileLoader;
 		if (localFontFileLoader == null)
 		{
-			// No reason to expect this to be a valid wchar string.
-			//_fontFile.GetReferenceKey(out fontFileReferenceKey, out sizeOfFontFileReferenceKey);
-			//return Marshal.PtrToStringUni(fontFileReferenceKey);
-			throw new InvalidOperationException("FontFile not loaded from local file");
+			_fontFile.GetReferenceKey(out fontFileReferenceKey, out sizeOfFontFileReferenceKey);
+			return Marshal.PtrToStringUni(fontFileReferenceKey);
         }
         else
         {
