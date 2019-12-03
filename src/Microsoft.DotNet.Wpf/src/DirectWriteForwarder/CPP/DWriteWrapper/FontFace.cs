@@ -16,7 +16,7 @@ internal sealed class FontFace : IDisposable
 	bool _fontMetricsInitialized = false;
 	int _refCount;
 
-    FontFace(IntPtr fontFace)
+    internal FontFace(IntPtr fontFace)
     {
 		Marshal.AddRef(fontFace);
         _fontFace = fontFace;

@@ -9,6 +9,7 @@ CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
 CPP/DWriteWrapper/DWriteTypographicFeatures.cs
 CPP/DWriteWrapper/FactoryType.cs
+CPP/DWriteWrapper/Font.cs
 CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
 CPP/DWriteWrapper/FontFile.cs

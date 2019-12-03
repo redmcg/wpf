@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("08256209-099a-4b34-b86d-c22b110e7771")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteLocalizedStrings
+	public interface IDWriteLocalizedStrings
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]

@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("acd16696-8c14-4f5d-877e-fe3fc1d32737")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFont
+	public interface IDWriteFont
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		IntPtr GetFontFamily(); /* returns IDWriteFontFamily */

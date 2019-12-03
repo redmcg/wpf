@@ -17,7 +17,7 @@ namespace MS.Internal.Text.TextInterface
     ///
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]    
-    internal struct FontMetrics
+    public struct FontMetrics
     {
         /// <summary>
         /// The number of font design units per em unit.

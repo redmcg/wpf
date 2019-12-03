@@ -9,7 +9,7 @@ namespace MS.Internal.Text.TextInterface
     /// as specified by a font designer for the glyphs in a font.
     /// Values less than 1 or greater than 9 are considered to be invalid, and they are rejected by font API functions.
     /// </summary>
-    internal enum FontStretch
+    public enum FontStretch
     {
         /// <summary>
         /// Predefined font stretch : Not known (0).

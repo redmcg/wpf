@@ -8,7 +8,7 @@ namespace MS.Internal.Text.TextInterface
     /// The font style enumeration describes the slope style of a font face, such as Normal, Italic or Oblique.
     /// Values other than the ones defined in the enumeration are considered to be invalid, and they are rejected by font API functions.
     /// </summary>
-    internal enum FontStyle
+    public enum FontStyle
     {
         /// <summary>
         /// Font slope style : Normal.
