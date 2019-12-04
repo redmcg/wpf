@@ -24,7 +24,10 @@ CPP/DWriteWrapper/GlyphMetrics.cs
 CPP/DWriteWrapper/GlyphOffset.cs
 CPP/DWriteWrapper/IClassification.cs
 CPP/DWriteWrapper/IDWriteFont.cs
+CPP/DWriteWrapper/IDWriteFontCollection.cs
+CPP/DWriteWrapper/IDWriteFontFamily.cs
 CPP/DWriteWrapper/IDWriteFontFile.cs
+CPP/DWriteWrapper/IDWriteFontList.cs
 CPP/DWriteWrapper/IDWriteLocalFontFileLoader.cs
 CPP/DWriteWrapper/IDWriteLocalizedStrings.cs
 CPP/DWriteWrapper/IDWriteNumberSubstitution.cs
