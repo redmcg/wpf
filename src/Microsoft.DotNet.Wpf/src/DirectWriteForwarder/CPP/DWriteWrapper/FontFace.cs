@@ -9,7 +9,7 @@ using System.Threading;
 
 namespace MS.Internal.Text.TextInterface
 {
-internal sealed class FontFace : IDisposable
+public sealed class FontFace : IDisposable
 {
 	IntPtr _fontFace; // IDWriteFontFace*
 	FontMetrics _fontMetrics;

@@ -11,10 +11,13 @@ CPP/DWriteWrapper/DWriteScriptShapes.cs
 CPP/DWriteWrapper/DWriteTypographicFeatures.cs
 CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/Font.cs
+CPP/DWriteWrapper/FontCollection.cs
 CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
+CPP/DWriteWrapper/FontFamily.cs
 CPP/DWriteWrapper/FontFile.cs
 CPP/DWriteWrapper/FontFileType.cs
+CPP/DWriteWrapper/FontList.cs
 CPP/DWriteWrapper/FontMetrics.cs
 CPP/DWriteWrapper/FontSimulation.cs
 CPP/DWriteWrapper/FontStretch.cs
