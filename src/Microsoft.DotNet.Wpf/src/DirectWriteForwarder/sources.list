@@ -16,6 +16,7 @@ CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
 CPP/DWriteWrapper/FontFamily.cs
 CPP/DWriteWrapper/FontFile.cs
+CPP/DWriteWrapper/FontFileStream.cs
 CPP/DWriteWrapper/FontFileType.cs
 CPP/DWriteWrapper/FontList.cs
 CPP/DWriteWrapper/FontMetrics.cs
