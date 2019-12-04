@@ -4,9 +4,9 @@
 
 namespace MS.Internal
 {
-internal struct Span
+public struct Span
 {
-    internal Span(object element, int length)
+    public Span(object element, int length)
     {
         this.element = element;
         this.length = length;

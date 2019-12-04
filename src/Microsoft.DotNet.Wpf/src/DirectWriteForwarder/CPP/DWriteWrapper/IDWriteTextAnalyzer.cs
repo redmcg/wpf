@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("b7e6163e-7f46-43b4-84b3-e4e6249c365d")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteTextAnalyzer
+	public interface IDWriteTextAnalyzer
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void AnalyzeScript(
@@ -38,17 +38,18 @@ namespace MS.Internal.Text.TextInterface
 			[In, MarshalAs(UnmanagedType.Interface)] IDWriteTextAnalysisSink sink);
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		unsafe void GetGlyphs(
+		[PreserveSig]
+		unsafe int GetGlyphs(
 			IntPtr text, /* const WCHAR* */
 			uint length,
 			IntPtr font_face, /* IDWriteFontFace* */
 			bool is_sideways,
 			bool is_rtl,
-			[In] ref DWriteScriptAnalysis analysis, /* in */
+			[In] IntPtr analysis, /* in DWRITE_SCRIPT_ANALYSIS* */
 			[In, MarshalAs(UnmanagedType.LPWStr)] string locale, 
 			[In, MarshalAs(UnmanagedType.Interface)] IDWriteNumberSubstitution substitution,
-			[In] IntPtr features, /* DWRITE_TYPOGRAPHIC_FEATURES const ** */
-			[In, MarshalAs(UnmanagedType.LPArray)] uint[] feature_range_len,
+			[In, MarshalAs(UnmanagedType.LPArray)] IntPtr[] features, /* DWRITE_TYPOGRAPHIC_FEATURES const ** */
+			uint* feature_range_len,
 			uint feature_ranges,
 			uint max_glyph_count,
 			ushort* clustermap,
@@ -76,7 +77,7 @@ namespace MS.Internal.Text.TextInterface
 			[In, MarshalAs(UnmanagedType.LPArray)] uint[] feature_range_len,
 			uint feature_ranges,
 			float* glyph_advances,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] out DWriteGlyphOffset glyph_offsets);
+			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] out DWriteGlyphOffset[] glyph_offsets);
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		unsafe void GetGdiCompatibleGlyphPlacements(

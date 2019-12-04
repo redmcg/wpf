@@ -44,7 +44,7 @@ internal class DWriteTextAnalysisNode<T>
 	}
 }
 
-internal class TextItemizer
+public class TextItemizer
 {
 	DWriteTextAnalysisNode<DWriteScriptAnalysis> _pScriptAnalysisListHead;
 	DWriteTextAnalysisNode<IDWriteNumberSubstitution> _pNumberSubstitutionListHead;

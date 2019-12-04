@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("5810cd44-0ca0-4701-b3fa-bec5182ae4f6")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteTextAnalysisSink
+	public interface IDWriteTextAnalysisSink
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void SetScriptAnalysis(

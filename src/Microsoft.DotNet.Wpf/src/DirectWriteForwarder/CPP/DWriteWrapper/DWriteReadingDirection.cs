@@ -1,6 +1,6 @@
 namespace MS.Internal.Text.TextInterface
 {
-	internal enum DWriteReadingDirection
+	public enum DWriteReadingDirection
 	{
 		LeftToRight,
 		RightToLeft,

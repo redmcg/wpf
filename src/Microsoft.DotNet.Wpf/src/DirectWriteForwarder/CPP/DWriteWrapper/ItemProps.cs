@@ -2,7 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace MS.Internal.Text.TextInterface
 {
@@ -10,6 +12,17 @@ namespace MS.Internal.Text.TextInterface
 	{
 		public DWriteScriptAnalysis? ScriptAnalysis {
 			get; private set;
+		}
+
+		public IntPtr ScriptAnalysisCoTaskMem()
+		{
+			if (ScriptAnalysis == null)
+			{
+				return IntPtr.Zero;
+			}
+			IntPtr result = Marshal.AllocCoTaskMem(Marshal.SizeOf<DWriteScriptAnalysis>());
+			Marshal.StructureToPtr((DWriteScriptAnalysis)ScriptAnalysis, result, false);
+			return result;
 		}
 
 		public IDWriteNumberSubstitution NumberSubstitution {

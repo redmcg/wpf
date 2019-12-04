@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("688e1a58-5094-47c8-adc8-fbcea60ae92b")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal unsafe interface IDWriteTextAnalysisSource
+	public unsafe interface IDWriteTextAnalysisSource
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void GetTextAtPosition(

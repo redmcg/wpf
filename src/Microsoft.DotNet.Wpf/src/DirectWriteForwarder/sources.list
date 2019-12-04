@@ -1,4 +1,5 @@
 CPP/DWriteWrapper/CharAttribute.cs
+CPP/DWriteWrapper/DWriteBitfieldUtils.cs
 CPP/DWriteWrapper/DWriteFontFeature.cs
 CPP/DWriteWrapper/DWriteFontFeatureTag.cs
 CPP/DWriteWrapper/DWriteGlyphOffset.cs
@@ -37,4 +38,5 @@ CPP/DWriteWrapper/ItemizerHelper.cs
 CPP/DWriteWrapper/LocalizedErrorMsgs.cs
 CPP/DWriteWrapper/LocalizedStrings.cs
 CPP/DWriteWrapper/OpenTypeTableTag.cs
+CPP/DWriteWrapper/TextAnalyzer.cs
 CPP/DWriteWrapper/TextItemizer.cs

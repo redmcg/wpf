@@ -7,7 +7,7 @@ using System;
 namespace MS.Internal.Text.TextInterface
 {
 	[Flags]
-    internal enum CharAttribute : byte
+    public enum CharAttribute : byte
     {
 		None           = 0x00,
 		IsCombining    = 0x01,
