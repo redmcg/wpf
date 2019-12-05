@@ -9,6 +9,7 @@ CPP/DWriteWrapper/DWriteReadingDirection.cs
 CPP/DWriteWrapper/DWriteScriptAnalysis.cs
 CPP/DWriteWrapper/DWriteScriptShapes.cs
 CPP/DWriteWrapper/DWriteTypographicFeatures.cs
+CPP/DWriteWrapper/Factory.cs
 CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/Font.cs
 CPP/DWriteWrapper/FontCollection.cs
@@ -16,6 +17,7 @@ CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
 CPP/DWriteWrapper/FontFamily.cs
 CPP/DWriteWrapper/FontFile.cs
+CPP/DWriteWrapper/FontFileEnumerator.cs
 CPP/DWriteWrapper/FontFileLoader.cs
 CPP/DWriteWrapper/FontFileStream.cs
 CPP/DWriteWrapper/FontFileType.cs

@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("b859ee5a-d838-4b5b-a2e8-1adc7d93db48")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFactory
+	public interface IDWriteFactory
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void GetSystemFontCollection(

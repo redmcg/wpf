@@ -9,7 +9,7 @@ namespace MS.Internal.Text.TextInterface
     /// Font formats that consist of multiple files, e.g. Type 1 .PFM and .PFB, have
     /// separate enum values for each of the file type.
     /// </summary>
-    internal enum FontFileType
+    public enum FontFileType
     {
         /// <summary>
         /// Font type is not recognized by the DirectWrite font system.

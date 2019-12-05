@@ -36,7 +36,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("727cad4e-d6af-4c9e-8a08-d695b11caa49")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFontFileLoaderMirror
+	public interface IDWriteFontFileLoaderMirror
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
@@ -49,12 +49,12 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("72755049-5ff7-435d-8348-4be97cfa6c7c")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFontFileEnumeratorMirror
+	public interface IDWriteFontFileEnumeratorMirror
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
 		public int MoveNext(
-			[Out] bool has_current_file);
+			[Out] out bool has_current_file);
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
@@ -65,7 +65,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("cca920e4-52f0-492b-bfa8-29c72ee0a468")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFontCollectionLoaderMirror
+	public interface IDWriteFontCollectionLoaderMirror
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
