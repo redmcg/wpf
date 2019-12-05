@@ -31,7 +31,7 @@ namespace MS.Internal.Text.TextInterface
 		   
 			if ((fontFileReferenceKeySize % 2 != 0)                      // The fontFileReferenceKeySize must be divisible by sizeof(WCHAR)
 				|| (numberOfCharacters <= 1)                                            // The fontFileReferenceKey cannot be less than or equal 1 character as it has to contain the NULL character.
-				|| (Marshal.ReadInt32(fontFileReferenceKey, ((int)numberOfCharacters - 1) * 2) != '\0'))    // The fontFileReferenceKey must end with the NULL character
+				|| (Marshal.ReadInt16(fontFileReferenceKey, ((int)numberOfCharacters - 1) * 2) != '\0'))    // The fontFileReferenceKey must end with the NULL character
 			{
 				return unchecked((int)0x80070057); // E_INVALIDARG
 			}

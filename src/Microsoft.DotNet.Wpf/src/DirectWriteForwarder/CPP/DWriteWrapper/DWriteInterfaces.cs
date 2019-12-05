@@ -70,9 +70,9 @@ namespace MS.Internal.Text.TextInterface
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
 		public int CreateEnumeratorFromKey(
-			[In] IntPtr factory, /* IDWriteFactory* */
+			[In, MarshalAs(UnmanagedType.Interface)] IDWriteFactory factory,
 			[In] IntPtr key, /* void const* */
 			[In] uint key_size,
-			[Out] out IDWriteFontFileEnumeratorMirror enumerator);
+			[Out, MarshalAs(UnmanagedType.Interface)] out IDWriteFontFileEnumeratorMirror enumerator);
 	}
 }

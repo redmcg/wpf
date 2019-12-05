@@ -13,6 +13,7 @@ CPP/DWriteWrapper/Factory.cs
 CPP/DWriteWrapper/FactoryType.cs
 CPP/DWriteWrapper/Font.cs
 CPP/DWriteWrapper/FontCollection.cs
+CPP/DWriteWrapper/FontCollectionLoader.cs
 CPP/DWriteWrapper/FontFace.cs
 CPP/DWriteWrapper/FontFaceType.cs
 CPP/DWriteWrapper/FontFamily.cs
