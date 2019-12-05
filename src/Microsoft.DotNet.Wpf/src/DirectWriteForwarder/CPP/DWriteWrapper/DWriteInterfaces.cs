@@ -7,7 +7,7 @@ namespace MS.Internal.Text.TextInterface
 	[Guid ("6d4865fe-0ab8-4d91-8f62-5dd6be34a3e0")]
 	[InterfaceType (ComInterfaceType.InterfaceIsIUnknown)]
 	[ComImport ()]
-	internal interface IDWriteFontFileStreamMirror
+	public interface IDWriteFontFileStreamMirror
 	{
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[PreserveSig]
