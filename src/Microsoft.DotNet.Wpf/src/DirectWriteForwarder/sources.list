@@ -28,6 +28,7 @@ CPP/DWriteWrapper/FontWeight.cs
 CPP/DWriteWrapper/GlyphMetrics.cs
 CPP/DWriteWrapper/GlyphOffset.cs
 CPP/DWriteWrapper/IClassification.cs
+CPP/DWriteWrapper/IDWriteFactory.cs
 CPP/DWriteWrapper/IDWriteFont.cs
 CPP/DWriteWrapper/IDWriteFontCollection.cs
 CPP/DWriteWrapper/IDWriteFontFamily.cs
