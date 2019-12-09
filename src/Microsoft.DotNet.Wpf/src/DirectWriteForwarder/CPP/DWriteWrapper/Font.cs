@@ -173,7 +173,7 @@ public sealed class Font
         }
     }
 
-    internal FontFace GetFontFace()
+    public FontFace GetFontFace()
     {
         FontFace fontFace = null;
 
