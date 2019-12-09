@@ -29,6 +29,7 @@ using MS.Internal.WindowsBase;
 
 namespace System.Windows.Markup
 #else
+using MS.Internal.Xaml.Srid;
 namespace System.Xaml
 #endif
 {

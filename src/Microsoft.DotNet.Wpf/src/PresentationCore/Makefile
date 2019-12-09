@@ -12,7 +12,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: PresentationCore.dll
 
 SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
-	mono $(RESX2SRID) $< > $@ || rm -f $@
+	mono $(RESX2SRID) $< SRID MS.Internal.PresentationCore > $@ || rm -f $@
 
 %.resources: %.resx
 	resgen $< $@

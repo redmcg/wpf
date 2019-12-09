@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Resources;
 
-namespace MS.Internal.Xaml.Srid
+namespace MS.Internal.WindowsBase
 {
 	partial class SRID
 	{

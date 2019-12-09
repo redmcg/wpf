@@ -353,4 +353,4 @@ System/IO/Packaging/ZipStreamManager.cs
 System/IO/Packaging/ZipWrappingStream.cs
 System/IO/Packaging/SR.cs
 SRID.generated.cs
-../System.Xaml/SRID.cs
+SRID.cs

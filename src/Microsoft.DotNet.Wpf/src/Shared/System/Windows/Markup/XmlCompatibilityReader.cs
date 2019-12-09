@@ -12,6 +12,7 @@ using System.Threading;
 
 #if SYSTEM_XAML
 using System.Xaml;
+using MS.Internal.Xaml.Srid;
 #endif
 
 #if PBTCOMPILER

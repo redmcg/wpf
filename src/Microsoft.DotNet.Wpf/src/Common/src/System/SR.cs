@@ -25,7 +25,7 @@ namespace System.Windows
 #elif RIBBON_IN_FRAMEWORK
 namespace Microsoft.Windows.Controls
 #else
-namespace System
+namespace MS.Internal.Xaml.Srid
 #endif
 {
     internal partial class SR

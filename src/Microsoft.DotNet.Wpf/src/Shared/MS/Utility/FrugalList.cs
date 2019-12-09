@@ -10,6 +10,7 @@ using System.Windows;
 using System.Diagnostics.CodeAnalysis;
 #if SYSTEM_XAML
 using System.Xaml;
+using MS.Internal.Xaml.Srid;
 #else
 using MS.Internal.WindowsBase;
 #endif

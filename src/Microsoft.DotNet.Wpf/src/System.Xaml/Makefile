@@ -10,7 +10,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: System.Xaml.dll
 
 SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
-	mono $(RESX2SRID) $< > $@ || rm -f $@
+	mono $(RESX2SRID) $< SRID MS.Internal.Xaml.Srid > $@ || rm -f $@
 
 %.resources: %.resx
 	resgen $< $@
