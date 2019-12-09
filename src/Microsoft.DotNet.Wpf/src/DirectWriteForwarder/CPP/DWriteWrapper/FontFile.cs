@@ -9,7 +9,7 @@ namespace MS.Internal.Text.TextInterface
 {
 public sealed class FontFile
 {
-	IDWriteFontFile _fontFile;
+	internal IDWriteFontFile _fontFile;
 
     internal FontFile(IDWriteFontFile fontFile)
     {
@@ -19,12 +19,32 @@ public sealed class FontFile
     internal bool Analyze(
 		[Out] out FontFileType fontFileType,
 		[Out] out FontFaceType fontFaceType,
+		[Out] out uint numberOfFaces,
+		[Out] out int hr)
+	{
+        bool isSupported = false;
+		hr = _fontFile.Analyze(out isSupported, out fontFileType, out fontFaceType, out numberOfFaces);
+        return isSupported;
+    }
+
+    internal bool Analyze(
+		[Out] out FontFileType fontFileType,
+		[Out] out FontFaceType fontFaceType,
 		[Out] out uint numberOfFaces)
 	{
         bool isSupported = false;
-		_fontFile.Analyze(out isSupported, out fontFileType, out fontFaceType, out numberOfFaces);
+		int hr;
+		isSupported = Analyze(out fontFileType, out fontFaceType, out numberOfFaces, out hr);
+		Marshal.ThrowExceptionForHR(hr);
         return isSupported;
     }
+
+	internal IntPtr DWriteFontFileIface
+	{
+		get {
+			return Marshal.GetComInterfaceForObject (_fontFile, typeof(IDWriteFontFile));
+		}
+	}
 
     internal string GetUriPath()
     {

@@ -41,10 +41,10 @@ namespace MS.Internal.Text.TextInterface
 			[MarshalAs(UnmanagedType.Interface)] IDWriteFontFileLoaderMirror loader);
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		IntPtr CreateFontFace( // returns IDWriteFontFace*
+		unsafe IntPtr CreateFontFace( // returns IDWriteFontFace*
 			FontFaceType facetype,
 			uint files_number,
-			[In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=1)] IntPtr[] font_files, // array of IDWriteFontFile*
+			[In] IntPtr* font_files, // array of IDWriteFontFile*
 			uint index,
 			FontSimulations sim_flags);
 

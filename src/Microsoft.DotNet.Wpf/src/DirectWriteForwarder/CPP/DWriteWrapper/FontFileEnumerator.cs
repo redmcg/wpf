@@ -46,12 +46,19 @@ namespace MS.Internal.Text.TextInterface
 
 		public int GetCurrentFontFile(out IDWriteFontFile fontFile) 
 		{
-			return Factory.CreateFontFile(
-										  _factory,
-										  _fontFileLoader,
-										  _fontSourceCollectionEnumerator.Current.Uri,
-										  out fontFile
-										  );
+			fontFile = null;
+			try {
+				fontFile = Factory.CreateFontFile(
+											  _factory,
+											  _fontFileLoader,
+											  _fontSourceCollectionEnumerator.Current.Uri
+											  );
+			}
+			catch (Exception e)
+			{
+				return Marshal.GetHRForException(e);
+			}
+			return 0;
 		}
 	}
 }

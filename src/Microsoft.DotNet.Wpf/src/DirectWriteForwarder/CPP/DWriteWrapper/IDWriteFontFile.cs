@@ -19,7 +19,8 @@ namespace MS.Internal.Text.TextInterface
 		IDWriteFontFileLoaderMirror GetLoader();
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
-		void Analyze(
+		[PreserveSig]
+		int Analyze(
 			[Out] out bool is_supported_fonttype,
 			[Out] out FontFileType file_type,
 			[Out] out FontFaceType face_type,
