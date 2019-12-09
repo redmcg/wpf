@@ -12,7 +12,7 @@ public struct Span
         this.length = length;
     }
 
-	internal object element;
-	internal int length;
+	public object element;
+	public int length;
 }
 }
