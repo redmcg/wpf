@@ -279,7 +279,8 @@ namespace MS.Internal.FontFace
                     glyphs.CopyTo(glyphArray, 0);
                 }
 
-                return TrueTypeSubsetter.ComputeSubset(fontData, fileSize, SourceUri, _directoryOffset, glyphArray);
+				throw new NotImplementedException();
+                //return TrueTypeSubsetter.ComputeSubset(fontData, fileSize, SourceUri, _directoryOffset, glyphArray);
             }
         }
 
