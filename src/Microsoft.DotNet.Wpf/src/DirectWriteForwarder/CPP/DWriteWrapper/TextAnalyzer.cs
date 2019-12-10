@@ -491,14 +491,14 @@ public class TextAnalyzer
 
 						if (textFormattingMode == TextFormattingMode.Ideal)
 						{
-							fontFace.GetDesignGlyphMetrics(pGlyphIndices + i, 1, out glyphMetrics);
+							fontFace.GetDesignGlyphMetrics(pGlyphIndices + i, 1, &glyphMetrics);
 						}
 						else
 						{
 							fontFace.GetDisplayGlyphMetrics(
 								pGlyphIndices + i,
 								1,
-								out glyphMetrics,
+								&glyphMetrics,
 								(float)fontEmSize,
 								textFormattingMode != TextFormattingMode.Display,
 								isSideways,

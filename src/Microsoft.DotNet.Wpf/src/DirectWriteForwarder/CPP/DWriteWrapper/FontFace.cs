@@ -209,13 +209,13 @@ public sealed class FontFace : IDisposable
 	unsafe delegate int Delegate_GetDesignGlyphMetrics(IntPtr iface,
 		ushort* glyph_indices,
 		uint glyph_count,
-		[Out] out GlyphMetrics metrics,
+		GlyphMetrics* metrics,
 		bool is_sideways);
 
-    public unsafe void GetDesignGlyphMetrics(ushort* pGlyphIndices, ushort glyphCount, out GlyphMetrics glyphMetrics)
+    public unsafe void GetDesignGlyphMetrics(ushort* pGlyphIndices, ushort glyphCount, GlyphMetrics* glyphMetrics)
     {
 		var GetDesignGlyphMetricsFn = GetFunctionFromVTable<Delegate_GetDesignGlyphMetrics>(10);
-		int hr = GetDesignGlyphMetricsFn(_fontFace, pGlyphIndices, glyphCount, out glyphMetrics, false);
+		int hr = GetDesignGlyphMetricsFn(_fontFace, pGlyphIndices, glyphCount, glyphMetrics, false);
 		Marshal.ThrowExceptionForHR(hr);
     }
 
@@ -227,13 +227,13 @@ public sealed class FontFace : IDisposable
 		bool use_gdi_natural,
 		ushort *glyph_indices,
 		uint glyph_count,
-		[Out] out GlyphMetrics metrics,
+		GlyphMetrics* metrics,
 		bool is_sideways);
 
     public unsafe void GetDisplayGlyphMetrics(
 		ushort *pGlyphIndices,
 		uint glyphCount,
-		out GlyphMetrics glyphMetrics,
+		GlyphMetrics* glyphMetrics,
 		float emSize,
         bool useDisplayNatural,
         bool isSideways,
@@ -247,7 +247,7 @@ public sealed class FontFace : IDisposable
             useDisplayNatural, //BOOL useGdiNatural,
             pGlyphIndices,//__in_ecount(glyphCount) UINT16 const* glyphIndices,
             glyphCount, //UINT32 glyphCount,
-            out glyphMetrics, //__out_ecount(glyphCount) DWRITE_GLYPH_METRICS* glyphMetrics
+            glyphMetrics, //__out_ecount(glyphCount) DWRITE_GLYPH_METRICS* glyphMetrics
             isSideways //BOOL isSideways,
             );         
 		Marshal.ThrowExceptionForHR(hr);
