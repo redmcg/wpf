@@ -103,6 +103,17 @@ namespace System.IO.Packaging.Internals
 		public const string XsdDateTimeExpected = "Core Properties part: Text data of XSD type 'DateTime' was expected.";
 		public const string CreateNewOnNonEmptyStream = "CreateNew is not a valid FileMode for a non-empty stream.";
 		public const string ZipZeroSizeFileIsNotValidArchive = "Archive file cannot be size 0.";
+		public const string FragmentMustStartWithHash = "The 'fragment' parameter must start with a number sign.";
+		public const string UriShouldBeAbsolute = "Must have absolute URI.";
+		public const string UriShouldBePackScheme = "URI must contain pack:// scheme.";
+		public const string InnerPackageUriHasFragment = "Package URI obtained from the pack URI cannot contain a Fragment.";
+		public const string ReadNotSupported = "Stream does not support reading.";
+		public const string OffsetNegative = "Offset must be greater than or equal to zero.";
+		public const string ReadCountNegative = "Count of bytes to read cannot be negative.";
+		public const string ReadBufferTooSmall = "Buffer too small to hold results of Read.";
+		public const string WriteNotSupported = "Stream does not support writing.";
+		public const string WriteCountNegative = "Count of bytes to write cannot be negative.";
+		public const string WriteBufferTooSmall = "Buffer of bytes to be written is too small.";
 
 		public static string Format(string id, params object[] args)
 		{
