@@ -234,7 +234,9 @@ namespace MS.Internal
                     && equals(_spans[Count-1].element, element))
                 {
                     // New Element matches end Element, just extend end Element
-                    _spans[Count - 1].length += length;
+					var tmp = _spans[Count - 1];
+					tmp.length += length;
+                    _spans[Count - 1] = tmp;
 
                     // Make sure fs and fc still agree
                     if (fs == Count)
@@ -318,7 +320,9 @@ namespace MS.Internal
                             if (!Resize(fs + 2))
                                 throw new OutOfMemoryException();
                         }
-                        _spans[fs].length = first - fc;
+						var tmp = _spans[fs];
+                        tmp.length = first - fc;
+						_spans[fs] = tmp;
                         _spans[fs + 1] = new Span(element, length);
                     }
                     else
@@ -374,7 +378,9 @@ namespace MS.Internal
 
                     if (fc < first)
                     {
-                        _spans[fs].length = first - fc;
+						var tmp = _spans[fs];
+                        tmp.length = first - fc;
+						_spans[fs] = tmp;
                         fs++;
                         fc = first;
                     }
