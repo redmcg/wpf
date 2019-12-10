@@ -128,7 +128,7 @@ namespace MS.Internal.TextFormatting
                        
 
                             textAnalyzer.GetGlyphsAndTheirPlacements(
-                                fixedCharArray,
+                                new IntPtr(fixedCharArray),
                                 unsignedCch,
                                 glyphTypeface.FontDWrite,
                                 glyphTypeface.BlankGlyphIndex,
