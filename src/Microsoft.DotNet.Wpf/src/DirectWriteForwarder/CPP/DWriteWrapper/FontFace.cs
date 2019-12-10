@@ -79,11 +79,16 @@ public sealed class FontFace : IDisposable
 		}
     }
 
-	TDelegate GetFunctionFromVTable<TDelegate>(int index)
+	static TDelegate GetFunctionFromVTable<TDelegate>(IntPtr _fontFace, int index)
 	{
 		IntPtr vtable = Marshal.ReadIntPtr(_fontFace);
 		IntPtr fn = Marshal.ReadIntPtr(vtable, index * IntPtr.Size);
 		return Marshal.GetDelegateForFunctionPointer<TDelegate>(fn);
+	}
+
+	TDelegate GetFunctionFromVTable<TDelegate>(int index)
+	{
+		return GetFunctionFromVTable<TDelegate>(_fontFace, index);
 	}
 
 	[UnmanagedFunctionPointer (CallingConvention.StdCall)]
@@ -340,5 +345,23 @@ public sealed class FontFace : IDisposable
         
         return success; 
     }
+	
+	[UnmanagedFunctionPointer (CallingConvention.StdCall)]
+	delegate int Delegate_GetGdiCompatibleMetrics(IntPtr iface,
+		float emSize,
+		float pixels_per_dip,
+		[In] ref DWriteMatrix transform,
+		[Out] out FontMetrics metrics);
+
+	internal static int GetGdiCompatibleMetrics(
+		IntPtr _fontFace,
+		float emSize,
+		float pixels_per_dip,
+		DWriteMatrix transform,
+		out FontMetrics metrics)
+	{
+		var GetGdiCompatibleMetricsFn = GetFunctionFromVTable<Delegate_GetGdiCompatibleMetrics>(_fontFace, 16);
+		return GetGdiCompatibleMetricsFn(_fontFace, emSize, pixels_per_dip, ref transform, out metrics);
+	}
 }
 }

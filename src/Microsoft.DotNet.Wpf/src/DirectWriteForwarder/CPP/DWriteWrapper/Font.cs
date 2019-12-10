@@ -339,31 +339,25 @@ public sealed class Font
 		}
     }
 
-/* requires Factory
     public FontMetrics DisplayMetrics(float emSize, float pixelsPerDip)
     {
-		DWriteFontMetrics fontMetrics;
+		FontMetrics fontMetrics;
         IntPtr fontFace = _font.CreateFontFace();
 		try {
-			HRESULT hr = _font->Value->CreateFontFace(&fontFace);
-			ConvertHresultToException(hr, "FontMetrics^ Font::DisplayMetrics");
-			DWRITE_MATRIX transform = Factory::GetIdentityTransform();
-			hr = fontFace->GetGdiCompatibleMetrics(
+			DWriteMatrix transform = Factory.GetIdentityTransform();
+			FontFace.GetGdiCompatibleMetrics(
+										fontFace,
 										emSize,
 										pixelsPerDip,
-										&transform,
-										&fontMetrics
+										transform,
+										out fontMetrics
 										); 
+			return fontMetrics;
 		}
 		finally
 		{
 			Marshal.Release(fontFace);
 		}
-
-        ConvertHresultToException(hr, "FontMetrics^ Font::DisplayMetrics");
-        System::GC::KeepAlive(_font);
-        return DWriteTypeConverter::Convert(fontMetrics);
     }
-*/
 }
 }

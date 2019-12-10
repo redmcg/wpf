@@ -62,13 +62,11 @@ public class FontFamily : FontList
 		}
     }
 
-/* requires Factory
     public FontMetrics DisplayMetrics(float emSize, float pixelsPerDip)
     {
         Font regularFont = GetFirstMatchingFont(FontWeight.Normal, FontStretch.Normal, FontStyle.Normal);
         return regularFont.DisplayMetrics(emSize, pixelsPerDip);
     }
-*/
 
     public Font GetFirstMatchingFont(FontWeight weight, FontStretch stretch, FontStyle style)
     {
