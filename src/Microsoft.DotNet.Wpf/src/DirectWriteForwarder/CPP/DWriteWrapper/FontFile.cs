@@ -46,7 +46,7 @@ public sealed class FontFile
 		}
 	}
 
-    internal string GetUriPath()
+    public string GetUriPath()
     {
         IntPtr fontFileReferenceKey;
         uint sizeOfFontFileReferenceKey;
