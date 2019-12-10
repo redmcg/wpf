@@ -465,7 +465,7 @@ public class TextAnalyzer
         uint glyphCount,
         ushort* pGlyphIndices, /* [in] glyphCount */
         int* glyphAdvances, /* glyphCount */
-        [Out] GlyphOffset[] glyphOffsets
+        [Out] out GlyphOffset[] glyphOffsets
         )
     {
         if (glyphCount != textLength)
@@ -524,14 +524,13 @@ public class TextAnalyzer
         }
     }
 
-#if DISABLED // requires Factory
-    public void GetGlyphPlacements(
+    unsafe public void GetGlyphPlacements(
         IntPtr                  textString,
         ushort*                 clusterMap, /* textLength */
         ushort*                 textProps, /* textLength */
         uint                    textLength,
         ushort*                 glyphIndices, /* glyphCount */
-        uint*                   glyphProps, /* glyphCount */
+        ushort*                 glyphProps, /* glyphCount */
         uint                    glyphCount,
         Font                    font,
         double                  fontEmSize,
@@ -566,218 +565,204 @@ public class TextAnalyzer
                 glyphCount,
                 glyphIndices,
                 glyphAdvances,
-                glyphOffsets
+                out glyphOffsets
                 );
         }
         else
         {
-            dwriteGlyphAdvances = new float[glyphCount];
-            DWriteGlyphOffsets dwriteGlyphOffsets = null;
+            float[] dwriteGlyphAdvances = new float[glyphCount];
+            DWriteGlyphOffset[] dwriteGlyphOffsets = null;
 
-			var featureRangeLengthsNonNull = featureRangeLengths ? featureRangeLengths : new uint[0];
+			var featureRangeLengthsNonNull = featureRangeLengths != null ? featureRangeLengths : new uint[0];
 			fixed (uint* pFeatureRangeLengthsPinned = featureRangeLengthsNonNull)
 			{
 				GCHandle[] dwriteFontFeaturesGCHandles = null;
 				uint featureRanges = 0;
 				IntPtr[] dwriteTypographicFeatures = null;
+				IntPtr dwriteTypographicFeaturesMemory = IntPtr.Zero;
 				uint* pFeatureRangeLengths = null;
 
 				if (features != null)
 				{
+					pFeatureRangeLengths = pFeatureRangeLengthsPinned;
 					featureRanges = (uint)featureRangeLengths.Length;
 					dwriteTypographicFeatures = new IntPtr[featureRanges];
 					dwriteFontFeaturesGCHandles = new GCHandle[featureRanges];
 					dwriteTypographicFeatures = new IntPtr[featureRanges];
-					dwriteTypographicFeaturesMemory = Marshal.AllocCoTaskMemory(Marshal.Sizeof<DWriteTypographicFeatures>() * featureRanges);
+					dwriteTypographicFeaturesMemory = Marshal.AllocCoTaskMem(Marshal.SizeOf<DWriteTypographicFeatures>() * (int)featureRanges);
 				}
 
 				FontFace fontFace = font.GetFontFace();
+				IntPtr scriptAnalysis = itemProps.ScriptAnalysisCoTaskMem ();
 				try
 				{
 					string localeName = cultureInfo.IetfLanguageTag;
-					DWRITE_MATRIX transform = Factory::GetIdentityTransform();
+					DWriteMatrix transform = Factory.GetIdentityTransform();
 
-					if (features != nullptr)
+					if (features != null)
 					{
-						for (UINT32 i = 0; i < featureRanges; ++i)
+						for (uint i = 0; i < featureRanges; ++i)
 						{
-							dwriteFontFeaturesGCHandles[i] = GCHandle::Alloc(features[i], GCHandleType::Pinned);
-							dwriteTypographicFeatures[i] = new DWRITE_TYPOGRAPHIC_FEATURES();
-							dwriteTypographicFeatures[i]->features = reinterpret_cast<DWRITE_FONT_FEATURE*>(dwriteFontFeaturesGCHandles[i].AddrOfPinnedObject().ToPointer());
-							dwriteTypographicFeatures[i]->featureCount = features[i]->Length;
+							dwriteFontFeaturesGCHandles[i] = GCHandle.Alloc(features[i], GCHandleType.Pinned);
+							var new_feature = new DWriteTypographicFeatures();
+							new_feature.features = dwriteFontFeaturesGCHandles[i].AddrOfPinnedObject();
+							new_feature.featureCount = features[i].Length;
+							dwriteTypographicFeatures[i] = dwriteTypographicFeaturesMemory + (int)i * Marshal.SizeOf<DWriteTypographicFeatures>();
+							Marshal.StructureToPtr<DWriteTypographicFeatures>(new_feature, dwriteTypographicFeatures[i], false);
 						}
 					}
 
-					FLOAT fontEmSizeFloat = (FLOAT)fontEmSize;
-					HRESULT hr = E_FAIL;
+					float fontEmSizeFloat = (float)fontEmSize;
 
-					if (textFormattingMode == TextFormattingMode::Ideal)
+					if (textFormattingMode == TextFormattingMode.Ideal)
 					{   
-						hr = _textAnalyzer->Value->GetGlyphPlacements(
-							textString,
-							clusterMap,
-							(DWRITE_SHAPING_TEXT_PROPERTIES*)textProps,
-							textLength,
-							glyphIndices,
-							(DWRITE_SHAPING_GLYPH_PROPERTIES*)glyphProps,
-							glyphCount,
-							fontFace->DWriteFontFaceNoAddRef,
-							fontEmSizeFloat,
-							isSideways ? TRUE : FALSE,
-							isRightToLeft ? TRUE : FALSE,
-							(DWRITE_SCRIPT_ANALYSIS*)(itemProps->ScriptAnalysis),
-							localeName,
-							(DWRITE_TYPOGRAPHIC_FEATURES const**)dwriteTypographicFeatures,
-							pFeatureRangeLengths,
-							featureRanges,
-							dwriteGlyphAdvances,
-							dwriteGlyphOffsets
-							);
-
-						if (E_INVALIDARG == hr)
-						{
-							// If pLocaleName is unsupported (e.g. "prs-af"), DWrite returns E_INVALIDARG.
-							// Try again with the default mapping.
-							hr = _textAnalyzer->Value->GetGlyphPlacements(
+						try {
+							_textAnalyzer.GetGlyphPlacements(
 								textString,
 								clusterMap,
-								(DWRITE_SHAPING_TEXT_PROPERTIES*)textProps,
+								textProps,
 								textLength,
 								glyphIndices,
-								(DWRITE_SHAPING_GLYPH_PROPERTIES*)glyphProps,
+								glyphProps,
 								glyphCount,
-								fontFace->DWriteFontFaceNoAddRef,
+								fontFace.DWriteFontFaceNoAddRef,
 								fontEmSizeFloat,
-								isSideways ? TRUE : FALSE,
-								isRightToLeft ? TRUE : FALSE,
-								(DWRITE_SCRIPT_ANALYSIS*)(itemProps->ScriptAnalysis),
-								NULL /* default locale mapping */,
-								(DWRITE_TYPOGRAPHIC_FEATURES const**)dwriteTypographicFeatures,
+								isSideways,
+								isRightToLeft,
+								scriptAnalysis,
+								localeName,
+								dwriteTypographicFeatures,
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								dwriteGlyphOffsets
+								out dwriteGlyphOffsets
+								);
+						}
+						catch (ArgumentException)
+						{
+							// If pLocaleName is unsupported (e.g. "prs-af"), DWrite returns E_INVALIDARG.
+							// Try again with the default mapping.
+							_textAnalyzer.GetGlyphPlacements(
+								textString,
+								clusterMap,
+								textProps,
+								textLength,
+								glyphIndices,
+								glyphProps,
+								glyphCount,
+								fontFace.DWriteFontFaceNoAddRef,
+								fontEmSizeFloat,
+								isSideways,
+								isRightToLeft,
+								scriptAnalysis,
+								null,
+								dwriteTypographicFeatures,
+								pFeatureRangeLengths,
+								featureRanges,
+								dwriteGlyphAdvances,
+								out dwriteGlyphOffsets
 								);
 						}
 						
 					}
 					else
 					{
-						assert(textFormattingMode == TextFormattingMode::Display);
+						Debug.Assert(textFormattingMode == TextFormattingMode.Display);
 
-						hr = _textAnalyzer->Value->GetGdiCompatibleGlyphPlacements(
-							textString,
-							clusterMap,
-							(DWRITE_SHAPING_TEXT_PROPERTIES*)textProps,
-							textLength,
-							glyphIndices,
-							(DWRITE_SHAPING_GLYPH_PROPERTIES*)glyphProps,
-							glyphCount,
-							fontFace->DWriteFontFaceNoAddRef,
-							fontEmSizeFloat,
-							pixelsPerDip,
-							&transform,
-							FALSE,  // useGdiNatural
-							isSideways ? TRUE : FALSE,
-							isRightToLeft ? TRUE : FALSE,
-							(DWRITE_SCRIPT_ANALYSIS*)(itemProps->ScriptAnalysis),
-							pLocaleName,
-							(DWRITE_TYPOGRAPHIC_FEATURES const**)dwriteTypographicFeatures,
-							pFeatureRangeLengths,
-							featureRanges,
-							dwriteGlyphAdvances,
-							dwriteGlyphOffsets
-							);
-
-						if (E_INVALIDARG == hr)
-						{
-							// If pLocaleName is unsupported (e.g. "prs-af"), DWrite returns E_INVALIDARG.
-							// Try again with the default mapping.
-							hr = _textAnalyzer->Value->GetGdiCompatibleGlyphPlacements(
+						try {
+							_textAnalyzer.GetGdiCompatibleGlyphPlacements(
 								textString,
 								clusterMap,
-								(DWRITE_SHAPING_TEXT_PROPERTIES*)textProps,
+								textProps,
 								textLength,
 								glyphIndices,
-								(DWRITE_SHAPING_GLYPH_PROPERTIES*)glyphProps,
+								glyphProps,
 								glyphCount,
-								fontFace->DWriteFontFaceNoAddRef,
+								fontFace.DWriteFontFaceNoAddRef,
 								fontEmSizeFloat,
 								pixelsPerDip,
-								&transform,
-								FALSE,  // useGdiNatural
-								isSideways ? TRUE : FALSE,
-								isRightToLeft ? TRUE : FALSE,
-								(DWRITE_SCRIPT_ANALYSIS*)(itemProps->ScriptAnalysis),
-								NULL /* default locale mapping */,
-								(DWRITE_TYPOGRAPHIC_FEATURES const**)dwriteTypographicFeatures,
+								ref transform,
+								false,
+								isSideways,
+								isRightToLeft,
+								scriptAnalysis,
+								localeName,
+								dwriteTypographicFeatures,
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								dwriteGlyphOffsets
+								out dwriteGlyphOffsets
+								);
+						}
+						catch (ArgumentException) {
+							// If pLocaleName is unsupported (e.g. "prs-af"), DWrite returns E_INVALIDARG.
+							// Try again with the default mapping.
+							_textAnalyzer.GetGdiCompatibleGlyphPlacements(
+								textString,
+								clusterMap,
+								textProps,
+								textLength,
+								glyphIndices,
+								glyphProps,
+								glyphCount,
+								fontFace.DWriteFontFaceNoAddRef,
+								fontEmSizeFloat,
+								pixelsPerDip,
+								ref transform,
+								false,
+								isSideways,
+								isRightToLeft,
+								scriptAnalysis,
+								null,
+								dwriteTypographicFeatures,
+								pFeatureRangeLengths,
+								featureRanges,
+								dwriteGlyphAdvances,
+								out dwriteGlyphOffsets
 								);
 						}
 					}
 
-					System::GC::KeepAlive(fontFace);
-					System::GC::KeepAlive(itemProps);
-					System::GC::KeepAlive(_textAnalyzer);
-
-					if (features != nullptr)
+					glyphOffsets = new GlyphOffset[glyphCount];
+					if (textFormattingMode == TextFormattingMode.Ideal)
 					{
-						for (UINT32 i = 0; i < featureRanges; ++i)
+						for (uint i = 0; i < glyphCount; ++i)
 						{
-							dwriteFontFeaturesGCHandles[i].Free();
-							delete dwriteTypographicFeatures[i];
-						}
-						FREE dwriteTypographicFeaturesMemory;
-					}
-
-					glyphOffsets = gcnew array<GlyphOffset>(glyphCount);
-					if (textFormattingMode == TextFormattingMode::Ideal)
-					{
-						for (UINT32 i = 0; i < glyphCount; ++i)
-						{
-							glyphAdvances[i] = (int)Math::Round(dwriteGlyphAdvances[i] * fontEmSize * scalingFactor / fontEmSizeFloat);
-							glyphOffsets[i].du = (int)(dwriteGlyphOffsets[i].advanceOffset * scalingFactor);
-							glyphOffsets[i].dv = (int)(dwriteGlyphOffsets[i].ascenderOffset * scalingFactor);
+							glyphAdvances[i] = (int)Math.Round(dwriteGlyphAdvances[i] * fontEmSize * scalingFactor / fontEmSizeFloat);
+							glyphOffsets[i].du = (int)(dwriteGlyphOffsets[i].AdvanceOffset * scalingFactor);
+							glyphOffsets[i].dv = (int)(dwriteGlyphOffsets[i].AscenderOffset * scalingFactor);
 						}
 					}
 					else
 					{
-						for (UINT32 i = 0; i < glyphCount; ++i)
+						for (uint i = 0; i < glyphCount; ++i)
 						{
-							glyphAdvances[i] = (int)Math::Round(dwriteGlyphAdvances[i] * scalingFactor);
-							glyphOffsets[i].du = (int)(dwriteGlyphOffsets[i].advanceOffset * scalingFactor);
-							glyphOffsets[i].dv = (int)(dwriteGlyphOffsets[i].ascenderOffset * scalingFactor);
+							glyphAdvances[i] = (int)Math.Round(dwriteGlyphAdvances[i] * scalingFactor);
+							glyphOffsets[i].du = (int)(dwriteGlyphOffsets[i].AdvanceOffset * scalingFactor);
+							glyphOffsets[i].dv = (int)(dwriteGlyphOffsets[i].AscenderOffset * scalingFactor);
 						}
 					}                
-
-					ConvertHresultToException(hr, "void TextAnalyzer::GetGlyphs");
 				}
 				finally
 				{
-					fontFace->Release();
+					Marshal.FreeCoTaskMem(scriptAnalysis);
 
-					if (dwriteGlyphAdvances != NULL)
+					if (features != null)
 					{
-						delete[] dwriteGlyphAdvances;
+						for (uint i = 0; i < featureRanges; ++i)
+						{
+							dwriteFontFeaturesGCHandles[i].Free();
+						}
+						Marshal.FreeCoTaskMem(dwriteTypographicFeaturesMemory);
 					}
 
-					if (dwriteGlyphOffsets != NULL)
-					{
-						delete[] dwriteGlyphOffsets;
-					}
-
-					if (dwriteTypographicFeatures != NULL)
-					{
-						delete[] dwriteTypographicFeatures;
-					}
+					fontFace.Release();
 				}
+			}
         }
     }
 
-    public void GetGlyphsAndTheirPlacements(
+    unsafe public void GetGlyphsAndTheirPlacements(
         IntPtr textString,
         uint textLength,
         Font font,
@@ -801,101 +786,91 @@ public class TextAnalyzer
         uint maxGlyphCount = 3 * textLength;
         clusterMap = new ushort[textLength];
 		ushort[] textProps = new ushort[textLength];
-        fixed (ushort* pclusterMapPinned = clusterMap,
+        fixed (ushort* pClusterMapPinned = clusterMap,
 				pTextProps = textProps)
 		{
-			IntPtr glyphProps = IntPtr.Zero; /* uint* */
-        DWRITE_SHAPING_GLYPH_PROPERTIES* glyphProps         = NULL;
-        unsigned short*                  glyphIndicesNative = NULL;
+			IntPtr glyphProps = IntPtr.Zero; // ushort*
+			ushort[] glyphIndicesNative = null; // ushort*
 
-        try
-        {
-            UINT32 actualGlyphCount = maxGlyphCount + 1;
+			try
+			{
+				uint actualGlyphCount = maxGlyphCount + 1;
 
-            // Loop and everytime increase the size of the GlyphIndices buffer.
-            while(actualGlyphCount > maxGlyphCount)
-            {
-                maxGlyphCount = actualGlyphCount;
-                if (glyphProps != NULL)
-                {
-                    delete[] glyphProps;
-                    glyphProps = NULL;
-                }
-                glyphProps   = new DWRITE_SHAPING_GLYPH_PROPERTIES[maxGlyphCount];
+				// Loop and everytime increase the size of the GlyphIndices buffer.
+				while(actualGlyphCount > maxGlyphCount)
+				{
+					maxGlyphCount = actualGlyphCount;
+					if (glyphProps != IntPtr.Zero)
+					{
+						Marshal.FreeCoTaskMem(glyphProps);
+						glyphProps = IntPtr.Zero;
+					}
+					glyphProps = Marshal.AllocCoTaskMem(2 * (int)maxGlyphCount);
 
-                if (glyphIndicesNative != NULL)
-                {
-                    delete[] glyphIndicesNative;
-                    glyphIndicesNative = NULL;
-                }
-                glyphIndicesNative = new unsigned short[maxGlyphCount];
+					glyphIndicesNative = new ushort[maxGlyphCount];
 
-                GetGlyphs(
-                    textString,
-                    textLength,
-                    font,
-                    blankGlyphIndex,
-                    isSideways,
-                    isRightToLeft,
-                    cultureInfo,
-                    features,
-                    featureRangeLengths,
-                    maxGlyphCount,
-                    textFormattingMode,
-                    itemProps,
-                    reinterpret_cast<UINT16*> (pclusterMapPinned),
-                    (UINT16*) textProps,
-                    reinterpret_cast<UINT16*> (glyphIndicesNative),
-                    reinterpret_cast<UINT32*> (glyphProps),
-                    NULL,
-                    actualGlyphCount
-                    );
-            }
+					fixed (ushort* pGlyphIndicesNative = glyphIndicesNative)
+					{
+						GetGlyphs(
+							textString,
+							textLength,
+							font,
+							blankGlyphIndex,
+							isSideways,
+							isRightToLeft,
+							cultureInfo,
+							features,
+							featureRangeLengths,
+							maxGlyphCount,
+							textFormattingMode,
+							itemProps,
+							pClusterMapPinned,
+							pTextProps,
+							pGlyphIndicesNative,
+							(ushort*)glyphProps.ToPointer(),
+							null,
+							out actualGlyphCount
+							);
+					}
+				}
 
-            glyphIndices = gcnew array<unsigned short>(actualGlyphCount);
-            Marshal::Copy(System::IntPtr((void*)glyphIndicesNative), (array<Int16>^)glyphIndices, 0, actualGlyphCount);
+				glyphIndices = new ushort[actualGlyphCount];
+				Array.Copy(glyphIndicesNative, glyphIndices, actualGlyphCount);
 
-            glyphAdvances = gcnew array<int>(actualGlyphCount);
-            pin_ptr<int> glyphAdvancesPinned = &glyphAdvances[0]; 
-            glyphOffsets = gcnew array<GlyphOffset>(actualGlyphCount);
-
-            GetGlyphPlacements(
-                textString,
-                reinterpret_cast<UINT16*> (pclusterMapPinned),
-                (UINT16*) textProps,
-                textLength,
-                reinterpret_cast<UINT16*> (glyphIndicesNative),
-                reinterpret_cast<UINT32*> (glyphProps),
-                actualGlyphCount,
-                font,
-                fontEmSize,
-                scalingFactor,
-                isSideways,
-                isRightToLeft,
-                cultureInfo,
-                features,
-                featureRangeLengths,
-                textFormattingMode,
-                itemProps,
-                pixelsPerDip,
-                reinterpret_cast<int*>(glyphAdvancesPinned),
-                glyphOffsets
-                );
-        }
-        finally
-        {
-            delete[] textProps;
-            if (glyphProps != NULL)
-            {
-                delete[] glyphProps;
-            }
-            if (glyphIndicesNative != NULL)
-            {
-                delete[] glyphIndicesNative;
-            }
-        }
+				glyphAdvances = new int[actualGlyphCount];
+				fixed (int* glyphAdvancesPinned = glyphAdvances) {
+					fixed (ushort* pGlyphIndicesNative = glyphIndicesNative) {
+						GetGlyphPlacements(
+							textString,
+							pClusterMapPinned,
+							pTextProps,
+							textLength,
+							pGlyphIndicesNative,
+							(ushort*)glyphProps.ToPointer(),
+							actualGlyphCount,
+							font,
+							fontEmSize,
+							scalingFactor,
+							isSideways,
+							isRightToLeft,
+							cultureInfo,
+							features,
+							featureRangeLengths,
+							textFormattingMode,
+							itemProps,
+							pixelsPerDip,
+							glyphAdvancesPinned,
+							out glyphOffsets
+							);
+					}
+				}
+			}
+			finally
+			{
+				Marshal.FreeCoTaskMem(glyphProps);
+			}
+		}
     }
-#endif
 
     DWriteScriptShapes GetScriptShapes(ItemProps itemProps)
     {
