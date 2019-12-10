@@ -655,14 +655,7 @@ namespace MS.Internal.FontCache
                     MS.Internal.Text.TextInterface.FontFace fontFace = _font.GetFontFace();
                     try
                     {
-						// Must use fixed here because C# can't pin this for us.
-						fixed (ushort* pLocalValue = &localValue)
-						{
-							fixed (uint* pKey = &uKey)
-							{
-                        		fontFace.GetArrayOfGlyphIndices(pKey, 1, pLocalValue);
-							}
-						}
+						fontFace.GetArrayOfGlyphIndices(&uKey, 1, &localValue);
                     }
                     finally
                     {
