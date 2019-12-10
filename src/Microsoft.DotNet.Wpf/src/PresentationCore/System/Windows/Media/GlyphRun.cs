@@ -1915,8 +1915,7 @@ namespace System.Windows.Media
             command.GlyphCount = checked((UInt16)glyphCount);
             command.BidiLevel = checked((UInt16)_bidiLevel);
             command.pIDWriteFont = (UInt64)_glyphTypeface.GetDWriteFontAddRef;
-            command.DWriteTextMeasuringMethod = (UInt16)DWriteTypeConverter.
-                                                        Convert(_textFormattingMode);
+            command.DWriteTextMeasuringMethod = (UInt16)_textFormattingMode;
 
             // Advances
             // Offsets
