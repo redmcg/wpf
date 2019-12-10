@@ -669,8 +669,7 @@ namespace MS.Internal.FontCache
                 return (value != 0);
             }
 
-			// Renamed from TryGetValues due to added requirement that pKeys and pIndices be fixed.
-            internal unsafe void TryGetValues2(uint *pKeys, uint characterCount, ushort *pIndices)
+            internal unsafe void TryGetValues(uint *pKeys, uint characterCount, ushort *pIndices)
             {
                 MS.Internal.Text.TextInterface.FontFace fontFace = _font.GetFontFace();
                 try
