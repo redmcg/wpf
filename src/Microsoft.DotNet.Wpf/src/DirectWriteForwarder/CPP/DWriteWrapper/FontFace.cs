@@ -212,7 +212,7 @@ public sealed class FontFace : IDisposable
 		GlyphMetrics* metrics,
 		bool is_sideways);
 
-    public unsafe void GetDesignGlyphMetrics(ushort* pGlyphIndices, ushort glyphCount, GlyphMetrics* glyphMetrics)
+    public unsafe void GetDesignGlyphMetrics(ushort* pGlyphIndices, uint glyphCount, GlyphMetrics* glyphMetrics)
     {
 		var GetDesignGlyphMetricsFn = GetFunctionFromVTable<Delegate_GetDesignGlyphMetrics>(10);
 		int hr = GetDesignGlyphMetricsFn(_fontFace, pGlyphIndices, glyphCount, glyphMetrics, false);
