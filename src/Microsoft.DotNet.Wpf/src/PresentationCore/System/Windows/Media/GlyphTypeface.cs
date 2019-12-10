@@ -1624,7 +1624,7 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized();
-                return _font.DWriteFontAddRef;
+                return Marshal.GetComInterfaceForObject(_font.DWriteFont, typeof(MS.Internal.Text.TextInterface.IDWriteFont));
             }
         }
         
