@@ -92,8 +92,6 @@ namespace System.Windows.Media
 
             ChangeWindowMessageFilter(s_dwmRedirectionEnvironmentChanged, 1 /* MSGFLT_ADD */);
             MS.Internal.HRESULT.Check(MilContent_AttachToHwnd(_hwndNotification.Value.Handle));
-
-            WpfDllVerifier.VerifyWpfDllSet();
         }
 
         public void Dispose()

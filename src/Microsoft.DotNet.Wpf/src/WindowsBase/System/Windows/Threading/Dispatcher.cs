@@ -40,8 +40,6 @@ namespace System.Windows.Threading
             _exceptionWrapper = new ExceptionWrapper();
             _exceptionWrapper.Catch += new ExceptionWrapper.CatchHandler(CatchExceptionStatic);
             _exceptionWrapper.Filter += new ExceptionWrapper.FilterHandler(ExceptionFilterStatic);
-
-            WpfDllVerifier.VerifyWpfDllSet();
         }
 
         /// <summary>

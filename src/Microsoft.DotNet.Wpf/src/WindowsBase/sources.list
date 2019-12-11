@@ -226,7 +226,6 @@ System/Windows/ValidateValueCallback.cs
 System/Windows/Vector.cs 
 System/Windows/WeakEventManager.cs
 System/Windows/WeakEventManagerT.cs
-System/Windows/WpfDllVerifier.cs
 System/Windows/Data/DataSourceProvider.cs 
 System/Windows/Markup/DateTimeConverter2.cs
 System/Windows/Markup/DateTimeValueSerializerContext.cs

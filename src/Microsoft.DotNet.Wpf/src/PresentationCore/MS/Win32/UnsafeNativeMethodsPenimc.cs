@@ -99,14 +99,6 @@ namespace MS.Win32.Penimc
             {
                 throw new InvalidOperationException(SR.Get(SRID.PenImcSxSRegistrationFailed, ExternDll.Penimc));
             }
-
-            // Ensure PenIMC loaded from the correct location.
-            var uncheckedDlls = WpfDllVerifier.VerifyWpfDllSet(ExternDll.Penimc);
-
-            if (uncheckedDlls.Contains(ExternDll.Penimc))
-            {
-                throw new DllNotFoundException(SR.Get(SRID.PenImcDllVerificationFailed, ExternDll.Penimc));
-            }
         }
 
         /// <summary>
