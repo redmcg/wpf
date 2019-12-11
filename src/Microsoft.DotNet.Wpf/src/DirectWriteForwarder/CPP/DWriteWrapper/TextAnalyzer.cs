@@ -20,105 +20,125 @@ public class TextAnalyzer
         _textAnalyzer = textAnalyzer;
     }
 
-/* requires Factory
-    IList<Span^>^ TextAnalyzer::Itemize(
-        __in_ecount(length) const WCHAR* text,
-        UINT32                           length,
-        CultureInfo^                     culture,
-        Factory^                         factory,
+	// We don't have source code to PresentationNative so we must reimplement these:
+
+	/// <summary>
+	/// This method creates an object that implements IDWriteTextAnalysisSink that is defined in PresentationNative*.dll.
+	/// </summary>
+	internal unsafe static IDWriteTextAnalysisSink CreateTextAnalysisSink()
+	{
+		throw new NotImplementedException();
+	}
+
+	/// <summary>
+	/// This method is passed the IDWriteTextAnalysisSink object we get using CreateTextAnalysisSink to retrieve
+	/// the results from analyzing the scripts.
+	/// </summary>
+	internal unsafe static DWriteTextAnalysisNode<DWriteScriptAnalysis> GetScriptAnalysisList(IDWriteTextAnalysisSink textAnalysisSink)
+	{
+		throw new NotImplementedException();
+	}
+
+	/// <summary>
+	/// This method is passed the IDWriteTextAnalysisSink object we get using CreateTextAnalysisSink to retrieve
+	/// the results from analyzing the number substitution.
+	/// </summary>
+	internal unsafe static DWriteTextAnalysisNode<IDWriteNumberSubstitution> GetNumberSubstitutionList(IDWriteTextAnalysisSink textAnalysisSink)
+	{
+		throw new NotImplementedException();
+	}
+
+	/// <summary>
+	/// This method creates an object that implements IDWriteTextAnalysiSource that is defined in PresentationNative*.dll.
+	/// </summary>
+	internal unsafe static IDWriteTextAnalysisSource CreateTextAnalysisSource(
+														char* text,
+														uint    length,
+														char*   culture,
+														IDWriteFactory factory,
+														bool    isRightToLeft,
+														char*   numberCulture,
+														bool    ignoreUserOverride,
+														uint    numberSubstitutionMethod)
+	{
+		throw new NotImplementedException();
+	}
+
+    unsafe static public IList<Span> Itemize(
+        char* 							 text,
+        uint                             length,
+        CultureInfo                      culture,
+        Factory                          factory,
         bool                             isRightToLeftParagraph,
-        CultureInfo^                     numberCulture,
+        CultureInfo                      numberCulture,
         bool                             ignoreUserOverride,
-        UINT32                           numberSubstitutionMethod,
-        IClassification^                 classificationUtility,
-        CreateTextAnalysisSink^          pfnCreateTextAnalysisSink,
-        GetScriptAnalysisList^           pfnGetScriptAnalysisList,
-        GetNumberSubstitutionList^       pfnGetNumberSubstitutionList,
-        CreateTextAnalysisSource^        pfnCreateTextAnalysisSource
+        uint                             numberSubstitutionMethod,
+        IClassification                  classificationUtility
         )
     {
         // If a text has zero length then we do not need to itemize.
         if (length > 0)
         {
-            IDWriteTextAnalyzer* pTextAnalyzer = NULL;
-            IDWriteTextAnalysisSink* pTextAnalysisSink = NULL;
-            IDWriteTextAnalysisSource* pTextAnalysisSource = NULL;
+            IDWriteTextAnalyzer pTextAnalyzer = null;
+            IDWriteTextAnalysisSink pTextAnalysisSink = null;
+            IDWriteTextAnalysisSource pTextAnalysisSource = null;
 
-            // We obtain an AddRef factory so as not to worry about having to call GC::KeepAlive(factory)
-            // which puts unnecessary maintenance cost on this code.
-            IDWriteFactory* pDWriteFactory = factory->DWriteFactoryAddRef;
-            HRESULT hr = S_OK;
-            try
-            {
-                hr = pDWriteFactory->CreateTextAnalyzer(&pTextAnalyzer);
-                ConvertHresultToException(hr, "List<Span^>^ TextAnalyzer::Itemize");
-                
-                pin_ptr<const WCHAR> pNumberSubstitutionLocaleNamePinned;
+            IDWriteFactory pDWriteFactory = factory.DWriteFactory;
 
-                // We need this variable since we cannot assign NULL to a pin_ptr<const WCHAR>.
-                WCHAR const* pNumberSubstitutionLocaleName = NULL;
-                if (numberCulture != nullptr)
-                {
-                    pNumberSubstitutionLocaleNamePinned = Native::Util::GetPtrToStringChars(numberCulture->IetfLanguageTag);
-                    pNumberSubstitutionLocaleName = pNumberSubstitutionLocaleNamePinned;
-                }
+			pTextAnalyzer = pDWriteFactory.CreateTextAnalyzer();
+			
+			fixed (char* pNumberSubstitutionLocaleNamePinned = 
+				(numberCulture != null ? numberCulture.IetfLanguageTag : string.Empty),
+				pCultureName = culture.IetfLanguageTag)
+			{
+				char* pNumberSubstitutionLocaleName = null;
+				if (numberCulture != null)
+				{
+					pNumberSubstitutionLocaleName = pNumberSubstitutionLocaleNamePinned;
+				}
 
-                pin_ptr<const WCHAR> pCultureName = Native::Util::GetPtrToStringChars(culture->IetfLanguageTag);
-                
-                // NOTE: the text parameter is NOT copied inside TextAnalysisSource to improve perf.
-                // This is ok as long as we use the TextAnalysisSource in the same scope as we hold ref to text.
-                // If we are ever to change this pattern then this should be revisited in TextAnalysisSource in
-                // PresentationNative.
-                hr = static_cast<HRESULT>(pfnCreateTextAnalysisSource(text,
-                                                                      length,
-                                                                      pCultureName,
-                                                                      (void*)(pDWriteFactory),
-                                                                      isRightToLeftParagraph,
-                                                                      pNumberSubstitutionLocaleName,
-                                                                      ignoreUserOverride,
-                                                                      numberSubstitutionMethod,
-                                                                      (void**)&pTextAnalysisSource));
-                ConvertHresultToException(hr, "List<Span^>^ TextAnalyzer::Itemize");
+				// NOTE: the text parameter is NOT copied inside TextAnalysisSource to improve perf.
+				// This is ok as long as we use the TextAnalysisSource in the same scope as we hold ref to text.
+				// If we are ever to change this pattern then this should be revisited in TextAnalysisSource in
+				// PresentationNative.
+				pTextAnalysisSource = CreateTextAnalysisSource(
+												 text,
+												 length,
+												 pCultureName,
+												 pDWriteFactory,
+												 isRightToLeftParagraph,
+												 pNumberSubstitutionLocaleName,
+												 ignoreUserOverride,
+												 numberSubstitutionMethod);
+			
+				pTextAnalysisSink = CreateTextAnalysisSink();
 
-            
-                pTextAnalysisSink = (IDWriteTextAnalysisSink*)pfnCreateTextAnalysisSink();
+				// Analyze the script ranges.
+				pTextAnalyzer.AnalyzeScript(pTextAnalysisSource,
+											0,
+											length,
+											pTextAnalysisSink);
 
-                // Analyze the script ranges.
-                hr = pTextAnalyzer->AnalyzeScript(pTextAnalysisSource,
-                                                 0,
-                                                 length,
-                                                 pTextAnalysisSink);
-                ConvertHresultToException(hr, "List<Span^>^ TextAnalyzer::Itemize");
+				// Analyze the number substitution ranges.
+				pTextAnalyzer.AnalyzeNumberSubstitution(pTextAnalysisSource,
+														0,
+														length,
+														pTextAnalysisSink);
 
-                // Analyze the number substitution ranges.
-                hr = pTextAnalyzer->AnalyzeNumberSubstitution(pTextAnalysisSource,
-                                                            0,
-                                                            length,
-                                                            pTextAnalysisSink);
-                ConvertHresultToException(hr, "List<Span^>^ TextAnalyzer::Itemize");
-
-                DWriteTextAnalysisNode<DWRITE_SCRIPT_ANALYSIS>*     dwriteScriptAnalysisNode     = (DWriteTextAnalysisNode<DWRITE_SCRIPT_ANALYSIS>*)pfnGetScriptAnalysisList((void*)pTextAnalysisSink);
-                DWriteTextAnalysisNode<IDWriteNumberSubstitution*>* dwriteNumberSubstitutionNode = (DWriteTextAnalysisNode<IDWriteNumberSubstitution*>*)pfnGetNumberSubstitutionList((void*)pTextAnalysisSink);
-                
-                TextItemizer^ textItemizer = gcnew TextItemizer(dwriteScriptAnalysisNode, dwriteNumberSubstitutionNode);
-            
-                return AnalyzeExtendedAndItemize(textItemizer, text, length, numberCulture, classificationUtility);
-            }
-            finally
-            {
-                ReleaseItemizationNativeResources(&pDWriteFactory,
-                                                  &pTextAnalyzer,
-                                                  &pTextAnalysisSource,
-                                                  &pTextAnalysisSink);
-            }
+				DWriteTextAnalysisNode<DWriteScriptAnalysis> dwriteScriptAnalysisNode = GetScriptAnalysisList(pTextAnalysisSink);
+				DWriteTextAnalysisNode<IDWriteNumberSubstitution> dwriteNumberSubstitutionNode = GetNumberSubstitutionList(pTextAnalysisSink);
+				
+				TextItemizer textItemizer = new TextItemizer(dwriteScriptAnalysisNode, dwriteNumberSubstitutionNode);
+			
+				return AnalyzeExtendedAndItemize(textItemizer, new IntPtr(text), length, numberCulture, classificationUtility);
+			}
         }
         else
         {
-            return nullptr;
+            return null;
         }
 
     }
-*/
 
     static IList<Span> AnalyzeExtendedAndItemize(
         TextItemizer textItemizer, 

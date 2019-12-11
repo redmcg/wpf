@@ -125,12 +125,8 @@ namespace MS.Internal.Shaping
                         digitCulture,
                         ignoreUserOverride,
                         (uint)numberSubstitutionMethod,
-                        ClassificationUtility.Instance,
-                        UnsafeNativeMethods.CreateTextAnalysisSink,
-                        UnsafeNativeMethods.GetScriptAnalysisList,
-                        UnsafeNativeMethods.GetNumberSubstitutionList,
-                        UnsafeNativeMethods.CreateTextAnalysisSource
-                        );
+                        ClassificationUtility.Instance
+						);
                 }
 }
             characterBufferReference.CharacterBuffer.UnpinCharacterPointer(gcHandle);
