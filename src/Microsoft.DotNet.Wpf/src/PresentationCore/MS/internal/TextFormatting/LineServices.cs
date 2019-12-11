@@ -211,7 +211,7 @@ namespace MS.Internal.TextFormatting
         int                         cchText,                
         LsTFlow                     textFlow,               
         ushort*                     puGlyphsBuffer,         
-        uint*                       piGlyphPropsBuffer,     
+        ushort*                     piGlyphPropsBuffer,     
         int                         cgiGlyphBuffers,
         ref int                     fIsGlyphBuffersUsed,    // logically boolean (see above)  
         ushort*                     puClusterMap,           
@@ -231,7 +231,7 @@ namespace MS.Internal.TextFormatting
         ushort                      *puCharProperties,
         int                         cchText,            
         ushort                      *puGlyphs,          
-        uint                        *piGlyphProperties,      
+        ushort                      *piGlyphProperties,      
         int                         glyphCount,         
         LsTFlow                     textFlow,           
         int                         *piGlyphAdvances,   

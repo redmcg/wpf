@@ -1611,7 +1611,7 @@ namespace MS.Internal.TextFormatting
             int                         cchText,                // character count
             LsTFlow                     textFlow,               // text flow direction
             ushort*                     puGlyphsBuffer,         // [in/out] fixed-size buffer for glyph indices
-            uint*                       piGlyphPropsBuffer,     // [in/out] fixed-size buffer for glyph properties list
+            ushort*                     piGlyphPropsBuffer,     // [in/out] fixed-size buffer for glyph properties list
             int                         cgiGlyphBuffers,        // glyph buffers length in glyphs
             ref int                     fIsGlyphBuffersUsed,    // [out] Boolean flag indicates glyph buffers being used
             ushort*                     puClusterMap,           // [out] character-to-glyph cluster map
@@ -1646,7 +1646,7 @@ namespace MS.Internal.TextFormatting
                     GlyphTypeface glyphTypeface = lsrunFirst.Shapeable.GlyphTypeFace;
                     
                     FullText.Formatter.TextAnalyzer.GetGlyphs(
-                        pwchText,
+                        new IntPtr(pwchText),
                         uCchText,
                         glyphTypeface.FontDWrite,
                         glyphTypeface.BlankGlyphIndex,
@@ -1704,7 +1704,7 @@ namespace MS.Internal.TextFormatting
             ushort*                     puCharProperties,   // character properties
             int                         cchText,            // character count
             ushort*                     puGlyphs,           // glyph indices
-            uint*                       piGlyphProperties,  // glyph properties
+            ushort*                     piGlyphProperties,  // glyph properties
             int                         glyphCount,         // glyph count
             LsTFlow                     textFlow,           // text flow direction
             int*                        piGlyphAdvances,    // [out] glyph advances
@@ -1731,7 +1731,7 @@ namespace MS.Internal.TextFormatting
 
                 
                 FullText.Formatter.TextAnalyzer.GetGlyphPlacements(
-                    pwchText,
+                    new IntPtr(pwchText),
                     puClusterMap,
                     (ushort*)puCharProperties,
                     (uint)cchText,
