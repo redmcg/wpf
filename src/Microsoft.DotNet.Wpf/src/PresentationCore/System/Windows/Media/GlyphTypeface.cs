@@ -88,10 +88,8 @@ namespace System.Windows.Media
             MS.Internal.Text.TextInterface.FontFace fontFaceDWrite = _font.GetFontFace();
             try
             {
-                using (MS.Internal.Text.TextInterface.FontFile fontFile = fontFaceDWrite.GetFileZero())
-                {
-                    uriPath = fontFile.GetUriPath();
-                }
+                MS.Internal.Text.TextInterface.FontFile fontFile = fontFaceDWrite.GetFileZero();
+				uriPath = fontFile.GetUriPath();
 
                 // store the original Uri that contains the face index
                 _originalUri = new SecurityCriticalDataClass<Uri>(Util.CombineUriWithFaceIndex(uriPath, checked((int)fontFaceDWrite.Index)));
