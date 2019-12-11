@@ -1,7 +1,7 @@
 
 COMPILE_LIB=csc -target:library
 
-LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../../reactive.pub -define:UIAUTOMATIONTYPES -langversion:8.0 -nostdlib -noconfig -lib:$(MONO_PREFIX)/lib/mono/4.5-api
+LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../../reactive.pub -define:AUTOMATION -define:UIAUTOMATIONTYPES -langversion:8.0 -nostdlib -noconfig -lib:$(MONO_PREFIX)/lib/mono/4.5-api
 
 LIB_REFS=-r:mscorlib.dll -r:System.dll -r:System.Xaml.dll -r:System.Xml.dll -r:System.Core.dll -r:WindowsBase.dll
 
@@ -10,7 +10,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: UIAutomationTypes.dll
 
 SR.generated.cs: Resources/Strings.resx $(RESX2SRID)
-	mono $(RESX2SRID) $< SR System > $@ || rm -f $@
+	mono $(RESX2SRID) $< SR MS.Internal.Automation > $@ || rm -f $@
 
 %.resources: %.resx
 	resgen $< $@

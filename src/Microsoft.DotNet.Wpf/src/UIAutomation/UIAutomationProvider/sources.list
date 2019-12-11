@@ -30,5 +30,4 @@ System/Windows/Automation/Provider/IValueProvider.cs
 System/Windows/Automation/Provider/IVirtualizedItemProvider.cs
 System/Windows/Automation/Provider/IWindowProvider.cs
 SRID.generated.cs
-../../System.Xaml/SRID.cs
 AssemblyInfo.cs

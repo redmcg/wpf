@@ -12,7 +12,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: UIAutomationProvider.dll
 
 SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
-	mono $(RESX2SRID) $< SRID > $@ || rm -f $@
+	mono $(RESX2SRID) $< SRID MS.Internal.Automation > $@ || rm -f $@
 
 %.resources: %.resx
 	resgen $< $@

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
@@ -24,7 +25,7 @@ namespace System.Windows.TrustUI
 namespace System.Windows
 #elif RIBBON_IN_FRAMEWORK
 namespace Microsoft.Windows.Controls
-#else
+#elif SYSTEM_XAML
 namespace MS.Internal.Xaml.Srid
 #endif
 {
@@ -99,4 +100,9 @@ namespace MS.Internal.Xaml.Srid
             return string.Format(resourceFormat, p1, p2, p3);
         }
     }
+
+	partial class SRID
+	{
+		public static ResourceManager ResourceManager = new System.Resources.ResourceManager("SR", Assembly.GetExecutingAssembly());
+	}
 }

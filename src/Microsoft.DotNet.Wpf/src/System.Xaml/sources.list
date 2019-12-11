@@ -18,7 +18,6 @@ ms/Internal/Markup/StringValueSerializer.cs
 ms/Internal/Markup/TypeConverterValueSerializer.cs
 otherassemblyattrs.cs
 SR.cs
-SRID.cs
 SRID.generated.cs
 System/Windows/Markup/AcceptedMarkupExtensionExpressionTypeAttribute.cs
 System/Windows/Markup/AmbientAttribute.cs
