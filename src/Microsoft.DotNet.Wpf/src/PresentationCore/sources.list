@@ -78,7 +78,6 @@ System/AppContextDefaultValues.cs
 ../Shared/Telemetry/Managed/TelemetryEventSource.cs
 ../Shared/Telemetry/Managed/TraceLoggingProvider.cs
 ../Shared/Telemetry/Managed/TraceLoggers/XpsOMPrintingTraceLogger.cs
-ModuleInitializer.cs
 otherassemblyattrs.cs
 SR.cs
 MS/internal/AnimatedTypeHelpers.cs
