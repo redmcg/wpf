@@ -57,4 +57,3 @@ System/Windows/Automation/Text/TextEnums.cs
 SR.generated.cs
 AssemblyInfo.cs
 ../../Common/src/System/SR.cs
-../../System.Xaml/SRID.cs
