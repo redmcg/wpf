@@ -31,7 +31,7 @@ namespace MS.Internal.Text.TextInterface
         /// </remarks>
         uint parameter;
 
-        DWriteFontFeature(DWriteFontFeatureTag dwriteNameTag, uint dwriteParameter)
+        public DWriteFontFeature(DWriteFontFeatureTag dwriteNameTag, uint dwriteParameter)
         {
             nameTag = dwriteNameTag;
             parameter = dwriteParameter;
