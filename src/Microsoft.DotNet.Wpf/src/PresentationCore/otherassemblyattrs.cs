@@ -8,7 +8,10 @@
 
 using MS.Internal.PresentationCore;
 using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+
+[assembly:AssemblyVersion("4.0.0.0")]
 
 [assembly:InternalsVisibleTo(BuildInfo.PresentationFramework)]
 [assembly:InternalsVisibleTo(BuildInfo.ReachFramework)]
