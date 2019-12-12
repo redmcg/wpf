@@ -11,3 +11,13 @@ HRESULT WINAPI MilVisualTarget_DetachFromHwnd(HWND hwnd)
 {
 	return S_OK;
 }
+
+HRESULT WINAPI MilContent_AttachToHwnd(HWND hwnd)
+{
+	return S_OK;
+}
+
+HRESULT WINAPI MilContent_DetachFromHwnd(HWND hwnd)
+{
+	return S_OK;
+}
