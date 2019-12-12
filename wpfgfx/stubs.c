@@ -21,3 +21,8 @@ HRESULT WINAPI MilContent_DetachFromHwnd(HWND hwnd)
 {
 	return S_OK;
 }
+
+BOOL WINAPI WgxConnection_ShouldForceSoftwareForGraphicsStreamClient(void)
+{
+	return FALSE;
+}
