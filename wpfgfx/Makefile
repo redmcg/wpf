@@ -1,5 +1,5 @@
 
-C_SRCS=stubs.c
+C_SRCS=stubs.c main.c
 
 %.o: $(SRCDIR)/%.c
 	$(MINGW)-gcc -o $@ -c $^

@@ -1,4 +1,4 @@
-// stubs.c: stub functions for for WPF
+// stubs.c: stub functions for WPF
 
 #include <windows.h>
 
