@@ -21,3 +21,9 @@ void WINAPI MilCompositionEngine_ExitCompositionEngineLock(void)
 {
 	LeaveCriticalSection(&composition_engine_lock);
 }
+
+HRESULT WINAPI MilCompositionEngine_InitializePartitionManager(INT nPriority)
+{
+	// FIXME: Start a thread?
+	return S_OK;
+}
