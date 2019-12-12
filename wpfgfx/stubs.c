@@ -2,12 +2,12 @@
 
 #include <windows.h>
 
-HRESULT WINAPI VisualTarget_AttachToHwnd(HWND hwnd)
+HRESULT WINAPI MilVisualTarget_AttachToHwnd(HWND hwnd)
 {
 	return S_OK;
 }
 
-HRESULT WINAPI VisualTarget_DetachFromHwnd(HWND hwnd)
+HRESULT WINAPI MilVisualTarget_DetachFromHwnd(HWND hwnd)
 {
 	return S_OK;
 }
