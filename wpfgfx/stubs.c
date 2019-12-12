@@ -26,17 +26,3 @@ BOOL WINAPI WgxConnection_ShouldForceSoftwareForGraphicsStreamClient(void)
 {
 	return FALSE;
 }
-
-HRESULT WINAPI WgxConnection_Create(BOOL requestSynchronousTransport,
-	void** ppConnection)
-{
-	if (!ppConnection)
-		return E_POINTER;
-	*ppConnection = (void*)0xdeadbeef;
-	return S_OK;
-}
-
-HRESULT WINAPI WgxConnection_Disconnect(void* pTranspManager)
-{
-	return S_OK;
-}
