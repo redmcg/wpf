@@ -140,6 +140,13 @@ namespace MS.Win32.Penimc
 
         #region General
 
+		internal static bool CanLockWispObjects {
+			get {
+				// OSVersionHelper.IsOsWindows8OrGreater
+				return false;
+			}
+		}
+
         /// <summary>
         /// Calls WISP GIT lock functions on Win8+.
         /// On Win7 these will always fail since WISP objects are always proxies (WISP is out of proc).
@@ -147,7 +154,7 @@ namespace MS.Win32.Penimc
         /// <param name="gitKey">The GIT key for the object to lock.</param>
         internal static void CheckedLockWispObjectFromGit(UInt32 gitKey)
         {
-            if (OSVersionHelper.IsOsWindows8OrGreater)
+            if (CanLockWispObjects)
             {
                 if (!LockWispObjectFromGit(gitKey))
                 {
@@ -163,7 +170,7 @@ namespace MS.Win32.Penimc
         /// <param name="gitKey">The GIT key for the object to unlock.</param>
         internal static void CheckedUnlockWispObjectFromGit(UInt32 gitKey)
         {
-            if (OSVersionHelper.IsOsWindows8OrGreater)
+            if (CanLockWispObjects)
             {
                 if (!UnlockWispObjectFromGit(gitKey))
                 {

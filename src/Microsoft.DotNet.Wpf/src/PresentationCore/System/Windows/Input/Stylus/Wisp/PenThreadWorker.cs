@@ -1131,7 +1131,7 @@ namespace System.Windows.Input
                 
                 // Restrict COM releases to Win7 as this can cause issues with later versions
                 // of PenIMC and WISP due to using a context after it is released.
-                if (!OSVersionHelper.IsOsWindows8OrGreater)
+                if (!UnsafeNativeMethods.CanLockWispObjects)
                 {
                     Marshal.ReleaseComObject(penContext._pimcContext.Value);
                 }

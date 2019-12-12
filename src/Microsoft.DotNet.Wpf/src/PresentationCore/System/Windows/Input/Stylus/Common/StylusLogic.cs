@@ -217,6 +217,8 @@ namespace System.Windows.Input
         {
             get
             {
+				return false;
+/*
                 if (!_isPointerStackEnabled.HasValue)
                 {
                     _isPointerStackEnabled = IsStylusAndTouchSupportEnabled
@@ -225,6 +227,7 @@ namespace System.Windows.Input
                 }
 
                 return _isPointerStackEnabled.Value;
+*/
             }
         }
 

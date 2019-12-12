@@ -72,7 +72,6 @@ System/AppContextDefaultValues.cs
 ../Shared/System/IO/FileHelper.cs
 ../Shared/System/Windows/Ink/KnownIds.cs
 ../Shared/System/Windows/InterOp/OperatingSystemVersion.cs
-../Shared/System/Windows/InterOp/OSVersionHelper.cs
 ../Shared/System/Windows/Media/TypeConverterHelper.cs        
 ../Shared/Telemetry/Managed/EventSourceActivity.cs
 ../Shared/Telemetry/Managed/TelemetryEventSource.cs

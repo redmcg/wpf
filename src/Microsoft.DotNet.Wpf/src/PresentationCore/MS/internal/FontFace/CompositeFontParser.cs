@@ -344,7 +344,7 @@ namespace MS.Internal.FontFace
             {
                 // Once we find a FontFamilyElement with the proper OS attribute, parse it
                 if (Enum.TryParse(_reader.GetAttribute("OS"), out fontFamilyOsVersion)
-                    && OSVersionHelper.IsOsVersionOrGreater(fontFamilyOsVersion))
+                    /* && OSVersionHelper.IsOsVersionOrGreater(fontFamilyOsVersion) */ )
                 {
                     foundOsSection = true;
                     ParseFontFamilyElement();
@@ -354,7 +354,7 @@ namespace MS.Internal.FontFace
 
             if (!foundOsSection)
             {
-                Fail(string.Format("No FontFamily element found in FontFamilyCollection that matches current OS or greater: {0}", OSVersionHelper.GetOsVersion().ToString()));
+                Fail("No FontFamily element found in FontFamilyCollection");
             }
         }
 
