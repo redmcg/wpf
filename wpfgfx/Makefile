@@ -1,8 +1,8 @@
 
-C_SRCS=stubs.c main.c
+C_SRCS=stubs.c main.c composition.c
 
 %.o: $(SRCDIR)/%.c
-	$(MINGW)-gcc -o $@ -c $^
+	$(MINGW)-gcc -o $@ -D_WIN32_WINNT=0x0602 --std=c99 -c $^
 
 all: wpfgfx-$(ARCH).dll
 .PHONY: all
