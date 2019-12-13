@@ -88,6 +88,7 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	switch (restype)
 	{
 	case TYPE_ETWEVENTRESOURCE:
+	case TYPE_VISUAL:
 		return S_OK;
 	default:
 		return E_NOTIMPL;
