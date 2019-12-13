@@ -101,3 +101,11 @@ HRESULT WINAPI MilChannel_CloseBatch(MilChannel* channel)
 	
 	return S_OK;
 }
+
+HRESULT WINAPI MilChannel_CommitChannel(MilChannel* channel)
+{
+	if (!channel)
+		return E_POINTER;
+	
+	return S_OK;
+}
