@@ -109,3 +109,11 @@ HRESULT WINAPI MilChannel_CommitChannel(MilChannel* channel)
 	
 	return S_OK;
 }
+
+HRESULT WINAPI MilComposition_SyncFlush(MilChannel* channel)
+{
+	if (!channel)
+		return E_POINTER;
+	
+	return S_OK;
+}
