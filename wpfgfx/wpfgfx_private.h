@@ -294,6 +294,26 @@ typedef struct _MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE {
 	BOOL ShouldRenderEvenWhenNoDisplayDevicesAreAvailable;
 } MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE;
 
+typedef enum _MilMessageType
+{
+	Invalid             = 0x00,
+
+	SyncFlushReply      = 0x01,
+	Caps                = 0x04,
+	PartitionIsZombie   = 0x06,
+	SyncModeStatus      = 0x09,
+	Presented           = 0x0A,
+	BadPixelShader      = 0x10,
+
+	ForceDWORD          = 0xffffffff
+} MilMessageType;
+
+typedef struct _MilMessage {
+	MilMessageType Type;
+	INT Reserved;
+	/* union of more specific data for type */
+} MilMessage;
+
 /* private definitions */
 typedef struct _MilChannel {
 	void* transport;

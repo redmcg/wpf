@@ -117,3 +117,13 @@ HRESULT WINAPI MilComposition_SyncFlush(MilChannel* channel)
 	
 	return S_OK;
 }
+
+HRESULT WINAPI MilComposition_PeekNextMessage(MilChannel* channel, MilMessage* message, INT_PTR size, BOOL* messageRetrieved)
+{
+	if (!channel || !message || !messageRetrieved)
+		return E_POINTER;
+	
+	*messageRetrieved = FALSE;
+
+	return S_OK;
+}
