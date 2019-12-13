@@ -3,8 +3,6 @@
 #include <windows.h>
 #include <winnt.h>
 
-static const char composition_engine_lock_name[] = "wpfgfx/composition.c: composition_engine_lock";
-
 static CRITICAL_SECTION composition_engine_lock;
 static CRITICAL_SECTION_DEBUG composition_engine_lock_debug = {
 	0, 0, &composition_engine_lock,
