@@ -317,6 +317,7 @@ typedef struct _MilMessage {
 /* private definitions */
 typedef struct _MilResource {
 	ResourceType Type;
+	LONG RefCount;
 } MilResource;
 
 typedef struct _MilChannel {
