@@ -93,3 +93,11 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 		return E_NOTIMPL;
 	}
 }
+
+HRESULT WINAPI MilChannel_CloseBatch(MilChannel* channel)
+{
+	if (!channel)
+		return E_POINTER;
+	
+	return S_OK;
+}
