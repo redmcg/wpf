@@ -1,6 +1,5 @@
 ../../Shared/RefAssemblyAttrs.cs
 ../../Shared/System/Windows/InterOp/OperatingSystemVersion.cs
-../../Shared/System/Windows/InterOp/OSVersionHelper.cs
 ../../Shared/MS/Internal/SecurityCriticalDataForSet.cs
 ../../Shared/MS/Internal/FriendAccessAllowedAttribute.cs
 ../../Shared/MS/Win32/ExternDll.cs

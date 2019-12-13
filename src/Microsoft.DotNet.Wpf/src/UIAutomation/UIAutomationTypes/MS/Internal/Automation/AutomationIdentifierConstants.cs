@@ -31,13 +31,16 @@ namespace MS.Internal.Automation
 
         static AutomationIdentifierConstants()
         {
+/*
             if (OSVersionHelper.IsOsWindows10RS2OrGreater)
             {
+*/
                 LastSupportedProperty = Properties.Size;
                 LastSupportedEvent = Events.Changes;
                 LastSupportedPattern = Patterns.CustomNavigation;
                 LastSupportedTextAttribute = TextAttributes.SayAsInterpretAs;
                 LastSupportedControlType = ControlTypes.AppBar;
+/*
             }
             else if (OSVersionHelper.IsOsWindows10RS1OrGreater)
             {
@@ -96,6 +99,7 @@ namespace MS.Internal.Automation
                 LastSupportedTextAttribute = TextAttributes.UnderlineStyle;
                 LastSupportedControlType = ControlTypes.Separator;
             }
+*/
         }
 
         
