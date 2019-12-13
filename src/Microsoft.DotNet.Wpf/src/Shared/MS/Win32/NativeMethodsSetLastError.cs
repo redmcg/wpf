@@ -139,7 +139,7 @@ namespace MS.Internal.Drt
         [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
         public static extern int MapWindowPoints(HandleRef hWndFrom, HandleRef hWndTo, [In, Out] ref NativeMethods.RECT rect, int cPoints);
 
-        [DllImport(PresentationNativeDll, EntryPoint="SetFocusWrapper", SetLastError = true)]
+        [DllImport("user32", EntryPoint="SetFocus", SetLastError = true)]
         public static extern IntPtr SetFocus(HandleRef hWnd);
 
         [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode)]
