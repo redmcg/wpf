@@ -106,7 +106,7 @@ namespace MS.Internal.Drt
         [DllImport(PresentationNativeDll, EntryPoint="GetKeyboardLayoutListWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
         public static extern int GetKeyboardLayoutList(int size, [Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] hkls);
 
-        [DllImport(PresentationNativeDll, EntryPoint="GetParentWrapper", SetLastError = true)]
+        [DllImport("user32", EntryPoint="GetParent", SetLastError = true)]
         public static extern IntPtr GetParent(HandleRef hWnd);
 
         [DllImport(PresentationNativeDll, EntryPoint="GetWindowWrapper", ExactSpelling = true, SetLastError = true)]
