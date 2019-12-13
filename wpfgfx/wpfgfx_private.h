@@ -325,6 +325,7 @@ typedef struct _MilChannel {
 	HWND notify_hwnd;
 	UINT notify_msg;
 	MilResource* resources[256];
+	LONG resource_refcounts[256];
 	UINT first_free_resource;
 } MilChannel;
 

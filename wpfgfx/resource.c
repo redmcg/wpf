@@ -26,9 +26,10 @@ static void set_resource_handle(MilChannel* channel, ResourceHandle handle, MilR
 	assert(!channel->resources[handle]);
 
 	channel->resources[handle] = resource;
+	channel->resource_refcounts[handle] = 1;
 }
 
-static HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result)
+static HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount)
 {
 	if (handle >= ARRAY_SIZE(channel->resources))
 		return E_HANDLE;
@@ -37,7 +38,50 @@ static HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle
 		return E_HANDLE;
 
 	*result = channel->resources[handle];
+	if (refcount)
+		*refcount = &channel->resource_refcounts[handle];
 
+	return S_OK;
+}
+
+static void clear_resource_handle(MilChannel* channel, ResourceHandle handle)
+{
+	assert(handle < ARRAY_SIZE(channel->resources));
+	assert(channel->resources[handle]);
+
+	channel->resources[handle] = NULL;
+	channel->resource_refcounts[handle] = 0;
+
+	if (channel->first_free_resource > handle)
+		channel->first_free_resource = handle;
+}
+
+HRESULT WINAPI MilResource_ReleaseOnChannel(MilChannel* channel, ResourceHandle hResource, BOOL* deleted)
+{
+	HRESULT hr;
+	MilResource* object;
+	LONG* refcount;
+
+	if (!channel || !deleted)
+		return E_POINTER;
+	
+	hr = lookup_resource_handle(channel, hResource, &object, &refcount);
+	if (FAILED(hr))
+		return hr;
+
+	if (InterlockedDecrement(refcount) == 0)
+	{
+		*deleted = TRUE;
+		clear_resource_handle(channel, hResource);
+
+		if (InterlockedDecrement(&object->RefCount) == 0)
+		{
+			free(object);
+		}
+	}
+	else
+		*deleted = FALSE;
+	
 	return S_OK;
 }
 
@@ -49,7 +93,9 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 
 	if (!channel || !handle)
 		return E_POINTER;
-	
+
+	// FIXME: How to know if we're supposed to create or addref?
+
 	hr = find_free_handle(channel, &result_handle);
 	if (FAILED(hr))
 		return hr;
@@ -90,7 +136,7 @@ HRESULT WINAPI MilResource_DuplicateHandle(MilChannel* srcchan, ResourceHandle s
 	if (FAILED(hr))
 		return hr;
 
-	hr = lookup_resource_handle(srcchan, src, &object);
+	hr = lookup_resource_handle(srcchan, src, &object, NULL);
 	if (FAILED(hr))
 		return hr;
 
