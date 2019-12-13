@@ -315,10 +315,18 @@ typedef struct _MilMessage {
 } MilMessage;
 
 /* private definitions */
+typedef struct _MilResource {
+	ResourceType Type;
+} MilResource;
+
 typedef struct _MilChannel {
 	void* transport;
 	HWND notify_hwnd;
 	UINT notify_msg;
+	MilResource* resources[256];
+	UINT first_free_resource;
 } MilChannel;
+
+#define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 #endif

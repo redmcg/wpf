@@ -29,6 +29,8 @@ HRESULT WINAPI MilConnection_CreateChannel(void* pTransport, MilChannel* referen
 	(*result)->transport = pTransport;
 	(*result)->notify_hwnd = 0;
 	(*result)->notify_msg = 0;
+	memset((*result)->resources, 0, sizeof((*result)->resources));
+	(*result)->first_free_resource = 1;
 	return S_OK;
 }
 
@@ -78,21 +80,6 @@ HRESULT WINAPI MilChannel_SetNotificationWindow(MilChannel* channel, HWND hwnd, 
 	channel->notify_msg = msg;
 
 	return S_OK;
-}
-
-HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, ResourceType restype,  ResourceHandle* handle)
-{
-	if (!channel || !handle)
-		return E_POINTER;
-	
-	switch (restype)
-	{
-	case TYPE_ETWEVENTRESOURCE:
-	case TYPE_VISUAL:
-		return S_OK;
-	default:
-		return E_NOTIMPL;
-	}
 }
 
 HRESULT WINAPI MilChannel_CloseBatch(MilChannel* channel)
