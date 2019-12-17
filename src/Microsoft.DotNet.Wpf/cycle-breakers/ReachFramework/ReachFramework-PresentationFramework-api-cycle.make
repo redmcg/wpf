@@ -16,4 +16,4 @@ LIB_SRCS= \
 all: ReachFramework-PresentationFramework-api-cycle.dll
 
 ReachFramework-PresentationFramework-api-cycle.dll: $(LIB_SRCS) $(LIB_REF_FILES)
-	export TMPDIR=$$(mktemp -d); $(COMPILE_LIB) $(LIB_SRCS) $(LIB_FLAGS) $(LIB_REFS) $(LIB_REF_FILES:%=-r:%) -out:$$TMPDIR/PresentationFramework.dll && mv $$TMPDIR/PresentationFramework.dll $@ && rmdir $$TMPDIR
+	export TMPDIR=$$(mktemp -d); $(COMPILE_LIB) $(LIB_SRCS) $(LIB_FLAGS) $(LIB_REFS) $(LIB_REF_FILES:%=-r:%) -out:$$TMPDIR/ReachFramework.dll && mv $$TMPDIR/ReachFramework.dll $@ && rmdir $$TMPDIR
