@@ -24,4 +24,4 @@ all: System.Printing.dll
 	touch $@
 
 System.Printing.dll: $(LIB_SRCS) $(LIB_REF_FILES)
-	$(COMPILE_LIB) $(LIB_SRCS) $(LIB_FLAGS) $(LIB_REFS) $(LIB_REF_FILES:%=-r:%) -out:$@
+	export TMPDIR=$$(mktemp -d); $(COMPILE_LIB) $(LIB_SRCS) $(LIB_FLAGS) $(LIB_REFS) $(LIB_REF_FILES:%=-r:%) -out:$$TMPDIR/System.Printing.dll && mv $$TMPDIR/System.Printing.dll $@ && rmdir $$TMPDIR
