@@ -13,6 +13,16 @@ namespace System.IO.Packaging
     /// </summary>
     public static class PackUriHelper
     {
+        static PackUriHelper()
+        {
+            // indicate that we want "basic" parsing
+            if (!UriParser.IsKnownScheme(System.IO.Packaging.PackUriHelper.UriSchemePack))
+            {
+                // Indicate that we want a default hierarchical parser with a registry based authority
+                UriParser.Register(new GenericUriParser(GenericUriParserOptions.GenericAuthority), System.IO.Packaging.PackUriHelper.UriSchemePack, -1);
+            }
+        }
+
         #region Public Methods
 
         /// <summary>
