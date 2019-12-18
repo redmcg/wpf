@@ -267,6 +267,8 @@ namespace System.IO.Packaging
         public PackagePart GetPart(Uri partUri)
         {
             PackagePart returnedPart = GetPartHelper(partUri);
+			if (returnedPart == null)
+				returnedPart = GetPartCore(partUri);
             if (returnedPart == null)
                 throw new InvalidOperationException(SR.PartDoesNotExist);
             else
