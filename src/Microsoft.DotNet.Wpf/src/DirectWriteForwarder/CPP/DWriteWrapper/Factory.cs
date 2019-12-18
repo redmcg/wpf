@@ -89,7 +89,7 @@ namespace MS.Internal.Text.TextInterface
 		[DllImport("dwrite", CallingConvention=CallingConvention.StdCall)]
 		extern static int DWriteCreateFactory(
 			FactoryType factoryType,
-			[In, MarshalAs(UnmanagedType.LPStruct)] ref Guid iid,
+			[In, MarshalAs(UnmanagedType.LPStruct)] Guid iid,
 			[Out, MarshalAs(UnmanagedType.Interface)] out IDWriteFactory factory);
 
 		void Initialize(FactoryType factoryType)
@@ -99,7 +99,7 @@ namespace MS.Internal.Text.TextInterface
 
 			int hr = DWriteCreateFactory(
 				factoryType,
-				ref IID_IDWriteFactory,
+				IID_IDWriteFactory,
 				out factoryTemp);
 
 			Marshal.ThrowExceptionForHR(hr);
