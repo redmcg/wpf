@@ -1,15 +1,23 @@
 
 COMPILE_LIB=csc -target:library
 
-LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../reactive.pub -define:REACHFRAMEWORK -langversion:8.0 -nostdlib -noconfig -lib:$(MONO_PREFIX)/lib/mono/4.5-api
+LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../reactive.pub -define:REACHFRAMEWORK -langversion:8.0 -nostdlib -noconfig
 
-LIB_REFS=-r:mscorlib.dll -r:System.dll -r:System.Xml.dll -r:System.Core.dll
+LIB_REFS=-r:mscorlib.dll -r:System.dll -r:System.Xml.dll -r:System.Core.dll -r:System.Drawing.dll -r:System.Security.dll
 
-LIB_REF_FILES=../System.Xaml/System.Xaml.dll ../WindowsBase/WindowsBase.dll ../DirectWriteForwarder/DirectWriteForwarder.dll ../PresentationCore/PresentationCore.dll
+LIB_REF_FILES=../System.Xaml/System.Xaml.dll ../WindowsBase/WindowsBase.dll ../DirectWriteForwarder/DirectWriteForwarder.dll ../PresentationCore/PresentationCore.dll ../../cycle-breakers/PresentationFramework/PresentationFramework-ReachFramework-impl-cycle.dll ../System.Printing/ref/System.Printing.dll
 
 LIB_SRCS=$(shell cat sources.list)
 
 all: ReachFramework.dll
+
+../../cycle-breakers/PresentationFramework/PresentationFramework-ReachFramework-impl-cycle.dll: ../../cycle-breakers/PresentationFramework/*.cs
+	+$(MAKE) -C $(@D) -f PresentationFramework-ReachFramework-impl-cycle.make
+	touch $@
+
+../System.Printing/ref/System.Printing.dll: ../System.Printing/ref/*.cs
+	+$(MAKE) -C $(@D)
+	touch $@
 
 SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
 	mono $(RESX2SRID) $< SRID System.Windows.Xps > $@ || rm -f $@
