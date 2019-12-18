@@ -283,3 +283,4 @@ MS/Internal/Printing/Configuration/LoadLibraryExFlags.cs
 MS/Internal/Printing/Configuration/SafeModuleHandle.cs
 MS/Internal/Printing/Configuration/WinSpoolPrinterCapabilities.cs
 MS/Internal/Printing/TestHook.cs
+SRID.generated.cs
