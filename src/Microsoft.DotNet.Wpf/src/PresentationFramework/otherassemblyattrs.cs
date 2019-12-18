@@ -8,11 +8,14 @@
 
 using MS.Internal.PresentationFramework;
 using System;
+using System.Reflection;
 using System.Resources;
 using System.Runtime.InteropServices;
 using System.Runtime.CompilerServices;
 using System.Security;
 using System.Windows.Markup;
+
+[assembly:AssemblyVersion("4.0.0.0")]
 
 [assembly:TypeForwardedTo(typeof(System.Windows.NameScope))]
 [assembly:TypeForwardedTo(typeof(System.Windows.Markup.ArrayExtension))]
