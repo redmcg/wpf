@@ -1319,3 +1319,4 @@ System/Windows/VisualStateManager.cs
 System/Windows/VisualTransition.cs
 System/Windows/Window.cs
 System/Windows/WindowCollection.cs
+SRID.generated.cs
