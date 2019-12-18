@@ -102,7 +102,7 @@ namespace System.Windows
             Window.DpiChangedEvent = EventManager.RegisterRoutedEvent("DpiChanged", RoutingStrategy.Bubble,
                 typeof (System.Windows.DpiChangedEventHandler), typeof (Window));
 
-            WpfDllVerifier.VerifyWpfDllSet();
+            // WpfDllVerifier.VerifyWpfDllSet();
         }
 
         /// <summary>
