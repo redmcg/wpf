@@ -25,7 +25,7 @@ SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
 %.resources: %.resx
 	resgen $< $@
 
-Resources/System.Printing.resx: ../System.Printing/Resources/System.Printing.resx 
+Resources/System.Printing.resources: ../System.Printing/Resources/System.Printing.resx
 	resgen $< $@
 
 EMBEDDED_RESOURCES=$(shell cat embeddedresources.list)
