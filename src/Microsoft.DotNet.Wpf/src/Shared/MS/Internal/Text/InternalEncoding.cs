@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Text;
 
 namespace MS.Internal.Text
@@ -15,16 +16,20 @@ namespace MS.Internal.Text
 
         static InternalEncoding()
         {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            // Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         internal static Encoding GetEncoding(int codepage)
         {
+			// We need to use corefx's encoding implementation to make this work.
+			throw new NotImplementedException ();
             return Encoding.GetEncoding(codepage);
         }
 
         internal static byte[] Convert(System.Text.Encoding srcEncoding, System.Text.Encoding dstEncoding, byte[] bytes)
         {
+			// We need to use corefx's encoding implementation to make this work.
+			throw new NotImplementedException ();
             return Encoding.Convert(srcEncoding, dstEncoding, bytes);
         }
     }
