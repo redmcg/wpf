@@ -26,6 +26,7 @@ using MS.Internal;
 
 using InternalPackUriHelper = MS.Internal.IO.Packaging.PackUriHelper;
 using XmlWrappingReader = System.Windows.Markup.XmlWrappingReader;
+using XmlCompatibilityReader = System.Windows.Markup.XmlCompatibilityReader;
 
 namespace System.Windows.Documents
 {
