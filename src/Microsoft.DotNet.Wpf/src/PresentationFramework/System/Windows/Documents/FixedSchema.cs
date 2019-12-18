@@ -25,6 +25,7 @@ using MS.Internal;
 #endregion
 
 using InternalPackUriHelper = MS.Internal.IO.Packaging.PackUriHelper;
+using XmlWrappingReader = System.Windows.Markup.XmlWrappingReader;
 
 namespace System.Windows.Documents
 {
