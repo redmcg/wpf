@@ -349,6 +349,12 @@ typedef struct _MILCMD_TARGET_SETCLEARCOLOR
 	MilColorF clearColor;
 } MILCMD_TARGET_SETCLEARCOLOR;
 
+typedef struct _MILCMD_TARGET_SETROOT {
+	MILCMD Type;
+	ResourceHandle Handle;
+	ResourceHandle hRoot;
+} MILCMD_TARGET_SETROOT;
+
 typedef struct _MILCMD_VISUAL_SETTRANSFORM {
 	MILCMD Type;
 	ResourceHandle Handle;
