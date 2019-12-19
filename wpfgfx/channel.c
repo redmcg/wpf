@@ -55,6 +55,8 @@ static HRESULT validate_command(BYTE* data, UINT size)
 		MILCMD_HWNDTARGET_CREATE);
 	VALIDATE_STRUCT(MilCmdMatrixTransform,
 		MILCMD_MATRIXTRANSFORM);
+	VALIDATE_STRUCT(MilCmdTargetSetClearColor,
+		MILCMD_TARGET_SETCLEARCOLOR);
 	VALIDATE_STRUCT(MilCmdVisualSetTransform,
 		MILCMD_VISUAL_SETTRANSFORM);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
