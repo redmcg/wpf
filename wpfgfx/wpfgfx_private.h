@@ -12,6 +12,21 @@ typedef struct _MilMatrix3x2D {
 	double S_11, S_12, S_21, S_22, DX, DY;
 } MilMatrix3x2D;
 
+typedef enum _MILTransparencyFlags {
+	Opaque = 0x0,
+	ConstantAlpha = 0x1,
+	PerPixelAlpha = 0x2,
+	ColorKey = 0x4,
+	MIL_TRANSPARENCY_FLAGS_FORCE_DWORD = 0xffffffff
+} MILTransparencyFlags;
+
+typedef enum _MILWindowLayerType {
+	NotLayered = 0,
+	SystemManagedLayer = 1,
+	ApplicationManagedLayer = 2,
+	MIL_WINDOW_LAYER_TYPE_FORCE_DWORD = 0xffffffff
+} MILWindowLayerType;
+
 typedef enum _ResourceType
 {
 	/* 0x00 */ TYPE_NULL = 0,
@@ -354,6 +369,21 @@ typedef struct _MILCMD_TARGET_SETROOT {
 	ResourceHandle Handle;
 	ResourceHandle hRoot;
 } MILCMD_TARGET_SETROOT;
+
+typedef struct _MILCMD_TARGET_UPDATEWINDOWSETTINGS {
+	MILCMD Type;
+	ResourceHandle Handle;
+	RECT windowRect;
+	MILWindowLayerType windowLayerType;
+	MILTransparencyFlags transparencyMode;
+	float constantAlpha;
+	BOOL isChild;
+	BOOL isRTL;
+	BOOL renderingEnabled;
+	MilColorF colorKey;
+	UINT disableCookie;
+	BOOL gdiBlt;
+} MILCMD_TARGET_UPDATEWINDOWSETTINGS;
 
 typedef struct _MILCMD_VISUAL_SETTRANSFORM {
 	MILCMD Type;
