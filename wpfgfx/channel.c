@@ -44,13 +44,15 @@ static HRESULT validate_command(BYTE* data, UINT size)
 	
 	if (size < 4)
 		return E_INVALIDARG;
-	
+
 	switch (*(MILCMD*)data)
 	{
 	VALIDATE_STRUCT(MilCmdPartitionRegisterForNotifications,
 		MILCMD_PARTITION_REGISTERFORNOTIFICATIONS);
 	VALIDATE_STRUCT(MilCmdChannelRequestTier,
 		MILCMD_PARTITION_REQUESTTIER);
+	VALIDATE_STRUCT(MilCmdHwndTargetCreate,
+		MILCMD_HWNDTARGET_CREATE);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
 		MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE);
 	default:

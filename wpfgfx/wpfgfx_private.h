@@ -4,6 +4,10 @@
 /* interface definitions */
 typedef UINT ResourceHandle;
 
+typedef struct _MilColorF {
+	float a, r, g, b;
+} MilColorF;
+
 typedef enum _ResourceType
 {
 	/* 0x00 */ TYPE_NULL = 0,
@@ -289,6 +293,8 @@ typedef enum _MILCMD
 #endif
 } MILCMD;
 
+#include <pshpack1.h>
+
 typedef struct _MILCMD_PARTITION_REGISTERFORNOTIFICATIONS
 {
 	MILCMD Type;
@@ -301,10 +307,31 @@ typedef struct _MILCMD_PARTITION_REQUESTTIER
 	BOOL ReturnCommonMinimum;
 } MILCMD_PARTITION_REQUESTTIER;
 
+typedef struct _MILCMD_HWNDTARGET_CREATE
+{
+	MILCMD Type;
+	ResourceHandle Handle;
+	ULONGLONG hwnd;
+	ULONGLONG hSection;
+	ULONGLONG masterDevice;
+	ULONG width;
+	ULONG height;
+	MilColorF clearColor;
+	ULONG flags;
+	ResourceHandle hBitmap;
+	ULONG stride;
+	ULONG ePixelFormat;
+	INT DpiAwarenessContext;
+	double DpiX;
+	double DpiY;
+} MILCMD_HWNDTARGET_CREATE;
+
 typedef struct _MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE {
 	MILCMD Type;
 	BOOL ShouldRenderEvenWhenNoDisplayDevicesAreAvailable;
 } MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE;
+
+#include <poppack.h>
 
 typedef enum _MilMessageType
 {
