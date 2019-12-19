@@ -76,6 +76,47 @@ static HRESULT validate_command(BYTE* data, UINT size)
 	return S_OK;
 }
 
+HRESULT MilChannel_dispatch_command(MilChannel* channel, BYTE* data, UINT size)
+{
+	HRESULT hr;
+	MILCMD_GENERIC *cmd = (MILCMD_GENERIC*)data;
+
+	switch (cmd->Type)
+	{
+	/* Commands that apply to a resource */
+	case MilCmdHwndTargetCreate:
+	case MilCmdMatrixTransform:
+	case MilCmdTargetInvalidate:
+	case MilCmdTargetSetClearColor:
+	case MilCmdTargetSetRoot:
+	case MilCmdTargetUpdateWindowSettings:
+	case MilCmdVisualInsertChildAt:
+	case MilCmdVisualSetTransform:
+	{
+		MilResource *resource;
+
+		hr = lookup_resource_handle(channel, cmd->Handle, &resource, NULL);
+		if (FAILED(hr))
+			return hr;
+
+		switch (resource->Type)
+		{
+		case TYPE_HWNDRENDERTARGET:
+			return HwndTarget_Command(channel, (MilResourceHwndTarget*)resource,
+				data, size);
+		default:
+			return S_OK;
+		}
+	}
+	/* Commands that apply to the partition */
+	case MilCmdChannelRequestTier:
+	case MilCmdPartitionRegisterForNotifications:
+	case MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode:
+	default:
+		return S_OK;
+	}
+}
+
 HRESULT WINAPI MilResource_SendCommand(BYTE* data, UINT size, BOOL sendInSeparateBatch, MilChannel* channel)
 {
 	HRESULT hr;
@@ -87,9 +128,9 @@ HRESULT WINAPI MilResource_SendCommand(BYTE* data, UINT size, BOOL sendInSeparat
 	if (FAILED(hr))
 		return hr;
 
-	/* TODO: Save command to batch */
+	hr = MilChannel_dispatch_command(channel, data, size);
 
-	return S_OK;
+	return hr;
 }
 
 HRESULT WINAPI MilChannel_SetNotificationWindow(MilChannel* channel, HWND hwnd, UINT msg)

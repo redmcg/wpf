@@ -29,7 +29,7 @@ static void set_resource_handle(MilChannel* channel, ResourceHandle handle, MilR
 	channel->resource_refcounts[handle] = 1;
 }
 
-static HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount)
+HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount)
 {
 	if (handle >= ARRAY_SIZE(channel->resources))
 		return E_HANDLE;
@@ -104,7 +104,6 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	{
 	case TYPE_ETWEVENTRESOURCE:
 	case TYPE_VISUAL:
-	case TYPE_HWNDRENDERTARGET:
 	case TYPE_MATRIXTRANSFORM:
 		new_resource = malloc(sizeof(MilResource));
 		if (!new_resource)
@@ -112,6 +111,17 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 		new_resource->Type = restype;
 		new_resource->RefCount = 1;
 		break;
+	case TYPE_HWNDRENDERTARGET:
+	{
+		MilResourceHwndTarget *obj = malloc(sizeof(MilResourceHwndTarget));
+		new_resource = &obj->resource;
+		if (!new_resource)
+			return E_OUTOFMEMORY;
+		new_resource->Type = restype;
+		new_resource->RefCount = 1;
+		obj->hwnd = NULL;
+		break;
+	}
 	default:
 		return E_NOTIMPL;
 	}

@@ -314,6 +314,12 @@ typedef enum _MILCMD
 
 #include <pshpack1.h>
 
+typedef struct _MILCMD_GENERIC
+{
+	MILCMD Type;
+	ResourceHandle Handle;
+} MILCMD_GENERIC;
+
 typedef struct _MILCMD_PARTITION_REGISTERFORNOTIFICATIONS
 {
 	MILCMD Type;
@@ -445,6 +451,16 @@ typedef struct _MilChannel {
 	LONG resource_refcounts[256];
 	UINT first_free_resource;
 } MilChannel;
+
+typedef struct _MilResourceHwndTarget {
+	MilResource resource;
+	HWND hwnd;
+} MilResourceHwndTarget;
+
+extern HRESULT HwndTarget_Command(MilChannel* channel, MilResourceHwndTarget* target,
+	BYTE* data, UINT size);
+
+extern HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount);
 
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
