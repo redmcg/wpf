@@ -49,6 +49,8 @@ static HRESULT validate_command(BYTE* data, UINT size)
 	{
 	VALIDATE_STRUCT(MilCmdPartitionRegisterForNotifications,
 		MILCMD_PARTITION_REGISTERFORNOTIFICATIONS);
+	VALIDATE_STRUCT(MilCmdChannelRequestTier,
+		MILCMD_PARTITION_REQUESTTIER);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
 		MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE);
 	default:
