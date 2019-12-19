@@ -8,6 +8,10 @@ typedef struct _MilColorF {
 	float a, r, g, b;
 } MilColorF;
 
+typedef struct _MilMatrix3x2D {
+	double S_11, S_12, S_21, S_22, DX, DY;
+} MilMatrix3x2D;
+
 typedef enum _ResourceType
 {
 	/* 0x00 */ TYPE_NULL = 0,
@@ -326,10 +330,23 @@ typedef struct _MILCMD_HWNDTARGET_CREATE
 	double DpiY;
 } MILCMD_HWNDTARGET_CREATE;
 
+typedef struct _MILCMD_MATRIXTRANSFORM {
+	MILCMD Type;
+	ResourceHandle Handle;
+	MilMatrix3x2D Matrix;
+	ResourceHandle hMatrixAnimations;
+} MILCMD_MATRIXTRANSFORM;
+
 typedef struct _MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE {
 	MILCMD Type;
 	BOOL ShouldRenderEvenWhenNoDisplayDevicesAreAvailable;
 } MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE;
+
+typedef struct _MILCMD_VISUAL_SETTRANSFORM {
+	MILCMD Type;
+	ResourceHandle Handle;
+	ResourceHandle hTransform;
+} MILCMD_VISUAL_SETTRANSFORM;
 
 #include <poppack.h>
 
