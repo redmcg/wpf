@@ -37,3 +37,9 @@ LONG_PTR WINAPI SetWindowLongPtrWrapper(HWND hwnd, INT index, LONG_PTR newlong)
 	SetLastError(0);
 	return SetWindowLongPtrW(hwnd, index, newlong);
 }
+
+INT WINAPI GetKeyboardLayoutListWrapper(INT size, HKL* list)
+{
+	SetLastError(0);
+	return GetKeyboardLayoutList(size, list);
+}
