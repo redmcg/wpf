@@ -315,6 +315,11 @@ typedef struct _MilMessage {
 } MilMessage;
 
 /* private definitions */
+typedef struct _MILFactory2 {
+	IUnknown IUnknown_iface;
+	LONG ref;
+} MILFactory2;
+
 typedef struct _MilResource {
 	ResourceType Type;
 	LONG RefCount;
