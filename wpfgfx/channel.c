@@ -50,7 +50,7 @@ static HRESULT validate_command(BYTE* data, UINT size)
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
 		MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE);
 	default:
-		break;
+		return E_NOTIMPL;
 	}
 
 	return S_OK;
