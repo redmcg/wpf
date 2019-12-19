@@ -1,0 +1,39 @@
+// Wrappers calling SetLastError before a winapi call.
+
+#include <windows.h>
+
+LONG WINAPI GetWindowLongWrapper(HWND hwnd, INT index)
+{
+	SetLastError(0);
+	return GetWindowLongW(hwnd, index);
+}
+
+LONG_PTR WINAPI GetWindowLongPtrWrapper(HWND hwnd, INT index)
+{
+	SetLastError(0);
+	return GetWindowLongPtrW(hwnd, index);
+}
+
+HWND WINAPI GetParentWrapper(HWND hwnd)
+{
+	SetLastError(0);
+	return GetParent(hwnd);
+}
+
+HWND WINAPI SetFocusWrapper(HWND hwnd)
+{
+	SetLastError(0);
+	return SetFocus(hwnd);
+}
+
+LONG WINAPI SetWindowLongWrapper(HWND hwnd, INT index, LONG newlong)
+{
+	SetLastError(0);
+	return SetWindowLongW(hwnd, index, newlong);
+}
+
+LONG_PTR WINAPI SetWindowLongPtrWrapper(HWND hwnd, INT index, LONG_PTR newlong)
+{
+	SetLastError(0);
+	return SetWindowLongPtrW(hwnd, index, newlong);
+}

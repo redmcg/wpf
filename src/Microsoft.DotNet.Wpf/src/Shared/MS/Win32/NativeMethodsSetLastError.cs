@@ -37,15 +37,15 @@ namespace MS.Internal.Drt
 
 #if WINDOWSFORMSINTEGRATION     // WinFormsIntegration
 
-        [DllImport(PresentationNativeDll, EntryPoint="EnableWindowWrapper", SetLastError = true, ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="EnableWindowWrapper", SetLastError = true, ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         public static extern bool EnableWindow(IntPtr hWnd, bool enable);
 
 #elif UIAUTOMATIONCLIENT || UIAUTOMATIONCLIENTSIDEPROVIDERS   // UIAutomation
 
-        [DllImport("user32", EntryPoint="GetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern Int32 GetWindowLong(IntPtr hWnd, int nIndex );
 
-        [DllImport("user32", EntryPoint="GetWindowLongPtrW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongPtrWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex );
 
         [DllImport(PresentationNativeDll, EntryPoint="GlobalDeleteAtomWrapper", ExactSpelling = true, SetLastError = true)]
@@ -59,15 +59,15 @@ namespace MS.Internal.Drt
         [DllImport(PresentationNativeDll, EntryPoint="GetWindowWrapper", ExactSpelling = true, SetLastError = true)]
         public static extern NativeMethods.HWND GetWindow(NativeMethods.HWND hWnd, int uCmd);
 
-        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Unicode)]
         public static extern int MapWindowPoints(NativeMethods.HWND hWndFrom, NativeMethods.HWND hWndTo, [In, Out] ref NativeMethods.RECT rect, int cPoints);
 
-        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Unicode)]
         public static extern int MapWindowPoints(NativeMethods.HWND hWndFrom, NativeMethods.HWND hWndTo, [In, Out] ref NativeMethods.POINT pt, int cPoints);
 
 #elif UIAUTOMATIONCLIENTSIDEPROVIDERS   // UIAutomationClientSideProviders
 
-        [DllImport(PresentationNativeDll, EntryPoint="GetAncestorWrapper", CharSet = CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetAncestorWrapper", CharSet = CharSet.Unicode)]
         public static extern IntPtr GetAncestor(IntPtr hwnd, int gaFlags);
 
         [DllImport(PresentationNativeDll, EntryPoint="FindWindowExWrapper", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -82,7 +82,7 @@ namespace MS.Internal.Drt
         [DllImport(PresentationNativeDll, EntryPoint="GetWindowWrapper", ExactSpelling = true, SetLastError = true)]
         public static extern IntPtr GetWindow(IntPtr hWnd, int uCmd);
 
-        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextWrapper", CharSet=CharSet.Auto, BestFitMapping = false, SetLastError = true)]
+        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextWrapper", CharSet=CharSet.Unicode, BestFitMapping = false, SetLastError = true)]
         public static extern int GetWindowText(IntPtr hWnd, [Out] StringBuilder lpString, int nMaxCount);
 
         [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", ExactSpelling = true, SetLastError = true)]
@@ -97,67 +97,67 @@ namespace MS.Internal.Drt
 #endif
 #else       // Base/Core/FW + DRT
 
-    [DllImport(PresentationNativeDll, EntryPoint="EnableWindowWrapper", SetLastError = true, ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+    [DllImport(PresentationNativeDll, EntryPoint="EnableWindowWrapper", SetLastError = true, ExactSpelling = true, CharSet = System.Runtime.InteropServices.CharSet.Unicode)]
         public static extern bool EnableWindow(HandleRef hWnd, bool enable);
 
-        [DllImport(PresentationNativeDll, EntryPoint="GetAncestorWrapper", CharSet = CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetAncestorWrapper", CharSet = CharSet.Unicode)]
         public static extern IntPtr GetAncestor(IntPtr hwnd, int gaFlags);
 
-        [DllImport(PresentationNativeDll, EntryPoint="GetKeyboardLayoutListWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetKeyboardLayoutListWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Unicode)]
         public static extern int GetKeyboardLayoutList(int size, [Out, MarshalAs(UnmanagedType.LPArray)] IntPtr[] hkls);
 
-        [DllImport("user32", EntryPoint="GetParent", SetLastError = true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetParentWrapper", SetLastError = true)]
         public static extern IntPtr GetParent(HandleRef hWnd);
 
         [DllImport(PresentationNativeDll, EntryPoint="GetWindowWrapper", ExactSpelling = true, SetLastError = true)]
         public static extern IntPtr GetWindow(IntPtr hWnd, int uCmd);
 
-        [DllImport("user32", EntryPoint="GetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern Int32 GetWindowLong(HandleRef hWnd, int nIndex );
 
-        [DllImport("user32", EntryPoint="GetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern Int32 GetWindowLong(IntPtr hWnd, int nIndex );
 
-        [DllImport("user32", EntryPoint="GetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern NativeMethods.WndProc GetWindowLongWndProc(HandleRef hWnd, int nIndex);
 
-        [DllImport("user32", EntryPoint="GetWindowLongPtrW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongPtrWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern IntPtr GetWindowLongPtr(IntPtr hWnd, int nIndex);
 
-        [DllImport("user32", EntryPoint="GetWindowLongPtrW", CharSet=CharSet.Auto, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongPtrWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern IntPtr GetWindowLongPtr(HandleRef hWnd, int nIndex);
 
-        [DllImport("user32", EntryPoint="GetWindowLongPtrW", CharSet=CharSet.Auto, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="GetWindowLongPtrWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern NativeMethods.WndProc GetWindowLongPtrWndProc(HandleRef hWnd, int nIndex);
 
-        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextWrapper", CharSet=CharSet.Auto, BestFitMapping = false, SetLastError = true)]
+        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextWrapper", CharSet=CharSet.Unicode, BestFitMapping = false, SetLastError = true)]
         public static extern int GetWindowText(HandleRef hWnd, [Out] StringBuilder lpString, int nMaxCount);
 
-        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextLengthWrapper", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true)]
+        [DllImport(PresentationNativeDll, EntryPoint = "GetWindowTextLengthWrapper", CharSet = System.Runtime.InteropServices.CharSet.Unicode, SetLastError = true)]
         public static extern int GetWindowTextLength(HandleRef hWnd);
 
-        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Auto)]
+        [DllImport(PresentationNativeDll, EntryPoint="MapWindowPointsWrapper", SetLastError = true, ExactSpelling=true, CharSet=CharSet.Unicode)]
         public static extern int MapWindowPoints(HandleRef hWndFrom, HandleRef hWndTo, [In, Out] ref NativeMethods.RECT rect, int cPoints);
 
-        [DllImport("user32", EntryPoint="SetFocus", SetLastError = true)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetFocusWrapper", SetLastError = true)]
         public static extern IntPtr SetFocus(HandleRef hWnd);
 
-        [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Unicode)]
         public static extern Int32 SetWindowLong(HandleRef hWnd, int nIndex, Int32 dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Unicode)]
         public static extern Int32 SetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern Int32 SetWindowLongWndProc(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Unicode)]
         public static extern IntPtr SetWindowLongPtr(HandleRef hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Unicode)]
         public static extern IntPtr SetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
 
-        [DllImport("user32", EntryPoint="SetWindowLongPtrW", CharSet=CharSet.Unicode, SetLastError=true)]
+        [DllImport(PresentationNativeDll, EntryPoint="SetWindowLongPtrWrapper", CharSet=CharSet.Unicode, SetLastError=true)]
         public static extern IntPtr SetWindowLongPtrWndProc(HandleRef hWnd, int nIndex, NativeMethods.WndProc dwNewLong);
 
 #endif

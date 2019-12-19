@@ -1,5 +1,5 @@
 
-C_SRCS=stubs.c main.c composition.c channel.c resource.c
+C_SRCS=stubs.c main.c composition.c channel.c resource.c wrappers.c
 
 H_SRCS=wpfgfx_private.h
 
