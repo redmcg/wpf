@@ -61,6 +61,8 @@ static HRESULT validate_command(BYTE* data, UINT size)
 		MILCMD_TARGET_SETROOT);
 	VALIDATE_STRUCT(MilCmdTargetUpdateWindowSettings,
 		MILCMD_TARGET_UPDATEWINDOWSETTINGS);
+	VALIDATE_STRUCT(MilCmdVisualInsertChildAt,
+		MILCMD_VISUAL_INSERTCHILDAT);
 	VALIDATE_STRUCT(MilCmdVisualSetTransform,
 		MILCMD_VISUAL_SETTRANSFORM);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,

@@ -385,6 +385,13 @@ typedef struct _MILCMD_TARGET_UPDATEWINDOWSETTINGS {
 	BOOL gdiBlt;
 } MILCMD_TARGET_UPDATEWINDOWSETTINGS;
 
+typedef struct _MILCMD_VISUAL_INSERTCHILDAT {
+	MILCMD Type;
+	ResourceHandle Handle;
+	ResourceHandle hChild;
+	UINT index;
+} MILCMD_VISUAL_INSERTCHILDAT;
+
 typedef struct _MILCMD_VISUAL_SETTRANSFORM {
 	MILCMD Type;
 	ResourceHandle Handle;
