@@ -93,3 +93,4 @@ MS/Internal/documents/Application/Trace.cs
 MS/Internal/documents/Application/TransactionalPackage.cs
 MS/Internal/documents/Application/WriteableOnDemandPackagePart.cs
 MS/Internal/documents/Application/WriteableOnDemandStream.cs
+SRID.generated.cs
