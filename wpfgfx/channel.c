@@ -32,6 +32,8 @@ HRESULT WINAPI MilConnection_CreateChannel(void* pTransport, MilChannel* referen
 	memset((*result)->resources, 0, sizeof((*result)->resources));
 	memset((*result)->resource_refcounts, 0, sizeof((*result)->resource_refcounts));
 	(*result)->first_free_resource = 1;
+	(*result)->message_queue = NULL;
+	(*result)->last_message = &(*result)->message_queue;
 	return S_OK;
 }
 
@@ -110,6 +112,14 @@ HRESULT MilChannel_dispatch_command(MilChannel* channel, BYTE* data, UINT size)
 	}
 	/* Commands that apply to the partition */
 	case MilCmdChannelRequestTier:
+	{
+		MilMessage reply;
+		reply.Type = Caps;
+		reply.Reserved = 0;
+		memset(&reply.Data.Caps, 0, sizeof(reply.Data.Caps));
+		MilChannel_PostMessage(channel, &reply);
+		return S_OK;
+	}
 	case MilCmdPartitionRegisterForNotifications:
 	case MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode:
 	default:
@@ -162,9 +172,35 @@ HRESULT WINAPI MilChannel_CommitChannel(MilChannel* channel)
 
 HRESULT WINAPI MilComposition_SyncFlush(MilChannel* channel)
 {
+	MilMessage msg;
+
 	if (!channel)
 		return E_POINTER;
-	
+
+	msg.Type = SyncFlushReply;
+	msg.Reserved = 0;
+	MilChannel_PostMessage(channel, &msg);
+
+	return S_OK;
+}
+
+HRESULT MilChannel_PostMessage(MilChannel* channel, const MilMessage* msg)
+{
+	MilMessageLink* link = malloc(sizeof(*link));
+
+	if (!link)
+		return E_OUTOFMEMORY;
+
+	link->msg = *msg;
+	link->next = NULL;
+	*(channel->last_message) = link;
+	channel->last_message = &link->next;
+	if (!channel->message_queue)
+		channel->message_queue = link;
+
+	if (channel->notify_hwnd)
+		PostMessageW(channel->notify_hwnd, channel->notify_msg, 0, 0);
+
 	return S_OK;
 }
 
@@ -172,8 +208,31 @@ HRESULT WINAPI MilComposition_PeekNextMessage(MilChannel* channel, MilMessage* m
 {
 	if (!channel || !message || !messageRetrieved)
 		return E_POINTER;
-	
-	*messageRetrieved = FALSE;
+
+	if (size < sizeof(MilMessage))
+		return E_INVALIDARG;
+
+	if (channel->message_queue)
+	{
+		*message = channel->message_queue->msg;
+		*messageRetrieved = TRUE;
+		if (channel->message_queue->next)
+		{
+			MilMessageLink* tmp = channel->message_queue;
+			channel->message_queue = channel->message_queue->next;
+			free(tmp);
+		}
+		else
+		{
+			free(channel->message_queue);
+			channel->message_queue = NULL;
+			channel->last_message = &channel->message_queue;
+		}
+	}
+	else
+	{
+		*messageRetrieved = FALSE;
+	}
 
 	return S_OK;
 }

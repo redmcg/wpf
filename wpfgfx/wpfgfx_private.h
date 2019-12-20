@@ -426,9 +426,46 @@ typedef enum _MilMessageType
 	ForceDWORD          = 0xffffffff
 } MilMessageType;
 
+typedef enum _MIL_PRESENTATION_RESULTS {
+	MIL_PRESENTATION_VSYNC,
+	MIL_PRESENTATION_NOPRESENT,
+	MIL_PRESENTATION_VSYNC_UNSUPPORTED,
+	MIL_PRESENTATION_DWM,
+	MIL_PRESENTATION_FORCE_DWORD = 0xffffffff
+} MIL_PRESENTATION_RESULTS;
+
+typedef struct _MilMessagePresented {
+	MIL_PRESENTATION_RESULTS PresentationResults;
+	INT RefreshRate;
+	LARGE_INTEGER PresentationTime;
+} MilMessagePresented;
+
+typedef struct _MilGraphicsAccelerationCaps {
+	INT TierValue;
+	INT HasWDDMSupport;
+	UINT PixelShaderVersion;
+	UINT VertexShaderVersion;
+	UINT MaxTextureWidth;
+	UINT MaxTextureHeight;
+	INT WindowCompatibleMode;
+	UINT BitsPerPixel;
+	UINT HasSSE2Support;
+	UINT MaxPixelShader30InstructionSlots;
+} MilGraphicsAccelerationCaps;
+
+typedef struct _MilMessageCaps {
+	INT CommonMinimumCaps;
+	UINT DisplayUniqueness;
+	MilGraphicsAccelerationCaps Caps;
+} MilMessageCaps;
+
 typedef struct _MilMessage {
 	MilMessageType Type;
 	INT Reserved;
+	union {
+		MilMessagePresented Presented;
+		MilMessageCaps Caps;
+	} Data;
 	/* union of more specific data for type */
 } MilMessage;
 
@@ -443,6 +480,11 @@ typedef struct _MilResource {
 	LONG RefCount;
 } MilResource;
 
+typedef struct _MilMessageLink {
+	MilMessage msg;
+	struct _MilMessageLink *next;
+} MilMessageLink;
+
 typedef struct _MilChannel {
 	void* transport;
 	HWND notify_hwnd;
@@ -450,7 +492,11 @@ typedef struct _MilChannel {
 	MilResource* resources[256];
 	LONG resource_refcounts[256];
 	UINT first_free_resource;
+	MilMessageLink* message_queue;
+	MilMessageLink** last_message;
 } MilChannel;
+
+extern HRESULT MilChannel_PostMessage(MilChannel* channel, const MilMessage* msg);
 
 typedef struct _MilResourceHwndTarget {
 	MilResource resource;
