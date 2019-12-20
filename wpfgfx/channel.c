@@ -67,6 +67,8 @@ static HRESULT validate_command(BYTE* data, UINT size)
 		MILCMD_TARGET_UPDATEWINDOWSETTINGS);
 	VALIDATE_STRUCT(MilCmdVisualInsertChildAt,
 		MILCMD_VISUAL_INSERTCHILDAT);
+	VALIDATE_STRUCT(MilCmdVisualRemoveAllChildren,
+		MILCMD_VISUAL_REMOVEALLCHILDREN);
 	VALIDATE_STRUCT(MilCmdVisualSetTransform,
 		MILCMD_VISUAL_SETTRANSFORM);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
@@ -93,6 +95,7 @@ HRESULT MilChannel_dispatch_command(MilChannel* channel, BYTE* data, UINT size)
 	case MilCmdTargetSetRoot:
 	case MilCmdTargetUpdateWindowSettings:
 	case MilCmdVisualInsertChildAt:
+	case MilCmdVisualRemoveAllChildren:
 	case MilCmdVisualSetTransform:
 	{
 		MilResource *resource;

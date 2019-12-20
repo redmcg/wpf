@@ -404,6 +404,11 @@ typedef struct _MILCMD_VISUAL_INSERTCHILDAT {
 	UINT index;
 } MILCMD_VISUAL_INSERTCHILDAT;
 
+typedef struct _MILCMD_VISUAL_REMOVEALLCHILDREN {
+	MILCMD Type;
+	ResourceHandle handle;
+} MILCMD_VISUAL_REMOVEALLCHILDREN;
+
 typedef struct _MILCMD_VISUAL_SETTRANSFORM {
 	MILCMD Type;
 	ResourceHandle Handle;
