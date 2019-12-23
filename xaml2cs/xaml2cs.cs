@@ -28,6 +28,8 @@ class Xaml2Cs
 
 	Dictionary<string, XamlType> types;
 
+	HashSet<string> namespaces = new HashSet<string>();
+
 	class XamlElement
 	{
 		public XamlType type;
@@ -63,6 +65,10 @@ class Xaml2Cs
 					if (!types.TryGetValue(reader.Name, out current.type))
 					{
 						throw new NotImplementedException(String.Format("type {0}", reader.Name));
+					}
+					if (current.type.ns != null)
+					{
+						namespaces.Add(current.type.ns);
 					}
 					if (current == root_element) {
 						local_name = "this";
@@ -117,7 +123,7 @@ class Xaml2Cs
 							}
 							if (!handled_attribute)
 							{
-								throw new NotImplementedException(String.Format("type {0}", reader.Name));
+								throw new NotImplementedException(String.Format("attribute {0}", reader.Name));
 							}
 						} while (reader.MoveToNextAttribute());
 					}
@@ -146,8 +152,13 @@ class Xaml2Cs
 		ns = root_element.class_name.Substring(0, i-1);
 		class_name = root_element.class_name.Substring(i+1);
 
+		foreach (var used_ns in namespaces)
+		{
+			f.WriteLine("using {0};", used_ns);
+		}
+
 		f.WriteLine("namespace {0} {{", ns);
-		f.WriteLine("{1} partial class {0} {{", class_name, root_element.class_modifier);
+		f.WriteLine("{1} partial class {0} : {2} {{", class_name, root_element.class_modifier, root_element.type.name);
 		f.WriteLine("public void InitializeComponent() {");
 		WriteInitializeComponent(f, root_element);
 		f.WriteLine("}"); // end InitializeComponent
