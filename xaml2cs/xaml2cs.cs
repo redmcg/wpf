@@ -9,10 +9,15 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["bool"] = new XamlType(null, "bool");
+		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
+		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
+		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -23,6 +28,7 @@ class Xaml2Cs
 		public string ns;
 		public string name;
 		public Dictionary<string, XamlProperty> props = new Dictionary<string, XamlProperty>();
+		public bool is_enum;
 
 		public XamlType(string ns, string name)
 		{
@@ -165,6 +171,12 @@ class Xaml2Cs
 											reader.Value == "False")
 										{
 											value_expression = "false";
+										}
+										else if (prop.value_type.is_enum)
+										{
+											if (prop.value_type.ns != null)
+												namespaces.Add(prop.value_type.ns);
+											value_expression = String.Format("{0}.{1}", prop.value_type.name, reader.Value);
 										}
 										else
 										{
