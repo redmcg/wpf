@@ -9,6 +9,7 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
@@ -16,6 +17,7 @@ class Xaml2Cs
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
@@ -133,6 +135,7 @@ class Xaml2Cs
 							case "xmlns:ui":
 							case "xml:lang":
 							case "x:Uid":
+							case "xmlns:MappingPIGen1":
 								// Ignore
 								handled_attribute = true;
 								break;
