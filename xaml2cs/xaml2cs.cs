@@ -34,6 +34,9 @@ class Xaml2Cs
 		public XamlElement parent;
 		public string local_name;
 		public string class_name;
+		public string class_modifier = "";
+		public string name;
+		public List<string> early_init = new List<string>();
 	}
 
 	XamlElement root_element;
@@ -61,7 +64,10 @@ class Xaml2Cs
 					{
 						throw new NotImplementedException(String.Format("type {0}", reader.Name));
 					}
-					if (reader.GetAttribute("x:Name") != null &&
+					if (current == root_element) {
+						local_name = "this";
+					}
+					else if (reader.GetAttribute("x:Name") != null &&
 						!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
 					{
 						local_name = reader.GetAttribute("x:Name");
@@ -91,11 +97,21 @@ class Xaml2Cs
 							case "xmlns:x":
 							case "xmlns:ui":
 							case "xml:lang":
+							case "x:Uid":
 								// Ignore
 								handled_attribute = true;
 								break;
 							case "x:Class":
 								current.class_name = reader.Value;
+								handled_attribute = true;
+								break;
+							case "x:ClassModifier":
+								current.class_modifier = reader.Value;
+								handled_attribute = true;
+								break;
+							case "x:Name":
+								current.name = reader.Value;
+								current.early_init.Add(String.Format("{0}.Name = \"{1}\";", current.local_name, current.name));
 								handled_attribute = true;
 								break;
 							}
@@ -107,6 +123,14 @@ class Xaml2Cs
 					}
 				}
 			}
+		}
+	}
+
+	private void WriteInitializeComponent(TextWriter f, XamlElement element)
+	{
+		foreach (var line in element.early_init)
+		{
+			f.WriteLine(line);
 		}
 	}
 
@@ -122,10 +146,13 @@ class Xaml2Cs
 		ns = root_element.class_name.Substring(0, i-1);
 		class_name = root_element.class_name.Substring(i+1);
 
-		Console.WriteLine("namespace {0} {{", ns);
-		Console.WriteLine("class {0} {{", class_name);
-		Console.WriteLine("}"); // end class
-		Console.WriteLine("}"); // end namespace
+		f.WriteLine("namespace {0} {{", ns);
+		f.WriteLine("{1} partial class {0} {{", class_name, root_element.class_modifier);
+		f.WriteLine("public void InitializeComponent() {");
+		WriteInitializeComponent(f, root_element);
+		f.WriteLine("}"); // end InitializeComponent
+		f.WriteLine("}"); // end class
+		f.WriteLine("}"); // end namespace
 	}
 
 	public static void Main(string[] arguments)
