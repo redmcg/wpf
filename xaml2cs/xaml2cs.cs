@@ -10,14 +10,20 @@ class Xaml2Cs
 		types = new Dictionary<string,XamlType>();
 
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
+		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
+		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["bool"] = new XamlType(null, "bool");
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["ToolBar"].base_type = types["FrameworkElement"];
+
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
+		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
+		types["FrameworkElement"].props["Resources"].auto = true;
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
@@ -31,6 +37,7 @@ class Xaml2Cs
 		public string name;
 		public Dictionary<string, XamlProperty> props = new Dictionary<string, XamlProperty>();
 		public bool is_enum;
+		public XamlType base_type;
 
 		public XamlType(string ns, string name)
 		{
@@ -55,6 +62,7 @@ class Xaml2Cs
 		public XamlType container_type;
 		public XamlType value_type;
 		public bool attached;
+		public bool auto;
 	}
 
 	Dictionary<string, XamlType> types;
@@ -65,11 +73,13 @@ class Xaml2Cs
 	{
 		public XamlType type;
 		public XamlElement parent;
+		public List<XamlElement> children = new List<XamlElement>();
 		public string local_name;
 		public string class_name;
 		public string class_modifier = "";
 		public string name;
 		public List<string> early_init = new List<string>();
+		public XamlProperty prop;
 	}
 
 	XamlElement root_element;
@@ -93,37 +103,92 @@ class Xaml2Cs
 					{
 						root_element = current;
 					}
-					if (!types.TryGetValue(reader.Name, out current.type))
+					if (reader.Name.Contains("."))
+					{
+						int index = reader.Name.LastIndexOf(".");
+						string container_typename = reader.Name.Substring(0, index);
+						string container_propname = reader.Name.Substring(index+1);
+						XamlProperty prop = null;
+						XamlType container_type = null;
+						if (!types.TryGetValue(container_typename, out container_type))
+							throw new NotImplementedException(String.Format("type {0}", container_typename));
+						while (container_type != null)
+						{
+							if (container_type.props.TryGetValue(container_propname, out prop))
+								break;
+							container_type = container_type.base_type;
+						}
+
+						if (prop == null)
+							throw new NotImplementedException(String.Format("element {0}", reader.Name));
+
+						current.type = prop.value_type;
+						current.prop = prop;
+
+						if (reader.GetAttribute("x:Name") != null &&
+							!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
+						{
+							local_name = reader.GetAttribute("x:Name");
+						}
+						else if (reader.GetAttribute("x:Uid") != null &&
+							!elements_by_local.ContainsKey(reader.GetAttribute("x:Uid")))
+						{
+							local_name = reader.GetAttribute("x:Uid");
+						}
+						else
+						{
+							int i = 0;
+							do
+							{
+								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
+							} while (elements_by_local.ContainsKey(local_name));
+						}
+
+						if (prop.auto)
+						{
+							current.early_init.Add(String.Format("{0} {1} = {2}.{3};", current.type.name, local_name, parent.local_name, prop.name));
+						}
+						else
+							throw new NotImplementedException("property creation");
+					}
+					else if (!types.TryGetValue(reader.Name, out current.type))
 					{
 						throw new NotImplementedException(String.Format("type {0}", reader.Name));
+					}
+					else
+					{
+						if (current == root_element) {
+							local_name = "this";
+						}
+						else if (reader.GetAttribute("x:Name") != null &&
+							!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
+						{
+							local_name = reader.GetAttribute("x:Name");
+						}
+						else if (reader.GetAttribute("x:Uid") != null &&
+							!elements_by_local.ContainsKey(reader.GetAttribute("x:Uid")))
+						{
+							local_name = reader.GetAttribute("x:Uid");
+						}
+						else
+						{
+							int i = 0;
+							do
+							{
+								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
+							} while (elements_by_local.ContainsKey(local_name));
+						}
 					}
 					if (current.type.ns != null)
 					{
 						namespaces.Add(current.type.ns);
 					}
-					if (current == root_element) {
-						local_name = "this";
-					}
-					else if (reader.GetAttribute("x:Name") != null &&
-						!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
-					{
-						local_name = reader.GetAttribute("x:Name");
-					}
-					else if (reader.GetAttribute("x:Uid") != null &&
-						!elements_by_local.ContainsKey(reader.GetAttribute("x:Uid")))
-					{
-						local_name = reader.GetAttribute("x:Uid");
-					}
-					else
-					{
-						int i = 0;
-						do
-						{
-							local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
-						} while (elements_by_local.ContainsKey(local_name));
-					}
 					current.local_name = local_name;
 					elements_by_local[local_name] = current;
+					if (current.parent != null)
+					{
+						current.parent.children.Add(current);
+					}
 					if (reader.MoveToFirstAttribute())
 					{
 						do {
@@ -213,6 +278,10 @@ class Xaml2Cs
 		foreach (var line in element.early_init)
 		{
 			f.WriteLine(line);
+		}
+		foreach (var child in element.children)
+		{
+			WriteInitializeComponent(f, child);
 		}
 	}
 
