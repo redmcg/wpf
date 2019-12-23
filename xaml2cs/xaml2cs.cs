@@ -10,6 +10,10 @@ class Xaml2Cs
 		types = new Dictionary<string,XamlType>();
 
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
+		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
+		types["bool"] = new XamlType(null, "bool");
+
+		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
 	}
@@ -18,12 +22,31 @@ class Xaml2Cs
 	{
 		public string ns;
 		public string name;
+		public Dictionary<string, XamlProperty> props = new Dictionary<string, XamlProperty>();
 
 		public XamlType(string ns, string name)
 		{
 			this.ns = ns;
 			this.name = name;
 		}
+
+		public void AddProperty(XamlType value_type, string name, bool attached)
+		{
+			var new_prop = new XamlProperty();
+			new_prop.name = name;
+			new_prop.container_type = this;
+			new_prop.value_type = value_type;
+			new_prop.attached = attached;
+			this.props[name] = new_prop;
+		}
+	}
+
+	class XamlProperty
+	{
+		public string name;
+		public XamlType container_type;
+		public XamlType value_type;
+		public bool attached;
 	}
 
 	Dictionary<string, XamlType> types;
@@ -121,6 +144,44 @@ class Xaml2Cs
 								handled_attribute = true;
 								break;
 							}
+							if (!handled_attribute && reader.Name.Contains("."))
+							{
+								var index = reader.Name.LastIndexOf(".");
+								var typename = reader.Name.Substring(0, index);
+								XamlType container_type;
+								if (types.TryGetValue(typename, out container_type))
+								{
+									var attrname = reader.Name.Substring(index+1);
+									XamlProperty prop;
+									if (container_type.props.TryGetValue(attrname, out prop))
+									{
+										string value_expression;
+										if (prop.value_type.name == "bool" &&
+											reader.Value == "True")
+										{
+											value_expression = "true";
+										}
+										else if (prop.value_type.name == "bool" &&
+											reader.Value == "False")
+										{
+											value_expression = "false";
+										}
+										else
+										{
+											throw new Exception("failed converting property value");
+										}
+										if (prop.attached)
+										{
+											current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
+										}
+										else
+										{
+											current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
+										}
+										handled_attribute = true;
+									}
+								}
+							}
 							if (!handled_attribute)
 							{
 								throw new NotImplementedException(String.Format("attribute {0}", reader.Name));
@@ -149,7 +210,7 @@ class Xaml2Cs
 		string class_name = null;
 
 		int i = root_element.class_name.LastIndexOf(".");
-		ns = root_element.class_name.Substring(0, i-1);
+		ns = root_element.class_name.Substring(0, i);
 		class_name = root_element.class_name.Substring(i+1);
 
 		foreach (var used_ns in namespaces)
