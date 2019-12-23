@@ -89,6 +89,33 @@ class Xaml2Cs
 	
 	Dictionary<string, XamlElement> elements_by_local;
 
+	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
+	{
+		string value_expression;
+		if (prop.value_type.name == "bool" &&
+			str == "True")
+		{
+			value_expression = "true";
+		}
+		else if (prop.value_type.name == "bool" &&
+			str == "False")
+		{
+			value_expression = "false";
+		}
+		else if (prop.value_type.is_enum)
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("{0}.{1}", prop.value_type.name, str);
+		}
+		else
+		{
+			throw new Exception("failed converting property value");
+		}
+
+		return str;
+	}
+
 	public void ReadXaml(string filename, string[] references)
 	{
 		XamlElement current = null;
@@ -240,27 +267,7 @@ class Xaml2Cs
 									XamlProperty prop;
 									if (container_type.props.TryGetValue(attrname, out prop))
 									{
-										string value_expression;
-										if (prop.value_type.name == "bool" &&
-											reader.Value == "True")
-										{
-											value_expression = "true";
-										}
-										else if (prop.value_type.name == "bool" &&
-											reader.Value == "False")
-										{
-											value_expression = "false";
-										}
-										else if (prop.value_type.is_enum)
-										{
-											if (prop.value_type.ns != null)
-												namespaces.Add(prop.value_type.ns);
-											value_expression = String.Format("{0}.{1}", prop.value_type.name, reader.Value);
-										}
-										else
-										{
-											throw new Exception("failed converting property value");
-										}
+										string value_expression = attribute_string_to_expression(current, prop, reader.Value);
 										if (prop.attached)
 										{
 											current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
