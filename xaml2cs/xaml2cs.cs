@@ -13,6 +13,7 @@ class Xaml2Cs
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
+		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["bool"] = new XamlType(null, "bool");
@@ -79,7 +80,9 @@ class Xaml2Cs
 		public string class_modifier = "";
 		public string name;
 		public List<string> early_init = new List<string>();
+		public List<string> late_init = new List<string>();
 		public XamlProperty prop;
+		public string key;
 	}
 
 	XamlElement root_element;
@@ -178,6 +181,9 @@ class Xaml2Cs
 								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
 							} while (elements_by_local.ContainsKey(local_name));
 						}
+						if (current != root_element) {
+							current.early_init.Add(String.Format("{0} {1} = new {0}();", current.type.name, local_name));
+						}
 					}
 					if (current.type.ns != null)
 					{
@@ -215,6 +221,11 @@ class Xaml2Cs
 							case "x:Name":
 								current.name = reader.Value;
 								current.early_init.Add(String.Format("{0}.Name = \"{1}\";", current.local_name, current.name));
+								handled_attribute = true;
+								break;
+							case "x:Key":
+								current.key = reader.Value;
+								current.late_init.Add(String.Format("{0}.Add(\"{1}\",{2});", parent.local_name, current.key, current.local_name));
 								handled_attribute = true;
 								break;
 							}
@@ -282,6 +293,10 @@ class Xaml2Cs
 		foreach (var child in element.children)
 		{
 			WriteInitializeComponent(f, child);
+		}
+		foreach (var line in element.late_init)
+		{
+			f.WriteLine(line);
 		}
 	}
 
