@@ -113,7 +113,7 @@ class Xaml2Cs
 			throw new Exception("failed converting property value");
 		}
 
-		return str;
+		return value_expression;
 	}
 
 	public void ReadXaml(string filename, string[] references)
