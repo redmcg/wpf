@@ -14,6 +14,7 @@ class Xaml2Cs
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["Point"] = new XamlType("System.Windows", "Point");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
@@ -29,6 +30,8 @@ class Xaml2Cs
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
+		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
+		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
@@ -119,6 +122,12 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("{0}.{1}", prop.value_type.name, str);
+		}
+		else if (prop.value_type.name == "Point" && str.Contains(","))
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("new Point({0})", str);
 		}
 		else
 		{
