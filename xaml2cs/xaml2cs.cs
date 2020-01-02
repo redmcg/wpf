@@ -9,18 +9,22 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
+		types["Geometry"] = new XamlType("System.Windows.Media", "Geometry");
 		types["GradientBrush"] = new XamlType("System.Windows.Media", "GradientBrush");
 		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["Point"] = new XamlType("System.Windows", "Point");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
+		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
@@ -30,6 +34,7 @@ class Xaml2Cs
 
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
+		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
@@ -45,6 +50,8 @@ class Xaml2Cs
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
+		types["Path"].AddProperty(types["Geometry"], "Data", false);
+		types["Shape"].AddProperty(types["Brush"], "Fill", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
@@ -172,6 +179,12 @@ class Xaml2Cs
 			g = Convert.ToByte(str.Substring(5, 2), 16);
 			b = Convert.ToByte(str.Substring(7, 2), 16);
 			value_expression = String.Format("Color.FromArgb({0}, {1}, {2}, {3})", a, r, g, b);
+		}
+		else if (prop.value_type.name == "Geometry")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("Geometry.Parse(\"{0}\")", str);
 		}
 		else if (prop.value_type.name == "Point" && str.Contains(","))
 		{
