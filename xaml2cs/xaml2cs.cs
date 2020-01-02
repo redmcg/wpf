@@ -9,6 +9,7 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
