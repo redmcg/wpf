@@ -13,6 +13,7 @@ class Xaml2Cs
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
+		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
@@ -140,6 +141,7 @@ class Xaml2Cs
 					current = new XamlElement();
 					current.parent = parent;
 					string local_name;
+					bool empty = reader.IsEmptyElement;
 					if (root_element == null)
 					{
 						root_element = current;
@@ -305,6 +307,14 @@ class Xaml2Cs
 							}
 						} while (reader.MoveToNextAttribute());
 					}
+					if (empty)
+					{
+						current = current.parent;
+					}
+				}
+				else if (reader.NodeType == XmlNodeType.EndElement)
+				{
+					current = current.parent;
 				}
 			}
 		}
