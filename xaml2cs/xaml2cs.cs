@@ -9,6 +9,7 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
@@ -27,6 +28,7 @@ class Xaml2Cs
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
+		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -92,7 +94,16 @@ class Xaml2Cs
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
 		string value_expression;
-		if (prop.value_type.name == "bool" &&
+		if (str.StartsWith("{DynamicResource ") && str.EndsWith("}"))
+		{
+			value_expression = attribute_string_to_expression(element, prop,
+				str.Substring(17, str.Length - 18));
+		}
+		else if (str.StartsWith("{x:Static ") && str.EndsWith("}"))
+		{
+			value_expression = str.Substring(10, str.Length - 11);
+		}
+		else if (prop.value_type.name == "bool" &&
 			str == "True")
 		{
 			value_expression = "true";
@@ -110,7 +121,7 @@ class Xaml2Cs
 		}
 		else
 		{
-			throw new Exception("failed converting property value");
+			throw new Exception(String.Format("failed converting property value {0}", str));
 		}
 
 		return value_expression;
@@ -256,28 +267,36 @@ class Xaml2Cs
 								handled_attribute = true;
 								break;
 							}
-							if (!handled_attribute && reader.Name.Contains("."))
+							if (!handled_attribute)
 							{
-								var index = reader.Name.LastIndexOf(".");
-								var typename = reader.Name.Substring(0, index);
-								XamlType container_type;
-								if (types.TryGetValue(typename, out container_type))
+								XamlProperty prop = null;
+								if (reader.Name.Contains("."))
 								{
-									var attrname = reader.Name.Substring(index+1);
-									XamlProperty prop;
-									if (container_type.props.TryGetValue(attrname, out prop))
+									var index = reader.Name.LastIndexOf(".");
+									var typename = reader.Name.Substring(0, index);
+									XamlType container_type;
+									if (types.TryGetValue(typename, out container_type))
 									{
-										string value_expression = attribute_string_to_expression(current, prop, reader.Value);
-										if (prop.attached)
-										{
-											current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
-										}
-										else
-										{
-											current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
-										}
-										handled_attribute = true;
+										var attrname = reader.Name.Substring(index+1);
+										container_type.props.TryGetValue(attrname, out prop);
 									}
+								}
+								else
+								{
+									current.type.props.TryGetValue(reader.Name, out prop);
+								}
+								if (prop != null)
+								{
+									string value_expression = attribute_string_to_expression(current, prop, reader.Value);
+									if (prop.attached)
+									{
+										current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
+									}
+									else
+									{
+										current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
+									}
+									handled_attribute = true;
 								}
 							}
 							if (!handled_attribute)
