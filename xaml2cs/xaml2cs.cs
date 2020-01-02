@@ -24,6 +24,7 @@ class Xaml2Cs
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["Point"] = new XamlType("System.Windows", "Point");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
+		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["Style"] = new XamlType("System.Windows", "Style");
