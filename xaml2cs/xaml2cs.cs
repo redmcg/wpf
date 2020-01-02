@@ -10,9 +10,11 @@ class Xaml2Cs
 		types = new Dictionary<string,XamlType>();
 
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["GradientBrush"] = new XamlType("System.Windows.Media", "GradientBrush");
+		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
@@ -33,6 +35,8 @@ class Xaml2Cs
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["GradientBrush"].AddProperty(types["GradientStopCollection"], "GradientStops", false);
 		types["GradientBrush"].props["GradientStops"].auto = true;
+		types["GradientStop"].AddProperty(types["Color"], "Color", false);
+		types["GradientStop"].AddProperty(types["double"], "Offset", false);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
@@ -76,6 +80,19 @@ class Xaml2Cs
 					return true;
 				mine = mine.base_type;
 			}
+			return false;
+		}
+
+		public bool LookupProp(string name, out XamlProperty prop)
+		{
+			XamlType container_type = this;
+			while (container_type != null)
+			{
+				if (container_type.props.TryGetValue(name, out prop))
+					return true;
+				container_type = container_type.base_type;
+			}
+			prop = null;
 			return false;
 		}
 	}
@@ -147,6 +164,11 @@ class Xaml2Cs
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("new Point({0})", str);
 		}
+		else if (prop.value_type.name == "double")
+		{
+			Double.Parse(str);
+			value_expression = str;
+		}
 		else
 		{
 			throw new Exception(String.Format("failed converting property value {0}", str));
@@ -182,12 +204,8 @@ class Xaml2Cs
 						XamlType container_type = null;
 						if (!types.TryGetValue(container_typename, out container_type))
 							throw new NotImplementedException(String.Format("type {0}", container_typename));
-						while (container_type != null)
-						{
-							if (container_type.props.TryGetValue(container_propname, out prop))
-								break;
-							container_type = container_type.base_type;
-						}
+						container_type.LookupProp(container_propname, out prop);
+						container_type = prop.container_type;
 
 						if (prop == null)
 							throw new NotImplementedException(String.Format("element {0}", reader.Name));
@@ -211,6 +229,7 @@ class Xaml2Cs
 							do
 							{
 								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
+								i++;
 							} while (elements_by_local.ContainsKey(local_name));
 						}
 
@@ -247,6 +266,7 @@ class Xaml2Cs
 							do
 							{
 								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
+								i++;
 							} while (elements_by_local.ContainsKey(local_name));
 						}
 						if (needs_declaration) {
@@ -256,6 +276,7 @@ class Xaml2Cs
 								current.parent.prop != null &&
 								current.parent.prop.value_type.SubclassOf(current.type))
 							{
+								current.prop = current.parent.prop;
 								current.parent.early_init.Clear();
 								current.parent.late_init.Clear();
 								if (current.parent.prop.attached)
@@ -325,12 +346,12 @@ class Xaml2Cs
 									if (types.TryGetValue(typename, out container_type))
 									{
 										var attrname = reader.Name.Substring(index+1);
-										container_type.props.TryGetValue(attrname, out prop);
+										container_type.LookupProp(attrname, out prop);
 									}
 								}
 								else
 								{
-									current.type.props.TryGetValue(reader.Name, out prop);
+									current.type.LookupProp(reader.Name, out prop);
 								}
 								if (prop != null)
 								{
@@ -351,6 +372,12 @@ class Xaml2Cs
 								throw new NotImplementedException(String.Format("attribute {0}", reader.Name));
 							}
 						} while (reader.MoveToNextAttribute());
+					}
+					if (current.key == null &&
+						current.parent != null &&
+						current.prop == null)
+					{
+						current.late_init.Add(String.Format("{0}.Add({1});", current.parent.local_name, current.local_name));
 					}
 					if (empty)
 					{
