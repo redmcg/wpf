@@ -29,6 +29,7 @@ class Xaml2Cs
 		types["Style"] = new XamlType("System.Windows", "Style");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
+		types["Type"] = new XamlType("System", "Type");
 		types["bool"] = new XamlType(null, "bool");
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
@@ -54,6 +55,7 @@ class Xaml2Cs
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
 		types["Shape"].AddProperty(types["Brush"], "Fill", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
+		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -161,6 +163,16 @@ class Xaml2Cs
 		else if (str.StartsWith("{x:Static ") && str.EndsWith("}"))
 		{
 			value_expression = str.Substring(10, str.Length - 11);
+		}
+		else if (str.StartsWith("{x:Type ") && str.EndsWith("}"))
+		{
+			string type_name = str.Substring(8, str.Length - 9);
+			XamlType type;
+			if (!types.TryGetValue(type_name, out type))
+				throw new NotImplementedException(String.Format("type {0}", type_name));
+			if (type.ns != null)
+				namespaces.Add(type.ns);
+			value_expression = String.Format("typeof({0})", type.name);
 		}
 		else if (prop.value_type.name == "bool" &&
 			str == "True")
