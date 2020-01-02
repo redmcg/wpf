@@ -158,6 +158,17 @@ class Xaml2Cs
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("{0}.{1}", prop.value_type.name, str);
 		}
+		else if (prop.value_type.name == "Color" && str.StartsWith("#") && str.Length == 9)
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			byte a, r, g, b;
+			a = Convert.ToByte(str.Substring(1, 2), 16);
+			r = Convert.ToByte(str.Substring(3, 2), 16);
+			g = Convert.ToByte(str.Substring(5, 2), 16);
+			b = Convert.ToByte(str.Substring(7, 2), 16);
+			value_expression = String.Format("Color.FromArgb({0}, {1}, {2}, {3})", a, r, g, b);
+		}
 		else if (prop.value_type.name == "Point" && str.Contains(","))
 		{
 			if (prop.value_type.ns != null)
