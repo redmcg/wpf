@@ -56,6 +56,7 @@ class Xaml2Cs
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
+		static_resources = new Dictionary<string,XamlElement>();
 	}
 
 	class XamlType
@@ -140,6 +141,8 @@ class Xaml2Cs
 	XamlElement root_element;
 	
 	Dictionary<string, XamlElement> elements_by_local;
+	
+	Dictionary<string, XamlElement> static_resources;
 
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
@@ -148,6 +151,11 @@ class Xaml2Cs
 		{
 			value_expression = attribute_string_to_expression(element, prop,
 				str.Substring(17, str.Length - 18));
+		}
+		else if (str.StartsWith("{StaticResource ") && str.EndsWith("}"))
+		{
+			string key = str.Substring(16, str.Length - 17);
+			value_expression = static_resources[key].local_name;
 		}
 		else if (str.StartsWith("{x:Static ") && str.EndsWith("}"))
 		{
@@ -360,6 +368,7 @@ class Xaml2Cs
 							case "x:Key":
 								current.key = reader.Value;
 								current.late_init.Add(String.Format("{0}.Add(\"{1}\",{2});", parent.local_name, current.key, current.local_name));
+								static_resources.Add(current.key, current);
 								handled_attribute = true;
 								break;
 							}
