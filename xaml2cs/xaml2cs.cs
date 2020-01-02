@@ -28,12 +28,15 @@ class Xaml2Cs
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["Canvas"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
+		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
+		types["FrameworkElement"].AddProperty(types["double"], "Width", false);
 		types["GradientBrush"].AddProperty(types["GradientStopCollection"], "GradientStops", false);
 		types["GradientBrush"].props["GradientStops"].auto = true;
 		types["GradientStop"].AddProperty(types["Color"], "Color", false);
