@@ -26,6 +26,7 @@ class Xaml2Cs
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
+		types["Style"] = new XamlType("System.Windows", "Style");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["bool"] = new XamlType(null, "bool");
