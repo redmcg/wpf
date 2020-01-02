@@ -12,6 +12,8 @@ class Xaml2Cs
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
+		types["GradientBrush"] = new XamlType("System.Windows.Media", "GradientBrush");
+		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
 		types["Point"] = new XamlType("System.Windows", "Point");
@@ -23,11 +25,14 @@ class Xaml2Cs
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
+		types["GradientBrush"].AddProperty(types["GradientStopCollection"], "GradientStops", false);
+		types["GradientBrush"].props["GradientStops"].auto = true;
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
@@ -61,6 +66,18 @@ class Xaml2Cs
 			new_prop.attached = attached;
 			this.props[name] = new_prop;
 		}
+
+		public bool SubclassOf(XamlType other)
+		{
+			XamlType mine = this;
+			while (mine != null)
+			{
+				if (mine == other)
+					return true;
+				mine = mine.base_type;
+			}
+			return false;
+		}
 	}
 
 	class XamlProperty
@@ -88,6 +105,7 @@ class Xaml2Cs
 		public List<string> early_init = new List<string>();
 		public List<string> late_init = new List<string>();
 		public XamlProperty prop;
+		public bool has_attributes;
 		public string key;
 	}
 
@@ -209,6 +227,7 @@ class Xaml2Cs
 					}
 					else
 					{
+						bool needs_declaration = true;
 						if (current == root_element) {
 							local_name = "this";
 						}
@@ -230,8 +249,24 @@ class Xaml2Cs
 								local_name = String.Format("{0}{1}", current.type.name.ToLower(), i);
 							} while (elements_by_local.ContainsKey(local_name));
 						}
-						if (current != root_element) {
+						if (needs_declaration) {
 							current.early_init.Add(String.Format("{0} {1} = new {0}();", current.type.name, local_name));
+							if (current.parent != null &&
+								!current.parent.has_attributes &&
+								current.parent.prop != null &&
+								current.parent.prop.value_type.SubclassOf(current.type))
+							{
+								current.parent.early_init.Clear();
+								current.parent.late_init.Clear();
+								if (current.parent.prop.attached)
+								{
+									current.parent.late_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.parent.parent.local_name, current.parent.prop.container_type.name, current.parent.prop.name, local_name));
+								}
+								else
+								{
+									current.early_init.Add(String.Format("{0}.{1} = {2};", current.parent.parent.local_name, current.parent.prop.name, local_name));
+								}
+							}
 						}
 					}
 					if (current.type.ns != null)
@@ -246,6 +281,7 @@ class Xaml2Cs
 					}
 					if (reader.MoveToFirstAttribute())
 					{
+						current.has_attributes = true;
 						do {
 							bool handled_attribute = false;
 							switch (reader.Name)
