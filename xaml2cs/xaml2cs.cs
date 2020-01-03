@@ -63,6 +63,7 @@ class Xaml2Cs
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
 		types["Border"].AddProperty(types["Brush"], "Background", false);
+		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
