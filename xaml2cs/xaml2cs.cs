@@ -14,6 +14,7 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
@@ -35,25 +36,34 @@ class Xaml2Cs
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["string"] = new XamlType(null, "string");
 		types["Style"] = new XamlType("System.Windows", "Style");
+		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Type"] = new XamlType("System", "Type");
 		types["bool"] = new XamlType(null, "bool");
-		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
-		types["VerticalAlignment"].is_enum = true;
+		types["HorizontalAlignment"] = new XamlType("System.Windows", "HorizontalAlignment");
+		types["HorizontalAlignment"].is_enum = true;
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
+		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
+		types["VerticalAlignment"].is_enum = true;
 
-		types["Button"].base_type = types["FrameworkElement"];
+		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["FrameworkElement"];
+		types["Control"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
+		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
+		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
+		types["Control"].AddProperty(types["Thickness"], "Padding", true);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
+		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
+		types["FrameworkElement"].AddProperty(types["Thickness"], "Margin", false);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["FrameworkElement"].AddProperty(types["VerticalAlignment"], "VerticalAlignment", false);
@@ -273,6 +283,12 @@ class Xaml2Cs
 			b = Convert.ToByte(str.Substring(7, 2), 16);
 			value_expression = String.Format("Color.FromArgb({0}, {1}, {2}, {3})", a, r, g, b);
 		}
+		else if (prop.value_type.name == "Brush" && str == "Transparent")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("Brushes.{0}", str);
+		}
 		else if (prop.value_type.name == "Geometry")
 		{
 			if (prop.value_type.ns != null)
@@ -284,6 +300,12 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("new Point({0})", str);
+		}
+		else if (prop.value_type.name == "Thickness")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("new Thickness({0})", str);
 		}
 		else if (prop.value_type.name == "PropertyPath")
 		{
