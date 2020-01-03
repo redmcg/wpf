@@ -10,6 +10,7 @@ class Xaml2Cs
 		types = new Dictionary<string,XamlType>();
 
 		types["Binding"] = new XamlType("System.Windows.Data", "Binding");
+		types["Border"] = new XamlType("System.Windows.Controls", "Border");
 		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
@@ -49,6 +50,7 @@ class Xaml2Cs
 		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
 		types["VerticalAlignment"].is_enum = true;
 
+		types["Border"].base_type = types["FrameworkElement"];
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
@@ -58,6 +60,7 @@ class Xaml2Cs
 
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
+		types["Border"].AddProperty(types["Brush"], "Background", false);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
