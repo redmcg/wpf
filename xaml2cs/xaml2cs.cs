@@ -95,6 +95,7 @@ class Xaml2Cs
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
+		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
 		types["Shape"].AddProperty(types["Brush"], "Fill", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
