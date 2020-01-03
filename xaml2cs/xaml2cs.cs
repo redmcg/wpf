@@ -25,6 +25,7 @@ class Xaml2Cs
 		types["GradientBrush"] = new XamlType("System.Windows.Media", "GradientBrush");
 		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
+		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
 		types["object"] = new XamlType(null, "object");
@@ -54,6 +55,7 @@ class Xaml2Cs
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
+		types["Grid"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
@@ -61,6 +63,7 @@ class Xaml2Cs
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
 		types["Border"].AddProperty(types["Brush"], "Background", false);
+		types["Border"].AddProperty(types["Thickness"], "Padding", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
