@@ -32,6 +32,7 @@ class Xaml2Cs
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
+		types["string"] = new XamlType(null, "string");
 		types["Style"] = new XamlType("System.Windows", "Style");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
@@ -60,6 +61,7 @@ class Xaml2Cs
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
+		types["object"].AddProperty(types["object"], "_key", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
@@ -274,6 +276,10 @@ class Xaml2Cs
 			Double.Parse(str);
 			value_expression = str;
 		}
+		else if (prop.value_type.name == "object" || prop.value_type.name == "string")
+		{
+			value_expression = String.Format("\"{0}\"", str);
+		}
 		else
 		{
 			throw new Exception(String.Format("failed converting property value {0}", str));
@@ -436,7 +442,10 @@ class Xaml2Cs
 								break;
 							case "x:Key":
 								current.key = reader.Value;
-								current.late_init.Add(String.Format("{0}.Add(\"{1}\",{2});", parent.local_name, current.key, current.local_name));
+								XamlProperty key_prop;
+								types["object"].LookupProp("_key", out key_prop);
+								string key_expr = attribute_string_to_expression(current, key_prop, reader.Value);
+								current.late_init.Add(String.Format("{0}.Add({1}, {2});", parent.local_name, key_expr, current.local_name));
 								static_resources.Add(current.key, current);
 								handled_attribute = true;
 								break;
