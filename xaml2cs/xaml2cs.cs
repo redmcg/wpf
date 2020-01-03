@@ -43,6 +43,7 @@ class Xaml2Cs
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
+		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
 		types["bool"] = new XamlType(null, "bool");
 		types["HorizontalAlignment"] = new XamlType("System.Windows", "HorizontalAlignment");
@@ -70,6 +71,8 @@ class Xaml2Cs
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
 		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
+		types["ControlTemplate"].AddProperty(types["TriggerCollection"], "Triggers", false);
+		types["ControlTemplate"].props["Triggers"].auto = true;
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
@@ -373,7 +376,8 @@ class Xaml2Cs
 						XamlType container_type = null;
 						if (!types.TryGetValue(container_typename, out container_type))
 							throw new NotImplementedException(String.Format("type {0}", container_typename));
-						container_type.LookupProp(container_propname, out prop);
+						if (!container_type.LookupProp(container_propname, out prop))
+							throw new NotImplementedException(String.Format("property {0}", container_propname));
 						container_type = prop.container_type;
 
 						if (prop == null)
