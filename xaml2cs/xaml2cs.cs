@@ -15,6 +15,7 @@ class Xaml2Cs
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
+		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
@@ -60,6 +61,7 @@ class Xaml2Cs
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
+		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
