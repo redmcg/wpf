@@ -43,8 +43,10 @@ class Xaml2Cs
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
+		types["Trigger"] = new XamlType("System.Windows", "Trigger");
 		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
+		types["UIElement"] = new XamlType("System.Windows", "UIElement");
 		types["bool"] = new XamlType(null, "bool");
 		types["HorizontalAlignment"] = new XamlType("System.Windows", "HorizontalAlignment");
 		types["HorizontalAlignment"].is_enum = true;
@@ -57,6 +59,7 @@ class Xaml2Cs
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
+		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Path"].base_type = types["Shape"];
@@ -98,6 +101,9 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
+		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
+		types["Trigger"].AddProperty(types["object"], "Value", false);
+		types["UIElement"].AddProperty(types["bool"], "IsEnabled", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
 		static_resources = new Dictionary<string,XamlElement>();
@@ -192,7 +198,8 @@ class Xaml2Cs
 
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
-		if (prop.container_type.name == "Setter" && prop.name == "Property")
+		if ((prop.container_type.name == "Setter" || prop.container_type.name == "Trigger")
+			&& prop.name == "Property")
 		{
 			element.setter_property = str;
 		}
@@ -261,22 +268,23 @@ class Xaml2Cs
 				throw new NotImplementedException(String.Format("RelativeSource {0}", contents));
 			}
 		}
-		else if (prop.container_type.name == "Setter" && prop.name == "Value")
+		else if ((prop.container_type.name == "Setter" || prop.container_type.name == "Trigger")
+				 && prop.name == "Value")
 		{
 			XamlType actual_type;
 			XamlProperty actual_prop;
-			actual_type = element.parent.target_type;
+			actual_type = element.target_type;
 			if (!actual_type.LookupProp(element.setter_property, out actual_prop))
 				throw new NotImplementedException(String.Format("property {0}", element.setter_property));
-			return attribute_string_to_expression(element.parent, actual_prop, str);
+			return attribute_string_to_expression(element, actual_prop, str);
 		}
 		else if (prop.value_type.name == "bool" &&
-			str == "True")
+			String.Compare(str, "True", true) == 0)
 		{
 			value_expression = "true";
 		}
 		else if (prop.value_type.name == "bool" &&
-			str == "False")
+			String.Compare(str, "False", true) == 0)
 		{
 			value_expression = "false";
 		}
@@ -288,7 +296,7 @@ class Xaml2Cs
 		}
 		else if (prop.value_type.name == "DependencyProperty")
 		{
-			XamlType target_type = element.parent.target_type;
+			XamlType target_type = element.target_type;
 			value_expression = String.Format("{0}.{1}Property", target_type.name, str);
 		}
 		else if (prop.value_type.name == "Color" && str.StartsWith("#") && str.Length == 9)
@@ -367,6 +375,8 @@ class Xaml2Cs
 					{
 						root_element = current;
 					}
+					if (parent != null)
+						current.target_type = parent.target_type;
 					if (reader.Name.Contains("."))
 					{
 						int index = reader.Name.LastIndexOf(".");
