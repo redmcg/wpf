@@ -9,9 +9,11 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["Binding"] = new XamlType("System.Windows.Data", "Binding");
 		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
@@ -21,8 +23,11 @@ class Xaml2Cs
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["object"] = new XamlType(null, "object");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["Point"] = new XamlType("System.Windows", "Point");
+		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
+		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
@@ -40,6 +45,8 @@ class Xaml2Cs
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
+		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
+		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
@@ -54,9 +61,12 @@ class Xaml2Cs
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
+		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
+		types["Setter"].AddProperty(types["object"], "Value", false);
 		types["Shape"].AddProperty(types["Brush"], "Fill", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
+		types["Style"].AddProperty(types["object"], "Value", false);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -140,6 +150,7 @@ class Xaml2Cs
 		public XamlProperty prop;
 		public bool has_attributes;
 		public string key;
+		public XamlType target_type;
 	}
 
 	XamlElement root_element;
@@ -174,6 +185,39 @@ class Xaml2Cs
 			if (type.ns != null)
 				namespaces.Add(type.ns);
 			value_expression = String.Format("typeof({0})", type.name);
+			if (prop.name == "TargetType")
+				element.target_type = type;
+		}
+		else if (str.StartsWith("{Binding ") && str.EndsWith("}"))
+		{
+			string attributes_str = str.Substring(9, str.Length - 10);
+			var initializers = new List<string>();
+			XamlType binding_type = types["Binding"];
+			foreach (string prop_str in attributes_str.Split(','))
+			{
+				string trimmed_str = prop_str.Trim();
+				string[] parts = trimmed_str.Split(new char[] {'='}, 2);
+				XamlProperty binding_prop;
+				if (!binding_type.LookupProp(parts[0], out binding_prop))
+					throw new NotImplementedException(string.Format("Binding property {0}", parts[0]));
+				string prop_val_expr = attribute_string_to_expression(null, binding_prop, parts[1]);
+				initializers.Add(String.Format("{0} = {1}, ", parts[0], prop_val_expr));
+			}
+			return String.Format("new Binding{{ {0} }}", String.Join("", initializers));
+		}
+		else if (str.StartsWith("{RelativeSource ") && str.EndsWith("}"))
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			string contents = str.Substring(16, str.Length - 17);
+			if (contents == "TemplatedParent")
+			{
+				value_expression = String.Format("new RelativeSource(RelativeSourceMode.{0})", contents);
+			}
+			else
+			{
+				throw new NotImplementedException(String.Format("RelativeSource {0}", contents));
+			}
 		}
 		else if (prop.value_type.name == "bool" &&
 			str == "True")
@@ -190,6 +234,11 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("{0}.{1}", prop.value_type.name, str);
+		}
+		else if (prop.value_type.name == "DependencyProperty")
+		{
+			XamlType target_type = element.parent.target_type;
+			value_expression = String.Format("{0}.{1}Property", target_type.name, str);
 		}
 		else if (prop.value_type.name == "Color" && str.StartsWith("#") && str.Length == 9)
 		{
@@ -213,6 +262,12 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("new Point({0})", str);
+		}
+		else if (prop.value_type.name == "PropertyPath")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("new PropertyPath(\"{0}\")", str);
 		}
 		else if (prop.value_type.name == "double")
 		{
