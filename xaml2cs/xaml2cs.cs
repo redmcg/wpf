@@ -11,6 +11,7 @@ class Xaml2Cs
 
 		types["Binding"] = new XamlType("System.Windows.Data", "Binding");
 		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
+		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
