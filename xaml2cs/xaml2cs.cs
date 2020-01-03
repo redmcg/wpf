@@ -391,7 +391,10 @@ class Xaml2Cs
 							current.early_init.Add(String.Format("{0} {1} = {2}.{3};", current.type.name, local_name, parent.local_name, prop.name));
 						}
 						else
-							throw new NotImplementedException("property creation");
+						{
+							current.early_init.Add(String.Format("{0} {1} = new {2}();", current.type.name, local_name, prop.value_type.name));
+							current.late_init.Add(String.Format("{0}.{1} = {2};", parent.local_name, prop.name, local_name));
+						}
 					}
 					else if (!types.TryGetValue(reader.Name, out current.type))
 					{
