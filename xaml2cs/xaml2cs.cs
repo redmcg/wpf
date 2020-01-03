@@ -59,6 +59,7 @@ class Xaml2Cs
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
+		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
@@ -105,8 +106,10 @@ class Xaml2Cs
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
 		types["UIElement"].AddProperty(types["bool"], "IsEnabled", true);
+		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
+		elements_by_name = new Dictionary<string,XamlElement>();
 		static_resources = new Dictionary<string,XamlElement>();
 	}
 
@@ -194,6 +197,8 @@ class Xaml2Cs
 	XamlElement root_element;
 	
 	Dictionary<string, XamlElement> elements_by_local;
+
+	Dictionary<string, XamlElement> elements_by_name;
 	
 	Dictionary<string, XamlElement> static_resources;
 
@@ -203,6 +208,11 @@ class Xaml2Cs
 			&& prop.name == "Property")
 		{
 			element.setter_property = str;
+		}
+		if (prop.container_type.name == "Setter"
+			&& prop.name == "TargetName")
+		{
+			element.target_type = elements_by_name[str].type;
 		}
 
 		string value_expression;
@@ -514,6 +524,7 @@ class Xaml2Cs
 							case "x:Name":
 								current.name = reader.Value;
 								current.early_init.Add(String.Format("{0}.Name = \"{1}\";", current.local_name, current.name));
+								elements_by_name[reader.Value] = current;
 								handled_attribute = true;
 								break;
 							case "x:Key":
