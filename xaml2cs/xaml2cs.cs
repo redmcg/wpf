@@ -39,9 +39,12 @@ class Xaml2Cs
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Type"] = new XamlType("System", "Type");
 		types["bool"] = new XamlType(null, "bool");
+		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
+		types["VerticalAlignment"].is_enum = true;
 		types["KeyboardNavigationMode"] = new XamlType("System.Windows.Input", "KeyboardNavigationMode");
 		types["KeyboardNavigationMode"].is_enum = true;
 
+		types["Button"].base_type = types["FrameworkElement"];
 		types["Canvas"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Path"].base_type = types["Shape"];
@@ -53,6 +56,7 @@ class Xaml2Cs
 		types["FrameworkElement"].AddProperty(types["double"], "Height", false);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
+		types["FrameworkElement"].AddProperty(types["VerticalAlignment"], "VerticalAlignment", false);
 		types["FrameworkElement"].AddProperty(types["double"], "Width", false);
 		types["GradientBrush"].AddProperty(types["GradientStopCollection"], "GradientStops", false);
 		types["GradientBrush"].props["GradientStops"].auto = true;
@@ -154,6 +158,7 @@ class Xaml2Cs
 		public bool has_attributes;
 		public string key;
 		public XamlType target_type;
+		public string setter_property;
 	}
 
 	XamlElement root_element;
@@ -164,6 +169,11 @@ class Xaml2Cs
 
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
+		if (prop.container_type.name == "Setter" && prop.name == "Property")
+		{
+			element.setter_property = str;
+		}
+
 		string value_expression;
 		if (str.StartsWith("{DynamicResource ") && str.EndsWith("}"))
 		{
@@ -221,6 +231,15 @@ class Xaml2Cs
 			{
 				throw new NotImplementedException(String.Format("RelativeSource {0}", contents));
 			}
+		}
+		else if (prop.container_type.name == "Setter" && prop.name == "Value")
+		{
+			XamlType actual_type;
+			XamlProperty actual_prop;
+			actual_type = element.parent.target_type;
+			if (!actual_type.LookupProp(element.setter_property, out actual_prop))
+				throw new NotImplementedException(String.Format("property {0}", element.setter_property));
+			return attribute_string_to_expression(element.parent, actual_prop, str);
 		}
 		else if (prop.value_type.name == "bool" &&
 			str == "True")
