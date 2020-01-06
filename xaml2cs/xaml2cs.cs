@@ -120,6 +120,7 @@ class Xaml2Cs
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
 		types["UIElement"].AddProperty(types["bool"], "IsEnabled", true);
+		types["UIElement"].AddProperty(types["bool"], "IsKeyboardFocused", true);
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 
