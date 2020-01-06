@@ -74,6 +74,7 @@ class Xaml2Cs
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
+		types["ConditionCollection"].add_statement = "{0}.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
 		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
@@ -88,7 +89,7 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "Background", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
-		types["Condition"].AddProperty(types["string"], "Property", false);
+		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Condition"].AddProperty(types["object"], "Value", false);
 		types["Condition"].props["Value"].indirect_property = true;
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
