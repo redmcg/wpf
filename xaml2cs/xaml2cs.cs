@@ -123,6 +123,7 @@ class Xaml2Cs
 		types["FrameworkElement"].AddProperty(types["double"], "Height", true);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
 		types["FrameworkElement"].AddProperty(types["Thickness"], "Margin", true);
+		types["FrameworkElement"].AddProperty(types["string"], "Name", true);
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["FrameworkElement"].AddProperty(types["VerticalAlignment"], "VerticalAlignment", false);
