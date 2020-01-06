@@ -306,7 +306,7 @@ class Xaml2Cs
 		{
 			string binding_target = str.Substring(17, str.Length - 18);
 			XamlType binding_type = types["Binding"];
-			return String.Format("new Binding{{ RelativeSource = RelativeSourceMode.TemplatedParent, Path = new PropertyPath(\"{0}\"), }}", binding_target);
+			return String.Format("new Binding{{ RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent), Path = new PropertyPath(\"{0}\"), }}", binding_target);
 		}
 		else if (str.StartsWith("{RelativeSource ") && str.EndsWith("}"))
 		{
