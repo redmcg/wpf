@@ -43,6 +43,7 @@ class Xaml2Cs
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["Point"] = new XamlType("System.Windows", "Point");
+		types["Popup"] = new XamlType("System.Windows.Controls.Primitives", "Popup");
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
@@ -84,6 +85,7 @@ class Xaml2Cs
 		types["MenuItem"].base_type = types["HeaderedItemsControl"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
+		types["Popup"].base_type = types["FrameworkElement"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
