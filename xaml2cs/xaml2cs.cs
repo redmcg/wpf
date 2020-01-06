@@ -73,9 +73,10 @@ class Xaml2Cs
 
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
-		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
+		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
 		types["Style"].add_statement = "{0}.Setters.Add({1});";
+		types["TriggerCollection"].add_statement = "{0}.Add({1});";
 
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
