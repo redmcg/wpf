@@ -426,8 +426,6 @@ class Xaml2Cs
 					var parent = current;
 					current = new XamlElement();
 					current.parent = parent;
-					current.is_template = (parent != null &&
-						(parent.is_template || parent.type.is_template));
 					string local_name;
 					bool empty = reader.IsEmptyElement;
 					if (root_element == null)
@@ -491,6 +489,9 @@ class Xaml2Cs
 					}
 					else
 					{
+						current.is_template = (parent != null &&
+							(parent.is_template || parent.type.is_template));
+
 						bool needs_declaration = true;
 						if (current == root_element) {
 							local_name = "this";
