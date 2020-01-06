@@ -133,7 +133,7 @@ class Xaml2Cs
 		types["MultiTrigger"].props["Conditions"].auto = true;
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
-		types["Path"].AddProperty(types["Geometry"], "Data", false);
+		types["Path"].AddProperty(types["Geometry"], "Data", true);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
