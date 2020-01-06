@@ -32,9 +32,12 @@ class Xaml2Cs
 		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
+		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
+		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["Label"] = new XamlType("System.Windows.Controls", "Label");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["MenuItem"] = new XamlType("System.Windows.Controls", "MenuItem");
 		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
@@ -74,8 +77,11 @@ class Xaml2Cs
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
+		types["ItemsControl"].base_type = types["Control"];
+		types["HeaderedItemsControl"].base_type = types["ItemsControl"];
 		types["Label"].base_type = types["ContentControl"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
+		types["MenuItem"].base_type = types["HeaderedItemsControl"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
 		types["TextBoxBase"].base_type = types["Control"];
