@@ -634,7 +634,12 @@ class Xaml2Cs
 					if (current.parent != null &&
 						current.prop == null)
 					{
-						if (current.key != null)
+						if (current.parent.is_template)
+						{
+							current.late_init.Add(String.Format("{0}.AppendChild({1});",
+								current.parent.local_name, current.local_name));
+						}
+						else if (current.key != null)
 						{
 							current.late_init.Add(
 								current.parent.type.AddWithKeyStatement(
