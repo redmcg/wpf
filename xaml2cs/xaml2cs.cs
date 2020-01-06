@@ -48,6 +48,8 @@ class Xaml2Cs
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
 		types["string"] = new XamlType(null, "string");
 		types["Style"] = new XamlType("System.Windows", "Style");
+		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
+		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
@@ -76,6 +78,8 @@ class Xaml2Cs
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
+		types["TextBoxBase"].base_type = types["Control"];
+		types["TextBox"].base_type = types["TextBoxBase"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
 		types["ConditionCollection"].add_statement = "{0}.Add({1});";
