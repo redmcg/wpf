@@ -22,6 +22,7 @@ class Xaml2Cs
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
+		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
 		types["Geometry"] = new XamlType("System.Windows.Media", "Geometry");
 		types["GradientBrush"] = new XamlType("System.Windows.Media", "GradientBrush");
 		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
@@ -61,6 +62,7 @@ class Xaml2Cs
 		types["Canvas"].base_type = types["Panel"];
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
+		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
@@ -68,6 +70,7 @@ class Xaml2Cs
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
 
+		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
 		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
