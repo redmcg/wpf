@@ -17,6 +17,7 @@ class Xaml2Cs
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
+		types["ContentControl"] = new XamlType("System.Windows.Controls", "ContentControl");
 		types["ContentPresenter"] = new XamlType("System.Windows.Controls", "ContentPresenter");
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
@@ -32,6 +33,7 @@ class Xaml2Cs
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
+		types["Label"] = new XamlType("System.Windows.Controls", "Label");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
 		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
@@ -64,11 +66,13 @@ class Xaml2Cs
 		types["Border"].base_type = types["FrameworkElement"];
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["Panel"];
-		types["Control"].base_type = types["FrameworkElement"];
+		types["ContentControl"].base_type = types["Control"];
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
+		types["Control"].base_type = types["FrameworkElement"];
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
+		types["Label"].base_type = types["ContentControl"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
