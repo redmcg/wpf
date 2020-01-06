@@ -94,6 +94,7 @@ class Xaml2Cs
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
 		types["object"].AddProperty(types["object"], "_key", false);
+		types["object"].AddProperty(types["object"], "_dynamicresource", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
@@ -219,8 +220,10 @@ class Xaml2Cs
 		string value_expression;
 		if (str.StartsWith("{DynamicResource ") && str.EndsWith("}"))
 		{
-			value_expression = attribute_string_to_expression(element, prop,
-				str.Substring(17, str.Length - 18));
+			value_expression = String.Format("({0})this.FindResource({1})",
+				prop.value_type.name,
+				attribute_string_to_expression(element, types["object"].props["_dynamicresource"],
+					str.Substring(17, str.Length - 18)));
 		}
 		else if (str.StartsWith("{StaticResource ") && str.EndsWith("}"))
 		{
