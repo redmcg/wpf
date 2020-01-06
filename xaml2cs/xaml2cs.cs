@@ -149,6 +149,7 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["PlacementMode"], "Placement", true);
 		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
+		types["ScrollViewer"].AddProperty(types["bool"], "CanContentScroll", true);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
