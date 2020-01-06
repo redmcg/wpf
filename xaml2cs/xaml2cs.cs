@@ -141,13 +141,13 @@ class Xaml2Cs
 			this.name = name;
 		}
 
-		public void AddProperty(XamlType value_type, string name, bool attached)
+		public void AddProperty(XamlType value_type, string name, bool dependency)
 		{
 			var new_prop = new XamlProperty();
 			new_prop.name = name;
 			new_prop.container_type = this;
 			new_prop.value_type = value_type;
-			new_prop.attached = attached;
+			new_prop.dependency = dependency;
 			this.props[name] = new_prop;
 		}
 
@@ -208,7 +208,7 @@ class Xaml2Cs
 		public string name;
 		public XamlType container_type;
 		public XamlType value_type;
-		public bool attached;
+		public bool dependency;
 		public bool auto;
 	}
 
@@ -520,7 +520,7 @@ class Xaml2Cs
 								current.prop = current.parent.prop;
 								current.parent.early_init.Clear();
 								current.parent.late_init.Clear();
-								if (current.parent.prop.attached)
+								if (current.parent.prop.dependency)
 								{
 									current.parent.late_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.parent.parent.local_name, current.parent.prop.container_type.name, current.parent.prop.name, local_name));
 								}
@@ -601,7 +601,7 @@ class Xaml2Cs
 								if (prop != null)
 								{
 									string value_expression = attribute_string_to_expression(current, prop, reader.Value);
-									if (prop.attached)
+									if (prop.dependency)
 									{
 										current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
 									}
