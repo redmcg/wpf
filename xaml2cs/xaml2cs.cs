@@ -31,6 +31,7 @@ class Xaml2Cs
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
@@ -73,6 +74,7 @@ class Xaml2Cs
 
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
+		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
 		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
 		types["Style"].add_statement = "{0}.Setters.Add({1});";
