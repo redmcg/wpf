@@ -308,6 +308,10 @@ class Xaml2Cs
 			if (prop.name == "TargetType")
 				element.target_type = type;
 		}
+		else if (str == "{x:Null}")
+		{
+			value_expression = "null";
+		}
 		else if (str.StartsWith("{Binding ") && str.EndsWith("}"))
 		{
 			string attributes_str = str.Substring(9, str.Length - 10);
