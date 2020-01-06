@@ -141,6 +141,7 @@ class Xaml2Cs
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
+		types["UIElement"].AddProperty(types["bool"], "AllowDrop", true);
 		types["UIElement"].AddProperty(types["bool"], "IsEnabled", true);
 		types["UIElement"].AddProperty(types["bool"], "IsKeyboardFocused", true);
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
