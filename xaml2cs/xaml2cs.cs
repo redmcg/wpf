@@ -42,8 +42,12 @@ class Xaml2Cs
 		types["object"] = new XamlType(null, "object");
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
+		types["PlacementMode"] = new XamlType("System.Windows.Controls.Primitives", "PlacementMode");
+		types["PlacementMode"].is_enum = true;
 		types["Point"] = new XamlType("System.Windows", "Point");
 		types["Popup"] = new XamlType("System.Windows.Controls.Primitives", "Popup");
+		types["PopupAnimation"] = new XamlType("System.Windows.Controls.Primitives", "PopupAnimation");
+		types["PopupAnimation"].is_enum = true;
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
@@ -136,6 +140,11 @@ class Xaml2Cs
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", true);
+		types["Popup"].AddProperty(types["bool"], "AllowsTransparency", true);
+		types["Popup"].AddProperty(types["bool"], "IsOpen", true);
+		types["Popup"].AddProperty(types["PlacementMode"], "Placement", true);
+		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
+		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
@@ -150,6 +159,7 @@ class Xaml2Cs
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
 		types["UIElement"].AddProperty(types["bool"], "AllowDrop", true);
+		types["UIElement"].AddProperty(types["bool"], "Focusable", true);
 		types["UIElement"].AddProperty(types["bool"], "IsEnabled", true);
 		types["UIElement"].AddProperty(types["bool"], "IsKeyboardFocused", true);
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
