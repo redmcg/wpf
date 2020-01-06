@@ -138,7 +138,7 @@ class Xaml2Cs
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
 		types["Setter"].props["Value"].indirect_property = true;
-		types["Shape"].AddProperty(types["Brush"], "Fill", false);
+		types["Shape"].AddProperty(types["Brush"], "Fill", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["Style"].AddProperty(types["Style"], "BasedOn", false);
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
