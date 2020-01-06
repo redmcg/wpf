@@ -388,6 +388,10 @@ class Xaml2Cs
 				throw new NotImplementedException(String.Format("property {0}", element.setter_property));
 			return attribute_string_to_expression(element, actual_prop, str);
 		}
+		else if (str.StartsWith("{"))
+		{
+			throw new Exception(String.Format("failed converting property value {0}", str));
+		}
 		else if (prop.value_type.name == "bool" &&
 			String.Compare(str, "True", true) == 0)
 		{
