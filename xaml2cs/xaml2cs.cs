@@ -51,6 +51,7 @@ class Xaml2Cs
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
+		types["ScrollViewer"] = new XamlType("System.Windows.Controls", "ScrollViewer");
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
@@ -90,6 +91,7 @@ class Xaml2Cs
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
 		types["Popup"].base_type = types["FrameworkElement"];
+		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
