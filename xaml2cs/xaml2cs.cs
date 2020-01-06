@@ -96,6 +96,7 @@ class Xaml2Cs
 		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Condition"].AddProperty(types["object"], "Value", false);
 		types["Condition"].props["Value"].indirect_property = true;
+		types["Control"].AddProperty(types["Brush"], "Background", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
