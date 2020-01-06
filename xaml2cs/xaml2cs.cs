@@ -18,6 +18,7 @@ class Xaml2Cs
 		types["ContentPresenter"] = new XamlType("System.Windows.Controls", "ContentPresenter");
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
+		types["ControlTemplate"].is_template = true;
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
@@ -134,6 +135,7 @@ class Xaml2Cs
 		public XamlType base_type;
 		public string add_with_key_statement;
 		public string add_statement;
+		public bool is_template;
 
 		public XamlType(string ns, string name)
 		{
@@ -233,6 +235,7 @@ class Xaml2Cs
 		public string key_expr;
 		public XamlType target_type;
 		public string setter_property;
+		public bool is_template;
 	}
 
 	XamlElement root_element;
@@ -423,6 +426,8 @@ class Xaml2Cs
 					var parent = current;
 					current = new XamlElement();
 					current.parent = parent;
+					current.is_template = (parent != null &&
+						(parent.is_template || parent.type.is_template));
 					string local_name;
 					bool empty = reader.IsEmptyElement;
 					if (root_element == null)
@@ -511,7 +516,15 @@ class Xaml2Cs
 							} while (elements_by_local.ContainsKey(local_name));
 						}
 						if (needs_declaration) {
-							current.early_init.Add(String.Format("{0} {1} = new {0}();", current.type.name, local_name));
+							if (current.is_template)
+							{
+								if (reader.GetAttribute("x:Name") != null)
+									current.early_init.Add(String.Format("FrameworkElementFactory {1} = new FrameworkElementFactory(typeof({0}), \"{1}\");", current.type.name, local_name, reader["x:Name"]));
+								else
+									current.early_init.Add(String.Format("FrameworkElementFactory {1} = new FrameworkElementFactory(typeof({0}));", current.type.name, local_name));
+							}
+							else
+								current.early_init.Add(String.Format("{0} {1} = new {0}();", current.type.name, local_name));
 							if (current.parent != null &&
 								!current.parent.has_attributes &&
 								current.parent.prop != null &&
