@@ -30,6 +30,7 @@ class Xaml2Cs
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
 		types["object"] = new XamlType(null, "object");
+		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["Point"] = new XamlType("System.Windows", "Point");
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
@@ -57,14 +58,19 @@ class Xaml2Cs
 
 		types["Border"].base_type = types["FrameworkElement"];
 		types["Button"].base_type = types["Control"];
-		types["Canvas"].base_type = types["FrameworkElement"];
+		types["Canvas"].base_type = types["Panel"];
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
+		types["Panel"].base_type = types["FrameworkElement"];
 		types["Path"].base_type = types["Shape"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
+
+		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
+		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
+		types["Panel"].add_statement = "{0}.Children.Add({1});";
 
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
@@ -122,6 +128,8 @@ class Xaml2Cs
 		public Dictionary<string, XamlProperty> props = new Dictionary<string, XamlProperty>();
 		public bool is_enum;
 		public XamlType base_type;
+		public string add_with_key_statement;
+		public string add_statement;
 
 		public XamlType(string ns, string name)
 		{
@@ -163,6 +171,30 @@ class Xaml2Cs
 			prop = null;
 			return false;
 		}
+
+		public string AddWithKeyStatement(string parent_expr, string key_expr, string value_expr)
+		{
+			XamlType parent = this;
+			while (parent.add_with_key_statement == null)
+			{
+				if (parent.base_type == null)
+					throw new NotImplementedException(String.Format("add with key for {0}", name));
+				parent = parent.base_type;
+			}
+			return String.Format(parent.add_with_key_statement, parent_expr, key_expr, value_expr);
+		}
+
+		public string AddStatement(string parent_expr, string value_expr)
+		{
+			XamlType parent = this;
+			while (parent.add_statement == null)
+			{
+				if (parent.base_type == null)
+					throw new NotImplementedException(String.Format("add child for {0}", name));
+				parent = parent.base_type;
+			}
+			return String.Format(parent.add_statement, parent_expr, value_expr);
+		}
 	}
 
 	class XamlProperty
@@ -192,6 +224,7 @@ class Xaml2Cs
 		public XamlProperty prop;
 		public bool has_attributes;
 		public string key;
+		public string key_expr;
 		public XamlType target_type;
 		public string setter_property;
 	}
@@ -536,8 +569,7 @@ class Xaml2Cs
 								current.key = reader.Value;
 								XamlProperty key_prop;
 								types["object"].LookupProp("_key", out key_prop);
-								string key_expr = attribute_string_to_expression(current, key_prop, reader.Value);
-								current.late_init.Add(String.Format("{0}.Add({1}, {2});", parent.local_name, key_expr, current.local_name));
+								current.key_expr = attribute_string_to_expression(current, key_prop, reader.Value);
 								static_resources.Add(current.key, current);
 								handled_attribute = true;
 								break;
@@ -580,11 +612,24 @@ class Xaml2Cs
 							}
 						} while (reader.MoveToNextAttribute());
 					}
-					if (current.key == null &&
-						current.parent != null &&
+					if (current.parent != null &&
 						current.prop == null)
 					{
-						current.late_init.Add(String.Format("{0}.Add({1});", current.parent.local_name, current.local_name));
+						if (current.key != null)
+						{
+							current.late_init.Add(
+								current.parent.type.AddWithKeyStatement(
+									current.parent.local_name,
+									current.key_expr,
+									current.local_name));
+						}
+						else
+						{
+							current.late_init.Add(
+								current.parent.type.AddStatement(
+									current.parent.local_name,
+									current.local_name));
+						}
 					}
 					if (empty)
 					{
