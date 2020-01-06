@@ -15,6 +15,7 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
 		types["ContentPresenter"] = new XamlType("System.Windows.Controls", "ContentPresenter");
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
@@ -87,6 +88,9 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "Background", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
+		types["Condition"].AddProperty(types["string"], "Property", false);
+		types["Condition"].AddProperty(types["object"], "Value", false);
+		types["Condition"].props["Value"].indirect_property = true;
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
@@ -117,10 +121,12 @@ class Xaml2Cs
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
 		types["Setter"].AddProperty(types["object"], "Value", false);
+		types["Setter"].props["Value"].indirect_property = true;
 		types["Shape"].AddProperty(types["Brush"], "Fill", false);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
+		types["Style"].props["Value"].indirect_property = true;
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
@@ -220,6 +226,7 @@ class Xaml2Cs
 		public XamlType value_type;
 		public bool dependency;
 		public bool auto;
+		public bool indirect_property;
 	}
 
 	Dictionary<string, XamlType> types;
@@ -256,8 +263,7 @@ class Xaml2Cs
 
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
-		if ((prop.container_type.name == "Setter" || prop.container_type.name == "Trigger")
-			&& prop.name == "Property")
+		if (prop.name == "Property")
 		{
 			element.setter_property = str;
 		}
@@ -333,8 +339,7 @@ class Xaml2Cs
 				throw new NotImplementedException(String.Format("RelativeSource {0}", contents));
 			}
 		}
-		else if ((prop.container_type.name == "Setter" || prop.container_type.name == "Trigger")
-				 && prop.name == "Value")
+		else if (prop.indirect_property)
 		{
 			XamlType actual_type;
 			XamlProperty actual_prop;
