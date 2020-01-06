@@ -15,6 +15,7 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
 		types["ContentPresenter"] = new XamlType("System.Windows.Controls", "ContentPresenter");
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
@@ -108,6 +109,8 @@ class Xaml2Cs
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
+		types["MultiTrigger"].AddProperty(types["ConditionCollection"], "Conditions", false);
+		types["MultiTrigger"].props["Conditions"].auto = true;
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
 		types["Path"].AddProperty(types["Geometry"], "Data", false);
