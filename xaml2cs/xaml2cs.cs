@@ -447,6 +447,7 @@ class Xaml2Cs
 						bool needs_declaration = true;
 						if (current == root_element) {
 							local_name = "this";
+							needs_declaration = false;
 						}
 						else if (reader.GetAttribute("x:Name") != null &&
 							!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
