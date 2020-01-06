@@ -153,6 +153,8 @@ class Xaml2Cs
 
 		public bool SubclassOf(XamlType other)
 		{
+			if (other.name == "object")
+				return true;
 			XamlType mine = this;
 			while (mine != null)
 			{
@@ -513,7 +515,7 @@ class Xaml2Cs
 							if (current.parent != null &&
 								!current.parent.has_attributes &&
 								current.parent.prop != null &&
-								current.parent.prop.value_type.SubclassOf(current.type))
+								current.type.SubclassOf(current.parent.prop.value_type))
 							{
 								current.prop = current.parent.prop;
 								current.parent.early_init.Clear();
