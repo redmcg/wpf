@@ -35,6 +35,7 @@ class Xaml2Cs
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
+		types["ItemsPresenter"] = new XamlType("System.Windows.Controls", "ItemsPresenter");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["Label"] = new XamlType("System.Windows.Controls", "Label");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
@@ -84,8 +85,9 @@ class Xaml2Cs
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["Grid"].base_type = types["FrameworkElement"];
-		types["ItemsControl"].base_type = types["Control"];
 		types["HeaderedItemsControl"].base_type = types["ItemsControl"];
+		types["ItemsControl"].base_type = types["Control"];
+		types["ItemsPresenter"].base_type = types["FrameworkElement"];
 		types["Label"].base_type = types["ContentControl"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["MenuItem"].base_type = types["HeaderedItemsControl"];
