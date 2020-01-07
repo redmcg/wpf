@@ -67,6 +67,7 @@ class Xaml2Cs
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
+		types["StackPanel"] = new XamlType("System.Windows.Controls", "StackPanel");
 		types["Storyboard"] = new XamlType("System.Windows.Media.Animation", "Storyboard");
 		types["string"] = new XamlType(null, "string");
 		types["Style"] = new XamlType("System.Windows", "Style");
@@ -121,6 +122,7 @@ class Xaml2Cs
 		types["Popup"].base_type = types["FrameworkElement"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["Shape"].base_type = types["FrameworkElement"];
+		types["StackPanel"].base_type = types["Panel"];
 		types["Storyboard"].base_type = types["ParallelTimeline"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
