@@ -35,6 +35,7 @@ class Xaml2Cs
 		types["Duration"] = new XamlType("System.Windows", "Duration");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
+		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
 		types["Geometry"] = new XamlType("System.Windows.Media", "Geometry");
@@ -162,6 +163,7 @@ class Xaml2Cs
 		types["Condition"].props["Value"].indirect_property = true;
 		types["Control"].AddProperty(types["Brush"], "Background", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
+		types["Control"].AddProperty(types["FontStyle"], "FontStyle", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
 		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
@@ -543,6 +545,12 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("Brushes.{0}", str);
+		}
+		else if (prop.value_type.name == "FontStyle" && str == "Italic")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("FontStyles.{0}", str);
 		}
 		else if (prop.value_type.name == "Geometry")
 		{
