@@ -50,6 +50,8 @@ class Xaml2Cs
 		types["MenuItem"] = new XamlType("System.Windows.Controls", "MenuItem");
 		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
+		types["Orientation"] = new XamlType("System.Windows.Controls", "Orientation");
+		types["Orientation"].is_enum = true;
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["ParallelTimeline"] = new XamlType("System.Windows.Media.Animation", "ParallelTimeline");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
@@ -204,6 +206,7 @@ class Xaml2Cs
 		types["Setter"].props["Value"].indirect_property = true;
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
+		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
 		types["Storyboard"].AddProperty(types["string"], "TargetName", true);
 		types["Storyboard"].AddProperty(types["PropertyPath"], "TargetProperty", true);
 		types["Style"].AddProperty(types["Style"], "BasedOn", false);
