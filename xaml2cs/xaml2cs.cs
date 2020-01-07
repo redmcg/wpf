@@ -25,6 +25,7 @@ class Xaml2Cs
 		types["ControlTemplate"].is_template = true;
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
+		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
@@ -65,6 +66,7 @@ class Xaml2Cs
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
+		types["TriggerBase"] = new XamlType("System.Windows", "TriggerBase");
 		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
 		types["UIElement"] = new XamlType("System.Windows", "UIElement");
@@ -83,6 +85,7 @@ class Xaml2Cs
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
+		types["EventTrigger"].base_type = types["TriggerBase"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["GradientBrush"].base_type = types["Brush"];
 		types["Grid"].base_type = types["FrameworkElement"];
