@@ -109,6 +109,7 @@ class Xaml2Cs
 		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
 		types["ConditionCollection"].add_statement = "{0}.Add({1});";
+		types["EventTrigger"].add_statement = "{0}.Actions.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
 		types["ItemsControl"].add_statement = "{0}.Items.Add({1});";
