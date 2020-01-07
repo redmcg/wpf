@@ -9,6 +9,7 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["BeginStoryboard"] = new XamlType("System.Windows.Media.Animation", "BeginStoryboard");
 		types["Binding"] = new XamlType("System.Windows.Data", "Binding");
 		types["Border"] = new XamlType("System.Windows.Controls", "Border");
 		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
@@ -67,6 +68,7 @@ class Xaml2Cs
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
+		types["TriggerAction"] = new XamlType("System.Windows", "TriggerAction");
 		types["TriggerBase"] = new XamlType("System.Windows", "TriggerBase");
 		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
@@ -79,6 +81,7 @@ class Xaml2Cs
 		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
 		types["VerticalAlignment"].is_enum = true;
 
+		types["BeginStoryboard"].base_type = types["TriggerAction"];
 		types["Border"].base_type = types["FrameworkElement"];
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["Panel"];
