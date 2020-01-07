@@ -9,6 +9,7 @@ class Xaml2Cs
 	{
 		types = new Dictionary<string,XamlType>();
 
+		types["AnimationTimeline"] = new XamlType("System.Windows.Media.Animation", "AnimationTimeline");
 		types["BeginStoryboard"] = new XamlType("System.Windows.Media.Animation", "BeginStoryboard");
 		types["Binding"] = new XamlType("System.Windows.Data", "Binding");
 		types["Border"] = new XamlType("System.Windows.Controls", "Border");
@@ -17,6 +18,7 @@ class Xaml2Cs
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
+		types["ColorAnimationBase"] = new XamlType("System.Windows.Media.Animation", "ColorAnimationBase");
 		types["ComponentResourceKey"] = new XamlType("System.Windows", "ComponentResourceKey");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
@@ -27,6 +29,7 @@ class Xaml2Cs
 		types["ControlTemplate"].is_template = true;
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
+		types["Duration"] = new XamlType("System.Windows", "Duration");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
@@ -67,6 +70,7 @@ class Xaml2Cs
 		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
+		types["Timeline"] = new XamlType("System.Windows.Media.Animation", "Timeline");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
@@ -83,10 +87,13 @@ class Xaml2Cs
 		types["VerticalAlignment"] = new XamlType("System.Windows", "VerticalAlignment");
 		types["VerticalAlignment"].is_enum = true;
 
+		types["AnimationTimeline"].base_type = types["Timeline"];
 		types["BeginStoryboard"].base_type = types["TriggerAction"];
 		types["Border"].base_type = types["FrameworkElement"];
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["Panel"];
+		types["ColorAnimation"].base_type = types["ColorAnimationBase"];
+		types["ColorAnimationBase"].base_type = types["AnimationTimeline"];
 		types["ContentControl"].base_type = types["Control"];
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
@@ -129,6 +136,8 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
+		types["ColorAnimation"].AddProperty(types["Color"], "From", true);
+		types["ColorAnimation"].AddProperty(types["Color"], "To", true);
 		types["ComponentResourceKey"].AddProperty(types["object"], "ResourceId", false);
 		types["ComponentResourceKey"].AddProperty(types["Type"], "TypeInTargetAssembly", false);
 		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
@@ -186,6 +195,8 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
+		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
+		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
@@ -509,6 +520,45 @@ class Xaml2Cs
 		else if (prop.value_type.name == "object" || prop.value_type.name == "string")
 		{
 			value_expression = String.Format("\"{0}\"", str);
+		}
+		else if (prop.value_type.name == "Duration" && str.Contains(":"))
+		{
+			string[] parts = str.Split(':');
+			int days, hours, minutes, seconds, ms;
+			if (parts[0].Contains("."))
+			{
+				string[] parts2 = parts[0].Split('.');
+				days = int.Parse(parts2[0]);
+				hours = int.Parse(parts2[1]);
+			}
+			else
+			{
+				days = 0;
+				hours = int.Parse(parts[0]);
+			}
+			minutes = int.Parse(parts[1]);
+			if (parts.Length > 2)
+			{
+				if (parts[2].Contains("."))
+				{
+					string[] parts2 = parts[2].Split('.');
+					seconds = int.Parse(parts2[0]);
+					ms = int.Parse(parts2[1] + new String('0', 3 - parts2[1].Length));
+				}
+				else
+				{
+					seconds = int.Parse(parts[2]);
+					ms = 0;
+				}
+			}
+			else
+			{
+				seconds = 0;
+				ms = 0;
+			}
+			namespaces.Add("System"); // for TimeSpan
+			value_expression = String.Format("new Duration(new TimeSpan({0},{1},{2},{3},{4}))",
+				days, hours, minutes, seconds, ms);
 		}
 		else
 		{
