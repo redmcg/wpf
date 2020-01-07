@@ -185,6 +185,7 @@ class Xaml2Cs
 		types["FrameworkElement"].AddProperty(types["ResourceDictionary"], "Resources", false);
 		types["FrameworkElement"].props["Resources"].auto = true;
 		types["FrameworkElement"].AddProperty(types["Style"], "Style", true);
+		types["FrameworkElement"].AddProperty(types["object"], "ToolTip", true);
 		types["FrameworkElement"].AddProperty(types["TriggerCollection"], "Triggers", false);
 		types["FrameworkElement"].props["Triggers"].auto = true;
 		types["FrameworkElement"].AddProperty(types["VerticalAlignment"], "VerticalAlignment", false);
