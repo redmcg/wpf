@@ -52,6 +52,8 @@ class Xaml2Cs
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
 		types["Label"] = new XamlType("System.Windows.Controls", "Label");
 		types["LinearGradientBrush"] = new XamlType("System.Windows.Media", "LinearGradientBrush");
+		types["Menu"] = new XamlType("System.Windows.Controls", "Menu");
+		types["MenuBase"] = new XamlType("System.Windows.Controls.Primitives", "MenuBase");
 		types["MenuItem"] = new XamlType("System.Windows.Controls", "MenuItem");
 		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
@@ -125,6 +127,8 @@ class Xaml2Cs
 		types["ItemsPresenter"].base_type = types["FrameworkElement"];
 		types["Label"].base_type = types["ContentControl"];
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
+		types["Menu"].base_type = types["MenuBase"];
+		types["MenuBase"].base_type = types["ItemsControl"];
 		types["MenuItem"].base_type = types["HeaderedItemsControl"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["ParallelTimeline"].base_type = types["TimelineGroup"];
