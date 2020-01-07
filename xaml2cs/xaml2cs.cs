@@ -60,6 +60,7 @@ class Xaml2Cs
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
+		types["Storyboard"] = new XamlType("System.Windows.Media.Animation", "Storyboard");
 		types["string"] = new XamlType(null, "string");
 		types["Style"] = new XamlType("System.Windows", "Style");
 		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
