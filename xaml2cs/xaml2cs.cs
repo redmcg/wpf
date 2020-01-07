@@ -85,6 +85,7 @@ class Xaml2Cs
 		types["TimelineGroup"] = new XamlType("System.Windows.Media.Animation", "TimelineGroup");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
+		types["ToolTipService"] = new XamlType("System.Windows.Controls", "ToolTipService");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
 		types["TriggerAction"] = new XamlType("System.Windows", "TriggerAction");
 		types["TriggerBase"] = new XamlType("System.Windows", "TriggerBase");
@@ -229,6 +230,7 @@ class Xaml2Cs
 		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
 		types["TimelineGroup"].AddProperty(types["TimelineCollection"], "Children", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
+		types["ToolTipService"].AddProperty(types["bool"], "ShowOnDisabled", true);
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
 		types["UIElement"].AddProperty(types["bool"], "AllowDrop", true);
