@@ -16,6 +16,7 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
 		types["ComponentResourceKey"] = new XamlType("System.Windows", "ComponentResourceKey");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
@@ -179,6 +180,8 @@ class Xaml2Cs
 		types["Setter"].props["Value"].indirect_property = true;
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
+		types["Storyboard"].AddProperty(types["string"], "TargetName", true);
+		types["Storyboard"].AddProperty(types["PropertyPath"], "TargetProperty", true);
 		types["Style"].AddProperty(types["Style"], "BasedOn", false);
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
