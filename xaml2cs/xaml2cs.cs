@@ -135,6 +135,7 @@ class Xaml2Cs
 		types["ControlTemplate"].AddProperty(types["TriggerCollection"], "Triggers", false);
 		types["ControlTemplate"].props["Triggers"].auto = true;
 		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
+		types["EventTrigger"].AddProperty(types["string"], "SourceName", false);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", true);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
