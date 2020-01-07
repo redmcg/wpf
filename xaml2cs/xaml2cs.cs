@@ -95,6 +95,7 @@ class Xaml2Cs
 		types["Path"].base_type = types["Shape"];
 		types["Popup"].base_type = types["FrameworkElement"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
+		types["Shape"].base_type = types["FrameworkElement"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
 		types["ToolBar"].base_type = types["FrameworkElement"];
