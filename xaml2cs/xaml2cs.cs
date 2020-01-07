@@ -29,6 +29,8 @@ class Xaml2Cs
 		types["ControlTemplate"].is_template = true;
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
+		types["DoubleAnimation"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimation");
+		types["DoubleAnimationBase"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimationBase");
 		types["Duration"] = new XamlType("System.Windows", "Duration");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
@@ -101,6 +103,8 @@ class Xaml2Cs
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
+		types["DoubleAnimation"].base_type = types["DoubleAnimationBase"];
+		types["DoubleAnimationBase"].base_type = types["AnimationTimeline"];
 		types["EventTrigger"].base_type = types["TriggerBase"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["GradientBrush"].base_type = types["Brush"];
@@ -157,6 +161,8 @@ class Xaml2Cs
 		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
 		types["ControlTemplate"].AddProperty(types["TriggerCollection"], "Triggers", false);
 		types["ControlTemplate"].props["Triggers"].auto = true;
+		types["DoubleAnimation"].AddProperty(types["double"], "From", true);
+		types["DoubleAnimation"].AddProperty(types["double"], "To", true);
 		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
 		types["EventTrigger"].AddProperty(types["string"], "SourceName", false);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
