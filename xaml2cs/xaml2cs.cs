@@ -15,6 +15,7 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
+		types["ComponentResourceKey"] = new XamlType("System.Windows", "ComponentResourceKey");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
 		types["ContentControl"] = new XamlType("System.Windows.Controls", "ContentControl");
@@ -112,6 +113,8 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
+		types["ComponentResourceKey"].AddProperty(types["object"], "ResourceId", false);
+		types["ComponentResourceKey"].AddProperty(types["Type"], "TypeInTargetAssembly", false);
 		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Condition"].AddProperty(types["object"], "Value", false);
 		types["Condition"].props["Value"].indirect_property = true;
@@ -378,6 +381,23 @@ class Xaml2Cs
 			{
 				throw new NotImplementedException(String.Format("RelativeSource {0}", contents));
 			}
+		}
+		else if (str.StartsWith("{ComponentResourceKey ") && str.EndsWith("}"))
+		{
+			string attributes_str = str.Substring(22, str.Length - 23);
+			var initializers = new List<string>();
+			XamlType result_type = types["ComponentResourceKey"];
+			foreach (string prop_str in attributes_str.Split(','))
+			{
+				string trimmed_str = prop_str.Trim();
+				string[] parts = trimmed_str.Split(new char[] {'='}, 2);
+				XamlProperty result_prop;
+				if (!result_type.LookupProp(parts[0], out result_prop))
+					throw new NotImplementedException(string.Format("ComponentResourceKey property {0}", parts[0]));
+				string prop_val_expr = attribute_string_to_expression(null, result_prop, parts[1]);
+				initializers.Add(String.Format("{0} = {1}, ", parts[0], prop_val_expr));
+			}
+			return String.Format("new ComponentResourceKey{{ {0} }}", String.Join("", initializers));
 		}
 		else if (prop.indirect_property)
 		{
