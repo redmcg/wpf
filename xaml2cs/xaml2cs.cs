@@ -176,6 +176,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["bool"], "IsKeyboardFocused", true);
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
+		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
 
 		elements_by_local = new Dictionary<string,XamlElement>();
 		elements_by_name = new Dictionary<string,XamlElement>();
