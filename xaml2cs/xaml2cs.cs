@@ -33,6 +33,7 @@ class Xaml2Cs
 		types["DoubleAnimation"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimation");
 		types["DoubleAnimationBase"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimationBase");
 		types["Duration"] = new XamlType("System.Windows", "Duration");
+		types["event"] = new XamlType(null, "event");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
@@ -161,6 +162,7 @@ class Xaml2Cs
 		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Condition"].AddProperty(types["object"], "Value", false);
 		types["Condition"].props["Value"].indirect_property = true;
+		types["ContentControl"].AddProperty(types["object"], "Content", true);
 		types["Control"].AddProperty(types["Brush"], "Background", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["FontStyle"], "FontStyle", true);
@@ -219,6 +221,7 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
+		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
 		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
 		types["TimelineGroup"].AddProperty(types["TimelineCollection"], "Children", true);
@@ -233,6 +236,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
 
+		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
@@ -306,6 +310,21 @@ class Xaml2Cs
 				parent = parent.base_type;
 			}
 			return String.Format(parent.add_with_key_statement, parent_expr, key_expr, value_expr);
+		}
+
+		public XamlProperty ContentProp
+		{
+			get
+			{
+				XamlType base_type = this;
+				while (base_type != null)
+				{
+					if (base_type.content_prop != null)
+						return base_type.content_prop;
+					base_type = base_type.base_type;
+				}
+				throw new NotImplementedException(String.Format("content property for {0}", name));
+			}
 		}
 
 		public bool IsCollection
@@ -589,6 +608,10 @@ class Xaml2Cs
 		{
 			value_expression = String.Format("\"{0}\"", str);
 		}
+		else if (prop.value_type.name == "event")
+		{
+			value_expression = str;
+		}
 		else if (prop.value_type.name == "Duration" && str.Contains(":"))
 		{
 			string[] parts = str.Split(':');
@@ -846,6 +869,10 @@ class Xaml2Cs
 									{
 										current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
 									}
+									else if (prop.value_type.name == "event")
+									{
+										current.early_init.Add(String.Format("{0}.{1} += {2};", current.local_name, prop.name, value_expression));
+									}
 									else
 									{
 										current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
@@ -892,6 +919,19 @@ class Xaml2Cs
 				else if (reader.NodeType == XmlNodeType.EndElement)
 				{
 					current = current.parent;
+				}
+				else if (reader.NodeType == XmlNodeType.Text)
+				{
+					var prop = current.type.ContentProp;
+					string value_expression = attribute_string_to_expression(current, prop, reader.Value);
+					if (prop.dependency)
+					{
+						current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
+					}
+					else
+					{
+						current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
+					}
 				}
 			}
 		}
