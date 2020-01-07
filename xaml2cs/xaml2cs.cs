@@ -15,6 +15,7 @@ class Xaml2Cs
 		types["Border"] = new XamlType("System.Windows.Controls", "Border");
 		types["Brush"] = new XamlType("System.Windows.Media", "Brush");
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
+		types["ButtonBase"] = new XamlType("System.Windows.Controls.Primitives", "ButtonBase");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
@@ -103,7 +104,8 @@ class Xaml2Cs
 		types["AnimationTimeline"].base_type = types["Timeline"];
 		types["BeginStoryboard"].base_type = types["TriggerAction"];
 		types["Border"].base_type = types["Decorator"];
-		types["Button"].base_type = types["Control"];
+		types["Button"].base_type = types["ButtonBase"];
+		types["ButtonBase"].base_type = types["ContentControl"];
 		types["Canvas"].base_type = types["Panel"];
 		types["ColorAnimation"].base_type = types["ColorAnimationBase"];
 		types["ColorAnimationBase"].base_type = types["AnimationTimeline"];
@@ -157,6 +159,7 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
+		types["ButtonBase"].AddProperty(types["event"], "Click", false);
 		types["ColorAnimation"].AddProperty(types["Color"], "From", true);
 		types["ColorAnimation"].AddProperty(types["Color"], "To", true);
 		types["ComponentResourceKey"].AddProperty(types["object"], "ResourceId", false);
