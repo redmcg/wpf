@@ -27,6 +27,7 @@ class Xaml2Cs
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
 		types["ControlTemplate"].is_template = true;
+		types["Decorator"] = new XamlType("System.Windows.Controls", "Decorator");
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
 		types["DoubleAnimation"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimation");
@@ -97,7 +98,7 @@ class Xaml2Cs
 
 		types["AnimationTimeline"].base_type = types["Timeline"];
 		types["BeginStoryboard"].base_type = types["TriggerAction"];
-		types["Border"].base_type = types["FrameworkElement"];
+		types["Border"].base_type = types["Decorator"];
 		types["Button"].base_type = types["Control"];
 		types["Canvas"].base_type = types["Panel"];
 		types["ColorAnimation"].base_type = types["ColorAnimationBase"];
@@ -106,6 +107,7 @@ class Xaml2Cs
 		types["ContentPresenter"].base_type = types["FrameworkElement"];
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
+		types["Decorator"].base_type = types["FrameworkElement"];
 		types["DoubleAnimation"].base_type = types["DoubleAnimationBase"];
 		types["DoubleAnimationBase"].base_type = types["AnimationTimeline"];
 		types["EventTrigger"].base_type = types["TriggerBase"];
@@ -165,6 +167,7 @@ class Xaml2Cs
 		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
 		types["ControlTemplate"].AddProperty(types["TriggerCollection"], "Triggers", false);
 		types["ControlTemplate"].props["Triggers"].auto = true;
+		types["Decorator"].AddProperty(types["UIElement"], "Child", false);
 		types["DoubleAnimation"].AddProperty(types["double"], "From", true);
 		types["DoubleAnimation"].AddProperty(types["double"], "To", true);
 		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
@@ -227,6 +230,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
 
+		types["Decorator"].content_prop = types["Decorator"].props["Child"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -301,6 +305,14 @@ class Xaml2Cs
 			return String.Format(parent.add_with_key_statement, parent_expr, key_expr, value_expr);
 		}
 
+		public bool IsCollection
+		{
+			get
+			{
+				return add_statement != null || (base_type != null && base_type.IsCollection);
+			}
+		}
+
 		public string AddStatement(XamlElement element, string parent_expr, string value_expr)
 		{
 			XamlType parent = this;
@@ -311,17 +323,25 @@ class Xaml2Cs
 				if (parent.content_prop != null)
 				{
 					var prop = parent.content_prop;
-					string result = prop.value_type.AddStatement(element,
-						String.Format("({0}).{1}", parent_expr, prop.name),
-						value_expr);
-					if (!prop.auto && !element.parent.initialized_content)
+					if (prop.value_type.IsCollection)
 					{
-						element.parent.early_init.Add(String.Format(
-							"{0}.{1} = new {2}();",
-							parent_expr, prop.name, prop.value_type.name));
-						element.parent.initialized_content = true;
+						string result = prop.value_type.AddStatement(element,
+							String.Format("({0}).{1}", parent_expr, prop.name),
+							value_expr);
+						if (!prop.auto && !element.parent.initialized_content)
+						{
+							element.parent.early_init.Add(String.Format(
+								"{0}.{1} = new {2}();",
+								parent_expr, prop.name, prop.value_type.name));
+							element.parent.initialized_content = true;
+						}
+						return result;
 					}
-					return result;
+					else
+					{
+						return String.Format("({0}).{1} = {2};",
+							parent_expr, prop.name, value_expr);
+					}
 				}
 				if (parent.base_type == null)
 					throw new NotImplementedException(String.Format("add child for {0}", name));
