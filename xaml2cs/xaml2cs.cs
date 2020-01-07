@@ -664,7 +664,12 @@ class Xaml2Cs
 								break;
 							case "x:Name":
 								current.name = reader.Value;
-								current.early_init.Add(String.Format("{0}.Name = \"{1}\";", current.local_name, current.name));
+								XamlProperty name_prop;
+								if (current.type.LookupProp("Name", out name_prop))
+								{
+									current.early_init.Add(String.Format("{0}.Name = {1};", current.local_name,
+										attribute_string_to_expression(current, name_prop, reader.Value)));
+								}
 								elements_by_name[reader.Value] = current;
 								handled_attribute = true;
 								break;
