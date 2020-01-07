@@ -98,11 +98,12 @@ class Xaml2Cs
 		types["Shape"].base_type = types["FrameworkElement"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
-		types["ToolBar"].base_type = types["FrameworkElement"];
+		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
 		types["ConditionCollection"].add_statement = "{0}.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
+		types["ItemsControl"].add_statement = "{0}.Items.Add({1});";
 		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
 		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
