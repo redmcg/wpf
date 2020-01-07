@@ -84,6 +84,7 @@ class Xaml2Cs
 		types["Control"].base_type = types["FrameworkElement"];
 		types["ControlTemplate"].base_type = types["FrameworkTemplate"];
 		types["FrameworkElement"].base_type = types["UIElement"];
+		types["GradientBrush"].base_type = types["Brush"];
 		types["Grid"].base_type = types["FrameworkElement"];
 		types["HeaderedItemsControl"].base_type = types["ItemsControl"];
 		types["ItemsControl"].base_type = types["Control"];
