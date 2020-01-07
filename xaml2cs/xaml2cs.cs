@@ -54,6 +54,7 @@ class Xaml2Cs
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
+		types["RoutedEvent"] = new XamlType("System.Windows", "RoutedEvent");
 		types["ScrollViewer"] = new XamlType("System.Windows.Controls", "ScrollViewer");
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
@@ -133,6 +134,7 @@ class Xaml2Cs
 		types["ControlTemplate"].AddProperty(types["Type"], "TargetType", false);
 		types["ControlTemplate"].AddProperty(types["TriggerCollection"], "Triggers", false);
 		types["ControlTemplate"].props["Triggers"].auto = true;
+		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", true);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
@@ -484,6 +486,10 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("new PropertyPath(\"{0}\")", str);
+		}
+		else if (prop.value_type.name == "RoutedEvent")
+		{
+			value_expression = String.Format("{0}Event", str);
 		}
 		else if (prop.value_type.name == "double")
 		{
