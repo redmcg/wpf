@@ -113,7 +113,7 @@ class Xaml2Cs
 		types["EventTrigger"].base_type = types["TriggerBase"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["GradientBrush"].base_type = types["Brush"];
-		types["Grid"].base_type = types["FrameworkElement"];
+		types["Grid"].base_type = types["Panel"];
 		types["HeaderedItemsControl"].base_type = types["ItemsControl"];
 		types["ItemsControl"].base_type = types["Control"];
 		types["ItemsPresenter"].base_type = types["FrameworkElement"];
@@ -196,6 +196,7 @@ class Xaml2Cs
 		types["MultiTrigger"].props["Conditions"].auto = true;
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
+		types["Panel"].AddProperty(types["Brush"], "Background", true);
 		types["Path"].AddProperty(types["Geometry"], "Data", true);
 		types["Popup"].AddProperty(types["bool"], "AllowsTransparency", true);
 		types["Popup"].AddProperty(types["bool"], "IsOpen", true);
