@@ -49,6 +49,7 @@ class Xaml2Cs
 		types["MultiTrigger"] = new XamlType("System.Windows.Markup", "MultiTrigger");
 		types["object"] = new XamlType(null, "object");
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
+		types["ParallelTimeline"] = new XamlType("System.Windows.Media.Animation", "ParallelTimeline");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
 		types["PlacementMode"] = new XamlType("System.Windows.Controls.Primitives", "PlacementMode");
 		types["PlacementMode"].is_enum = true;
@@ -71,6 +72,8 @@ class Xaml2Cs
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["Timeline"] = new XamlType("System.Windows.Media.Animation", "Timeline");
+		types["TimelineCollection"] = new XamlType("System.Windows.Media.Animation", "TimelineCollection");
+		types["TimelineGroup"] = new XamlType("System.Windows.Media.Animation", "TimelineGroup");
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
@@ -109,12 +112,15 @@ class Xaml2Cs
 		types["LinearGradientBrush"].base_type = types["GradientBrush"];
 		types["MenuItem"].base_type = types["HeaderedItemsControl"];
 		types["Panel"].base_type = types["FrameworkElement"];
+		types["ParallelTimeline"].base_type = types["TimelineGroup"];
 		types["Path"].base_type = types["Shape"];
 		types["Popup"].base_type = types["FrameworkElement"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["Shape"].base_type = types["FrameworkElement"];
+		types["Storyboard"].base_type = types["ParallelTimeline"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
+		types["TimelineGroup"].base_type = types["Timeline"];
 		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
 		types["BeginStoryboard"].add_statement = "{0}.Storyboard = {1};";
@@ -127,6 +133,7 @@ class Xaml2Cs
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
 		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
 		types["Style"].add_statement = "{0}.Setters.Add({1});";
+		types["TimelineCollection"].add_statement = "{0}.Add({1});";
 		types["Trigger"].add_statement = "{0}.Setters.Add({1});";
 		types["TriggerCollection"].add_statement = "{0}.Add({1});";
 
@@ -197,6 +204,7 @@ class Xaml2Cs
 		types["Style"].props["Value"].indirect_property = true;
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
 		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
+		types["TimelineGroup"].AddProperty(types["TimelineCollection"], "Children", true);
 		types["ToolBarTray"].AddProperty(types["bool"], "IsLocked", true);
 		types["Trigger"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Trigger"].AddProperty(types["object"], "Value", false);
@@ -207,6 +215,8 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
+
+		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
 		elements_by_local = new Dictionary<string,XamlElement>();
 		elements_by_name = new Dictionary<string,XamlElement>();
@@ -223,6 +233,7 @@ class Xaml2Cs
 		public string add_with_key_statement;
 		public string add_statement;
 		public bool is_template;
+		public XamlProperty content_prop;
 
 		public XamlType(string ns, string name)
 		{
@@ -279,16 +290,32 @@ class Xaml2Cs
 			return String.Format(parent.add_with_key_statement, parent_expr, key_expr, value_expr);
 		}
 
-		public string AddStatement(string parent_expr, string value_expr)
+		public string AddStatement(XamlElement element, string parent_expr, string value_expr)
 		{
 			XamlType parent = this;
-			while (parent.add_statement == null)
+			while (true)
 			{
+				if (parent.add_statement != null)
+					return String.Format(parent.add_statement, parent_expr, value_expr);
+				if (parent.content_prop != null)
+				{
+					var prop = parent.content_prop;
+					string result = prop.value_type.AddStatement(element,
+						String.Format("({0}).{1}", parent_expr, prop.name),
+						value_expr);
+					if (!prop.auto && !element.parent.initialized_content)
+					{
+						element.parent.early_init.Add(String.Format(
+							"{0}.{1} = new {2}();",
+							parent_expr, prop.name, prop.value_type.name));
+						element.parent.initialized_content = true;
+					}
+					return result;
+				}
 				if (parent.base_type == null)
 					throw new NotImplementedException(String.Format("add child for {0}", name));
 				parent = parent.base_type;
 			}
-			return String.Format(parent.add_statement, parent_expr, value_expr);
 		}
 	}
 
@@ -324,6 +351,7 @@ class Xaml2Cs
 		public XamlType target_type;
 		public string setter_property;
 		public bool is_template;
+		public bool initialized_content;
 	}
 
 	XamlElement root_element;
@@ -811,6 +839,7 @@ class Xaml2Cs
 						{
 							current.late_init.Add(
 								current.parent.type.AddStatement(
+									current,
 									current.parent.local_name,
 									current.local_name));
 						}
