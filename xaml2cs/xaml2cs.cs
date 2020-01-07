@@ -109,6 +109,7 @@ class Xaml2Cs
 		types["TextBox"].base_type = types["TextBoxBase"];
 		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
+		types["BeginStoryboard"].add_statement = "{0}.Storyboard = {1};";
 		types["ConditionCollection"].add_statement = "{0}.Add({1});";
 		types["EventTrigger"].add_statement = "{0}.Actions.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
