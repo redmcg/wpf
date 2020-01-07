@@ -45,6 +45,7 @@ class Xaml2Cs
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
+		types["int"] = new XamlType(null, "int");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
 		types["ItemsPresenter"] = new XamlType("System.Windows.Controls", "ItemsPresenter");
 		types["KeyboardNavigation"] = new XamlType("System.Windows.Input", "KeyboardNavigation");
@@ -222,6 +223,7 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
 		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
+		types["TextBox"].AddProperty(types["int"], "MaxLength", true);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
 		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
 		types["TimelineGroup"].AddProperty(types["TimelineCollection"], "Children", true);
@@ -603,6 +605,11 @@ class Xaml2Cs
 		else if (prop.value_type.name == "double")
 		{
 			Double.Parse(str);
+			value_expression = str;
+		}
+		else if (prop.value_type.name == "int")
+		{
+			int.Parse(str);
 			value_expression = str;
 		}
 		else if (prop.value_type.name == "object" || prop.value_type.name == "string")
