@@ -736,7 +736,7 @@ class Xaml2Cs
 		}
 		else
 		{
-			throw new Exception(String.Format("failed converting property value {0}", str));
+			throw new Exception(String.Format("failed converting {1} property value {0}", str, prop.value_type.name));
 		}
 
 		return value_expression;
