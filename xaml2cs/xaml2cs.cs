@@ -85,6 +85,8 @@ class Xaml2Cs
 		types["StackPanel"] = new XamlType("System.Windows.Controls", "StackPanel");
 		types["Storyboard"] = new XamlType("System.Windows.Media.Animation", "Storyboard");
 		types["string"] = new XamlType(null, "string");
+		types["Stretch"] = new XamlType("System.Windows.Media", "Stretch");
+		types["Stretch"].is_enum = true;
 		types["Style"] = new XamlType("System.Windows", "Style");
 		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
@@ -246,6 +248,7 @@ class Xaml2Cs
 		types["Setter"].AddProperty(types["object"], "Value", false);
 		types["Setter"].props["Value"].indirect_property = true;
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
+		types["Shape"].AddProperty(types["Stretch"], "Stretch", true);
 		types["Shape"].AddProperty(types["Brush"], "Stroke", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
