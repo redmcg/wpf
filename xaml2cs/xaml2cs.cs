@@ -608,6 +608,12 @@ class Xaml2Cs
 			b = Convert.ToByte(str.Substring(5, 2), 16);
 			value_expression = String.Format("Color.FromRgb({0}, {1}, {2})", r, g, b);
 		}
+		else if (prop.value_type.name == "Color")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("Colors.{0}", str);
+		}
 		else if (prop.value_type.name == "Brush" && str == "Transparent")
 		{
 			if (prop.value_type.ns != null)
