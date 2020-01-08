@@ -211,8 +211,10 @@ class Xaml2Cs
 		types["GradientBrush"].props["GradientStops"].auto = true;
 		types["GradientStop"].AddProperty(types["Color"], "Color", false);
 		types["GradientStop"].AddProperty(types["double"], "Offset", false);
+		types["Grid"].AddProperty(types["int"], "Column", true);
 		types["Grid"].AddProperty(types["ColumnDefinitionCollection"], "ColumnDefinitions", false);
 		types["Grid"].props["ColumnDefinitions"].auto = true;
+		types["Grid"].AddProperty(types["int"], "Row", true);
 		types["Grid"].AddProperty(types["RowDefinitionCollection"], "RowDefinitions", false);
 		types["Grid"].props["RowDefinitions"].auto = true;
 		types["HeaderedItemsControl"].AddProperty(types["object"], "Header", true);
