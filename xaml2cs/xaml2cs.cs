@@ -276,6 +276,7 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
 		types["TextBlock"].AddProperty(types["FontFamily"], "FontFamily", true);
+		types["TextBlock"].AddProperty(types["double"], "FontSize", true);
 		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
 		types["TextBox"].AddProperty(types["int"], "MaxLength", true);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
