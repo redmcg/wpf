@@ -645,6 +645,16 @@ class Xaml2Cs
 			b = Convert.ToByte(str.Substring(4, 1), 16) * 17;
 			value_expression = String.Format("Color.FromArgb({0}, {1}, {2}, {3})", a, r, g, b);
 		}
+		else if (prop.value_type.name == "Color" && str.StartsWith("#") && str.Length == 4)
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			int r, g, b;
+			r = Convert.ToByte(str.Substring(1, 1), 16) * 17;
+			g = Convert.ToByte(str.Substring(2, 1), 16) * 17;
+			b = Convert.ToByte(str.Substring(3, 1), 16) * 17;
+			value_expression = String.Format("Color.FromRgb({0}, {1}, {2})", r, g, b);
+		}
 		else if (prop.value_type.name == "Color" && str.ToLowerInvariant() == "transparent")
 		{
 			if (prop.value_type.ns != null)
