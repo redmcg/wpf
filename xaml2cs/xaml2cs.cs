@@ -99,6 +99,7 @@ class Xaml2Cs
 		types["ToolBar"] = new XamlType("System.Windows.Controls", "ToolBar");
 		types["ToolBarTray"] = new XamlType("System.Windows.Controls", "ToolBarTray");
 		types["ToolTipService"] = new XamlType("System.Windows.Controls", "ToolTipService");
+		types["Transform"] = new XamlType("System.Windows.Media", "Transform");
 		types["Trigger"] = new XamlType("System.Windows", "Trigger");
 		types["TriggerAction"] = new XamlType("System.Windows", "TriggerAction");
 		types["TriggerBase"] = new XamlType("System.Windows", "TriggerBase");
@@ -284,6 +285,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 		types["UIElement"].AddProperty(types["Brush"], "OpacityMask", true);
 		types["UIElement"].AddProperty(types["event"], "PreviewKeyDown", false);
+		types["UIElement"].AddProperty(types["Transform"], "RenderTransform", true);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
 		types["UIElement"].AddProperty(types["Visibility"], "Visibility", true);
 
