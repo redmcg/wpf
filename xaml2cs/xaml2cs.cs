@@ -414,6 +414,7 @@ class Xaml2Cs
 		public string name;
 		public List<string> early_init = new List<string>();
 		public List<string> late_init = new List<string>();
+		public List<string> class_decls = new List<string>();
 		public XamlProperty prop;
 		public bool has_attributes;
 		public string key;
@@ -760,14 +761,27 @@ class Xaml2Cs
 							(parent.is_template || parent.type.is_template));
 
 						bool needs_declaration = true;
+						bool needs_creation = true;
 						if (current == root_element) {
 							local_name = "this";
 							needs_declaration = false;
+							needs_creation = false;
 						}
 						else if (reader.GetAttribute("x:Name") != null &&
 							!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
 						{
 							local_name = reader.GetAttribute("x:Name");
+							if (current.is_template)
+							{
+								current.class_decls.Add(String.Format("public FrameworkElementFactory {0};",
+									local_name));
+							}
+							else
+							{
+								current.class_decls.Add(String.Format("public {0} {1};",
+									current.type.name, local_name));
+							}
+							needs_declaration = false;
 						}
 						else if (reader.GetAttribute("x:Uid") != null &&
 							!elements_by_local.ContainsKey(reader.GetAttribute("x:Uid")))
@@ -786,29 +800,37 @@ class Xaml2Cs
 						if (needs_declaration) {
 							if (current.is_template)
 							{
-								if (reader.GetAttribute("x:Name") != null)
-									current.early_init.Add(String.Format("FrameworkElementFactory {1} = new FrameworkElementFactory(typeof({0}), \"{1}\");", current.type.name, local_name, reader["x:Name"]));
-								else
-									current.early_init.Add(String.Format("FrameworkElementFactory {1} = new FrameworkElementFactory(typeof({0}));", current.type.name, local_name));
+								current.early_init.Add(String.Format("FrameworkElementFactory {0};", local_name));
 							}
 							else
-								current.early_init.Add(String.Format("{0} {1} = new {0}();", current.type.name, local_name));
-							if (current.parent != null &&
-								!current.parent.has_attributes &&
-								current.parent.prop != null &&
-								current.type.SubclassOf(current.parent.prop.value_type))
+								current.early_init.Add(String.Format("{0} {1};", current.type.name, local_name));
+						}
+						if (needs_creation) {
+							if (current.is_template)
 							{
-								current.prop = current.parent.prop;
-								current.parent.early_init.Clear();
-								current.parent.late_init.Clear();
-								if (current.parent.prop.dependency)
-								{
-									current.parent.late_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.parent.parent.local_name, current.parent.prop.container_type.name, current.parent.prop.name, local_name));
-								}
+								if (reader.GetAttribute("x:Name") != null)
+									current.early_init.Add(String.Format("{1} = new FrameworkElementFactory(typeof({0}), \"{1}\");", current.type.name, local_name, reader["x:Name"]));
 								else
-								{
-									current.early_init.Add(String.Format("{0}.{1} = {2};", current.parent.parent.local_name, current.parent.prop.name, local_name));
-								}
+									current.early_init.Add(String.Format("{1} = new FrameworkElementFactory(typeof({0}));", current.type.name, local_name));
+							}
+							else
+								current.early_init.Add(String.Format("{1} = new {0}();", current.type.name, local_name));
+						}
+						if (current.parent != null &&
+							!current.parent.has_attributes &&
+							current.parent.prop != null &&
+							current.type.SubclassOf(current.parent.prop.value_type))
+						{
+							current.prop = current.parent.prop;
+							current.parent.early_init.Clear();
+							current.parent.late_init.Clear();
+							if (current.parent.prop.dependency)
+							{
+								current.parent.late_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.parent.parent.local_name, current.parent.prop.container_type.name, current.parent.prop.name, local_name));
+							}
+							else
+							{
+								current.early_init.Add(String.Format("{0}.{1} = {2};", current.parent.parent.local_name, current.parent.prop.name, local_name));
 							}
 						}
 					}
@@ -972,6 +994,18 @@ class Xaml2Cs
 		}
 	}
 
+	private void WriteDecls(TextWriter f, XamlElement element)
+	{
+		foreach (var line in element.class_decls)
+		{
+			f.WriteLine(line);
+		}
+		foreach (var child in element.children)
+		{
+			WriteDecls(f, child);
+		}
+	}
+
 	private void WriteInitializeComponent(TextWriter f, XamlElement element)
 	{
 		foreach (var line in element.early_init)
@@ -1007,6 +1041,7 @@ class Xaml2Cs
 
 		f.WriteLine("namespace {0} {{", ns);
 		f.WriteLine("{1} partial class {0} : {2} {{", class_name, root_element.class_modifier, root_element.type.name);
+		WriteDecls(f, root_element);
 		f.WriteLine("public void InitializeComponent() {");
 		WriteInitializeComponent(f, root_element);
 		f.WriteLine("}"); // end InitializeComponent
