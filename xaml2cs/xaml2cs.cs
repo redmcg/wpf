@@ -246,6 +246,7 @@ class Xaml2Cs
 		types["Setter"].AddProperty(types["object"], "Value", false);
 		types["Setter"].props["Value"].indirect_property = true;
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
+		types["Shape"].AddProperty(types["Brush"], "Stroke", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
 		types["Storyboard"].AddProperty(types["string"], "TargetName", true);
