@@ -47,6 +47,7 @@ class Xaml2Cs
 		types["GradientStop"] = new XamlType("System.Windows.Media", "GradientStop");
 		types["GradientStopCollection"] = new XamlType("System.Windows.Media", "GradientStopCollection");
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
+		types["GridLength"] = new XamlType("System.Windows", "GridLength");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
 		types["int"] = new XamlType(null, "int");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
@@ -168,6 +169,7 @@ class Xaml2Cs
 		types["ButtonBase"].AddProperty(types["event"], "Click", false);
 		types["ColorAnimation"].AddProperty(types["Color"], "From", true);
 		types["ColorAnimation"].AddProperty(types["Color"], "To", true);
+		types["ColumnDefinition"].AddProperty(types["GridLength"], "Width", true);
 		types["ComponentResourceKey"].AddProperty(types["object"], "ResourceId", false);
 		types["ComponentResourceKey"].AddProperty(types["Type"], "TypeInTargetAssembly", false);
 		types["Condition"].AddProperty(types["DependencyProperty"], "Property", false);
@@ -688,6 +690,28 @@ class Xaml2Cs
 			namespaces.Add("System"); // for TimeSpan
 			value_expression = String.Format("new Duration(new TimeSpan({0},{1},{2},{3},{4}))",
 				days, hours, minutes, seconds, ms);
+		}
+		else if (prop.value_type.name == "GridLength")
+		{
+			if (str == "Auto")
+			{
+				value_expression = "GridLength.Auto";
+			}
+			else if (str == "*")
+			{
+				value_expression = "new GridLength(1, GridUnitType.Star)";
+			}
+			else if (str.EndsWith("*"))
+			{
+				var num = str.Substring(0, str.Length - 1);
+				Double.Parse(num);
+				value_expression = String.Format("new GridLength({0}, GridUnitType.Star)", num);
+			}
+			else
+			{
+				Double.Parse(str);
+				value_expression = str;
+			}
 		}
 		else
 		{
