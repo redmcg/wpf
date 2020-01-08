@@ -51,6 +51,7 @@ class Xaml2Cs
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["GridLength"] = new XamlType("System.Windows", "GridLength");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
+		types["Hyperlink"] = new XamlType("System.Windows.Documents", "Hyperlink");
 		types["InlineCollection"] = new XamlType("System.Windows.Documents", "InlineCollection");
 		types["int"] = new XamlType(null, "int");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
