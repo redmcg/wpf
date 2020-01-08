@@ -286,6 +286,8 @@ class Xaml2Cs
 		types["Shape"].AddProperty(types["PenLineCap"], "StrokeStartLineCap", true);
 		types["Shape"].AddProperty(types["double"], "StrokeThickness", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
+		types["Span"].AddProperty(types["InlineCollection"], "Inlines", true);
+		types["Span"].props["Inlines"].auto = true;
 		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
 		types["Storyboard"].AddProperty(types["string"], "TargetName", true);
 		types["Storyboard"].AddProperty(types["PropertyPath"], "TargetProperty", true);
@@ -324,6 +326,7 @@ class Xaml2Cs
 		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
 		types["GradientBrush"].content_prop = types["GradientBrush"].props["GradientStops"];
+		types["Span"].content_prop = types["Span"].props["Inlines"];
 		types["TextBlock"].content_prop = types["TextBlock"].props["Inlines"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
