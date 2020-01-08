@@ -663,6 +663,14 @@ class Xaml2Cs
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("Colors.{0}", str);
 		}
+		else if (prop.value_type.name == "Brush" && str.StartsWith("#"))
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			var color_expression = attribute_string_to_expression(element,
+				types["SolidColorBrush"].props["Color"], str);
+			value_expression = String.Format("new SolidColorBrush({0})", color_expression);
+		}
 		else if (prop.value_type.name == "Brush" && str.ToLowerInvariant() == "transparent")
 		{
 			if (prop.value_type.ns != null)
