@@ -208,6 +208,7 @@ class Xaml2Cs
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "StartPoint", false);
 		types["Menu"].AddProperty(types["bool"], "IsMainMenu", true);
+		types["MenuItem"].AddProperty(types["bool"], "IsCheckable", true);
 		types["MultiTrigger"].AddProperty(types["ConditionCollection"], "Conditions", false);
 		types["MultiTrigger"].props["Conditions"].auto = true;
 		types["object"].AddProperty(types["object"], "_key", false);
