@@ -20,6 +20,7 @@ class Xaml2Cs
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
 		types["ColorAnimationBase"] = new XamlType("System.Windows.Media.Animation", "ColorAnimationBase");
+		types["ColumnDefinition"] = new XamlType("System.Windows.Controls", "ColumnDefinition");
 		types["ColumnDefinitionCollection"] = new XamlType("System.Windows.Controls", "ColumnDefinitionCollection");
 		types["ComponentResourceKey"] = new XamlType("System.Windows", "ComponentResourceKey");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
