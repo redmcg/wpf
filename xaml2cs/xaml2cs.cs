@@ -203,6 +203,7 @@ class Xaml2Cs
 		types["GradientBrush"].props["GradientStops"].auto = true;
 		types["GradientStop"].AddProperty(types["Color"], "Color", false);
 		types["GradientStop"].AddProperty(types["double"], "Offset", false);
+		types["HeaderedItemsControl"].AddProperty(types["object"], "Header", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
 		types["LinearGradientBrush"].AddProperty(types["Point"], "EndPoint", false);
@@ -943,15 +944,28 @@ class Xaml2Cs
 				}
 				else if (reader.NodeType == XmlNodeType.Text)
 				{
-					var prop = current.type.ContentProp;
-					string value_expression = attribute_string_to_expression(current, prop, reader.Value);
-					if (prop.dependency)
+					XamlProperty prop;
+					XamlElement element;
+					if (!current.has_attributes && current.prop != null)
 					{
-						current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
+						prop = current.prop;
+						element = current.parent;
+						current.early_init.Clear();
+						current.late_init.Clear();
 					}
 					else
 					{
-						current.early_init.Add(String.Format("{0}.{1} = {2};", current.local_name, prop.name, value_expression));
+						prop = current.type.ContentProp;
+						element = current;
+					}
+					string value_expression = attribute_string_to_expression(current, prop, reader.Value);
+					if (prop.dependency)
+					{
+						element.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", element.local_name, prop.container_type.name, prop.name, value_expression));
+					}
+					else
+					{
+						element.early_init.Add(String.Format("{0}.{1} = {2};", element.local_name, prop.name, value_expression));
 					}
 				}
 			}
