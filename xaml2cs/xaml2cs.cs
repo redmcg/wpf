@@ -255,6 +255,7 @@ class Xaml2Cs
 
 		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
+		types["GradientBrush"].content_prop = types["GradientBrush"].props["GradientStops"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
 		elements_by_local = new Dictionary<string,XamlElement>();
