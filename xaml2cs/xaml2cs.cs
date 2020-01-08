@@ -80,6 +80,7 @@ class Xaml2Cs
 		types["RoutedEvent"] = new XamlType("System.Windows", "RoutedEvent");
 		types["RowDefinition"] = new XamlType("System.Windows.Controls", "RowDefinition");
 		types["RowDefinitionCollection"] = new XamlType("System.Windows.Controls", "RowDefinitionCollection");
+		types["ScaleTransform"] = new XamlType("System.Windows.Media", "ScaleTransform");
 		types["ScrollViewer"] = new XamlType("System.Windows.Controls", "ScrollViewer");
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
@@ -148,6 +149,7 @@ class Xaml2Cs
 		types["ParallelTimeline"].base_type = types["TimelineGroup"];
 		types["Path"].base_type = types["Shape"];
 		types["Popup"].base_type = types["FrameworkElement"];
+		types["ScaleTransform"].base_type = types["Transform"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["Shape"].base_type = types["FrameworkElement"];
 		types["StackPanel"].base_type = types["Panel"];
@@ -249,6 +251,8 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
 		types["RowDefinition"].AddProperty(types["GridLength"], "Height", true);
+		types["ScaleTransform"].AddProperty(types["double"], "ScaleX", true);
+		types["ScaleTransform"].AddProperty(types["double"], "ScaleY", true);
 		types["ScrollViewer"].AddProperty(types["bool"], "CanContentScroll", true);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
