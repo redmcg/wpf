@@ -18,6 +18,14 @@ all: PresentationUI.dll
 SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
 	mono $(RESX2SRID) $< SRID System.Windows.TrustUI > $@ || rm -f $@
 
+XAML2CS=../../../../xaml2cs/xaml2cs.exe
+
+$(XAML2CS): $(XAML2CS:.exe=.cs)
+	+$(MAKE) -C $(@D)
+
+%.xaml.generated.cs: %.xaml $(XAML2CS)
+	(mono $(XAML2CS) $< > $@) || rm $@
+
 %.resources: %.resx
 	resgen $< $@
 
