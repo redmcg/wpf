@@ -75,6 +75,8 @@ class Xaml2Cs
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["RoutedEvent"] = new XamlType("System.Windows", "RoutedEvent");
+		types["RowDefinition"] = new XamlType("System.Windows.Controls", "RowDefinition");
+		types["RowDefinitionCollection"] = new XamlType("System.Windows.Controls", "RowDefinitionCollection");
 		types["ScrollViewer"] = new XamlType("System.Windows.Controls", "ScrollViewer");
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
@@ -156,6 +158,7 @@ class Xaml2Cs
 		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
 		types["ResourceDictionary"].add_with_key_statement = "{0}.Add({1}, {2});";
+		types["RowDefinitionCollection"].add_statement = "{0}.Add({1});";
 		types["Style"].add_statement = "{0}.Setters.Add({1});";
 		types["TimelineCollection"].add_statement = "{0}.Add({1});";
 		types["Trigger"].add_statement = "{0}.Setters.Add({1});";
@@ -210,6 +213,8 @@ class Xaml2Cs
 		types["GradientStop"].AddProperty(types["double"], "Offset", false);
 		types["Grid"].AddProperty(types["ColumnDefinitionCollection"], "ColumnDefinitions", false);
 		types["Grid"].props["ColumnDefinitions"].auto = true;
+		types["Grid"].AddProperty(types["RowDefinitionCollection"], "RowDefinitions", false);
+		types["Grid"].props["RowDefinitions"].auto = true;
 		types["HeaderedItemsControl"].AddProperty(types["object"], "Header", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
@@ -228,6 +233,7 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["PlacementMode"], "Placement", true);
 		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
+		types["RowDefinition"].AddProperty(types["GridLength"], "Height", true);
 		types["ScrollViewer"].AddProperty(types["bool"], "CanContentScroll", true);
 		types["Setter"].AddProperty(types["DependencyProperty"], "Property", false);
 		types["Setter"].AddProperty(types["string"], "TargetName", false);
