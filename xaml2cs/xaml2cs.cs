@@ -708,6 +708,12 @@ class Xaml2Cs
 		{
 			value_expression = String.Format("{0}Event", str);
 		}
+		else if (prop.value_type.name == "double" && str.EndsWith("px"))
+		{
+			var num = str.Substring(0, str.Length - 2);
+			Double.Parse(num);
+			value_expression = num;
+		}
 		else if (prop.value_type.name == "double")
 		{
 			Double.Parse(str);
