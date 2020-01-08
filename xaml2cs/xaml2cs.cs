@@ -1138,7 +1138,7 @@ class Xaml2Cs
 					}
 					if (prop.value_type.IsCollection)
 					{
-						string value_expression = attribute_string_to_expression(current, types["object"].props["_textcontent"], reader.Value);
+						string value_expression = attribute_string_to_expression(current, types["object"].props["_textcontent"], reader.Value.Trim());
 						element.early_init.Add(
 							prop.value_type.AddStatement(
 								element,
@@ -1147,7 +1147,7 @@ class Xaml2Cs
 					}
 					else
 					{
-						string value_expression = attribute_string_to_expression(current, prop, reader.Value);
+						string value_expression = attribute_string_to_expression(current, prop, reader.Value.Trim());
 						if (prop.dependency)
 						{
 							element.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", element.local_name, prop.container_type.name, prop.name, value_expression));
