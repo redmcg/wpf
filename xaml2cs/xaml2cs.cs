@@ -51,6 +51,7 @@ class Xaml2Cs
 		types["Grid"] = new XamlType("System.Windows.Controls", "Grid");
 		types["GridLength"] = new XamlType("System.Windows", "GridLength");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
+		types["InlineCollection"] = new XamlType("System.Windows.Documents", "InlineCollection");
 		types["int"] = new XamlType(null, "int");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
 		types["ItemsPresenter"] = new XamlType("System.Windows.Controls", "ItemsPresenter");
@@ -172,6 +173,7 @@ class Xaml2Cs
 		types["EventTrigger"].add_statement = "{0}.Actions.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
+		types["InlineCollection"].add_statement = "{0}.Add({1});";
 		types["ItemsControl"].add_statement = "{0}.Items.Add({1});";
 		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
 		types["Panel"].add_statement = "{0}.Children.Add({1});";
@@ -249,6 +251,7 @@ class Xaml2Cs
 		types["MenuItem"].AddProperty(types["bool"], "IsCheckable", true);
 		types["MultiTrigger"].AddProperty(types["ConditionCollection"], "Conditions", false);
 		types["MultiTrigger"].props["Conditions"].auto = true;
+		types["object"].AddProperty(types["object"], "_textcontent", false);
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
 		types["Panel"].AddProperty(types["Brush"], "Background", true);
@@ -280,6 +283,8 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
+		types["TextBlock"].AddProperty(types["InlineCollection"], "Inlines", true);
+		types["TextBlock"].props["Inlines"].auto = true;
 		types["TextBlock"].AddProperty(types["FontFamily"], "FontFamily", true);
 		types["TextBlock"].AddProperty(types["Brush"], "Foreground", true);
 		types["TextBlock"].AddProperty(types["double"], "FontSize", true);
@@ -309,6 +314,7 @@ class Xaml2Cs
 		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
 		types["GradientBrush"].content_prop = types["GradientBrush"].props["GradientStops"];
+		types["TextBlock"].content_prop = types["TextBlock"].props["Inlines"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
 
 		elements_by_local = new Dictionary<string,XamlElement>();
@@ -1130,14 +1136,26 @@ class Xaml2Cs
 						prop = current.type.ContentProp;
 						element = current;
 					}
-					string value_expression = attribute_string_to_expression(current, prop, reader.Value);
-					if (prop.dependency)
+					if (prop.value_type.IsCollection)
 					{
-						element.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", element.local_name, prop.container_type.name, prop.name, value_expression));
+						string value_expression = attribute_string_to_expression(current, types["object"].props["_textcontent"], reader.Value);
+						element.early_init.Add(
+							prop.value_type.AddStatement(
+								element,
+								String.Format("{0}.{1}", element.local_name, prop.name),
+								value_expression));
 					}
 					else
 					{
-						element.early_init.Add(String.Format("{0}.{1} = {2};", element.local_name, prop.name, value_expression));
+						string value_expression = attribute_string_to_expression(current, prop, reader.Value);
+						if (prop.dependency)
+						{
+							element.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", element.local_name, prop.container_type.name, prop.name, value_expression));
+						}
+						else
+						{
+							element.early_init.Add(String.Format("{0}.{1} = {2};", element.local_name, prop.name, value_expression));
+						}
 					}
 				}
 			}
