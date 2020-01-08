@@ -609,17 +609,29 @@ class Xaml2Cs
 			b = Convert.ToByte(str.Substring(5, 2), 16);
 			value_expression = String.Format("Color.FromRgb({0}, {1}, {2})", r, g, b);
 		}
+		else if (prop.value_type.name == "Color" && str.ToLowerInvariant() == "transparent")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = "Colors.Transparent";
+		}
+		else if (prop.value_type.name == "Color" && str.ToLowerInvariant() == "white")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = "Colors.White";
+		}
 		else if (prop.value_type.name == "Color")
 		{
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("Colors.{0}", str);
 		}
-		else if (prop.value_type.name == "Brush" && str == "Transparent")
+		else if (prop.value_type.name == "Brush" && str.ToLowerInvariant() == "transparent")
 		{
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
-			value_expression = String.Format("Brushes.{0}", str);
+			value_expression = "Brushes.Transparent";
 		}
 		else if (prop.value_type.name == "FontStyle" && str == "Italic")
 		{
