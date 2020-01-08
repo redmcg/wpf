@@ -3,7 +3,7 @@ COMPILE_LIB=csc -target:library
 
 LIB_FLAGS=-unsafe -delaysign+ -keyfile:../../reactive.pub -define:PRESENTATIONUI -langversion:8.0 -nostdlib -noconfig
 
-LIB_REFS=-r:mscorlib.dll -r:System.dll -r:System.Xml.dll -r:System.Core.dll -r:System.Windows.Forms.dll -r:System.Drawing.dll -r:System.DirectoryServices.dll
+LIB_REFS=-r:mscorlib.dll -r:System.dll -r:System.Xml.dll -r:System.Core.dll -r:System.Windows.Forms.dll -r:System.Drawing.dll -r:System.DirectoryServices.dll -r:System.Security.dll
 
 LIB_REF_FILES=../System.Xaml/System.Xaml.dll ../PresentationFramework/PresentationFramework.dll ../WindowsBase/WindowsBase.dll ../UIAutomation/UIAutomationTypes/UIAutomationTypes.dll ../UIAutomation/UIAutomationProvider/UIAutomationProvider.dll ../DirectWriteForwarder/DirectWriteForwarder.dll ../PresentationCore/PresentationCore.dll ../ReachFramework/ReachFramework.dll ../System.Printing/ref/System.Printing.dll
 
