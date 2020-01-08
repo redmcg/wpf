@@ -66,6 +66,8 @@ class Xaml2Cs
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["ParallelTimeline"] = new XamlType("System.Windows.Media.Animation", "ParallelTimeline");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
+		types["PenLineCap"] = new XamlType("System.Windows.Media", "PenLineCap");
+		types["PenLineCap"].is_enum = true;
 		types["PlacementMode"] = new XamlType("System.Windows.Controls.Primitives", "PlacementMode");
 		types["PlacementMode"].is_enum = true;
 		types["Point"] = new XamlType("System.Windows", "Point");
@@ -250,6 +252,8 @@ class Xaml2Cs
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
 		types["Shape"].AddProperty(types["Stretch"], "Stretch", true);
 		types["Shape"].AddProperty(types["Brush"], "Stroke", true);
+		types["Shape"].AddProperty(types["PenLineCap"], "StrokeEndLineCap", true);
+		types["Shape"].AddProperty(types["PenLineCap"], "StrokeStartLineCap", true);
 		types["Shape"].AddProperty(types["double"], "StrokeThickness", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
