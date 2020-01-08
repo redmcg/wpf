@@ -100,6 +100,8 @@ class Xaml2Cs
 		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
 		types["UIElement"] = new XamlType("System.Windows", "UIElement");
+		types["Visibility"] = new XamlType("System.Windows", "Visibility");
+		types["Visibility"].is_enum = true;
 		types["bool"] = new XamlType(null, "bool");
 		types["HorizontalAlignment"] = new XamlType("System.Windows", "HorizontalAlignment");
 		types["HorizontalAlignment"].is_enum = true;
@@ -267,6 +269,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
 		types["UIElement"].AddProperty(types["event"], "PreviewKeyDown", false);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
+		types["UIElement"].AddProperty(types["Visibility"], "Visibility", true);
 
 		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
