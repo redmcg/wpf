@@ -91,6 +91,7 @@ class Xaml2Cs
 		types["Stretch"] = new XamlType("System.Windows.Media", "Stretch");
 		types["Stretch"].is_enum = true;
 		types["Style"] = new XamlType("System.Windows", "Style");
+		types["TextBlock"] = new XamlType("System.Windows.Controls", "TextBlock");
 		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
@@ -154,6 +155,7 @@ class Xaml2Cs
 		types["Shape"].base_type = types["FrameworkElement"];
 		types["StackPanel"].base_type = types["Panel"];
 		types["Storyboard"].base_type = types["ParallelTimeline"];
+		types["TextBlock"].base_type = types["FrameworkElement"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
 		types["TimelineGroup"].base_type = types["Timeline"];
