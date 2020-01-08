@@ -97,6 +97,8 @@ class Xaml2Cs
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
 		types["TextTrimming"] = new XamlType("System.Windows", "TextTrimming");
 		types["TextTrimming"].is_enum = true;
+		types["TextWrapping"] = new XamlType("System.Windows", "TextWrapping");
+		types["TextWrapping"].is_enum = true;
 		types["Thickness"] = new XamlType("System.Windows", "Thickness");
 		types["Timeline"] = new XamlType("System.Windows.Media.Animation", "Timeline");
 		types["TimelineCollection"] = new XamlType("System.Windows.Media.Animation", "TimelineCollection");
@@ -282,6 +284,7 @@ class Xaml2Cs
 		types["TextBlock"].AddProperty(types["Brush"], "Foreground", true);
 		types["TextBlock"].AddProperty(types["double"], "FontSize", true);
 		types["TextBlock"].AddProperty(types["TextTrimming"], "TextTrimming", true);
+		types["TextBlock"].AddProperty(types["TextWrapping"], "TextWrapping", true);
 		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
 		types["TextBox"].AddProperty(types["int"], "MaxLength", true);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
