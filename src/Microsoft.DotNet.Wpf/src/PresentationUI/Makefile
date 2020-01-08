@@ -24,7 +24,7 @@ $(XAML2CS): $(XAML2CS:.exe=.cs)
 	+$(MAKE) -C $(@D)
 
 %.xaml.generated.cs: %.xaml $(XAML2CS)
-	(mono $(XAML2CS) $< > $@) || rm $@
+	(mono $(XAML2CS) $< > $@) || (rm $@; false)
 
 %.resources: %.resx
 	resgen $< $@

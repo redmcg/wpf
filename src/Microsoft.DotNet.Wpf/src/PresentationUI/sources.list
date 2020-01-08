@@ -4,9 +4,12 @@ SR.cs
 ../Shared/MS/Internal/FriendAccessAllowedAttribute.cs
 OtherAssemblyAttrs.cs
 InstallationError.xaml.cs
+InstallationError.xaml.generated.cs
 PresentationUIStyleResources.cs
 TenFeetInstallationProgress.xaml.cs
+TenFeetInstallationProgress.xaml.generated.cs
 TenFeetInstallationError.xaml.cs
+TenFeetInstallationError.xaml.generated.cs
 MS/Internal/documents/AccountType.cs
 MS/Internal/documents/CertificatePriorityStatus.cs
 MS/Internal/documents/CredentialManagerDialog.cs
