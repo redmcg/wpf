@@ -20,6 +20,7 @@ class Xaml2Cs
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
 		types["ColorAnimationBase"] = new XamlType("System.Windows.Media.Animation", "ColorAnimationBase");
+		types["ColumnDefinitionCollection"] = new XamlType("System.Windows.Controls", "ColumnDefinitionCollection");
 		types["ComponentResourceKey"] = new XamlType("System.Windows", "ComponentResourceKey");
 		types["Condition"] = new XamlType("System.Windows", "Condition");
 		types["ConditionCollection"] = new XamlType("System.Windows", "ConditionCollection");
@@ -203,6 +204,8 @@ class Xaml2Cs
 		types["GradientBrush"].props["GradientStops"].auto = true;
 		types["GradientStop"].AddProperty(types["Color"], "Color", false);
 		types["GradientStop"].AddProperty(types["double"], "Offset", false);
+		types["Grid"].AddProperty(types["ColumnDefinitionCollection"], "ColumnDefinitions", false);
+		types["Grid"].props["ColumnDefinitions"].auto = true;
 		types["HeaderedItemsControl"].AddProperty(types["object"], "Header", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "DirectionalNavigation", true);
 		types["KeyboardNavigation"].AddProperty(types["KeyboardNavigationMode"], "TabNavigation", true);
