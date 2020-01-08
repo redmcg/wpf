@@ -282,6 +282,7 @@ class Xaml2Cs
 		types["UIElement"].AddProperty(types["bool"], "IsKeyboardFocused", true);
 		types["UIElement"].AddProperty(types["bool"], "IsMouseOver", true);
 		types["UIElement"].AddProperty(types["double"], "Opacity", true);
+		types["UIElement"].AddProperty(types["Brush"], "OpacityMask", true);
 		types["UIElement"].AddProperty(types["event"], "PreviewKeyDown", false);
 		types["UIElement"].AddProperty(types["bool"], "SnapsToDevicePixels", true);
 		types["UIElement"].AddProperty(types["Visibility"], "Visibility", true);
