@@ -40,6 +40,7 @@ class Xaml2Cs
 		types["Ellipse"] = new XamlType("System.Windows.Shapes", "Ellipse");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
+		types["FontFamily"] = new XamlType("System.Windows.Media", "FontFamily");
 		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
@@ -274,6 +275,7 @@ class Xaml2Cs
 		types["Style"].AddProperty(types["Type"], "TargetType", false);
 		types["Style"].AddProperty(types["object"], "Value", false);
 		types["Style"].props["Value"].indirect_property = true;
+		types["TextBlock"].AddProperty(types["FontFamily"], "FontFamily", true);
 		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
 		types["TextBox"].AddProperty(types["int"], "MaxLength", true);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
@@ -783,6 +785,11 @@ class Xaml2Cs
 				Double.Parse(str);
 				value_expression = str;
 			}
+		}
+		else if (prop.value_type.name == "FontFamily")
+		{
+			namespaces.Add("System.Windows.Media");
+			value_expression = String.Format("new FontFamily(\"{0}\")", str);
 		}
 		else
 		{
