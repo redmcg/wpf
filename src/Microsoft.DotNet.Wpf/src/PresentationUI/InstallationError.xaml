@@ -123,7 +123,7 @@ Description: Download App Error Page.
 
         <StackPanel x:Uid="StackPanel_1" Grid.Column="2" Grid.Row="1">
             <StackPanel.Resources>
-                <Style x:Uid="Style_1" TargetType="{x:Type TextBlock}">
+                <Style x:Uid="Style_1" x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
                     <Setter x:Uid="Setter_1" Property="FontFamily" Value="Segoe UI, Trebuchet MS" />
                     <Setter x:Uid="Setter_2" Property="FontSize" Value="14px" />
                     <Setter x:Uid="Setter_3" Property="Foreground" Value="#666" />
