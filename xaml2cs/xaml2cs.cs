@@ -179,6 +179,10 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
 		types["ButtonBase"].AddProperty(types["event"], "Click", false);
+		types["Canvas"].AddProperty(types["double"], "Bottom", true);
+		types["Canvas"].AddProperty(types["double"], "Left", true);
+		types["Canvas"].AddProperty(types["double"], "Right", true);
+		types["Canvas"].AddProperty(types["double"], "Top", true);
 		types["ColorAnimation"].AddProperty(types["Color"], "From", true);
 		types["ColorAnimation"].AddProperty(types["Color"], "To", true);
 		types["ColumnDefinition"].AddProperty(types["GridLength"], "Width", true);
