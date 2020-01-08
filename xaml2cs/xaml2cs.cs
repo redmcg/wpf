@@ -250,6 +250,7 @@ class Xaml2Cs
 		types["Shape"].AddProperty(types["Brush"], "Fill", true);
 		types["Shape"].AddProperty(types["Stretch"], "Stretch", true);
 		types["Shape"].AddProperty(types["Brush"], "Stroke", true);
+		types["Shape"].AddProperty(types["double"], "StrokeThickness", true);
 		types["SolidColorBrush"].AddProperty(types["Color"], "Color", false);
 		types["StackPanel"].AddProperty(types["Orientation"], "Orientation", true);
 		types["Storyboard"].AddProperty(types["string"], "TargetName", true);
