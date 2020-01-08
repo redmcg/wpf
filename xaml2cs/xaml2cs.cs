@@ -1237,14 +1237,7 @@ class Xaml2Cs
 		var filename = arguments[0];
 		var references = new string[0]; // FIXME
 
-		try
-		{
-			instance.ReadXaml(filename, references);
-		}
-		finally
-		{
-			// Temporary, for testing as we go.
-			instance.WriteCs(System.Console.Out);
-		}
+		instance.ReadXaml(filename, references);
+		instance.WriteCs(System.Console.Out);
 	}
 }
