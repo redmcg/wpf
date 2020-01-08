@@ -637,6 +637,12 @@ class Xaml2Cs
 				namespaces.Add(prop.value_type.ns);
 			value_expression = "Brushes.Transparent";
 		}
+		else if (prop.value_type.name == "Brush")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("Brushes.{0}", str);
+		}
 		else if (prop.value_type.name == "FontStyle" && str == "Italic")
 		{
 			if (prop.value_type.ns != null)
