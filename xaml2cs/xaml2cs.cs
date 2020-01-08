@@ -37,6 +37,7 @@ class Xaml2Cs
 		types["DoubleAnimationBase"] = new XamlType("System.Windows.Media.Animation", "DoubleAnimationBase");
 		types["Duration"] = new XamlType("System.Windows", "Duration");
 		types["event"] = new XamlType(null, "event");
+		types["Ellipse"] = new XamlType("System.Windows.Shapes", "Ellipse");
 		types["EventTrigger"] = new XamlType("System.Windows", "EventTrigger");
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
@@ -125,6 +126,7 @@ class Xaml2Cs
 		types["Decorator"].base_type = types["FrameworkElement"];
 		types["DoubleAnimation"].base_type = types["DoubleAnimationBase"];
 		types["DoubleAnimationBase"].base_type = types["AnimationTimeline"];
+		types["Ellipse"].base_type = types["Shape"];
 		types["EventTrigger"].base_type = types["TriggerBase"];
 		types["FrameworkElement"].base_type = types["UIElement"];
 		types["GradientBrush"].base_type = types["Brush"];
