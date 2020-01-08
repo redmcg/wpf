@@ -42,6 +42,7 @@ class Xaml2Cs
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FontFamily"] = new XamlType("System.Windows.Media", "FontFamily");
 		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
+		types["FrameworkContentElement"] = new XamlType("System.Windows", "FrameworkContentElement");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
 		types["Geometry"] = new XamlType("System.Windows.Media", "Geometry");
@@ -52,6 +53,7 @@ class Xaml2Cs
 		types["GridLength"] = new XamlType("System.Windows", "GridLength");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
 		types["Hyperlink"] = new XamlType("System.Windows.Documents", "Hyperlink");
+		types["Inline"] = new XamlType("System.Windows.Documents", "Inline");
 		types["InlineCollection"] = new XamlType("System.Windows.Documents", "InlineCollection");
 		types["int"] = new XamlType(null, "int");
 		types["ItemsControl"] = new XamlType("System.Windows.Controls", "ItemsControl");
@@ -88,6 +90,7 @@ class Xaml2Cs
 		types["Setter"] = new XamlType("System.Windows", "Setter");
 		types["Shape"] = new XamlType("System.Windows.Shapes", "Shape");
 		types["SolidColorBrush"] = new XamlType("System.Windows.Media", "SolidColorBrush");
+		types["Span"] = new XamlType("System.Windows.Documents", "Span");
 		types["StackPanel"] = new XamlType("System.Windows.Controls", "StackPanel");
 		types["Storyboard"] = new XamlType("System.Windows.Media.Animation", "Storyboard");
 		types["string"] = new XamlType(null, "string");
@@ -97,6 +100,7 @@ class Xaml2Cs
 		types["TextBlock"] = new XamlType("System.Windows.Controls", "TextBlock");
 		types["TextBoxBase"] = new XamlType("System.Windows.Controls.Primitives", "TextBoxBase");
 		types["TextBox"] = new XamlType("System.Windows.Controls.Primitives", "TextBox");
+		types["TextElement"] = new XamlType("System.Windows.Documents", "TextElement");
 		types["TextTrimming"] = new XamlType("System.Windows", "TextTrimming");
 		types["TextTrimming"].is_enum = true;
 		types["TextWrapping"] = new XamlType("System.Windows", "TextWrapping");
@@ -146,6 +150,8 @@ class Xaml2Cs
 		types["GradientBrush"].base_type = types["Brush"];
 		types["Grid"].base_type = types["Panel"];
 		types["HeaderedItemsControl"].base_type = types["ItemsControl"];
+		types["Hyperlink"].base_type = types["Span"];
+		types["Inline"].base_type = types["TextElement"];
 		types["ItemsControl"].base_type = types["Control"];
 		types["ItemsPresenter"].base_type = types["FrameworkElement"];
 		types["Label"].base_type = types["ContentControl"];
@@ -160,11 +166,13 @@ class Xaml2Cs
 		types["ScaleTransform"].base_type = types["Transform"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["Shape"].base_type = types["FrameworkElement"];
+		types["Span"].base_type = types["Inline"];
 		types["StackPanel"].base_type = types["Panel"];
 		types["Storyboard"].base_type = types["ParallelTimeline"];
 		types["TextBlock"].base_type = types["FrameworkElement"];
 		types["TextBoxBase"].base_type = types["Control"];
 		types["TextBox"].base_type = types["TextBoxBase"];
+		types["TextElement"].base_type = types["FrameworkContentElement"];
 		types["TimelineGroup"].base_type = types["Timeline"];
 		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
@@ -220,6 +228,7 @@ class Xaml2Cs
 		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
 		types["EventTrigger"].AddProperty(types["string"], "SourceName", false);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
+		types["FrameworkContentElement"].AddProperty(types["string"], "Name", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", true);
 		types["FrameworkElement"].AddProperty(types["HorizontalAlignment"], "HorizontalAlignment", false);
 		types["FrameworkElement"].AddProperty(types["Thickness"], "Margin", true);
