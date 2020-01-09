@@ -799,7 +799,23 @@ class Xaml2Cs
 		{
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
-			value_expression = String.Format("new Thickness({0})", str);
+			string[] values = str.Split(',');
+			if (values.Length == 1)
+			{
+				value_expression = String.Format("new Thickness({0})", str);
+			}
+			else if (values.Length == 2)
+			{
+				value_expression = String.Format("new Thickness({0},{0})", str);
+			}
+			else if (values.Length == 4)
+			{
+				value_expression = String.Format("new Thickness({0})", str);
+			}
+			else
+			{
+				throw new NotImplementedException(String.Format("cannot convert Thickness value {0}", str));
+			}
 		}
 		else if (prop.value_type.name == "CornerRadius")
 		{
