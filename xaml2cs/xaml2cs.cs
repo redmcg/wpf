@@ -533,6 +533,12 @@ class Xaml2Cs
 	
 	Dictionary<string, XamlElement> static_resources;
 
+	internal static string quote_string(string str)
+	{
+		return String.Format("\"{0}\"",
+			str.Replace("\\", "\\\\"));
+	}
+
 	string attribute_string_to_expression(XamlElement element, XamlProperty prop, string str)
 	{
 		if (prop.name == "Property")
@@ -599,7 +605,7 @@ class Xaml2Cs
 		{
 			string binding_target = str.Substring(17, str.Length - 18);
 			XamlType binding_type = types["Binding"];
-			return String.Format("new Binding{{ RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent), Path = new PropertyPath(\"{0}\"), }}", binding_target);
+			return String.Format("new Binding{{ RelativeSource = new RelativeSource(RelativeSourceMode.TemplatedParent), Path = new PropertyPath({0}), }}", quote_string(binding_target));
 		}
 		else if (str.StartsWith("{RelativeSource ") && str.EndsWith("}"))
 		{
@@ -776,7 +782,7 @@ class Xaml2Cs
 		{
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
-			value_expression = String.Format("Geometry.Parse(\"{0}\")", str);
+			value_expression = String.Format("Geometry.Parse({0})", quote_string(str));
 		}
 		else if (prop.value_type.name == "Point" && str.Contains(","))
 		{
@@ -800,7 +806,7 @@ class Xaml2Cs
 		{
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
-			value_expression = String.Format("new PropertyPath(\"{0}\")", str);
+			value_expression = String.Format("new PropertyPath({0})", quote_string(str));
 		}
 		else if (prop.value_type.name == "RoutedEvent")
 		{
@@ -830,7 +836,7 @@ class Xaml2Cs
 		}
 		else if (prop.value_type.name == "object" || prop.value_type.name == "string")
 		{
-			value_expression = String.Format("\"{0}\"", str);
+			value_expression = String.Format("{0}", quote_string(str));
 		}
 		else if (prop.value_type.name == "event")
 		{
@@ -900,12 +906,12 @@ class Xaml2Cs
 		else if (prop.value_type.name == "FontFamily")
 		{
 			namespaces.Add("System.Windows.Media");
-			value_expression = String.Format("new FontFamily(\"{0}\")", str);
+			value_expression = String.Format("new FontFamily({0})", quote_string(str));
 		}
 		else if (prop.value_type.name == "Uri")
 		{
 			namespaces.Add("System");
-			value_expression = String.Format("new Uri(\"{0}\")", str);
+			value_expression = String.Format("new Uri({0})", quote_string(str));
 		}
 		else
 		{
@@ -1042,7 +1048,7 @@ class Xaml2Cs
 							if (current.is_template)
 							{
 								if (reader.GetAttribute("x:Name") != null)
-									current.early_init.Add(String.Format("{1} = new FrameworkElementFactory(typeof({0}), \"{1}\");", current.type.name, local_name, reader["x:Name"]));
+									current.early_init.Add(String.Format("{1} = new FrameworkElementFactory(typeof({0}), {3});", current.type.name, local_name, reader["x:Name"], quote_string(local_name)));
 								else
 									current.early_init.Add(String.Format("{1} = new FrameworkElementFactory(typeof({0}));", current.type.name, local_name));
 							}
