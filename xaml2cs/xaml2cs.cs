@@ -195,6 +195,7 @@ class Xaml2Cs
 		types["Trigger"].add_statement = "{0}.Setters.Add({1});";
 		types["TriggerCollection"].add_statement = "{0}.Add({1});";
 
+		types["Binding"].AddProperty(types["string"], "ElementName", false);
 		types["Binding"].AddProperty(types["PropertyPath"], "Path", true);
 		types["Binding"].AddProperty(types["RelativeSource"], "RelativeSource", true);
 		types["Border"].AddProperty(types["Brush"], "Background", true);
