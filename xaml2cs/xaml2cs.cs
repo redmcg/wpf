@@ -68,6 +68,7 @@ class Xaml2Cs
 		types["object"] = new XamlType(null, "object");
 		types["Orientation"] = new XamlType("System.Windows.Controls", "Orientation");
 		types["Orientation"].is_enum = true;
+		types["Page"] = new XamlType("System.Windows.Controls", "Page");
 		types["Panel"] = new XamlType("System.Windows.Controls", "Panel");
 		types["ParallelTimeline"] = new XamlType("System.Windows.Media.Animation", "ParallelTimeline");
 		types["Path"] = new XamlType("System.Windows.Shapes", "Path");
@@ -159,6 +160,7 @@ class Xaml2Cs
 		types["Menu"].base_type = types["MenuBase"];
 		types["MenuBase"].base_type = types["ItemsControl"];
 		types["MenuItem"].base_type = types["HeaderedItemsControl"];
+		types["Page"].base_type = types["FrameworkElement"];
 		types["Panel"].base_type = types["FrameworkElement"];
 		types["ParallelTimeline"].base_type = types["TimelineGroup"];
 		types["Path"].base_type = types["Shape"];
