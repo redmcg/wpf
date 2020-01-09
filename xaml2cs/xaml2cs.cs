@@ -229,6 +229,7 @@ class Xaml2Cs
 		types["Control"].AddProperty(types["Brush"], "Background", true);
 		types["Control"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Control"].AddProperty(types["FontStyle"], "FontStyle", true);
+		types["Control"].AddProperty(types["Brush"], "Foreground", true);
 		types["Control"].AddProperty(types["bool"], "IsTabStop", true);
 		types["Control"].AddProperty(types["Thickness"], "BorderThickness", true);
 		types["Control"].AddProperty(types["Thickness"], "Padding", true);
