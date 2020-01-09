@@ -229,6 +229,7 @@ class Xaml2Cs
 		types["DoubleAnimation"].AddProperty(types["double"], "To", true);
 		types["EventTrigger"].AddProperty(types["RoutedEvent"], "RoutedEvent", false);
 		types["EventTrigger"].AddProperty(types["string"], "SourceName", false);
+		types["FocusManager"].AddProperty(types["FrameworkElement"], "FocusedElement", true);
 		types["FocusManager"].AddProperty(types["bool"], "IsFocusScope", true);
 		types["FrameworkContentElement"].AddProperty(types["string"], "Name", true);
 		types["FrameworkElement"].AddProperty(types["double"], "Height", true);
