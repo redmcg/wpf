@@ -269,6 +269,7 @@ class Xaml2Cs
 		types["object"].AddProperty(types["object"], "_textcontent", false);
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
+		types["Page"].AddProperty(types["object"], "Content", true);
 		types["Panel"].AddProperty(types["Brush"], "Background", true);
 		types["Path"].AddProperty(types["Geometry"], "Data", true);
 		types["Popup"].AddProperty(types["bool"], "AllowsTransparency", true);
@@ -332,6 +333,7 @@ class Xaml2Cs
 		types["ContentControl"].content_prop = types["ContentControl"].props["Content"];
 		types["Decorator"].content_prop = types["Decorator"].props["Child"];
 		types["GradientBrush"].content_prop = types["GradientBrush"].props["GradientStops"];
+		types["Page"].content_prop = types["Page"].props["Content"];
 		types["Span"].content_prop = types["Span"].props["Inlines"];
 		types["TextBlock"].content_prop = types["TextBlock"].props["Inlines"];
 		types["TimelineGroup"].content_prop = types["TimelineGroup"].props["Children"];
