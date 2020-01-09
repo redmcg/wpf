@@ -756,6 +756,12 @@ class Xaml2Cs
 				namespaces.Add(prop.value_type.ns);
 			value_expression = "Brushes.Transparent";
 		}
+		else if (prop.value_type.name == "Brush" && str.ToLowerInvariant() == "white")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = "Brushes.White";
+		}
 		else if (prop.value_type.name == "Brush")
 		{
 			if (prop.value_type.ns != null)
@@ -1032,10 +1038,14 @@ class Xaml2Cs
 							needs_declaration = false;
 							needs_creation = false;
 						}
-						else if (reader.GetAttribute("x:Name") != null &&
+						else if ((reader.GetAttribute("x:Name") != null &&
 							!elements_by_local.ContainsKey(reader.GetAttribute("x:Name")))
+							|| (reader.GetAttribute("Name") != null &&
+							!elements_by_local.ContainsKey(reader.GetAttribute("Name"))))
 						{
 							local_name = reader.GetAttribute("x:Name");
+							if (local_name == null)
+								local_name = reader.GetAttribute("Name");
 							if (current.is_template)
 							{
 								current.class_decls.Add(String.Format("public FrameworkElementFactory {0};",
