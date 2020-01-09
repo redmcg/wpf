@@ -287,6 +287,7 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["PlacementMode"], "Placement", true);
 		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
+		types["RangeBase"].AddProperty(types["double"], "Value", true);
 		types["ResourceDictionary"].AddProperty(types["Collection"], "MergedDictionaries", false);
 		types["ResourceDictionary"].props["MergedDictionaries"].auto = true;
 		types["ResourceDictionary"].AddProperty(types["Uri"], "Source", false);
