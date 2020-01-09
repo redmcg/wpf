@@ -763,6 +763,12 @@ class Xaml2Cs
 			Double.Parse(num);
 			value_expression = num;
 		}
+		else if (prop.value_type.name == "double" && str.EndsWith("pt"))
+		{
+			var num = str.Substring(0, str.Length - 2);
+			Double.Parse(num);
+			value_expression = (Double.Parse(num) * 96 / 72).ToString();
+		}
 		else if (prop.value_type.name == "double")
 		{
 			Double.Parse(str);
