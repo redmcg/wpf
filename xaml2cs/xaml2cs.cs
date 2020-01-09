@@ -17,7 +17,6 @@ class Xaml2Cs
 		types["Button"] = new XamlType("System.Windows.Controls", "Button");
 		types["ButtonBase"] = new XamlType("System.Windows.Controls.Primitives", "ButtonBase");
 		types["Canvas"] = new XamlType("System.Windows.Controls", "Canvas");
-		types["Collection"] = new XamlType("System.Collections.ObjectModel", "Collection");
 		types["Color"] = new XamlType("System.Windows.Media", "Color");
 		types["ColorAnimation"] = new XamlType("System.Windows.Media.Animation", "ColorAnimation");
 		types["ColorAnimationBase"] = new XamlType("System.Windows.Media.Animation", "ColorAnimationBase");
@@ -56,6 +55,7 @@ class Xaml2Cs
 		types["GridLength"] = new XamlType("System.Windows", "GridLength");
 		types["HeaderedItemsControl"] = new XamlType("System.Windows.Controls", "HeaderedItemsControl");
 		types["Hyperlink"] = new XamlType("System.Windows.Documents", "Hyperlink");
+		types["IList"] = new XamlType("System.Collections", "IList");
 		types["Inline"] = new XamlType("System.Windows.Documents", "Inline");
 		types["InlineCollection"] = new XamlType("System.Windows.Documents", "InlineCollection");
 		types["int"] = new XamlType(null, "int");
@@ -187,12 +187,12 @@ class Xaml2Cs
 		types["ToolBar"].base_type = types["HeaderedItemsControl"];
 
 		types["BeginStoryboard"].add_statement = "{0}.Storyboard = {1};";
-		types["Collection"].add_statement = "{0}.Add({1});";
 		types["ColumnDefinitionCollection"].add_statement = "{0}.Add({1});";
 		types["ConditionCollection"].add_statement = "{0}.Add({1});";
 		types["EventTrigger"].add_statement = "{0}.Actions.Add({1});";
 		types["FrameworkTemplate"].add_statement = "{0}.VisualTree.AppendChild({1});";
 		types["GradientStopCollection"].add_statement = "{0}.Add({1});";
+		types["IList"].add_statement = "{0}.Add({1});";
 		types["InlineCollection"].add_statement = "{0}.Add({1});";
 		types["ItemsControl"].add_statement = "{0}.Items.Add({1});";
 		types["MultiTrigger"].add_statement = "{0}.Setters.Add({1});";
@@ -292,7 +292,7 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["PopupAnimation"], "PopupAnimation", true);
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
 		types["RangeBase"].AddProperty(types["double"], "Value", true);
-		types["ResourceDictionary"].AddProperty(types["Collection"], "MergedDictionaries", false);
+		types["ResourceDictionary"].AddProperty(types["IList"], "MergedDictionaries", false);
 		types["ResourceDictionary"].props["MergedDictionaries"].auto = true;
 		types["ResourceDictionary"].AddProperty(types["Uri"], "Source", false);
 		types["RowDefinition"].AddProperty(types["GridLength"], "Height", true);
