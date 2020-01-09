@@ -14,7 +14,7 @@ Description: Download App Error Page.
 
         <!-- Button Text -->
 
-        <Style x:Uid="Style_1" TargetType="{x:Type TextBlock}">
+        <Style x:Uid="Style_1" x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
           <Setter x:Uid="Setter_1" Property="FontFamily" Value="Segoe SemiBold" />
           <Setter x:Uid="Setter_2" Property="Foreground" Value="white" />
           <Setter x:Uid="Setter_3" Property="FontSize" Value="18pt" />
@@ -81,7 +81,7 @@ Description: Download App Error Page.
 
         <StackPanel x:Uid="ButtonsPanel" Name="ButtonsPanel" Margin="0,20,0,0" Orientation="Horizontal" >
             <StackPanel.Resources>
-                <Style x:Uid="Style_2" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                <Style x:Uid="Style_2" x:Key="{x:Type Button}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
                     <Setter x:Uid="Setter_5" Property="Visibility" Value="Collapsed" />
                     <Setter x:Uid="Setter_6" Property="MinWidth" Value="264" />
                     <Setter x:Uid="Setter_7" Property="Margin" Value="0,0,10,0" />
