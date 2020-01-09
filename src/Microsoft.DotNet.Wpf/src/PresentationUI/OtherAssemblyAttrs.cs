@@ -8,6 +8,10 @@ using System.Security;
 using Microsoft.Internal;
 using System.Runtime.CompilerServices;
 
+using System.Reflection;
+
+[assembly:AssemblyVersion("4.0.0.0")]
+
 [assembly:InternalsVisibleTo(BuildInfo.PresentationFramework)]
 
 // Add references for the themes.  This will only add support for generic.xaml
