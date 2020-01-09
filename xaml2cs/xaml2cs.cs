@@ -122,6 +122,7 @@ class Xaml2Cs
 		types["TriggerCollection"] = new XamlType("System.Windows", "TriggerCollection");
 		types["Type"] = new XamlType("System", "Type");
 		types["UIElement"] = new XamlType("System.Windows", "UIElement");
+		types["Uri"] = new XamlType("System", "Uri");
 		types["Visibility"] = new XamlType("System.Windows", "Visibility");
 		types["Visibility"].is_enum = true;
 		types["bool"] = new XamlType(null, "bool");
@@ -281,6 +282,7 @@ class Xaml2Cs
 		types["Popup"].AddProperty(types["double"], "VerticalOffset", true);
 		types["ResourceDictionary"].AddProperty(types["Collection"], "MergedDictionaries", false);
 		types["ResourceDictionary"].props["MergedDictionaries"].auto = true;
+		types["ResourceDictionary"].AddProperty(types["Uri"], "Source", false);
 		types["RowDefinition"].AddProperty(types["GridLength"], "Height", true);
 		types["ScaleTransform"].AddProperty(types["double"], "ScaleX", true);
 		types["ScaleTransform"].AddProperty(types["double"], "ScaleY", true);
@@ -880,6 +882,11 @@ class Xaml2Cs
 		{
 			namespaces.Add("System.Windows.Media");
 			value_expression = String.Format("new FontFamily(\"{0}\")", str);
+		}
+		else if (prop.value_type.name == "Uri")
+		{
+			namespaces.Add("System");
+			value_expression = String.Format("new Uri(\"{0}\")", str);
 		}
 		else
 		{
