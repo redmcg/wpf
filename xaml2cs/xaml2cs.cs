@@ -280,6 +280,7 @@ class Xaml2Cs
 		types["object"].AddProperty(types["object"], "_textcontent", false);
 		types["object"].AddProperty(types["object"], "_key", false);
 		types["object"].AddProperty(types["object"], "_dynamicresource", false);
+		types["Page"].AddProperty(types["Brush"], "Background", true);
 		types["Page"].AddProperty(types["object"], "Content", true);
 		types["Panel"].AddProperty(types["Brush"], "Background", true);
 		types["Path"].AddProperty(types["Geometry"], "Data", true);
