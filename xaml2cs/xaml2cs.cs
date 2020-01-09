@@ -42,6 +42,7 @@ class Xaml2Cs
 		types["FocusManager"] = new XamlType("System.Windows.Input", "FocusManager");
 		types["FontFamily"] = new XamlType("System.Windows.Media", "FontFamily");
 		types["FontStyle"] = new XamlType("System.Windows", "FontStyle");
+		types["FontWeight"] = new XamlType("System.Windows", "FontWeight");
 		types["FrameworkContentElement"] = new XamlType("System.Windows", "FrameworkContentElement");
 		types["FrameworkElement"] = new XamlType("System.Windows", "FrameworkElement");
 		types["FrameworkTemplate"] = new XamlType("System.Windows", "FrameworkTemplate");
@@ -302,6 +303,7 @@ class Xaml2Cs
 		types["TextBlock"].AddProperty(types["InlineCollection"], "Inlines", true);
 		types["TextBlock"].props["Inlines"].auto = true;
 		types["TextBlock"].AddProperty(types["FontFamily"], "FontFamily", true);
+		types["TextBlock"].AddProperty(types["FontWeight"], "FontWeight", true);
 		types["TextBlock"].AddProperty(types["Brush"], "Foreground", true);
 		types["TextBlock"].AddProperty(types["double"], "FontSize", true);
 		types["TextBlock"].AddProperty(types["TextTrimming"], "TextTrimming", true);
@@ -728,6 +730,26 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("FontStyles.{0}", str);
+		}
+		else if (prop.value_type.name == "FontWeight" && str.ToLowerInvariant() == "bold")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = "FontWeights.Bold";
+		}
+		else if (prop.value_type.name == "FontWeight")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			int val;
+			if (int.TryParse(str, out val))
+			{
+				value_expression = String.Format("FontWeight.FromOpenTypeWeight({0})", val);
+			}
+			else
+			{
+				value_expression = String.Format("FontWeights.{0}", str);
+			}
 		}
 		else if (prop.value_type.name == "Geometry")
 		{
