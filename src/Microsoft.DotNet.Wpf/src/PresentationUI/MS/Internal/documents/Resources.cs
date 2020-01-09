@@ -38,5 +38,13 @@ namespace MS.Internal.Documents
 				throw new NotImplementedException("MS.Internal.Resources.RMPublishingPeoplePicker");
 			}
 		}
+
+		internal static Icon DocumentApplication
+		{
+			get
+			{
+				throw new NotImplementedException("MS.Internal.Resources.DocumentApplication");
+			}
+		}
 	}
 }
