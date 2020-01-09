@@ -1091,6 +1091,8 @@ class Xaml2Cs
 							current.parent.late_init.Clear();
 							if (current.parent.prop.dependency)
 							{
+								if (current.parent.prop.container_type.ns != null)
+									namespaces.Add(current.parent.prop.container_type.ns);
 								current.parent.late_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.parent.parent.local_name, current.parent.prop.container_type.name, current.parent.prop.name, local_name));
 							}
 							else
@@ -1176,6 +1178,8 @@ class Xaml2Cs
 									string value_expression = attribute_string_to_expression(current, prop, reader.Value);
 									if (prop.dependency)
 									{
+										if (prop.container_type.ns != null)
+											namespaces.Add(prop.container_type.ns);
 										current.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", current.local_name, prop.container_type.name, prop.name, value_expression));
 									}
 									else if (prop.value_type.name == "event")
@@ -1259,6 +1263,8 @@ class Xaml2Cs
 						string value_expression = attribute_string_to_expression(current, prop, reader.Value.Trim());
 						if (prop.dependency)
 						{
+							if (prop.container_type.ns != null)
+								namespaces.Add(prop.container_type.ns);
 							element.early_init.Add(String.Format("{0}.SetValue({1}.{2}Property, {3});", element.local_name, prop.container_type.name, prop.name, value_expression));
 						}
 						else
