@@ -31,6 +31,7 @@ class Xaml2Cs
 		types["Control"] = new XamlType("System.Windows.Controls", "Control");
 		types["ControlTemplate"] = new XamlType("System.Windows.Controls", "ControlTemplate");
 		types["ControlTemplate"].is_template = true;
+		types["CornerRadius"] = new XamlType("System.Windows", "CornerRadius");
 		types["Decorator"] = new XamlType("System.Windows.Controls", "Decorator");
 		types["DependencyProperty"] = new XamlType("System.Windows", "DependencyProperty");
 		types["double"] = new XamlType(null, "double");
@@ -205,6 +206,7 @@ class Xaml2Cs
 		types["Border"].AddProperty(types["Brush"], "Background", true);
 		types["Border"].AddProperty(types["Brush"], "BorderBrush", true);
 		types["Border"].AddProperty(types["Thickness"], "BorderThickness", true);
+		types["Border"].AddProperty(types["CornerRadius"], "CornerRadius", true);
 		types["Border"].AddProperty(types["Thickness"], "Padding", true);
 		types["ButtonBase"].AddProperty(types["event"], "Click", false);
 		types["Canvas"].AddProperty(types["double"], "Bottom", true);
@@ -776,6 +778,12 @@ class Xaml2Cs
 			if (prop.value_type.ns != null)
 				namespaces.Add(prop.value_type.ns);
 			value_expression = String.Format("new Thickness({0})", str);
+		}
+		else if (prop.value_type.name == "CornerRadius")
+		{
+			if (prop.value_type.ns != null)
+				namespaces.Add(prop.value_type.ns);
+			value_expression = String.Format("new CornerRadius({0})", str);
 		}
 		else if (prop.value_type.name == "PropertyPath")
 		{
