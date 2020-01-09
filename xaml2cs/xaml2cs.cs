@@ -586,6 +586,7 @@ class Xaml2Cs
 		}
 		else if (str.StartsWith("{Binding ") && str.EndsWith("}"))
 		{
+			namespaces.Add("System.Windows.Data");
 			string attributes_str = str.Substring(9, str.Length - 10);
 			var initializers = new List<string>();
 			XamlType binding_type = types["Binding"];
