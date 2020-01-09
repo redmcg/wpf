@@ -328,6 +328,7 @@ class Xaml2Cs
 		types["TextBlock"].AddProperty(types["TextWrapping"], "TextWrapping", true);
 		types["TextBoxBase"].AddProperty(types["event"], "TextChanged", false);
 		types["TextBox"].AddProperty(types["int"], "MaxLength", true);
+		types["TextElement"].AddProperty(types["Brush"], "Foreground", true);
 		types["Timeline"].AddProperty(types["bool"], "AutoReverse", true);
 		types["Timeline"].AddProperty(types["Duration"], "Duration", true);
 		types["TimelineGroup"].AddProperty(types["TimelineCollection"], "Children", true);
