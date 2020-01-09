@@ -661,6 +661,11 @@ class Xaml2Cs
 		{
 			value_expression = "false";
 		}
+		else if (prop.value_type.name == "VerticalAlignment" &&
+			str.ToLowerInvariant() == "center")
+		{
+			value_expression = "VerticalAlignment.Center";
+		}
 		else if (prop.value_type.is_enum)
 		{
 			if (prop.value_type.ns != null)
