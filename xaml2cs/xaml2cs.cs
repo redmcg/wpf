@@ -83,8 +83,10 @@ class Xaml2Cs
 		types["Popup"] = new XamlType("System.Windows.Controls.Primitives", "Popup");
 		types["PopupAnimation"] = new XamlType("System.Windows.Controls.Primitives", "PopupAnimation");
 		types["PopupAnimation"].is_enum = true;
+		types["ProgressBar"] = new XamlType("System.Windows.Controls", "ProgressBar");
 		types["PropertyPath"] = new XamlType("System.Windows", "PropertyPath");
 		types["RelativeSource"] = new XamlType("System.Windows.Data", "RelativeSource");
+		types["RangeBase"] = new XamlType("System.Windows.Controls.Primitives", "RangeBase");
 		types["ResourceDictionary"] = new XamlType("System.Windows", "ResourceDictionary");
 		types["RoutedEvent"] = new XamlType("System.Windows", "RoutedEvent");
 		types["RowDefinition"] = new XamlType("System.Windows.Controls", "RowDefinition");
@@ -169,6 +171,8 @@ class Xaml2Cs
 		types["ParallelTimeline"].base_type = types["TimelineGroup"];
 		types["Path"].base_type = types["Shape"];
 		types["Popup"].base_type = types["FrameworkElement"];
+		types["ProgressBar"].base_type = types["RangeBase"];
+		types["RangeBase"].base_type = types["Control"];
 		types["ScaleTransform"].base_type = types["Transform"];
 		types["ScrollViewer"].base_type = types["ContentControl"];
 		types["Shape"].base_type = types["FrameworkElement"];
