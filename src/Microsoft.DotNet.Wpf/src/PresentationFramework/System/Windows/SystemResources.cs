@@ -950,12 +950,7 @@ namespace System.Windows
                     settings.LocalAssembly = assembly;
 
                     // For system themes, we don't seem to be passing the BAML Uri to the Baml2006Reader
-					var assemblies = new List<Assembly>();
-					if (assembly != null)
-						assemblies.Add(assembly);
-					assemblies.Add(PresentationFramework);
-					assemblies.Add(PresentationCore);
-                    XamlXmlReader xamlReader = new XamlXmlReader(stream, new XamlSchemaContext(assemblies), settings);
+                    XamlXmlReader xamlReader = new XamlXmlReader(stream, new Baml2006SchemaContext(assembly), settings);
 
                     System.Xaml.XamlObjectWriterSettings owSettings = XamlReader.CreateObjectWriterSettingsForBaml();
                     if (assembly != null)
