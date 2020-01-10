@@ -953,6 +953,8 @@ namespace System.Windows
 					var assemblies = new List<Assembly>();
 					if (assembly != null)
 						assemblies.Add(assembly);
+					assemblies.Add(PresentationFramework);
+					assemblies.Add(PresentationCore);
                     XamlXmlReader xamlReader = new XamlXmlReader(stream, new XamlSchemaContext(assemblies), settings);
 
                     System.Xaml.XamlObjectWriterSettings owSettings = XamlReader.CreateObjectWriterSettingsForBaml();
