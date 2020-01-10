@@ -35,6 +35,8 @@ using MS.Internal.Interop;
 using MS.Internal.PresentationFramework;                   // SafeSecurityHelper
 using System.Windows.Baml2006;
 using System.Xaml.Permissions;
+using System.Xaml;
+using XamlReader = System.Windows.Markup.XamlReader;
 
 // Disable pragma warnings to enable PREsharp pragmas
 #pragma warning disable 1634, 1691
@@ -911,7 +913,7 @@ namespace System.Windows
                 // Create the resource manager that will load the byte array
                 ResourceManager rm = new ResourceManager(assemblyName + ".g", assembly);
 
-                resourceName = resourceName + ".baml";
+                resourceName = resourceName + ".xaml";
                 // Load the resource stream
                 Stream stream = null;
                 try
@@ -942,12 +944,16 @@ namespace System.Windows
 
                 if (stream != null)
                 {
-                    Baml2006ReaderSettings settings = new Baml2006ReaderSettings();
-                    settings.OwnsStream = true;
+                    XamlXmlReaderSettings settings = new XamlXmlReaderSettings();
+                    //settings.OwnsStream = true;
+					settings.CloseInput = true;
                     settings.LocalAssembly = assembly;
 
                     // For system themes, we don't seem to be passing the BAML Uri to the Baml2006Reader
-                    Baml2006Reader bamlReader = new Baml2006ReaderInternal(stream, new Baml2006SchemaContext(settings.LocalAssembly), settings);
+					var assemblies = new List<Assembly>();
+					if (assembly != null)
+						assemblies.Add(assembly);
+                    XamlXmlReader xamlReader = new XamlXmlReader(stream, new XamlSchemaContext(assemblies), settings);
 
                     System.Xaml.XamlObjectWriterSettings owSettings = XamlReader.CreateObjectWriterSettingsForBaml();
                     if (assembly != null)
@@ -968,9 +974,9 @@ namespace System.Windows
                         }
                     }
 
-                    System.Xaml.XamlObjectWriter writer = new System.Xaml.XamlObjectWriter(bamlReader.SchemaContext, owSettings);
+                    System.Xaml.XamlObjectWriter writer = new System.Xaml.XamlObjectWriter(xamlReader.SchemaContext, owSettings);
 
-                    System.Xaml.XamlServices.Transform(bamlReader, writer);
+                    System.Xaml.XamlServices.Transform(xamlReader, writer);
 
                     dictionary = (ResourceDictionary)writer.Result;
 
