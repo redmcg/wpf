@@ -14,6 +14,8 @@ all: PresentationFramework.Classic.dll
 %.resources: %.resx
 	resgen $< $@
 
+Resources/PresentationFramework.classic.g.resources: Themes/Classic.xaml
+
 EMBEDDED_RESOURCES=$(shell cat embeddedresources.list)
 
 EMBEDDED_RES_PATHS=$(foreach f,$(EMBEDDED_RESOURCES),Resources/$(f))
