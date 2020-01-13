@@ -200,8 +200,8 @@ namespace MS.Internal
         {
             internal IntPtr UnicodeClasses;
             internal IntPtr CharacterAttributes;
-            internal IntPtr Mirroring;
-            internal CombiningMarksClassificationData CombiningMarksClassification;
+            internal IntPtr _Mirroring_unused;
+            internal CombiningMarksClassificationData _CombiningMarksClassification_unused;
         };
 
         [DllImport(DllImport.PresentationNative, EntryPoint="MILGetClassificationTables")]
@@ -215,9 +215,9 @@ namespace MS.Internal
 
                 _unicodeClassTable   = new SecurityCriticalData<IntPtr>(ct.UnicodeClasses);
                 _charAttributeTable  = new SecurityCriticalData<IntPtr>(ct.CharacterAttributes);
-                _mirroredCharTable   = new SecurityCriticalData<IntPtr>(ct.Mirroring);
+                //_mirroredCharTable   = new SecurityCriticalData<IntPtr>(ct.Mirroring);
                 
-                _combiningMarksClassification = new SecurityCriticalData<CombiningMarksClassificationData>(ct.CombiningMarksClassification);
+                //_combiningMarksClassification = new SecurityCriticalData<CombiningMarksClassificationData>(ct.CombiningMarksClassification);
             }
         }
 
@@ -412,7 +412,7 @@ namespace MS.Internal
 
         static private readonly SecurityCriticalData<IntPtr>  _unicodeClassTable;
         static private readonly SecurityCriticalData<IntPtr> _charAttributeTable;
-        static private readonly SecurityCriticalData<IntPtr> _mirroredCharTable;
-        static private readonly SecurityCriticalData<CombiningMarksClassificationData> _combiningMarksClassification;
+        //static private readonly SecurityCriticalData<IntPtr> _mirroredCharTable;
+        //static private readonly SecurityCriticalData<CombiningMarksClassificationData> _combiningMarksClassification;
     }
 }

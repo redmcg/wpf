@@ -45,18 +45,18 @@ namespace MS.Internal
 
     internal enum ItemClass : byte
     {
-        DigitClass          = 0x0,
-        ANClass             = 0x1,
-        CSClass             = 0x2,
-        ESClass             = 0x3,
-        ETClass             = 0x4,
+        //DigitClass          = 0x0,
+        //ANClass             = 0x1,
+        //CSClass             = 0x2,
+        //ESClass             = 0x3,
+        //ETClass             = 0x4,
         StrongClass         = 0x5,
-        WeakClass           = 0x6,
+        //WeakClass           = 0x6,
         SimpleMarkClass     = 0x7,
         ComplexMarkClass    = 0x8,
-        ControlClass        = 0x9,
+        //ControlClass        = 0x9,
         JoinerClass         = 0xA,
-        NumberSignClass     = 0xB,
+        //NumberSignClass     = 0xB,
         MaxClass            = 0xC
     };
 
@@ -142,7 +142,7 @@ namespace MS.Internal
         CharacterFormatAnchor= 0x8,
         CharacterFastText   = 0x10,
         CharacterIdeo       = 0x20,
-        CharacterExtended   = 0x40,
+        // CharacterExtended   = 0x40,
         CharacterSpace      = 0x80,
         CharacterDigit      = 0x100,
         CharacterParaBreak  = 0x200,
@@ -160,10 +160,12 @@ namespace MS.Internal
         SingleMirrorBreak   = 0x8
     };
 
+#if DISABLED // moved to wpfgfx/UnicodeClass.cs
     internal enum UnicodeClass : ushort
     {
         Max = 0x1D8,
     };
+#endif
 
     // CharacterAttribute is manged struct. we need to keep it word align because we use
     // equivalent unmanaged struct which should be same size. the unmanaged struct has same name
@@ -179,9 +181,9 @@ namespace MS.Internal
         internal byte               Script;
         internal byte               ItemClass;
         internal ushort             Flags;
-        internal byte               BreakType;
+        internal byte               _BreakType_unused;
         internal DirectionClass     BiDi;
-        internal short              LineBreak;
+        internal short              _LineBreak_unused;
     };
 } // namespace
 
