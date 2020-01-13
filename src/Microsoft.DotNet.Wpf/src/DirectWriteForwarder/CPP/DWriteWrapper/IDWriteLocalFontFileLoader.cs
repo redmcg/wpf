@@ -9,6 +9,15 @@ namespace MS.Internal.Text.TextInterface
 	[ComImport ()]
 	internal interface IDWriteLocalFontFileLoader
 	{
+		// IDWriteFontFileLoader methods
+		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[PreserveSig]
+		public int CreateStreamFromKey(
+			[In] IntPtr key, /* const void* */
+			[In] uint key_size,
+			[Out, MarshalAs(UnmanagedType.Interface)] out IDWriteFontFileStreamMirror stream);
+
+		// IDWriteLocalFontFileLoader methods
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		uint GetFilePathLengthFromKey(
 			[In] IntPtr key, /* void const* */
