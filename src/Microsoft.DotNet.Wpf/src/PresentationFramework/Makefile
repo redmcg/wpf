@@ -12,7 +12,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: PresentationFramework.dll
 
 ../../cycle-breakers/PresentationUI/PresentationUI-PresentationFramework-impl-cycle.dll: ../../cycle-breakers/PresentationUI/*.cs
-	+$(MAKE) -C $(@D) -f PresentaionUI-PresentationFramework-impl-cycle.make
+	+$(MAKE) -C $(@D) -f PresentationUI-PresentationFramework-impl-cycle.make
 	touch $@
 
 ../System.Printing/ref/System.Printing.dll: ../System.Printing/ref/*.cs
