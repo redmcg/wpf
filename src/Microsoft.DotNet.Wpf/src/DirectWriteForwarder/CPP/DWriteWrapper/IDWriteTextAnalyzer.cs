@@ -77,7 +77,7 @@ namespace MS.Internal.Text.TextInterface
 			[In] uint* feature_range_len,
 			uint feature_ranges,
 			[In, MarshalAs(UnmanagedType.LPArray)] float[] glyph_advances,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] out DWriteGlyphOffset[] glyph_offsets);
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] DWriteGlyphOffset[] glyph_offsets);
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		unsafe void GetGdiCompatibleGlyphPlacements(
@@ -101,6 +101,6 @@ namespace MS.Internal.Text.TextInterface
 			[In] uint* feature_range_lengths,
 			uint feature_ranges,
 			[In, MarshalAs(UnmanagedType.LPArray)] float[] glyph_advances,
-			[Out, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=6)] out DWriteGlyphOffset[] glyph_offsets);
+			[In, Out, MarshalAs(UnmanagedType.LPArray)] DWriteGlyphOffset[] glyph_offsets);
 	}
 }

@@ -581,6 +581,7 @@ public class TextAnalyzer
 
 					float fontEmSizeFloat = (float)fontEmSize;
 
+					dwriteGlyphOffsets = new DWriteGlyphOffset[glyphCount];
 					if (textFormattingMode == TextFormattingMode.Ideal)
 					{   
 						try {
@@ -602,7 +603,7 @@ public class TextAnalyzer
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								out dwriteGlyphOffsets
+								dwriteGlyphOffsets
 								);
 						}
 						catch (ArgumentException)
@@ -627,7 +628,7 @@ public class TextAnalyzer
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								out dwriteGlyphOffsets
+								dwriteGlyphOffsets
 								);
 						}
 						
@@ -658,7 +659,7 @@ public class TextAnalyzer
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								out dwriteGlyphOffsets
+								dwriteGlyphOffsets
 								);
 						}
 						catch (ArgumentException) {
@@ -685,7 +686,7 @@ public class TextAnalyzer
 								pFeatureRangeLengths,
 								featureRanges,
 								dwriteGlyphAdvances,
-								out dwriteGlyphOffsets
+								dwriteGlyphOffsets
 								);
 						}
 					}
