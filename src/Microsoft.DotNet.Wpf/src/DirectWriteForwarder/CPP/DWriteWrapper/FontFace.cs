@@ -55,7 +55,7 @@ public sealed class FontFace : IDisposable
 	{
 		if (_fontFace != IntPtr.Zero)
 		{
-			Marshal.ReleaseComObject(_fontFace);
+			Marshal.Release(_fontFace);
 			_fontFace = IntPtr.Zero;
 		}
 	}
