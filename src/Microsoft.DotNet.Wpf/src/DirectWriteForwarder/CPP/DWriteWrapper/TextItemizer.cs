@@ -9,187 +9,106 @@ using System.Globalization;
 
 namespace MS.Internal.Text.TextInterface
 {
-internal class DWriteTextAnalysisNode<T>
-{
-	internal T Value;
-	internal uint Range_0;
-	internal uint Range_1;
-	internal DWriteTextAnalysisNode<T> Next;
-	internal uint this[uint i]
-	{
-		get {
-			switch(i)
-			{
-			case 0:
-				return Range_0;
-			case 1:
-				return Range_1;
-			default:
-				throw new IndexOutOfRangeException();
-			}
-		}
-		set {
-			switch(i)
-			{
-			case 0:
-				Range_0 = value;
-				break;
-			case 1:
-				Range_1 = value;
-				break;
-			default:
-				throw new IndexOutOfRangeException();
-			}
-		}
-	}
-}
 
 public class TextItemizer
 {
-	DWriteTextAnalysisNode<DWriteScriptAnalysis> _pScriptAnalysisListHead;
-	DWriteTextAnalysisNode<IDWriteNumberSubstitution> _pNumberSubstitutionListHead;
-
-	List<bool> _isDigitList;
-	List<uint[]> _isDigitListRanges;
+	List<TextAnalysisRange<DWriteScriptAnalysis>> ScriptAnalysisRanges;
+	List<TextAnalysisRange<IDWriteNumberSubstitution>> NumberSubstitutionRanges;
+	List<TextAnalysisRange<bool>> IsDigitRanges;
 
 	internal TextItemizer(
-		DWriteTextAnalysisNode<DWriteScriptAnalysis> pScriptAnalysisListHead,
-		DWriteTextAnalysisNode<IDWriteNumberSubstitution> pNumberSubstitutionListHead)
+		List<TextAnalysisRange<DWriteScriptAnalysis>> ScriptAnalysisRanges,
+		List<TextAnalysisRange<IDWriteNumberSubstitution>> NumberSubstitutionRanges)
     {
-        _pScriptAnalysisListHead     = pScriptAnalysisListHead;
-        _pNumberSubstitutionListHead = pNumberSubstitutionListHead;
-
-        _isDigitList           = new List<bool>();
-        _isDigitListRanges     = new List<uint[]>();
-    }
-
-    uint GetNextSmallestPos(
-        ref DWriteTextAnalysisNode<DWriteScriptAnalysis> ppScriptAnalysisCurrent, 
-        ref uint scriptAnalysisRangeIndex,
-        ref DWriteTextAnalysisNode<IDWriteNumberSubstitution> ppNumberSubstitutionCurrent,
-        ref uint numberSubstitutionRangeIndex,
-        ref uint isDigitIndex, 
-        ref uint isDigitRangeIndex
-        )
-    {
-        
-        uint scriptAnalysisPos = (ppScriptAnalysisCurrent != null)?ppScriptAnalysisCurrent[scriptAnalysisRangeIndex] : UInt32.MaxValue;
-        uint numberSubPos      = (ppNumberSubstitutionCurrent != null)?ppNumberSubstitutionCurrent[numberSubstitutionRangeIndex] : UInt32.MaxValue;
-        uint isDigitPos        = (isDigitIndex < (uint)_isDigitListRanges.Count)?_isDigitListRanges[(int)isDigitIndex][isDigitRangeIndex] : UInt32.MaxValue;
-
-        uint smallestPos = Math.Min(scriptAnalysisPos, numberSubPos);
-        smallestPos = Math.Min(smallestPos, isDigitPos);
-        if (smallestPos == scriptAnalysisPos)
-        {
-            if ((scriptAnalysisRangeIndex + 1) / 2 == 1)
-            {
-                ppScriptAnalysisCurrent = ppScriptAnalysisCurrent.Next;
-            }
-            scriptAnalysisRangeIndex = (scriptAnalysisRangeIndex + 1) % 2;
-        }
-        else if (smallestPos == numberSubPos)
-        {                  
-            if ((numberSubstitutionRangeIndex + 1) / 2 == 1)
-            {
-                ppNumberSubstitutionCurrent = ppNumberSubstitutionCurrent.Next;
-            }
-            numberSubstitutionRangeIndex = (numberSubstitutionRangeIndex + 1) % 2;
-        }
-        else
-        {         
-            isDigitIndex     += (isDigitRangeIndex + 1) / 2;
-            isDigitRangeIndex = (isDigitRangeIndex + 1) % 2;            
-        }
-        return smallestPos;
-
+		this.ScriptAnalysisRanges = ScriptAnalysisRanges;
+		this.NumberSubstitutionRanges = NumberSubstitutionRanges;
+		this.IsDigitRanges = new List<TextAnalysisRange<bool>> ();
     }
 
     public IList<Span> Itemize(CultureInfo numberCulture, CharAttribute[] pCharAttribute)
-    {
-        DWriteTextAnalysisNode<DWriteScriptAnalysis>     pScriptAnalysisListPrevious     = _pScriptAnalysisListHead;
-        DWriteTextAnalysisNode<DWriteScriptAnalysis>     pScriptAnalysisListCurrent      = _pScriptAnalysisListHead;
-        uint scriptAnalysisRangeIndex = 0;
-		int textLength = pCharAttribute.Length;
+	{
+		var result = new List<Span>();
+		int textIndex = 0;
+		int scriptAnalysisIndex = 0;
+		int numberSubstitutionIndex = 0;
+		int isDigitIndex = 0;
+		
+		while (true)
+		{
+			if (textIndex >= ScriptAnalysisRanges[scriptAnalysisIndex].TextEnd)
+			{
+				scriptAnalysisIndex++;
+				if (scriptAnalysisIndex >= ScriptAnalysisRanges.Count)
+					break;
+			}
 
-        DWriteTextAnalysisNode<IDWriteNumberSubstitution> pNumberSubstitutionListPrevious = _pNumberSubstitutionListHead;
-        DWriteTextAnalysisNode<IDWriteNumberSubstitution> pNumberSubstitutionListCurrent  = _pNumberSubstitutionListHead;
-        uint numberSubstitutionRangeIndex = 0;      
+			int spanEnd = ScriptAnalysisRanges[scriptAnalysisIndex].TextEnd;
 
-        uint isDigitIndex      = 0;
-        uint isDigitIndexOld   = 0;
-        uint isDigitRangeIndex = 0;
+			var scriptAnalysis = ScriptAnalysisRanges[scriptAnalysisIndex].Value;
 
-        uint rangeStart;
-    	uint rangeEnd;
+			IDWriteNumberSubstitution numberSubstitution = null;
+			if (numberSubstitutionIndex < NumberSubstitutionRanges.Count)
+			{
+				if (textIndex >= NumberSubstitutionRanges[numberSubstitutionIndex].TextEnd)
+				{
+					numberSubstitutionIndex++;
+				}
 
-        rangeEnd = GetNextSmallestPos(ref pScriptAnalysisListCurrent, ref scriptAnalysisRangeIndex, 
-                                      ref pNumberSubstitutionListCurrent, ref numberSubstitutionRangeIndex,
-                                      ref isDigitIndex, ref isDigitRangeIndex);
+				if (numberSubstitutionIndex < NumberSubstitutionRanges.Count)
+				{
+					var range = NumberSubstitutionRanges[numberSubstitutionIndex];
+					if (textIndex < range.TextPosition)
+					{
+						// Before start of range
+						if (spanEnd > range.TextPosition)
+							spanEnd = range.TextPosition;
+					}
+					else
+					{
+						// Inside range
+						if (spanEnd > range.TextEnd)
+							spanEnd = range.TextEnd;
 
-        List<Span> spanVector = new List<Span>();
-        while (
-            rangeEnd != textLength 
-            && (pScriptAnalysisListCurrent != null
-            || pNumberSubstitutionListCurrent != null
-            || isDigitIndex            < (uint)_isDigitList.Count)
-            )
-        {
-            rangeStart = rangeEnd;
-            while(rangeEnd == rangeStart)
-            {
-                pScriptAnalysisListPrevious     = pScriptAnalysisListCurrent;
-                pNumberSubstitutionListPrevious = pNumberSubstitutionListCurrent;
-                isDigitIndexOld                 = isDigitIndex;
+						numberSubstitution = range.Value;
+					}
+				}
+			}
 
-                rangeEnd = GetNextSmallestPos(ref pScriptAnalysisListCurrent, ref scriptAnalysisRangeIndex,
-                                              ref pNumberSubstitutionListCurrent, ref numberSubstitutionRangeIndex,
-                                              ref isDigitIndex, ref isDigitRangeIndex);
-            }
+			if (textIndex >= IsDigitRanges[isDigitIndex].TextEnd)
+			{
+				isDigitIndex++;
+			}
 
-            IDWriteNumberSubstitution pNumberSubstitution = null;
-            if (pNumberSubstitutionListPrevious != null
-             && rangeEnd >  pNumberSubstitutionListPrevious.Range_0 
-             && rangeEnd <= pNumberSubstitutionListPrevious.Range_1)
-            {
-                pNumberSubstitution = pNumberSubstitutionListPrevious.Value;
-            }
+			if (spanEnd > IsDigitRanges[isDigitIndex].TextEnd)
+				spanEnd = IsDigitRanges[isDigitIndex].TextEnd;
 
-            // Assign HasCombiningMark
-            bool hasCombiningMark = false;
-            for (uint i = rangeStart; i < rangeEnd; ++i)
-            {
-                if ((pCharAttribute[i] & CharAttribute.IsCombining) != 0)
-                {
-                    hasCombiningMark = true;
-                    break;
-                }
-            }
+			var isDigit = IsDigitRanges[isDigitIndex].Value;
 
-            // Assign NeedsCaretInfo
-            // When NeedsCaretInfo is false (and the run does not contain any combining marks)
-            // this makes caret navigation happen on the character level 
-            // and not the cluster level. When we have an itemized run based on DWrite logic
-            // that contains more than one WPF 3.5 scripts (based on unicode 3.x) we might run
-            // into a rare scenario where one script allows, for example, ligatures and the other not.
-            // In that case we default to false and let the combining marks check (which checks for
-            // simple and complex combining marks) decide whether character or cluster navigation
-            // will happen for the current run.
-            bool needsCaretInfo = true;
-            for (uint i = rangeStart; i < rangeEnd; ++i)
-            {
-                // Does NOT need caret info
-                if (((pCharAttribute[i] & CharAttribute.IsStrong) != 0) && ((pCharAttribute[i] & CharAttribute.NeedsCaretInfo) == 0))
-                {
-                    needsCaretInfo = false;
-                    break;
-                }
-            }
+			bool hasCombiningMark = false;
+			for (int i = textIndex; i < spanEnd; i++)
+			{
+				if ((pCharAttribute[i] & CharAttribute.IsCombining) != 0)
+				{
+					hasCombiningMark = true;
+					break;
+				}
+			}
+
+			bool needsCaretInfo = true;
+			for (int i = textIndex; i < spanEnd; i++)
+			{
+				if (((pCharAttribute[i] & CharAttribute.IsStrong) != 0) && ((pCharAttribute[i] & CharAttribute.NeedsCaretInfo) == 0))
+				{
+					needsCaretInfo = false;
+					break;
+				}
+			}
 
             int strongCharCount = 0;
             int latinCount = 0;
             int indicCount = 0;
             bool hasExtended = false;
-            for (uint i = rangeStart; i < rangeEnd; ++i)
+            for (int i = textIndex; i < spanEnd; ++i)
             {
                 if ((pCharAttribute[i] & CharAttribute.IsExtended) != 0)
                 {
@@ -230,9 +149,9 @@ public class TextItemizer
             bool isLatin = (strongCharCount > 0) && (latinCount == strongCharCount);
 
             ItemProps itemProps = new ItemProps(
-                    pScriptAnalysisListPrevious.Value,
-                    pNumberSubstitution,
-                    _isDigitList[(int)isDigitIndexOld] ? numberCulture : null,
+                    scriptAnalysis,
+                    numberSubstitution,
+                    isDigit ? numberCulture : null,
                     hasCombiningMark,
                     needsCaretInfo,
                     hasExtended,
@@ -240,11 +159,13 @@ public class TextItemizer
                     isLatin
                     );
 
-            spanVector.Add(new Span(itemProps, (int)(rangeEnd - rangeStart)));
-        }
+			result.Add(new Span(itemProps, spanEnd - textIndex));
 
-        return spanVector;
-    }  
+			textIndex = spanEnd;
+		}
+
+		return result;
+	}
 
     internal void SetIsDigit(
                                  uint textPosition,
@@ -252,11 +173,7 @@ public class TextItemizer
                                  bool   isDigit
                                  )
     {
-        _isDigitList.Add(isDigit);
-        uint[] range = new uint[2];
-        range[0] = textPosition;
-        range[1] = textPosition + textLength;
-        _isDigitListRanges.Add(range);
+		IsDigitRanges.Add(new TextAnalysisRange<bool>((int)textPosition, (int)textLength, isDigit));
     }
 }
 }

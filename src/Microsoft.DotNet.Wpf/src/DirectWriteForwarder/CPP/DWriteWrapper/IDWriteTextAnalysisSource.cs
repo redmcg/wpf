@@ -29,12 +29,12 @@ namespace MS.Internal.Text.TextInterface
 		void GetLocaleName(
 			uint position,
 			[Out] out uint text_len,
-			[Out] IntPtr locale); /* WCHAR const** */
+			[Out] out IntPtr locale); /* WCHAR const** */
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void GetNumberSubstitution(
 			uint position,
 			[Out] out uint text_len,
-			[Out, MarshalAs(UnmanagedType.Interface)] IDWriteNumberSubstitution substitution);
+			[Out, MarshalAs(UnmanagedType.Interface)] out IDWriteNumberSubstitution substitution);
 	}
 }

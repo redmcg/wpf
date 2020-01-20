@@ -115,7 +115,7 @@ namespace MS.Internal.Text.TextInterface
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IDWriteNumberSubstitution CreateNumberSubstitution(
-			int method, // DWRITE_NUMBER_SUBSTITUTION_METHOD
+			uint method, // DWRITE_NUMBER_SUBSTITUTION_METHOD
 			[In, MarshalAs(UnmanagedType.LPWStr)] string locale,
 			bool ignore_user_override);
 

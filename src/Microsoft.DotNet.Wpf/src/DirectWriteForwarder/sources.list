@@ -53,4 +53,6 @@ CPP/DWriteWrapper/LocalizedErrorMsgs.cs
 CPP/DWriteWrapper/LocalizedStrings.cs
 CPP/DWriteWrapper/OpenTypeTableTag.cs
 CPP/DWriteWrapper/TextAnalyzer.cs
+CPP/DWriteWrapper/TextAnalyzerSink.cs
+CPP/DWriteWrapper/TextAnalyzerSource.cs
 CPP/DWriteWrapper/TextItemizer.cs
