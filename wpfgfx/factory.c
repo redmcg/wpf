@@ -3,6 +3,9 @@
 #define COBJMACROS
 #include <windows.h>
 #include "wpfgfx_private.h"
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 static inline MILFactory2 *impl_from_IUnknown(IUnknown *iface)
 {
@@ -55,6 +58,8 @@ static IUnknownVtbl MILFactory2_Vtbl = {
 HRESULT WINAPI MILCreateFactory(MILFactory2** result, UINT sdkversion)
 {
 	MILFactory2* factory;
+
+	WINE_TRACE("%p,%x\n", result, sdkversion);
 
 	factory = malloc(sizeof(*factory));
 	if (!factory)

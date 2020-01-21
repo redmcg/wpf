@@ -2,6 +2,9 @@
 
 #include <windows.h>
 #include "wpfgfx_private.h"
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 extern HRESULT HwndTarget_Command(MilChannel* channel, MilResourceHwndTarget* target,
 	BYTE* data, UINT size)
@@ -46,6 +49,7 @@ extern HRESULT HwndTarget_Command(MilChannel* channel, MilResourceHwndTarget* ta
 	case MilCmdTargetUpdateWindowSettings:
 		return S_OK;
 	default:
+		WINE_FIXME("Unimplemented cmd %i\n", generic->Type);
 		return E_NOTIMPL;
 	}
 }

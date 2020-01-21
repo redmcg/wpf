@@ -3,6 +3,9 @@
 #include <windows.h>
 #include <assert.h>
 #include "wpfgfx_private.h"
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 static HRESULT find_free_handle(MilChannel* channel, ResourceHandle *handle)
 {
@@ -62,6 +65,8 @@ HRESULT WINAPI MilResource_ReleaseOnChannel(MilChannel* channel, ResourceHandle 
 	MilResource* object;
 	LONG* refcount;
 
+	WINE_TRACE("%p,%u,%p\n", channel, hResource, deleted);
+
 	if (!channel || !deleted)
 		return E_POINTER;
 	
@@ -90,6 +95,8 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	HRESULT hr;
 	ResourceHandle result_handle;
 	MilResource* new_resource = NULL;
+
+	WINE_TRACE("%p,%u,%p->%u\n", channel, restype, handle, handle ? *handle : 0);
 
 	if (!channel || !handle)
 		return E_POINTER;
@@ -123,6 +130,7 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 		break;
 	}
 	default:
+		WINE_FIXME("Unimplemented resource type %i\n", restype);
 		return E_NOTIMPL;
 	}
 
@@ -138,6 +146,8 @@ HRESULT WINAPI MilResource_DuplicateHandle(MilChannel* srcchan, ResourceHandle s
 	HRESULT hr;
 	MilResource* object;
 	ResourceHandle dst_handle;
+
+	WINE_TRACE("%p,%u,%p,%p\n", srcchan, src, dstchan, dst);
 
 	if (!srcchan || !dstchan || !dst)
 		return E_POINTER;

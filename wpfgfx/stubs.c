@@ -3,24 +3,31 @@
 #define COBJMACROS
 #include <windows.h>
 #include "wpfgfx_private.h"
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 HRESULT WINAPI MilVisualTarget_AttachToHwnd(HWND hwnd)
 {
+	WINE_TRACE("%p\n", hwnd);
 	return S_OK;
 }
 
 HRESULT WINAPI MilVisualTarget_DetachFromHwnd(HWND hwnd)
 {
+	WINE_TRACE("%p\n", hwnd);
 	return S_OK;
 }
 
 HRESULT WINAPI MilContent_AttachToHwnd(HWND hwnd)
 {
+	WINE_TRACE("%p\n", hwnd);
 	return S_OK;
 }
 
 HRESULT WINAPI MilContent_DetachFromHwnd(HWND hwnd)
 {
+	WINE_TRACE("%p\n", hwnd);
 	return S_OK;
 }
 

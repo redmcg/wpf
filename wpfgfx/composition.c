@@ -2,6 +2,9 @@
 
 #include <windows.h>
 #include <winnt.h>
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 static CRITICAL_SECTION composition_engine_lock;
 static CRITICAL_SECTION_DEBUG composition_engine_lock_debug = {
@@ -23,5 +26,6 @@ void WINAPI MilCompositionEngine_ExitCompositionEngineLock(void)
 HRESULT WINAPI MilCompositionEngine_InitializePartitionManager(INT nPriority)
 {
 	// FIXME: Start a thread?
+	WINE_TRACE("%i\n", nPriority);
 	return S_OK;
 }

@@ -2,10 +2,14 @@
 
 #include <windows.h>
 #include "wpfgfx_private.h"
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 HRESULT WINAPI WgxConnection_Create(BOOL requestSynchronousTransport,
 	void** ppConnection)
 {
+	WINE_TRACE("%i,%p\n", requestSynchronousTransport, ppConnection);
 	if (!ppConnection)
 		return E_POINTER;
 	*ppConnection = (void*)0xdeadbeef;
@@ -14,11 +18,14 @@ HRESULT WINAPI WgxConnection_Create(BOOL requestSynchronousTransport,
 
 HRESULT WINAPI WgxConnection_Disconnect(void* pTranspManager)
 {
+	WINE_FIXME("%p\n", pTranspManager);
 	return S_OK;
 }
 
 HRESULT WINAPI MilConnection_CreateChannel(void* pTransport, MilChannel* referenceChannel, MilChannel** result)
 {
+	WINE_TRACE("%p,%p,%p\n", pTransport, referenceChannel, result);
+
 	if (!pTransport || !result)
 		return E_POINTER;
 	
@@ -74,6 +81,7 @@ static HRESULT validate_command(BYTE* data, UINT size)
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
 		MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE);
 	default:
+		WINE_FIXME("Unimplemented cmd 0x%x\n", *(MILCMD*)data);
 		return E_NOTIMPL;
 	}
 
@@ -134,6 +142,9 @@ HRESULT WINAPI MilResource_SendCommand(BYTE* data, UINT size, BOOL sendInSeparat
 {
 	HRESULT hr;
 
+	WINE_TRACE("%p,%u,%i,%p: cmd=%i\n", data, size, sendInSeparateBatch, channel,
+		size >= 4 ? *(INT*)data: -1);
+
 	if (!channel)
 		return E_POINTER;
 
@@ -148,6 +159,8 @@ HRESULT WINAPI MilResource_SendCommand(BYTE* data, UINT size, BOOL sendInSeparat
 
 HRESULT WINAPI MilChannel_SetNotificationWindow(MilChannel* channel, HWND hwnd, UINT msg)
 {
+	WINE_TRACE("%p,%p,%u\n", channel, hwnd, msg);
+
 	if (!channel)
 		return E_POINTER;
 	
@@ -159,6 +172,8 @@ HRESULT WINAPI MilChannel_SetNotificationWindow(MilChannel* channel, HWND hwnd, 
 
 HRESULT WINAPI MilChannel_CloseBatch(MilChannel* channel)
 {
+	WINE_TRACE("%p\n", channel);
+
 	if (!channel)
 		return E_POINTER;
 	
@@ -175,6 +190,8 @@ HRESULT WINAPI MilChannel_CommitChannel(MilChannel* channel)
 
 HRESULT WINAPI MilComposition_SyncFlush(MilChannel* channel)
 {
+	WINE_TRACE("%p\n", channel);
+
 	MilMessage msg;
 
 	if (!channel)
@@ -189,7 +206,14 @@ HRESULT WINAPI MilComposition_SyncFlush(MilChannel* channel)
 
 HRESULT MilChannel_PostMessage(MilChannel* channel, const MilMessage* msg)
 {
-	MilMessageLink* link = malloc(sizeof(*link));
+	MilMessageLink* link;
+
+	WINE_TRACE("%p,%p->%i\n", channel, msg, (msg != NULL) ? msg->Type : 0);
+
+	if (!channel || !msg)
+		return E_POINTER;
+
+	link = malloc(sizeof(*link));
 
 	if (!link)
 		return E_OUTOFMEMORY;
@@ -209,6 +233,8 @@ HRESULT MilChannel_PostMessage(MilChannel* channel, const MilMessage* msg)
 
 HRESULT WINAPI MilComposition_PeekNextMessage(MilChannel* channel, MilMessage* message, INT_PTR size, BOOL* messageRetrieved)
 {
+	WINE_TRACE("%p\n", channel);
+
 	if (!channel || !message || !messageRetrieved)
 		return E_POINTER;
 
@@ -236,6 +262,8 @@ HRESULT WINAPI MilComposition_PeekNextMessage(MilChannel* channel, MilMessage* m
 	{
 		*messageRetrieved = FALSE;
 	}
+
+	WINE_TRACE("<-- %i,%i\n", *messageRetrieved, *message);
 
 	return S_OK;
 }

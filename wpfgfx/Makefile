@@ -7,7 +7,7 @@ all: wpfgfx_cor3.dll
 .PHONY: all
 
 %.o: $(SRCDIR)/%.c
-	$(MINGW)-gcc -o $@ -D_WIN32_WINNT=0x0602 --std=c99 -c -Wall -Werror -I$(SRCDIR)/.. $<
+	$(MINGW)-gcc -o $@ -D_WIN32_WINNT=0x0602 --std=c99 -c -Wall -Wno-format -Werror -I$(SRCDIR)/.. $<
 
 debug.o: $(SRCDIR)/../wine/debug.c
 	$(MINGW)-gcc -o $@ -D_WIN32_WINNT=0x0602 -D__WINESRC__ --std=c99 -c -Wall -Wno-format -Werror -I$(SRCDIR)/.. $<
