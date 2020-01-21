@@ -112,6 +112,7 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	case TYPE_ETWEVENTRESOURCE:
 	case TYPE_VISUAL:
 	case TYPE_MATRIXTRANSFORM:
+	case TYPE_RENDERDATA:
 		new_resource = malloc(sizeof(MilResource));
 		if (!new_resource)
 			return E_OUTOFMEMORY;
