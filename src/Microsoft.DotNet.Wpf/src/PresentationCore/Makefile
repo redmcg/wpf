@@ -20,6 +20,8 @@ SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
 Resources/ColorProfiles.resources: System/Windows/Media/Resources/ColorProfiles/ColorProfiles.resx
 	resgen $< $@
 
+Resources/PresentationCore.g.resources: Fonts/*.CompositeFont
+
 EMBEDDED_RESOURCES=$(shell cat embeddedresources.list)
 
 EMBEDDED_RES_PATHS=$(foreach f,$(EMBEDDED_RESOURCES),Resources/$(f))
