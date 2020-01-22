@@ -122,11 +122,7 @@ namespace MS.Internal.Text.TextInterface
 				_wpfFontFileLoader = null;
 			}
 
-			if (_pFactory != null)
-			{
-				Marshal.FinalReleaseComObject (_pFactory);
-				_pFactory = null;
-			}
+			_pFactory = null;
 
 			return true;        
 		}
