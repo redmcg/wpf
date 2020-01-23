@@ -59,16 +59,16 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="component/fonts/GlobalMonospace.CompositeFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="fonts/globalmonospace.compositefont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Fonts/GlobalMonospace.CompositeFont;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="component/fonts/GlobalSansSerif.CompositeFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="fonts/globalsansserif.compositefont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Fonts/GlobalSansSerif.CompositeFont;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="component/fonts/GlobalSerif.CompositeFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="fonts/globalserif.compositefont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Fonts/GlobalSerif.CompositeFont;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="component/fonts/GlobalUserInterface.CompositeFont" type="System.Resources.ResXFileRef, System.Windows.Forms">
+  <data name="fonts/globaluserinterface.compositefont" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>../Fonts/GlobalUserInterface.CompositeFont;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
