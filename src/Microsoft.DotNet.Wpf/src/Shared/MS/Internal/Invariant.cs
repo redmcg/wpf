@@ -209,7 +209,12 @@ namespace MS.Internal
 
             Debug.Assert(false, "Invariant failure: " + message, detailMessage);
 
-            Environment.FailFast(SR.Get(SRID.InvariantFailure));
+			string msg;
+
+			msg = String.Format("{0}\n{1}\n{2}", message ?? "", detailMessage ?? "",
+				Environment.StackTrace);
+
+            Environment.FailFast(msg);
         }
 
         #endregion Private Methods
