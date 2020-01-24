@@ -2,6 +2,6 @@
 
 namespace MS.Internal {
     internal enum UnicodeClass : ushort {
-        Max = 209
+        Max = 472
     };
 }
