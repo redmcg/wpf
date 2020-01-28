@@ -12,12 +12,12 @@ namespace MS.Internal.Text.TextInterface
     public class FontCollectionLoader : IDWriteFontCollectionLoaderMirror
     {
 		IFontSourceCollectionFactory _fontSourceCollectionFactory;
-		FontFileLoader _fontFileLoader;
+		IntPtr _fontFileLoader;
 
 		public FontCollectionLoader() { Debug.Assert(false); }
 		
 		public FontCollectionLoader(IFontSourceCollectionFactory fontSourceCollectionFactory,
-								    FontFileLoader fontFileLoader)
+								    IntPtr fontFileLoader)
 		{
 			_fontSourceCollectionFactory = fontSourceCollectionFactory;
 			_fontFileLoader              = fontFileLoader;

@@ -13,13 +13,13 @@ namespace MS.Internal.Text.TextInterface
     public class FontFileEnumerator : IDWriteFontFileEnumeratorMirror
     {     
 		IEnumerator<IFontSource> _fontSourceCollectionEnumerator;
-		FontFileLoader _fontFileLoader;
+		IntPtr _fontFileLoader;
 		IDWriteFactory _factory;
 
 		public FontFileEnumerator() { Debug.Assert(false); }
 
 		public FontFileEnumerator(IEnumerable<IFontSource> fontSourceCollection,
-								  FontFileLoader fontFileLoader,
+								  IntPtr fontFileLoader,
 								  IDWriteFactory factory)
 		{
 			_fontSourceCollectionEnumerator = fontSourceCollection.GetEnumerator();

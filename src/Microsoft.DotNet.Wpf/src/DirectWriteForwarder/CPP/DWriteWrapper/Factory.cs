@@ -19,14 +19,14 @@ namespace MS.Internal.Text.TextInterface
 		/// <summary>
 		/// The custom loader used by WPF to load font collections.
 		/// </summary>
-		FontCollectionLoader _wpfFontCollectionLoader;
+		IFontSourceCollectionFactory  _fontSourceCollectionFactory;
 
 		/// <summary>
 		/// The custom loader used by WPF to load font files.
 		/// </summary>
-		FontFileLoader _wpfFontFileLoader;
+		IFontSourceFactory            _fontSourceFactory;
 
-		IFontSourceFactory _fontSourceFactory;
+		GCHandle _managedFactoryHandle; // A GCHandle for this object
 
 		[ThreadStatic]
 		static Dictionary<Uri,FILETIME> _timeStampCache;
@@ -34,10 +34,61 @@ namespace MS.Internal.Text.TextInterface
 		[ThreadStatic]
 		static DispatcherOperation _timeStampCacheCleanupOp;
 
+		// Interface for our native helper
+		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+		internal delegate int CreateEnumeratorFromKeyFn(
+			IntPtr managedFactoryHandle,
+			IntPtr collectionKey,
+			uint collectionKeySize,
+			[MarshalAs(UnmanagedType.Interface)] out IDWriteFontFileEnumeratorMirror fontFileEnumerator);
+
+		[UnmanagedFunctionPointer(CallingConvention.StdCall)]
+		internal delegate int CreateStreamFromKeyFn(
+			IntPtr managedFactoryHandle,
+			IntPtr fontFileReferenceKey,
+			uint fontFileReferenceKeySize,
+			[MarshalAs(UnmanagedType.Interface)] out IDWriteFontFileStreamMirror fontFileStream);
+
+		[DllImport("wmwpfdwhelper.dll", CallingConvention=CallingConvention.StdCall)]
+		private static extern IntPtr RegisterLoaders(
+			[MarshalAs(UnmanagedType.Interface)] IDWriteFactory dwritefactory,
+			CreateEnumeratorFromKeyFn enum_fn,
+			CreateStreamFromKeyFn stream_fn,
+			IntPtr managedFactoryHandle);
+
+		[DllImport("wmwpfdwhelper.dll", CallingConvention=CallingConvention.StdCall)]
+		private static extern void ReleaseRegisteredLoaders(IntPtr handle);
+
+		[DllImport("wmwpfdwhelper.dll", CallingConvention=CallingConvention.StdCall)]
+		private static extern IntPtr GetDWriteFileLoader(IntPtr handle);
+
+		[DllImport("wmwpfdwhelper.dll", CallingConvention=CallingConvention.StdCall)]
+		private static extern IntPtr GetDWriteCollectionLoader(IntPtr handle);
+
 		internal IDWriteFactory DWriteFactory
 		{
 			get {
 				return _pFactory;
+			}
+		}
+
+		internal IntPtr WpfFontFileLoader
+		{
+			get
+			{
+				if (IsInvalid || IsClosed)
+					throw new InvalidOperationException("Object is closed");
+				return GetDWriteFileLoader(handle);
+			}
+		}
+
+		internal IntPtr WpfFontCollectionLoader
+		{
+			get
+			{
+				if (IsInvalid || IsClosed)
+					throw new InvalidOperationException("Object is closed");
+				return GetDWriteCollectionLoader(handle);
 			}
 		}
 
@@ -73,17 +124,13 @@ namespace MS.Internal.Text.TextInterface
 						) : base(IntPtr.Zero)
 		{
 			Initialize(factoryType);
-			_wpfFontFileLoader       = new FontFileLoader(fontSourceFactory);
-			_wpfFontCollectionLoader = new FontCollectionLoader(
-															   fontSourceCollectionFactory,
-															   _wpfFontFileLoader
-															   );
 
 			_fontSourceFactory = fontSourceFactory;
+			_fontSourceCollectionFactory = fontSourceCollectionFactory;
 
-			_pFactory.RegisterFontFileLoader((IDWriteFontFileLoaderMirror)_wpfFontFileLoader);
+			_managedFactoryHandle = GCHandle.Alloc(this, GCHandleType.Weak);
 
-			_pFactory.RegisterFontCollectionLoader((IDWriteFontCollectionLoaderMirror)_wpfFontCollectionLoader);
+			handle = RegisterLoaders(_pFactory, CreateEnumeratorFromKey, CreateStreamFromKey, GCHandle.ToIntPtr(_managedFactoryHandle));
 		}
 
 		[DllImport("dwrite", CallingConvention=CallingConvention.StdCall)]
@@ -110,28 +157,20 @@ namespace MS.Internal.Text.TextInterface
 		[ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
 		protected override bool ReleaseHandle()
 		{
-			if (_wpfFontCollectionLoader != null)
-			{
-				_pFactory.UnregisterFontCollectionLoader((IDWriteFontCollectionLoaderMirror)_wpfFontCollectionLoader);
-				_wpfFontCollectionLoader = null;
-			}
-			
-			if (_wpfFontFileLoader != null)
-			{
-				_pFactory.UnregisterFontFileLoader((IDWriteFontFileLoaderMirror)_wpfFontFileLoader);
-				_wpfFontFileLoader = null;
-			}
+			ReleaseRegisteredLoaders(handle);
 
-			_pFactory = null;
+			handle = IntPtr.Zero;
 
-			return true;        
+			_managedFactoryHandle.Free();
+
+			return true;
 		}
 
 		public FontFile CreateFontFile(Uri filePathUri)
 		{        
 			IDWriteFontFile dwriteFontFile = null;
 			try {
-				dwriteFontFile = CreateFontFile(_pFactory, _wpfFontFileLoader, filePathUri);
+				dwriteFontFile = CreateFontFile(_pFactory, WpfFontFileLoader, filePathUri);
 			}
 			catch {
 				// If DWrite's CreateFontFileReference fails then try opening the file using WPF's logic.
@@ -242,7 +281,7 @@ namespace MS.Internal.Text.TextInterface
 			fixed (char* pUriString = uriString)
 			{
 				dwriteFontCollection = _pFactory.CreateCustomFontCollection(
-								   (IDWriteFontCollectionLoaderMirror)_wpfFontCollectionLoader,
+								   WpfFontCollectionLoader,
 								   new IntPtr(pUriString),
 								   (uint)(uriString.Length+1) * 2
 								   );
@@ -253,7 +292,7 @@ namespace MS.Internal.Text.TextInterface
 
 		unsafe internal static IDWriteFontFile CreateFontFile(
 							   IDWriteFactory factory,
-							   FontFileLoader fontFileLoader,
+							   IntPtr fontFileLoader, // IDWriteFontFileLoader*
 							   Uri filePathUri
 							   )
 		{
@@ -324,7 +363,7 @@ namespace MS.Internal.Text.TextInterface
 					dwriteFontFile = factory.CreateCustomFontFileReference(
 																new IntPtr(pFilePath),
 																(uint)(filePath.Length + 1) * 2,
-																(IDWriteFontFileLoaderMirror)fontFileLoader
+																fontFileLoader
 																);
 				}
 			}
@@ -347,8 +386,87 @@ namespace MS.Internal.Text.TextInterface
 		public override bool IsInvalid
 		{
 			get {
-				return (_pFactory == null);
+				return (handle == IntPtr.Zero);
 			}
+		}
+
+		internal static int CreateEnumeratorFromKey(
+			IntPtr managedFactoryHandle,
+			IntPtr collectionKey,
+			uint collectionKeySize,
+			out IDWriteFontFileEnumeratorMirror fontFileEnumerator)
+		{
+			Factory factory = (Factory)GCHandle.FromIntPtr(managedFactoryHandle).Target;
+
+			uint numberOfCharacters = collectionKeySize / 2;
+			fontFileEnumerator = null;
+			if (   (collectionKeySize % 2 != 0)                        // The collectionKeySize must be divisible by sizeof(WCHAR)
+				|| (numberOfCharacters <= 1)                                       // The collectionKey cannot be less than or equal 1 character as it has to contain the NULL character.
+				|| (Marshal.ReadInt16(collectionKey, ((int)numberOfCharacters - 1) * 2) != '\0'))  // The collectionKey must end with the NULL character
+			{
+				return unchecked((int)0x80070057); // E_INVALIDARG
+			}
+
+			fontFileEnumerator = null;
+
+			string uriString = Marshal.PtrToStringUni(collectionKey);
+			int hr = 0;
+
+			try
+			{
+				IFontSourceCollection fontSourceCollection = factory._fontSourceCollectionFactory.Create(uriString);
+				FontFileEnumerator fontFileEnum = new FontFileEnumerator(
+													  fontSourceCollection,
+													  factory.WpfFontFileLoader,
+													  factory._pFactory
+													  );
+				GC.KeepAlive(factory);
+				fontFileEnumerator = (IDWriteFontFileEnumeratorMirror)fontFileEnum;
+			}
+			catch(Exception exception)
+			{
+				hr = Marshal.GetHRForException(exception);
+			}
+
+			return hr;
+		}
+
+		internal static int CreateStreamFromKey(
+			IntPtr managedFactoryHandle,
+			IntPtr fontFileReferenceKey,
+			uint fontFileReferenceKeySize,
+			out IDWriteFontFileStreamMirror fontFileStream)
+		{
+			Factory factory = (Factory)GCHandle.FromIntPtr(managedFactoryHandle).Target;
+
+			uint numberOfCharacters = fontFileReferenceKeySize / 2;
+
+			fontFileStream = null;
+		   
+			if ((fontFileReferenceKeySize % 2 != 0)                      // The fontFileReferenceKeySize must be divisible by sizeof(WCHAR)
+				|| (numberOfCharacters <= 1)                                            // The fontFileReferenceKey cannot be less than or equal 1 character as it has to contain the NULL character.
+				|| (Marshal.ReadInt16(fontFileReferenceKey, ((int)numberOfCharacters - 1) * 2) != '\0'))    // The fontFileReferenceKey must end with the NULL character
+			{
+				return unchecked((int)0x80070057); // E_INVALIDARG
+			}
+
+			string uriString = Marshal.PtrToStringUni(fontFileReferenceKey);
+
+			int hr = 0;
+
+			try
+			{
+				IFontSource fontSource = factory._fontSourceFactory.Create(uriString);        
+				FontFileStream customFontFileStream = new FontFileStream(fontSource);
+
+				fontFileStream = (IDWriteFontFileStreamMirror)customFontFileStream;
+			}
+			catch(System.Exception exception)
+			{
+				hr = Marshal.GetHRForException(exception);
+			}
+
+			return hr;
 		}
 	}
 }

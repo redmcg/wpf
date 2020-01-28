@@ -17,7 +17,7 @@ namespace MS.Internal.Text.TextInterface
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		[return: MarshalAs(UnmanagedType.Interface)]
 		IDWriteFontCollection CreateCustomFontCollection(
-			[MarshalAs(UnmanagedType.Interface)] IDWriteFontCollectionLoaderMirror loader,
+			IntPtr loader, // IDWriteFontCollectionLoader*
 			IntPtr key, // void const *
 			uint key_size);
 
@@ -38,7 +38,7 @@ namespace MS.Internal.Text.TextInterface
 		IDWriteFontFile CreateCustomFontFileReference(
 			IntPtr reference_key,
 			uint key_size,
-			[MarshalAs(UnmanagedType.Interface)] IDWriteFontFileLoaderMirror loader);
+			IntPtr Loader); // IDWriteFontFileLoaderMirror*
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		unsafe IntPtr CreateFontFace( // returns IDWriteFontFace*
