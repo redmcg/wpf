@@ -93,10 +93,11 @@ HRESULT WINAPI MilResource_ReleaseOnChannel(MilChannel* channel, ResourceHandle 
 void destroy_channel_resources(MilChannel *channel)
 {
 	int i;
+	BOOL deleted;
 	for (i=1; i < ARRAY_SIZE(channel->resource_refcounts); i++)
 	{
-		if (channel->resource_refcounts[i])
-			clear_resource_handle(channel, i);
+		while (channel->resource_refcounts[i])
+			MilResource_ReleaseOnChannel(channel, i, &deleted);
 	}
 }
 
