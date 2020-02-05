@@ -123,7 +123,6 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	case TYPE_VISUAL:
 	case TYPE_MATRIXTRANSFORM:
 	case TYPE_RENDERDATA:
-	case TYPE_SOLIDCOLORBRUSH:
 		new_resource = malloc(sizeof(MilResource));
 		if (!new_resource)
 			return E_OUTOFMEMORY;
@@ -139,6 +138,17 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 		new_resource->Type = restype;
 		new_resource->RefCount = 1;
 		obj->hwnd = NULL;
+		break;
+	}
+	case TYPE_SOLIDCOLORBRUSH:
+	{
+		MilResourceSolidColorBrush *obj = malloc(sizeof(MilResourceSolidColorBrush));
+		new_resource = &obj->resource;
+		if (!new_resource)
+			return E_OUTOFMEMORY;
+		new_resource->Type = restype;
+		new_resource->RefCount = 1;
+		memset(&obj->color, 0, sizeof(obj->color));
 		break;
 	}
 	default:

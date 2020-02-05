@@ -103,6 +103,8 @@ static HRESULT validate_command(BYTE* data, UINT size)
 		MILCMD_VISUAL_SETTRANSFORM);
 	VALIDATE_STRUCT(MilCmdPartitionNotifyPolicyChangeForNonInteractiveMode,
 		MILCMD_PARTITION_NOTIFYPOLICYCHANGEFORNONINTERACTIVEMODE);
+	VALIDATE_STRUCT(MilCmdSolidColorBrush,
+		MILCMD_SOLIDCOLORBRUSH);
 	default:
 		WINE_FIXME("Unimplemented cmd 0x%x\n", *(MILCMD*)data);
 		return E_NOTIMPL;
@@ -128,6 +130,7 @@ HRESULT MilChannel_dispatch_command(MilChannel* channel, BYTE* data, UINT size)
 	case MilCmdVisualInsertChildAt:
 	case MilCmdVisualRemoveAllChildren:
 	case MilCmdVisualSetTransform:
+	case MilCmdSolidColorBrush:
 	{
 		MilResource *resource;
 
@@ -139,6 +142,9 @@ HRESULT MilChannel_dispatch_command(MilChannel* channel, BYTE* data, UINT size)
 		{
 		case TYPE_HWNDRENDERTARGET:
 			return HwndTarget_Command(channel, (MilResourceHwndTarget*)resource,
+				data, size);
+		case TYPE_SOLIDCOLORBRUSH:
+			return SolidColorBrush_Command(channel, (MilResourceSolidColorBrush*)resource,
 				data, size);
 		default:
 			return S_OK;

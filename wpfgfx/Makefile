@@ -1,5 +1,5 @@
 
-C_SRCS=stubs.c main.c composition.c channel.c resource.c factory.c hwndtarget.c
+C_SRCS=stubs.c main.c composition.c channel.c resource.c factory.c hwndtarget.c brush.c
 
 H_SRCS=wpfgfx_private.h ../wine/debug.h ../wine/heap.h
 

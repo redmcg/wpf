@@ -415,6 +415,17 @@ typedef struct _MILCMD_VISUAL_SETTRANSFORM {
 	ResourceHandle hTransform;
 } MILCMD_VISUAL_SETTRANSFORM;
 
+typedef struct _MILCMD_SOLIDCOLORBRUSH {
+	MILCMD Type;
+	ResourceHandle Handle;
+	double Opacity;
+	MilColorF Color;
+	ResourceHandle hOpacityAnimations;
+	ResourceHandle hTransform;
+	ResourceHandle hRelativeTransform;
+	ResourceHandle hColorAnimations;
+} MILCMD_SOLIDCOLORBRUSH;
+
 #include <poppack.h>
 
 typedef enum _MilMessageType
@@ -509,6 +520,14 @@ typedef struct _MilResourceHwndTarget {
 } MilResourceHwndTarget;
 
 extern HRESULT HwndTarget_Command(MilChannel* channel, MilResourceHwndTarget* target,
+	BYTE* data, UINT size);
+
+typedef struct _MilResourceSolidColorBrush {
+	MilResource resource;
+	MilColorF color;
+} MilResourceSolidColorBrush;
+
+extern HRESULT SolidColorBrush_Command(MilChannel* channel, MilResourceSolidColorBrush* target,
 	BYTE* data, UINT size);
 
 extern HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount);
