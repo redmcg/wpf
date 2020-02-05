@@ -160,6 +160,8 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 
 	*handle = result_handle;
 
+	WINE_TRACE("<-- %i\n", result_handle);
+
 	return S_OK;
 }
 
