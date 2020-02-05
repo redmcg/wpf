@@ -29,3 +29,9 @@ HRESULT WINAPI MilCompositionEngine_InitializePartitionManager(INT nPriority)
 	WINE_TRACE("%i\n", nPriority);
 	return S_OK;
 }
+
+HRESULT WINAPI MilCompositionEngine_DeinitializePartitionManager(void)
+{
+	WINE_TRACE("\n");
+	return S_OK;
+}
