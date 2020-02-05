@@ -112,7 +112,26 @@ HRESULT WINAPI MilResource_CreateOrAddRefOnChannel(MilChannel* channel, Resource
 	if (!channel || !handle)
 		return E_POINTER;
 
-	// FIXME: How to know if we're supposed to create or addref?
+	if (*handle != 0)
+	{
+		// AddRef
+		MilResource *resource;
+		LONG *refcount;
+
+		hr = lookup_resource_handle(channel, *handle, &resource, &refcount);
+		if (SUCCEEDED(hr))
+		{
+			if (restype != resource->Type)
+			{
+				WINE_WARN("expected %i type resource but handle was type %i\n",
+					restype, resource->Type);
+				hr = E_INVALIDARG;
+			}
+		}
+		if (SUCCEEDED(hr))
+			InterlockedIncrement(refcount);
+		return hr;
+	}
 
 	hr = find_free_handle(channel, &result_handle);
 	if (FAILED(hr))
