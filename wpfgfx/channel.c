@@ -44,6 +44,29 @@ HRESULT WINAPI MilConnection_CreateChannel(void* pTransport, MilChannel* referen
 	return S_OK;
 }
 
+HRESULT WINAPI MilConnection_DestroyChannel(MilChannel* channel)
+{
+	MilMessageLink *link;
+
+	WINE_TRACE("%p\n", channel);
+
+	if (!channel)
+		return E_POINTER;
+
+	destroy_channel_resources(channel);
+
+	link = channel->message_queue;
+	while (link)
+	{
+		MilMessageLink* next = link->next;
+		free(link);
+		link = next;
+	}
+
+	free(channel);
+	return S_OK;
+}
+
 #define VALIDATE_STRUCT(t, st) case t: if (size < sizeof(st)) return E_INVALIDARG; break
 
 static HRESULT validate_command(BYTE* data, UINT size)

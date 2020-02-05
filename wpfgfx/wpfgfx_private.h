@@ -513,6 +513,8 @@ extern HRESULT HwndTarget_Command(MilChannel* channel, MilResourceHwndTarget* ta
 
 extern HRESULT lookup_resource_handle(MilChannel* channel, ResourceHandle handle, MilResource** result, LONG** refcount);
 
+extern void destroy_channel_resources(MilChannel* channel);
+
 #define ARRAY_SIZE(x) (sizeof(x) / sizeof((x)[0]))
 
 #endif
