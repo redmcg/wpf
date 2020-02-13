@@ -6,7 +6,10 @@ C_SRCS=$(shell cat sources.list)
 INCLUDE_DIRS= \
 	../Shared/inc \
 	shared/inc \
-	include
+	include \
+	include/Generated \
+	include/processed \
+	../../../../wine
 
 all: $(OBJDIR)/wpfgfx_cor3.dll
 .PHONY: all

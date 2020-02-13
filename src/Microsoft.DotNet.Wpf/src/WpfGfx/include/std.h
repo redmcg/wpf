@@ -349,12 +349,16 @@ RtlAssert(
 #include <intsafe.h>
 #pragma pop_macro("UnsignedMultiply128")
 
+#ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning (disable:4005) // suppress macro redefinition warning
-#include <D2D1.h>
+#endif
+#include <d2d1.h>
 #include <d3d9.h>
 #include "dwrite.h"
+#ifdef _MSC_VER
 #pragma warning(pop)
+#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -366,7 +370,7 @@ extern "C" {
 }
 #endif
 
-#include <Wincodec_private.h>
+#include <wincodec_private.h>
 #include <wincodecsdk.h>
 #include <wgx_core_types.h>
 #include <wgx_render.h>
