@@ -10,10 +10,10 @@
 
 #include <memory>
 
-#include <Windows.h>
+#include <windows.h>
 
 #if !defined(TESTUSE_NOSTACKCAPTURE)
-#include "AvalonDebugP.h"
+#include "avalondebugp.h"
 #include "instrumentation.h"
 #endif
 
