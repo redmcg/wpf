@@ -20,7 +20,7 @@ all: $(OBJDIR)/wpfgfx_cor3.dll
 
 $(OBJDIR)/%.cpp.o: %.cpp
 	mkdir -p $(@D)
-	$(MINGW)-g++ -o $@ -c -Wall -Wno-format -Werror -DD3D9EXTENSIONS $(INCLUDE_DIRS:%=-I%) $<
+	$(MINGW)-g++ -o $@ -c -Wall -Wno-format -Wno-unknown-pragmas -Werror -DD3D9EXTENSIONS $(INCLUDE_DIRS:%=-I%) $<
 
 $(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
 	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(C_SRCS:%=$(OBJDIR)/%.o)
