@@ -15,9 +15,9 @@
 #include <wgx_error.h>
 
 #include "DebugBreak.h"
-#include "Instrumentation.h"
+#include "instrumentation.h"
 #include "InstrumentationConfig.h"
-#include "InstrumentationApi.h"
+#include "instrumentationapi.h"
 #include "MemUtils.h"
 #include "Locks.h"
 #include "StrUtil.h"

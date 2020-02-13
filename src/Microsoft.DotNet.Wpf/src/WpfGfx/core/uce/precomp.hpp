@@ -32,7 +32,7 @@ Environment:
 #include "wgx_render_types.h"
 #include "wgx_core_dllname.h"
 
-#include "common\common.h"
+#include "common/common.h"
 #include "scanop\scanop.h"
 
 //

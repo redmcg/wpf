@@ -33,7 +33,7 @@
 #include "heap.h"
 #include "resourcecache.h"
 #include "generictablemap.h"
-#include "internalGuids.h"
+#include "internalguids.h"
 #include "xmm.h"
 #include "rgnutils.h"
 #include "etwtrace.h"
