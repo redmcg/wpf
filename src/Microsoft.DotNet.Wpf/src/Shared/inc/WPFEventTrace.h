@@ -9,12 +9,7 @@
 //------------------------------------------------------------------------------
 #pragma once
 
-#define DUMMYUNIONNAME
-#define DUMMYUNIONNAME2
-#define DUMMYUNIONNAME3
-#define DUMMYUNIONNAME4
-#define DUMMYSTRUCTNAME
-#define DUMMYSTRUCTNAME2
+#include <windows.h> // for DUMMYUNIONNAME
 #include "evntprov.h"
 #pragma warning(push)
 // Disable warning 4748 in the generated code for code coverage builds.
