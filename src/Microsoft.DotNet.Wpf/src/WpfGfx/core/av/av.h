@@ -26,8 +26,8 @@
 //------------------------------------------------------------------------------
 
 #include <strmif.h>
-#include <Vmr9.h>
-#include <nserror.h>
+#include <vmr9.h>
+//#include <nserror.h> //what is this and why is it needed?
 #include <oleauto.h>
 
 #include "evr.h"

@@ -13,14 +13,16 @@
 //-----------------------------------------------------------------------------
 
 #pragma once 
-#include "shared\DpiUtil.h"
-#include "shared\DpiScale.h"
-#include "shared\DelegatingIUnknown.h"
+#include "shared/DpiUtil.h"
+#include "shared/DpiScale.h"
+#include "shared/DelegatingIUnknown.h"
 
 #include <combaseapi.h>
-#include <Unknwn.h>
+#include <unknwn.h>
 #include <windef.h>
-#include <ShellScalingApi.h>
+#ifdef SHELL_SCALING_API
+#include <shellscalingapi.h>
+#endif
 
 #if !defined(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2)
 #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 (DPI_AWARENESS_CONTEXT)-4

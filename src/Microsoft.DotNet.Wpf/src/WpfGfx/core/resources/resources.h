@@ -20,9 +20,9 @@ Environment:
 
 --*/
 
-#include <UCE\ResSlave.h>
-#include <UCE\GlyphCacheSlave.h>    // Should be in resources directory
-#include <UCE\GraphWalker.h>
+#include <uce/resslave.h>
+#include <uce/glyphcacheslave.h>    // Should be in resources directory
+#include <uce/graphwalker.h>
 
 #ifndef OFFSET_OF
 #define OFFSET_OF(s, m)    UINT32(UINT64(HANDLE(&(((s *) 0)->m))))
@@ -35,15 +35,15 @@ Environment:
 // JIT  headers
 //
 
-#include "fxjit\public\warpplatform.h"
+#include "fxjit/public/warpplatform.h"
 
-#include "fxjit\Public\SIMDJit.h"
+#include "fxjit/public/SIMDJit.h"
 
-#include "fxjit\Compiler\FlushMemory.h"
-#include "fxjit\Compiler\Register.h"
-#include "fxjit\Compiler\Operator.h"
-#include "fxjit\Compiler\Locator.h"
-#include "fxjit\Compiler\Program.h"
+#include "fxjit/Compiler/FlushMemory.h"
+#include "fxjit/Compiler/Register.h"
+#include "fxjit/Compiler/Operator.h"
+#include "fxjit/Compiler/Locator.h"
+#include "fxjit/Compiler/Program.h"
 
 #endif
 

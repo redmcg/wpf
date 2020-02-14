@@ -47,15 +47,15 @@ class DpiProvider;
 // Include our internal GUIDs so that the code in our API proxy classes can
 // implement QI for these interfaces.
 
-#include "InternalGUIDs.h"
+#include "internalguids.h"
 
 
 // pixel jit
 
-#include "fxjit\public\public.h"
+#include "fxjit/public/public.h"
 
 // DpiProvider
-#include "uce\DpiProvider.h"
+#include "uce/DpiProvider.h"
 
 /*=========================================================================*\
     Stub implementation header files
