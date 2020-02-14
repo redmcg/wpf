@@ -19,6 +19,8 @@
 #define _INC_DDBANNED
 #pragma once
 
+#ifdef _MSC_VER
+
 #include <vadefs.h>
 #include <sal.h>
 
@@ -184,5 +186,7 @@ __DDBANNED_INLINE_FUNC_2(UNALIGNED wchar_t *, , ualstrcpyW, UNALIGNED wchar_t *,
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* _MSC_VER */
 
 #endif  /* _INC_DDBANNED */
