@@ -285,6 +285,18 @@ RtlAssert(
     __in_opt PSTR MutableMessage
     );
 
+#ifndef _MSC_VER
+#undef __drv_aliasesMem
+#undef __drv_freesMem
+#undef __drv_functionClass
+#undef __drv_sameIRQL
+#undef __in
+#undef __in_opt
+#undef __inout
+#undef __out
+#undef __post_invalid
+#endif
+
 #ifdef __cplusplus
 }       // extern "C"
 #endif
