@@ -14,17 +14,20 @@
 
 #include "wincodec.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #ifndef _MSC_VER
 #ifndef __deref_out_ecount
 # define __deref_out_ecount(x)
 #endif
+#ifndef __in
+# define __in
+#endif
 #ifndef __out_ecount
 # define __out_ecount(x)
 #endif
+#endif
+
+#ifdef __cplusplus
+extern "C" {
 #endif
 
 HRESULT WINAPI WICCreateImagingFactory_Proxy(
@@ -177,4 +180,9 @@ DECLARE_INTERFACE_(IManagedStream, IStream)
 };
 #endif
 
+#ifndef _MSC_VER
+#undef __deref_out_ecount
+#undef __in
+#undef __out_ecount
+#endif
 
