@@ -26,7 +26,9 @@
 //
 // Make HRESULT_FROM_WIN32 an inline method rather than a macro
 //
+#ifndef __GNUC__
 #define INLINE_HRESULT_FROM_WIN32
+#endif
 
 // We need nt.h, but in devdiv it disables the loading of winnt.h so
 // we'll copy over things from winnt.h as needed...
