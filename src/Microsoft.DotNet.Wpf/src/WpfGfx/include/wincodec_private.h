@@ -18,6 +18,15 @@
 extern "C" {
 #endif
 
+#ifndef _MSC_VER
+#ifndef __deref_out_ecount
+# define __deref_out_ecount(x)
+#endif
+#ifndef __out_ecount
+# define __out_ecount(x)
+#endif
+#endif
+
 HRESULT WINAPI WICCreateImagingFactory_Proxy(
     __in UINT SDKVersion,
     __deref_out_ecount(1) IWICImagingFactory **ppIWICImagingFactory
