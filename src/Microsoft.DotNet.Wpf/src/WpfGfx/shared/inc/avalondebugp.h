@@ -16,6 +16,12 @@
 #endif
 
 
+#ifndef _MSC_VER
+#ifndef __deref_out
+# define __deref_out
+#endif
+#endif
+
 #if defined(_PREFIX_) || defined(_PREFAST_)
     #define ANALYSIS    1
     #define ANALYSIS_PARAM(x)        x
