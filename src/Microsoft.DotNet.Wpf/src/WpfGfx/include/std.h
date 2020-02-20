@@ -61,6 +61,38 @@ typedef void (__stdcall *PFLS_CALLBACK_FUNCTION)(void *lpFlsData);
 #include <stddef.h>     // For offsetof
 #include <tchar.h>
 
+#ifndef _MSC_VER
+#ifndef __drv_aliasesMem
+# define __drv_aliasesMem
+#endif
+#ifndef __drv_allocatesMem
+# define __drv_allocatesMem(x)
+#endif
+#ifndef __drv_freesMem
+# define __drv_freesMem(x)
+#endif
+#ifndef __drv_functionClass
+# define __drv_functionClass(x)
+#endif
+#ifndef __drv_sameIRQL
+# define __drv_sameIRQL
+#endif
+#ifndef __in
+# define __in
+#endif
+#ifndef __in_opt
+# define __in_opt
+#endif
+#ifndef __inout
+# define __inout
+#endif
+#ifndef __out
+# define __out
+#endif
+#ifndef __post_invalid
+# define __post_invalid
+#endif
+#endif
 
 typedef struct _RTL_SPLAY_LINKS {
     struct _RTL_SPLAY_LINKS *Parent;
