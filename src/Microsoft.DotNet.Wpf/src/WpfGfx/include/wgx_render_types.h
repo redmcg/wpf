@@ -17,6 +17,12 @@
 
 #pragma once
 
+#ifndef _MSC_VER
+#ifndef __range
+# define __range(x,y)
+#endif
+#endif
+
 /*=========================================================================*\
     Forward D3D type declarations
 
