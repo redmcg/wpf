@@ -15,6 +15,15 @@
 
 #pragma once
 
+#ifndef _MSC_VER
+#ifndef __in_ecount_opt
+# define __in_ecount_opt(x)
+#endif
+/* mingw's UNREFERENCED_PARAMETER tries to assign x to itself, which doesn't work if x is read-only */
+#undef UNREFERENCED_PARAMETER
+#define UNREFERENCED_PARAMETER(x) { typeof(x) *y = &x; y = y; }
+#endif
+
 // copied from ntstatus.h, which causes build errors if included
 
 #define NTSTATUS LONG
@@ -264,4 +273,7 @@ MilCheckReturnValue(
 }
 
 
+#ifndef _MSC_VER
+#undef __in_ecount_opt
+#endif
 
