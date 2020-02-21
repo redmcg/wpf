@@ -12,6 +12,10 @@
 
 #include <vector>
 
+#ifndef _MSC_VER
+#define __out
+#endif
+
 namespace dxlayer
 {
     // Represents the interfaces present in a 4x4 matrix
@@ -109,4 +113,6 @@ namespace dxlayer
     };
 }
 
-
+#ifndef _MSC_VER
+#undef __out
+#endif
