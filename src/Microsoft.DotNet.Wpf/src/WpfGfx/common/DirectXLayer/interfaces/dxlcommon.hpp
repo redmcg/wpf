@@ -155,15 +155,16 @@ namespace dxlayer
     {
     private:
         winerror error;
+		std::string message;
     public:
         inline dxlayer_exception(const winerror& error) 
             : error(error), std::exception() {}
 
         inline dxlayer_exception()
-            : error(dxerror()), std::exception() {}
+            : error(dxerror()), std::exception(), message() {}
 
         inline dxlayer_exception(const char* message)
-            : error(dxerror()), std::exception(message) {}
+            : error(dxerror()), std::exception(), message(message) {}
 
         inline const winerror& get_error() const
         {
