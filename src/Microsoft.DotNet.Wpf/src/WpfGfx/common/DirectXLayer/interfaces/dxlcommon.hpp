@@ -8,6 +8,7 @@
 // Shared data structures and exception type definitions
 // used by the DX abstraction layer
 
+#include <limits>
 #include <memory>
 
 #include <windows.h>
