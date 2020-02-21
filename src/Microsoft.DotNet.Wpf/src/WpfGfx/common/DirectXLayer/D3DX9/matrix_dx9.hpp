@@ -293,7 +293,8 @@ namespace dxlayer
         // Test whether the matrix is an identity-matrix
         inline bool is_identity() const
         {
-            return D3DXMatrixIsIdentity(this) ? true : false;
+			// Cast required to work around incorrect non-const argument in mingw headers.
+            return D3DXMatrixIsIdentity((D3DXMATRIX*)this) ? true : false;
         }
 
         // D3DXMatrixRotationQuaternion
