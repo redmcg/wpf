@@ -121,6 +121,7 @@ namespace dxlayer
             return hResult;
         }
 
+#if 0 // Does not compile with mingw, but also appears to be unused
 #pragma region get_pixel_shader_profile_name
 
         // Returns the name of the highest high-level shader language(HLSL) pixel-shader 
@@ -156,6 +157,7 @@ namespace dxlayer
         }
 
 #pragma endregion
+#endif
 
         // Changes an error HRESULT to the more descriptive 
         // WGXERR_SHADER_COMPILE_FAILED if appropriate, and 
