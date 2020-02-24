@@ -15,6 +15,14 @@
 #pragma unmanaged
 #endif
 
+#ifndef _MSC_VER
+#define __allocator
+#define __bcount(x)
+#define __deref_bcount(x)
+#define __inout_ecount(x)
+#define _Post_satisfies_(x)
+#endif
+
 //------------------------------------------------------------------------------
 // Meter Support ---------------------------------------------------------------
 MtExtern(Mem)
@@ -279,4 +287,12 @@ extern ProcessHeapImpl * g_pProcessHeap;
 
 // Inline definitions ----------------------------------------------------------
 #include "MemUtils.inl"
+
+#ifndef _MSC_VER
+#undef __allocator
+#undef __bcount
+#undef __deref_bcount
+#undef __inout_ecount
+#undef _Post_satisfies_
+#endif
 
