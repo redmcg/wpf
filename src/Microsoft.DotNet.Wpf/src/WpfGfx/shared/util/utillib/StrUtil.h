@@ -12,6 +12,12 @@
 
 #pragma once
 
+#ifndef _MSC_VER
+#define __annotation(...)
+#define __deref_out
+#define __in
+#endif
+
 // Compare strings -- case insensitive only via ascii
 // This is the same as shlwapi's StrCmpICW
 int AvalonStrCmpICW(LPCWSTR pch1, LPCWSTR pch2);
@@ -69,4 +75,10 @@ __forceinline HRESULT DuplicateStringWAnnotationHelper(
       DuplicateStringWAnnotationHelper(cchMax, pSource, ppDest, mt)   )
 
 
+
+#ifndef _MSC_VER
+#undef __annotation
+#undef __deref_out
+#undef __in
+#endif
 
