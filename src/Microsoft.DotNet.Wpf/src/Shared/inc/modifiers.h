@@ -2,6 +2,10 @@
 #pragma once
 
 #ifndef _MSC_VER
+#define __allocator
+#define __annotation(...)
+#define __bcount(x)
+#define __deref_bcount(x)
 #define __deref_out
 #define __deref_out_ecount(x)
 #define __deref_out_range(x,y)
@@ -27,4 +31,5 @@
 #define __out_xcount_opt(x)
 #define __post_invalid
 #define __success(x)
+#define _Post_satisfies_(x)
 #endif
