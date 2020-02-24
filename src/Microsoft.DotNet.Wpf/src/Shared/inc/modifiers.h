@@ -27,6 +27,7 @@
 #define __out_bcount(x)
 #define __out_bcount_full(x)
 #define __out_ecount(x)
+#define __out_ecount_opt(x)
 #define __out_xcount(x)
 #define __out_xcount_opt(x)
 #define __post_invalid
