@@ -228,6 +228,7 @@ inline __bcount(cb) void * __cdecl operator new(size_t cb, _Writable_bytes_(cb) 
 
 // These don't make users pass in anything, both heap and meter are predefined
 // This will only work with heaps that have global scope
+#ifdef _MSC_VER
 #define DECLARE_METERHEAP_ALLOC(pheap, mt) \
     __allocator inline __bcount(cb) void * __cdecl operator new(size_t cb)    { return WPFAlloc((pheap), mt, cb); } \
     __allocator inline __bcount(cb) void * __cdecl operator new[](size_t cb)  { return WPFAlloc((pheap), mt, cb); } \
@@ -243,6 +244,23 @@ inline __bcount(cb) void * __cdecl operator new(size_t cb, _Writable_bytes_(cb) 
     inline void __cdecl operator delete[](void * pv) { WPFFree((pheap), pv); } \
     inline __bcount(cb) void * __cdecl operator new(size_t cb, __bcount(cb) void * pv) { return memset(pv, 0, cb); } \
     inline  void __cdecl operator delete(void* pv, void*) { WPFFree(pheap, pv); }
+#else // _MSC_VER
+#define DECLARE_METERHEAP_ALLOC(pheap, mt) \
+    inline void * __cdecl operator new(size_t cb)    { return WPFAlloc((pheap), mt, cb); } \
+    inline void * __cdecl operator new[](size_t cb)  { return WPFAlloc((pheap), mt, cb); } \
+    inline void __cdecl operator delete(void * pv)   { WPFFree((pheap), pv); } \
+    inline void __cdecl operator delete[](void * pv) { WPFFree((pheap), pv); } \
+    inline void * __cdecl operator new(size_t cb, void * pv) { return pv; cb; } \
+    inline  void __cdecl operator delete(void* pv, void*) { WPFFree(pheap, pv); }
+
+#define DECLARE_METERHEAP_CLEAR(pheap, mt) \
+    inline void * __cdecl operator new(size_t cb)    { return WPFAllocClear((pheap), mt, cb); } \
+    inline void * __cdecl operator new[](size_t cb)  { return WPFAllocClear((pheap), mt, cb); } \
+    inline void __cdecl operator delete(void * pv)   { WPFFree((pheap), pv); } \
+    inline void __cdecl operator delete[](void * pv) { WPFFree((pheap), pv); } \
+    inline void * __cdecl operator new(size_t cb, void * pv) { return memset(pv, 0, cb); } \
+    inline  void __cdecl operator delete(void* pv, void*) { WPFFree(pheap, pv); }
+#endif // _MSC_VER
 
 namespace WPF
 {
