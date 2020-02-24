@@ -144,6 +144,10 @@ public:
     inline  __range(-1,INT_MAX) int     Find(__in_ecount_opt(1) const T * pNode) const;
 };
 
+// FIXME: Are users meant to define this?
+template <class T>
+void DoClientDelete(T *pNode);
+
 
 //------------------------------------------------------------------------------
 // class GSingleList 
