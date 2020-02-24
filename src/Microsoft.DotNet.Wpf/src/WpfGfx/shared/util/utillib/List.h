@@ -19,6 +19,14 @@
 #include "SList.h"
 #endif
 
+#ifndef _MSC_VER
+#define __ecount(x)
+#define __ecount_opt(x)
+#define __in_ecount_opt(x)
+#define __inout_ecount(x)
+#define __inout_ecount_opt(x)
+#endif
+
 // Meters ----------------------------------------------------------------------
 MtExtern(List);
 
@@ -215,6 +223,14 @@ template <class T> void ReverseSingleList(__deref_inout_ecount(1) T * &pEntry);
 
 
 #include "List.inl"
+
+#ifndef _MSC_VER
+#undef __ecount
+#undef __ecount_opt
+#undef __in_ecount_opt
+#undef __inout_ecount
+#undef __inout_ecount_opt
+#endif
 
 #endif // UTILLIB__List_h__INCLUDED
 
