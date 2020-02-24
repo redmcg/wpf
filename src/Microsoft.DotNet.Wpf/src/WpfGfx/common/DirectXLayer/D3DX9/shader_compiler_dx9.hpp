@@ -191,7 +191,7 @@ namespace dxlayer
 
 #endif // defined(DBG) || defined(DEBUG) || defined(_DEBUG)
 
-            return hResult;
+            return retval;
         }
 
     };
