@@ -347,7 +347,6 @@ inline void APIError(const char *pszMessage)
     // which we probably don't want from an API message.
 
     TraceTag((tagMILApiCallWarnings, "MIL Error: %s", pszMessage));
-    pszMessage;
 }
 
 //+------------------------------------------------------------------------
