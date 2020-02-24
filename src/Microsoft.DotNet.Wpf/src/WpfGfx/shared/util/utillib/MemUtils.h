@@ -52,12 +52,21 @@ EXTERN_C HANDLE g_hProcessHeap;
 //  allows tools to look up what of allocation is made in a particular stack.
 //
 
+#ifdef _MSC_VER
 #define WPFAlloc(h, mt, cb) ( __annotation(L"Allocate", LSTRINGIZE(mt)), WPF::Alloc(h, mt, cb)); __annotation(L"Allocate", L"<END>", LSTRINGIZE(mt))
 #define WPFAllocType(type, h, mt, cb) ( __annotation(L"Allocate", LSTRINGIZE(mt)), reinterpret_cast<type>(WPF::Alloc(h, mt, cb))); __annotation(L"Allocate", L"<END>", LSTRINGIZE(mt))
 #define WPFAllocClear(h, mt, cb) ( __annotation(L"Allocate", LSTRINGIZE(mt), L"ZeroInit"), WPF::AllocClear(h, mt, cb)); __annotation(L"Allocate", L"<END>", LSTRINGIZE(mt), L"ZeroInit")
 #define WPFAllocTypeClear(type, h, mt, cb) ( __annotation(L"Allocate", LSTRINGIZE(mt), L"ZeroInit"), reinterpret_cast<type>(WPF::AllocClear(h, mt, cb))); __annotation(L"Allocate", L"<END>", LSTRINGIZE(mt), L"ZeroInit")
 #define WPFRealloc(h, mt, ppv, cb) ( __annotation(L"Allocate", LSTRINGIZE(mt), L"ReAlloc"), WPF::ReallocAnnotationHelper(h, mt, cb, ppv))
 #define WPFFree(h, pv) ( WPF::Free(h, pv) )
+#else // _MSC_VER
+#define WPFAlloc(h, mt, cb) (WPF::Alloc(h, mt, cb));
+#define WPFAllocType(type, h, mt, cb) (reinterpret_cast<type>(WPF::Alloc(h, mt, cb)));
+#define WPFAllocClear(h, mt, cb) (WPF::AllocClear(h, mt, cb));
+#define WPFAllocTypeClear(type, h, mt, cb) (reinterpret_cast<type>(WPF::AllocClear(h, mt, cb)));
+#define WPFRealloc(h, mt, ppv, cb) (WPF::ReallocAnnotationHelper(h, mt, cb, ppv))
+#define WPFFree(h, pv) ( WPF::Free(h, pv) )
+#endif // _MSC_VER
 
 
 namespace WPF
