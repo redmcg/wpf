@@ -19,6 +19,7 @@
 #define __inout
 #define __inout_ecount(x)
 #define __out
+#define __out_bcount(x)
 #define __out_bcount_full(x)
 #define __out_ecount(x)
 #define __post_invalid
