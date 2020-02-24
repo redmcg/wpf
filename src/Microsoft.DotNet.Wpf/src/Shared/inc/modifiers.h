@@ -6,6 +6,7 @@
 #define __annotation(...)
 #define __bcount(x)
 #define __deref_bcount(x)
+#define __deref_opt_out
 #define __deref_out
 #define __deref_out_ecount(x)
 #define __deref_out_range(x,y)
@@ -20,6 +21,7 @@
 #define __in_ecount(x)
 #define __in_ecount_opt(x)
 #define __in_opt
+#define __in_range(x,y)
 #define __in_xcount(x)
 #define __inout
 #define __inout_ecount(x)
