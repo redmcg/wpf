@@ -401,7 +401,7 @@ public:
     static const UINT32 sc_uBinaryFloatSmallMax = 0x497ffff0;
 };
 
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 //+----------------------------------------------------------------------------
 //
 //  Method:
@@ -663,7 +663,7 @@ CFloatFPU::Ceiling(float x)
 //-------------------------------------------------------------------------
 MIL_FORCEINLINE int CFloatFPU::Trunc(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     if (CCPUInfo::HasSSE())
     {
         __asm cvttss2si eax, x;
@@ -1016,7 +1016,7 @@ MIL_FORCEINLINE float FASTCALL CFloatFPU::OffsetToRounded(float x)
         return 0;
     }
 
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
     float rounded;
 
@@ -1192,7 +1192,7 @@ private:
 
 MIL_FORCEINLINE INT FASTCALL CDoubleFPU::InternalRound(double x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
     INT i;
 
