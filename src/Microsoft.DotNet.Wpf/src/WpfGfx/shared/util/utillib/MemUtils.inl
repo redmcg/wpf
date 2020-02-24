@@ -80,8 +80,8 @@ Alloc(__inout_ecount(1) Heap * pheap, PERFMETERTAG, size_t cbSize)
 __allocator inline __bcount(cbSize) void *
 AllocClear(__inout_ecount(1) Heap * pheap, PERFMETERTAG mt, size_t cbSize)
 {
+	UNREFERENCED_PARAMETER(mt);
     return pheap->AllocClear(cbSize);
-    mt;
 }
 
 __allocator inline HRESULT
