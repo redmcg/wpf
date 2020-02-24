@@ -52,7 +52,7 @@
 //       a side-effect - see defects 319 and 5430.  So, for PREfast just use
 //       the expression as is.
 //
-#if !defined(_PREFAST_)
+#if !defined(_PREFAST_) && !defined(__GNUC__)
     #define UNCONDITIONAL_EXPR(Exp) (0,Exp)
 #else
     #define UNCONDITIONAL_EXPR(Exp) (Exp)
