@@ -14,10 +14,6 @@
 #include <array>
 #include <functional>
 
-#ifndef _MSC_VER
-#define __out
-#endif
-
 namespace dxlayer
 {
     // Represents a 4x4 matrix based on DX9
@@ -344,6 +340,3 @@ namespace dxlayer
 
 }
 
-#ifndef _MSC_VER
-#undef __out
-#endif

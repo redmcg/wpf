@@ -170,22 +170,6 @@ typedef interface IMILEventProxy                IMILEventProxy;
 extern "C" {
 #endif
 
-#ifndef _MSC_VER
-#define __deref_out
-#define __deref_out_ecount(x)
-#define __deref_out_range(x,y)
-#define __in
-#define __in_bcount(x)
-#define __in_bcount_opt(x)
-#define __in_ecount(x)
-#define __in_ecount_opt(x)
-#define __inout_ecount(x)
-#define __out
-#define __out_bcount_full(x)
-#define __out_ecount(x)
-#define __success(x)
-#endif
-
 /*=========================================================================*\
 
     DLL Function for creating a MILFactory object. This object allows
@@ -1008,22 +992,6 @@ DECLARE_INTERFACE_(IWGXBitmap, IWGXBitmapSource)
     
     enum { c_maxBitmapDirtyListSize = 5 };
 };
-
-#ifndef _MSC_VER
-#undef __deref_out
-#undef __deref_out_ecount
-#undef __deref_out_range
-#undef __in
-#undef __in_bcount
-#undef __in_bcount_opt
-#undef __in_ecount
-#undef __in_ecount_opt
-#undef __inout_ecount
-#undef __out
-#undef __out_bcount_full
-#undef __out_ecount
-#undef __success
-#endif
 
 #ifdef __cplusplus
 };

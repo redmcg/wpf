@@ -66,17 +66,6 @@ typedef INT_PTR PERFTAG;
 typedef INT_PTR PERFMETERTAG;
 
 
-#ifndef _MSC_VER
-#ifndef __deref_out
-# define __deref_out
-#endif
-#ifndef __in
-# define __in
-#endif
-#ifndef __in_opt
-# define __in_opt
-#endif
-#endif
 
 #ifdef __cplusplus
 extern "C" {
@@ -325,12 +314,6 @@ AssertW(
         TRUE)
 
 #endif  // (NTDDI_VERSION >= NTDDI_WINXP)   
-
-#ifndef _MSC_VER
-#undef __deref_out
-#undef __in
-#undef __in_opt
-#endif
 
 #if (NTDDI_VERSION >= NTDDI_VISTA)
 #if !defined(NT_FREASSERT)

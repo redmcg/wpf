@@ -9,7 +9,15 @@
 // used by the DX abstraction layer
 
 #include <limits>
+#ifndef _MSC_VER
+# undef __in // This is used as a variable name in mingw's stdlib
+# undef __out // This is used as a variable name in mingw's stdlib
+#endif
 #include <memory>
+#ifndef _MSC_VER
+# define __in
+# define __out
+#endif
 
 #include <windows.h>
 
