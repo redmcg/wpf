@@ -10,6 +10,10 @@
 //------------------------------------------------------------------------------
 #pragma once
 
+#ifndef _MSC_VER
+#define __inout_ecount(x)
+#endif
+
 //+----------------------------------------------------------------------------
 //
 //  Class:      CCriticalSection
@@ -172,3 +176,6 @@ private:
     Lock        *m_pLock;
 };
 
+#ifndef _MSC_VER
+#undef __inout_ecount
+#endif
