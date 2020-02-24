@@ -16,12 +16,15 @@
 #define __in_ecount(x)
 #define __in_ecount_opt(x)
 #define __in_opt
+#define __in_xcount(x)
 #define __inout
 #define __inout_ecount(x)
 #define __out
 #define __out_bcount(x)
 #define __out_bcount_full(x)
 #define __out_ecount(x)
+#define __out_xcount(x)
+#define __out_xcount_opt(x)
 #define __post_invalid
 #define __success(x)
 #endif
