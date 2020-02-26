@@ -1297,7 +1297,7 @@ public:
         // FPUStateSaver block, so that the CTRL word is set to
         // our preferred state.
         
-        #if defined(_X86_)
+        #if !defined(NOASM) && defined(_X86_)
         
             #if DBG
                 //
@@ -1345,7 +1345,7 @@ public:
 
     ~FPUStateSandbox()
     {
-        #if defined(_X86_)
+        #if !defined(NOASM) && defined(_X86_)
             //
             // This code is called on returning from sandboxed code.
             // It detects possible FPU state mismatches and re-initializes
