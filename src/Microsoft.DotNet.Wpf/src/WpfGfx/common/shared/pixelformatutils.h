@@ -20,6 +20,11 @@
 #define BITS_PER_BYTE   8
 #endif
 
+#ifndef WINCODEC_ERR_INTERNALERROR
+// Work-around for incomplete mingw headers.
+#define WINCODEC_ERR_INTERNALERROR 0x88982f48
+#endif
+
 #pragma warning(push)
 // Disable explicit handling of every enum type in a switch because
 // we want to fall through deliberately on many pixel format types
