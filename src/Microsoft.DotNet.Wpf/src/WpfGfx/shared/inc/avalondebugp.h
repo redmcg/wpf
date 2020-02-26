@@ -506,7 +506,7 @@ SetDbgPrintFilterID(
 
 #if !defined(ANALYSIS)
 
-#define Verify(x)   ((x) ? 0 : 0)
+#define Verify(x)   ((x) ? (void)0 : (void)0)
 
 #define RIPA(x)
 #define RIPW(sz)
