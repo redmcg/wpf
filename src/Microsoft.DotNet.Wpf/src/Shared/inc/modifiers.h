@@ -6,6 +6,7 @@
 #define __annotation(...)
 #define __bcount(x)
 #define __deref_bcount(x)
+#define __deref_inout_ecount(x)
 #define __deref_opt_out
 #define __deref_out
 #define __deref_out_ecount(x)
@@ -15,6 +16,8 @@
 #define __drv_freesMem(x)
 #define __drv_functionClass(x)
 #define __drv_sameIRQL
+#define __ecount(x)
+#define __ecount_opt(x)
 #define __in
 #define __in_bcount(x)
 #define __in_bcount_opt(x)
@@ -25,6 +28,7 @@
 #define __in_xcount(x)
 #define __inout
 #define __inout_ecount(x)
+#define __inout_ecount_opt(x)
 #define __out
 #define __out_bcount(x)
 #define __out_bcount_full(x)
