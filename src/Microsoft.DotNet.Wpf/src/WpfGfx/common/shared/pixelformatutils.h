@@ -25,6 +25,10 @@
 #define WINCODEC_ERR_INTERNALERROR 0x88982f48
 #endif
 
+#ifndef WINCODEC_ERR_VALUEOVERFLOW
+#define WINCODEC_ERR_VALUEOVERFLOW HRESULT_FROM_WIN32(ERROR_ARITHMETIC_OVERFLOW)
+#endif
+
 #pragma warning(push)
 // Disable explicit handling of every enum type in a switch because
 // we want to fall through deliberately on many pixel format types
