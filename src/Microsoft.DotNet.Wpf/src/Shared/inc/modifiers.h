@@ -19,6 +19,7 @@
 #define __drv_sameIRQL
 #define __ecount(x)
 #define __ecount_opt(x)
+#define __if_exists(x) if (1)
 #define __in
 #define __in_bcount(x)
 #define __in_bcount_opt(x)
