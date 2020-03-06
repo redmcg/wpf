@@ -49,7 +49,7 @@ __int64 MILInterlockedCompareExchange64(
 // Implementation
 //
 
-#ifdef _X86_
+#if defined(_X86_) && !defined(NOASM)
 
 //
 // X86 Implementation- assembly
@@ -157,7 +157,7 @@ MILInterlockedCompareExchange64(
         ));
 }
 
-#elif defined(_ARM_)
+#elif defined(_X86_) || defined(_ARM_)
 
 //+----------------------------------------------------------------------------
 //
