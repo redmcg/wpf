@@ -229,7 +229,7 @@ public:
 
 #else
 
-#define     Mt(x)                               (#x,0)
+#define     Mt(x)                               ((void)#x,0)
 #define     MtWrap(mt)                          ((PERFMETERTAG)0)
 #define     MtExtern(tag)
 #define     MtExport(exp, tag, tagOwner, szDescrip)
