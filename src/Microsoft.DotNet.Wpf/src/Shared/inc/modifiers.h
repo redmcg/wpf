@@ -14,6 +14,7 @@
 #define __deref_out
 #define __deref_out_bcount_part(x,y)
 #define __deref_out_ecount(x)
+#define __deref_out_ecount_part(x,y)
 #define __deref_out_range(x,y)
 #define __drv_aliasesMem
 #define __drv_allocatesMem(x)
@@ -37,6 +38,7 @@
 #define __inout_bcount_part_opt(x,y)
 #define __inout_ecount(x)
 #define __inout_ecount_opt(x)
+#define __inout_ecount_part_opt(x,y)
 #define __out
 #define __out_bcount(x)
 #define __out_bcount_full(x)
