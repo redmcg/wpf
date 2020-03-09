@@ -288,7 +288,7 @@ public:
         BOOL exact = FALSE
         )
     {
-        return Grow(sizeof(T), newElements, exact);
+        return this->Grow(sizeof(T), newElements, exact);
     }
 
     VOID DecrementCount()
