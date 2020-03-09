@@ -234,7 +234,7 @@ inline BOOL GpValidFixed4(INT x)
 *
 \**************************************************************************/
 
-#ifdef _X86_
+#if defined(_X86_) && !defined(NOASM)
 
 __inline INT
 Int32x32Mod16(
@@ -284,7 +284,7 @@ Int32x32Mod16(
 *
 \**************************************************************************/
 
-#ifdef _X86_
+#if defined(_X86_) && !defined(NOASM)
 
 __inline BYTE
 Fix16MulRoundToByte(DWORD a, DWORD b)
