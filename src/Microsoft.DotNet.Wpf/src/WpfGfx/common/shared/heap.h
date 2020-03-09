@@ -319,14 +319,16 @@ CHeap<TElement, uInitialCapacity>::InsertElement(TElement element)
     // First, append the entry on to the end of the heap.
     IFC(m_elements.Add(element));
 
-    UINT lastIndex = m_elements.GetCount()-1;
+	{
+		UINT lastIndex = m_elements.GetCount()-1;
 
-    __if_exists(TElement::SetIndex)
-    {
-        element.SetIndex(lastIndex);
-    }
+		__if_exists(TElement::SetIndex)
+		{
+			element.SetIndex(lastIndex);
+		}
 
-    BubbleUp(lastIndex);
+		BubbleUp(lastIndex);
+	}
 
 Cleanup:
     RRETURN(hr);
