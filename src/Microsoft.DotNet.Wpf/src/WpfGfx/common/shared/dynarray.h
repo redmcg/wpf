@@ -46,7 +46,7 @@ public:
 
     __ecount(this->Count) T *GetDataBuffer() const
     {
-        return reinterpret_cast<T *>(m_pData);
+        return reinterpret_cast<T *>(this->m_pData);
     }
 
     //
@@ -58,7 +58,7 @@ public:
 
     __out T& At(UINT n) const
     {
-        FreAssert(n < Count);
+        FreAssert(n < this->Count);
         return GetDataBuffer()[n];
     }
 
@@ -99,7 +99,7 @@ public:
         Assert(Count > 0);
 #pragma prefast (push)
 #pragma prefast (disable: 37001 37002 37003, "This operation will not overflow becasuse of the Assert above.")
-        return GetDataBuffer()[Count-1];
+        return GetDataBuffer()[this->Count-1];
 #pragma prefast (pop)
     }
 
@@ -107,12 +107,12 @@ public:
 
     __range(==, this->Count) UINT GetCount() const
     {
-        return Count;
+        return this->Count;
     }
 
     __range(==, this->Capacity) UINT GetCapacity() const
     {
-        return Capacity;
+        return this->Capacity;
     }
 
     // Reset the dynamic array to empty state
@@ -121,7 +121,7 @@ public:
 
     VOID Reset(BOOL shrink=TRUE)
     {
-        Count = 0;
+        this->Count = 0;
         if (shrink)
         {
             ShrinkToSize();
@@ -158,14 +158,14 @@ public:
         HRESULT hr = S_OK;
         UINT cTotal;
 
-        IFC(AddUINT(Count, n, cTotal));
+        IFC(AddUINT(this->Count, n, cTotal));
 
-        if (cTotal <= Capacity)
+        if (cTotal <= this->Capacity)
         {
             // We know that none of the arithmetic below will overflow because Grow
             // checked that for Capacity last time we allocated
-            memcpy(m_pData + Count * sizeof(T), newItems, sizeof(T) * n);
-            Count = cTotal;
+            memcpy(this->m_pData + this->Count * sizeof(T), newItems, sizeof(T) * n);
+            this->Count = cTotal;
         }
         else
         {
@@ -234,21 +234,21 @@ public:
         __inout_ecount(1) DynArray<T> *dynarr
         )
     {
-        if (m_pData != InitialAllocation)
+        if (this->m_pData != this->InitialAllocation)
         {
-            GpFree(m_pData);
-            m_pData = NULL;
+            GpFree(this->m_pData);
+            this->m_pData = NULL;
         }
 
-        Count = dynarr->Count;
-        Capacity = dynarr->Capacity;
+        this->Count = dynarr->Count;
+        this->Capacity = dynarr->Capacity;
 
-        HRESULT hr = dynarr->DetachData((T**)(&m_pData));
+        HRESULT hr = dynarr->DetachData((T**)(&this->m_pData));
 
         if (FAILED(hr))
         {
-            Count = 0;
-            Capacity = 0;
+            this->Count = 0;
+            this->Capacity = 0;
         }
 
         return hr;
@@ -269,18 +269,18 @@ public:
         __out_range(==,this->Count-pre(this->Count)) UINT addElts
         )
     {
-        Count += addElts;
+        this->Count += addElts;
 
-        Assert(Count <= Capacity);
+        Assert(this->Count <= this->Capacity);
     }
 
     VOID SetCount(
         __in_range(<=, this->Capacity) __out_range(==,this->Count) UINT count
         )
     {
-        Assert(count <= Capacity);
+        Assert(count <= this->Capacity);
 
-        Count = count;
+        this->Count = count;
     }
 
     HRESULT ReserveSpace(
@@ -293,9 +293,9 @@ public:
 
     VOID DecrementCount()
     {
-        if (Count > 0)
+        if (this->Count > 0)
         {
-            --Count;
+            --this->Count;
         }
     }
 
@@ -311,7 +311,7 @@ public:
     {
         UINT i = idxStart;
         T *rgDataBuffer = GetDataBuffer();
-        for(; i < Count && t != rgDataBuffer[i]; i++);
+        for(; i < this->Count && t != rgDataBuffer[i]; i++);
         return i;
     }
 
@@ -329,7 +329,7 @@ public:
 
         UINT i = Find(0, t);
 
-        if (i >= Count)
+        if (i >= this->Count)
         {
             return FALSE;
         }
@@ -343,7 +343,7 @@ public:
 
         Assert(Count > 0);
 
-        for(; i < Count-1; i++)
+        for(; i < this->Count-1; i++)
         {
             rgDataBuffer[i] = rgDataBuffer[i+1];
         }
@@ -352,7 +352,7 @@ public:
         // Now shrink the array count by one to reflect the deletion.
         //
 
-        SetCount(Count-1);
+        SetCount(this->Count-1);
 
         return TRUE;
     }
@@ -369,7 +369,7 @@ public:
     {
         HRESULT hr = S_OK;
 
-        if (index >= Count)
+        if (index >= this->Count)
         {
             MIL_THR(E_INVALIDARG);
         }
@@ -383,7 +383,7 @@ public:
             // entry in the array.
             //
 
-            for(UINT i = index; i < Count-1; i++)
+            for(UINT i = index; i < this->Count-1; i++)
             {
                 rgDataBuffer[i] = rgDataBuffer[i+1];
             }
@@ -392,7 +392,7 @@ public:
             // Now shrink the array count by one to reflect the deletion.
             //
 
-            SetCount(Count-1);
+            SetCount(this->Count-1);
         }
 
         RRETURN(hr);
@@ -410,7 +410,7 @@ public:
     {
         HRESULT hr = S_OK;
 
-        if (idx > Count)
+        if (idx > this->Count)
         {
             //
             // Only allow to insert the new element anywhere between
@@ -440,7 +440,7 @@ public:
                 // above.
                 //
 
-                for (UINT i=Count-1; i>idx; i--)
+                for (UINT i=this->Count-1; i>idx; i--)
                 {
                     rgDataBuffer[i] = rgDataBuffer[i-1];
                 }
@@ -470,7 +470,7 @@ public:
     {
         HRESULT hr = S_OK;
 
-        if (index < Count)
+        if (index < this->Count)
         {
             T *rgDataBuffer = GetDataBuffer();
 
@@ -479,16 +479,16 @@ public:
             // Move the last element into the vacated space
             // if the element isn't already at the end
 
-            if (index < (Count - 1))
+            if (index < (this->Count - 1))
             {
-                rgDataBuffer[index] = rgDataBuffer[(Count - 1)];
+                rgDataBuffer[index] = rgDataBuffer[(this->Count - 1)];
             }
 
             //
             // Now shrink the array count by one to reflect the deletion.
             //
 
-            SetCount(Count-1);
+            SetCount(this->Count-1);
         }
         else
         {
@@ -508,9 +508,9 @@ public:
     {
         HRESULT hr = S_OK;
 
-        if ((index > 0) && (index <= Count))
+        if ((index > 0) && (index <= this->Count))
         {
-            UINT cNew = Count - index;
+            UINT cNew = this->Count - index;
             if (cNew > 0)
             {
                 T *rgDataBuffer = GetDataBuffer();
