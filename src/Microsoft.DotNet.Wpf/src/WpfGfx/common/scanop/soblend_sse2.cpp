@@ -120,7 +120,7 @@ SrcOver_128bppPABGR_128bppPABGR_SSE2(
 #if defined(_X86_)
 void SrcOverAL_32bppPARGB_32bppPARGB_SSE2_4Pixel(const ARGB *pSrc, const ARGB *pDestIn, ARGB* pDestOut, UINT ui4PixelGroups)
 {
-    __declspec(align(16)) static const DWORD roundbits[4] = { 0x00800080, 0x00800080, 0x00800080, 0x00800080 }; 
+    DECLSPEC_ALIGN(16) static const DWORD roundbits[4] = { 0x00800080, 0x00800080, 0x00800080, 0x00800080 }; 
 
     _asm {
         mov        ecx,ui4PixelGroups   // number of 4-pixel groups
