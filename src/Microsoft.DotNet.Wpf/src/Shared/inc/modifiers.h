@@ -46,6 +46,7 @@
 #define __out_bcount_full(x)
 #define __out_ecount(x)
 #define __out_ecount_opt(x)
+#define __out_ecount_part(x,y)
 #define __out_opt
 #define __out_range(x,y)
 #define __out_xcount(x)
