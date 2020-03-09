@@ -262,6 +262,59 @@ BOOL IsKernelDebuggerPresent();
 //
 
 #if (NTDDI_VERSION >= NTDDI_WINXP)   
+#ifdef __GNUC__
+
+//
+// Assert related procedures and macros that will work on XP RTM and above.
+//
+
+VOID
+AssertA(
+    __in_opt PCSTR Message,
+    __in_opt PCSTR FailedAssertion,
+    __in PCSTR Function,
+    __in PCSTR FileName,
+    ULONG LineNumber
+    );
+
+VOID
+AssertW(
+    __in_opt PCWSTR Message,
+    __in_opt PCSTR FailedAssertion,
+    __in PCSTR Function,
+    __in PCSTR FileName,
+    ULONG LineNumber
+    );
+
+// Macros to widen a string macro
+#define __WIDEN2(x) x
+#define __WIDEN(x)  __WIDEN2(x)
+
+#define __WFILE__ __WIDEN(__FILE__)
+#define __WFUNCTION__ __WIDEN(__FUNCTION__)
+
+#define FRERIPA(_msg) \
+    (AssertA(_msg, NULL, __WFUNCTION__, __WFILE__, __LINE__))
+
+#define FRERIPW(_msg) \
+    (AssertW(_msg, NULL, __WFUNCTION__, __WFILE__, __LINE__))
+
+#define FREASSERT(_exp) \
+    ((!(_exp)) ? \
+        (AssertW(NULL, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
+        TRUE)
+
+#define FREASSERTMSGA(_msg, _exp) \
+    ((!(_exp)) ? \
+        (AssertA(_msg, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
+        TRUE)
+
+#define FREASSERTMSGW(_msg, _exp) \
+    ((!(_exp)) ? \
+        (AssertW(_msg, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
+        TRUE)
+
+#else
 
 //
 // Assert related procedures and macros that will work on XP RTM and above.
@@ -313,6 +366,7 @@ AssertW(
         (AssertW(_msg, L#_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
         TRUE)
 
+#endif  // !defined(__GNUC__)
 #endif  // (NTDDI_VERSION >= NTDDI_WINXP)   
 
 #if (NTDDI_VERSION >= NTDDI_VISTA)
