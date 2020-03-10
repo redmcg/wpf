@@ -39,6 +39,8 @@ namespace dxlayer
             return{ x, y, z, w };
         }
 
+
+
         // Accessors and setters for x, y, z, w
         inline virtual float& operator[](axis_4d axis)
         {
@@ -64,7 +66,23 @@ namespace dxlayer
         // Const accessors for x, y, z, w
         inline virtual float operator[](axis_4d axis) const
         {
-            return (*this)[axis];
+            switch (axis)
+            {
+            case axis_4d::X:
+                return x;
+                break;
+            case axis_4d::Y:
+                return y;
+                break;
+            case axis_4d::Z:
+                return z;
+                break;
+            case axis_4d::W:
+                return w;
+                break;
+            default:
+                invalid_index_assert::terminate();
+            }
         }
     };
 }
