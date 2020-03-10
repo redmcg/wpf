@@ -342,7 +342,7 @@ public:
     // equality to INT_MAX because, when converted to floating-point for the
     // comparison, the value is (INT_MAX + 1):
 
-#define SATURATE(x, op) (x >= INT_MIN) ? ((x < INT_MAX) ? op(x) : INT_MAX) : INT_MIN
+#define SATURATE(x, op) (x >= INT_MIN) ? ((x < (float)INT_MAX) ? op(x) : (float)INT_MAX) : INT_MIN
 
     static INT FloorSat(float x)   { return SATURATE(x, FloorFPU); }
     static INT TruncSat(float x)   { return SATURATE(x, Trunc); }
