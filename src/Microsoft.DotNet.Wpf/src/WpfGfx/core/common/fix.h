@@ -201,7 +201,7 @@ inline BOOL GpValidFixed16(REAL x)
 
 inline BOOL GpValidFixed4(REAL x)
 {
-    return (x >= FIXED4_INT_MIN) && (x <= FIXED4_INT_MAX);
+    return (x >= FIXED4_INT_MIN) && (x < (FIXED4_INT_MAX+1));
 }
 
 inline BOOL GpValidFixed16(INT x)
