@@ -167,8 +167,8 @@ inline void Free(__inout_ecount(1) Heap* pheap, void * pv);
 //  }
 _Ret_notnull_ _Post_writable_byte_size_(cbSize) __allocator inline __bcount(cbSize) void * __cdecl operator new(size_t cbSize);
 _Ret_notnull_ _Post_writable_byte_size_(cbSize) __allocator inline __bcount(cbSize) void * __cdecl operator new[](size_t cbSize);
-inline void __cdecl operator delete(void * pv);
-inline void __cdecl operator delete[](void *pv);
+inline void __cdecl operator delete(void * pv) noexcept;
+inline void __cdecl operator delete[](void *pv) noexcept;
 
 //------------------------------------------------------------------------------
 // Alternatives to new and delete ----------------------------------------------
@@ -221,7 +221,7 @@ inline void __cdecl operator delete[](void *pv);
 
 // Placement new - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 _Ret_notnull_ _Post_writable_byte_size_(cb) _Post_satisfies_(return == pv)
-inline __bcount(cb) void * __cdecl operator new(size_t cb, _Writable_bytes_(cb) void * pv);
+inline __bcount(cb) void * __cdecl operator new(size_t cb, _Writable_bytes_(cb) void * pv) noexcept;
 
 // Per class new/delete override macros - - - - - - - - - - - - - - - - - - - -
 

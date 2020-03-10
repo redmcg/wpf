@@ -24,7 +24,7 @@ all: $(OBJDIR)/wpfgfx_cor3.dll
 
 $(OBJDIR)/%.cpp.o: %.cpp
 	mkdir -p $(@D)
-	$(MINGW)-g++ -o $@ -c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Werror -DD3D9EXTENSIONS -DNOASM $(INCLUDE_DIRS:%=-I%) $<
+	$(MINGW)-g++ -o $@ -c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Wno-inline-new-delete -Werror -DD3D9EXTENSIONS -DNOASM $(INCLUDE_DIRS:%=-I%) $<
 
 $(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
 	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(C_SRCS:%=$(OBJDIR)/%.o)
