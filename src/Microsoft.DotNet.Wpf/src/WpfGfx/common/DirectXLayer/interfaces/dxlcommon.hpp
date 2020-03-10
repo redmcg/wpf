@@ -98,8 +98,8 @@ namespace dxlayer
 
         inline vector3pair_t<apiset>& operator=(const vector3pair_t<apiset>& source)
         {
-            this.first = source.first;
-            this.second = source.second;
+            this->first = source.first;
+            this->second = source.second;
 
             return *this;
         }
