@@ -26,6 +26,7 @@
 #include "instrumentation.h"
 #endif
 
+#include <string>
 
 
 namespace dxlayer
