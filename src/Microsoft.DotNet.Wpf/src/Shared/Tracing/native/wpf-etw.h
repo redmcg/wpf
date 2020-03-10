@@ -1823,11 +1823,14 @@ EXTERN_C __declspec(selectany) const EVENT_DESCRIPTOR WClientUIContextIdle = {0x
 EXTERN_C __declspec(selectany) DECLSPEC_CACHEALIGN ULONG Microsoft_Windows_WPFEnableBits[1];
 EXTERN_C __declspec(selectany) const ULONGLONG Microsoft_Windows_WPFKeywords[27] = {0x8000000000000001, 0x8000000000000003, 0x8000000000000001, 0x8000000000000004, 0x800000000000000a, 0x8000000000000009, 0x8000000000000010, 0x8000000000000022, 0x8000000000000020, 0x8000000000000020, 0x8000000000000040, 0x8000000000000040, 0x8000000000000082, 0x8000000000000102, 0x8000000000000100, 0x8000000000000402, 0x8000000000000400, 0x8000000000000402, 0x8000000000000400, 0x8000000000001000, 0x8000000000001000, 0x8000000000001002, 0x8000000000001002, 0x8000000000001002, 0x8000000000001000, 0x8000000000002002, 0x8000000000002000};
 EXTERN_C __declspec(selectany) const UCHAR Microsoft_Windows_WPFLevels[27] = {4, 4, 5, 4, 4, 4, 4, 4, 4, 5, 4, 5, 4, 4, 5, 4, 4, 5, 5, 4, 5, 4, 5, 17, 18, 4, 4};
-EXTERN_C __declspec(selectany) MCGEN_TRACE_CONTEXT MICROSOFT_WINDOWS_WPF_PROVIDER_Context;
-MCGEN_TRACE_CONTEXT MICROSOFT_WINDOWS_WPF_PROVIDER_Context = {0, 0, 0, 0, 0, 0, 0, 0, 27, Microsoft_Windows_WPFEnableBits, Microsoft_Windows_WPFKeywords, Microsoft_Windows_WPFLevels};
+#if defined(__GNUC__) && !defined(__clang__)
+#define DEFINE_SELECTANY(type, name) EXTERN_C __declspec(selectany) type name; type name
+#else
+#define DEFINE_SELECTANY(type, name) EXTERN_C __declspec(selectany) type name
+#endif
+DEFINE_SELECTANY(MCGEN_TRACE_CONTEXT, MICROSOFT_WINDOWS_WPF_PROVIDER_Context) = {0, 0, 0, 0, 0, 0, 0, 0, 27, Microsoft_Windows_WPFEnableBits, Microsoft_Windows_WPFKeywords, Microsoft_Windows_WPFLevels};
 
-EXTERN_C __declspec(selectany) REGHANDLE Microsoft_Windows_WPFHandle;
-REGHANDLE Microsoft_Windows_WPFHandle = (REGHANDLE)0;
+DEFINE_SELECTANY(REGHANDLE, Microsoft_Windows_WPFHandle) = (REGHANDLE)0;
 
 //
 // Register with ETW XP, W2K, W2K3, Vista +
