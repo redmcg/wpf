@@ -982,6 +982,9 @@ DECLARE_INTERFACE_(IWGXBitmap, IWGXBitmapSource)
                 // Bitmap is a CDeviceBitmap. No system bits
                 // but a video source that we (usually) share with DX.
         };
+
+		// This type cannot be instantiated.
+		virtual ~SourceState() = 0;
     };
 
     STDMETHOD_(SourceState::Enum, SourceState)() const PURE; 
