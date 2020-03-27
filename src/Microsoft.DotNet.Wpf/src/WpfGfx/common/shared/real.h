@@ -1288,7 +1288,9 @@ class FPUStateSandbox
 {
 private:
 
+#if !defined(NOASM) && defined(_X86_)
     UINT32 SavedState;
+#endif
 public:
 
     FPUStateSandbox()
