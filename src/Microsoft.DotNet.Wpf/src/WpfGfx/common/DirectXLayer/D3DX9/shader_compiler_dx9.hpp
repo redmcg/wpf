@@ -20,7 +20,7 @@ namespace dxlayer
 {
     // An implementation of ID3DXBuffer (defined in <d3dx9mesh.h>)
     // for use in shader compilation operations
-    class buffer_d3dx : public buffer, public ID3DXBuffer
+    class buffer_d3dx final : public buffer, public ID3DXBuffer
     {
     private:
         Microsoft::WRL::ComPtr<ID3DXBuffer> m_buf;
