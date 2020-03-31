@@ -264,7 +264,11 @@ private:
     // Generate a compile time error (via private protection) when trying to
     // dynamically allocate one of these.  They should always be on the stack
     // or be a member.
+#ifdef __GNUC__
+    void *operator new(size_t size) __attribute__((deprecated));
+#else
     MIL_FORCEINLINE void *operator new(size_t size) { return NULL; }
+#endif
 
     BYTE m_rgBuffer[BufferSize +
                     ExpectedAllocationCount*kOverheadPerBufferAllocation +
