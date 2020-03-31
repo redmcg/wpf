@@ -584,11 +584,9 @@ public:
 
 private:
 
-#ifndef __GNUC__ // C_ASSERT in class definition not supported
     // This C_ASSERT ensures that we can always represent the size of the initial
     // allocation buffer in a UINT.
     C_ASSERT((sizeof(T) <= UINT_MAX) && (ALLOCSIZE <= (UINT_MAX / sizeof(T))));
-#endif
 
     T InitialAllocationBuffer[ALLOCSIZE];
 };
