@@ -32,7 +32,7 @@
 template <typename ResultInCoordSpace, typename ResultOutCoordSpace>
 class CMatrixBuilder
 {
-    typedef CMatrix<typename ResultInCoordSpace, typename ResultOutCoordSpace> ResultMatrix_t;
+    typedef CMatrix<ResultInCoordSpace, ResultOutCoordSpace> ResultMatrix_t;
 
 public:
 
