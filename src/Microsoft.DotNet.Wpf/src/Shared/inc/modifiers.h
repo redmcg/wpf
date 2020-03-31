@@ -4,7 +4,7 @@
 #ifndef _MSC_VER
 
 #define __allocator
-#define __annotation(...)
+#define __annotation(...) (void)0
 #define __bound
 #define __deref_bcount(x)
 #define __deref_in_range(x,y)
