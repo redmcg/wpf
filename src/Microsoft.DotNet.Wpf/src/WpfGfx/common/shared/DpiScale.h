@@ -134,7 +134,7 @@ struct DpiScale
     /// </summary>
     inline bool operator!=(const DpiScale& other) const
     {
-        return !(!this == other);
+        return !(*this == other);
     }
 
     /// <summary>
