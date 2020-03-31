@@ -23,6 +23,11 @@
 /// </summary>
 #define NAME_OF(X) #X
 
+#ifndef DPI_AWARENESS_CONTEXT_UNAWARE
+DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
+#define DPI_AWARENESS_CONTEXT_UNAWARE ((DPI_AWARENESS_CONTEXT)-1)
+#endif
+
 namespace wpf
 {
     namespace util
