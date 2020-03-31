@@ -216,6 +216,7 @@ namespace wpf
             }
         };
 
+		template <>
         const char* DpiUtilT<void>::user32_dll = "user32.dll";
         typedef DpiUtilT<void> DpiUtil;
 
