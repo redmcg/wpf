@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include <type_traits>
 
 //+----------------------------------------------------------------------------
 //
@@ -33,11 +34,15 @@
 //
 //-----------------------------------------------------------------------------
 
-template <typename TBaseMILRect, typename Space>
+template <typename TBaseMILRect, typename Space, typename Enable = void>
 class TRect_ : public TBaseMILRect
 {
-  __if_exists (TBaseMILRect::HasBaseType)
-  {
+};
+
+template <typename TBaseMILRect, typename Space>
+class TRect_<TBaseMILRect, Space,
+	typename std::enable_if<std::is_member_function_pointer<decltype(&TBaseMILRect::HasBaseType)>::value>::type>
+{
 protected:
 
     //+------------------------------------------------------------------------
@@ -177,8 +182,6 @@ public:
         return reinterpret_cast<const TRect_ *>(base);
     }
 
-  }
-
 };
 
 
@@ -199,6 +202,8 @@ public:
 template <typename Space> 
 class CRectF : public TRect_<CMilRectF, Space>
 {
+    typedef CMilRectF BaseMILRectType;
+
 public:
 
     //=========================================================================
