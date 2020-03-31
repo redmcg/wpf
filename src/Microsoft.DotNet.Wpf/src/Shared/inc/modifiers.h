@@ -38,6 +38,7 @@
 #define __out_xcount_opt(x)
 #define __post_invalid
 #define __success(x)
+#define __typefix(x)
 
 #ifndef __clang__
 #define __bcount(x)
