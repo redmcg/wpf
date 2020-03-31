@@ -25,6 +25,11 @@
 
 #pragma once
 
+#ifdef __GNUC__
+#undef C_ASSERT
+#define C_ASSERT(x) static_assert(x, #x)
+#endif
+
 MtExtern(DynArray);
 
 template <typename T, bool fZeroMemory = false> class DynArray : public DynArrayImpl<fZeroMemory>
