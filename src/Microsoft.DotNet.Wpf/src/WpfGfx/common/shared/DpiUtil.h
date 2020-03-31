@@ -275,19 +275,16 @@ namespace wpf
         class DpiAwarenessContext
         {
         private:
-            DPI_AWARENESS_CONTEXT m_dpiAwarenessContext;
             DpiAwarenessContextValue m_dpiAwarenessContextValue;
 
         public:
             inline DpiAwarenessContext(DPI_AWARENESS_CONTEXT dpiContext) : 
-                m_dpiAwarenessContext(dpiContext),
                 m_dpiAwarenessContextValue(FindCanonicalValue(dpiContext))
             {
             }
 
             inline DpiAwarenessContext(DpiAwarenessContextValue dpiContextValue) :
-                m_dpiAwarenessContextValue(dpiContextValue),
-                m_dpiAwarenessContext(dpiContextValue != DpiAwarenessContextValue::Invalid ? reinterpret_cast<DPI_AWARENESS_CONTEXT>(dpiContextValue) : nullptr)
+                m_dpiAwarenessContextValue(dpiContextValue)
             {
             }
 
