@@ -37,7 +37,7 @@ public:
 
     HRESULT Init(
         __in_ecount(1) IWGXBitmapSource *pISource
-        );
+        ) override;
 
     HRESULT Init(
         __in_ecount(1) IWGXBitmapSource *pISource,
