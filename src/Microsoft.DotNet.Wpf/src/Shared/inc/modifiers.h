@@ -9,6 +9,7 @@
 #define __deref_bcount(x)
 #define __deref_in_range(x,y)
 #define __deref_inout_ecount(x)
+#define __deref_opt_inout_ecount(x)
 #define __deref_opt_inout_ecount_opt(x)
 #define __deref_opt_out
 #define __deref_opt_out_xcount_part(x,y)
