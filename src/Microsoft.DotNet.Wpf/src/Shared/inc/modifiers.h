@@ -20,6 +20,7 @@
 #define __deref_out_ecount_opt(x)
 #define __deref_out_ecount_part(x,y)
 #define __deref_out_range(x,y)
+#define __deref_out_xcount_opt(x)
 #define __drv_functionClass(x)
 #define __drv_sameIRQL
 #define __ecount_opt(x)
