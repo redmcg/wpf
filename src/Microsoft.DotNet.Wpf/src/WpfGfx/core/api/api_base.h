@@ -91,6 +91,8 @@ public:
         // when it is being deconstructed
         AssertMsgW(m_uDbgRefCount == 1, L"LocalMILObject has been leaked!");
     }
+#else
+	~LocalMILObject() { }
 #endif
 
 private:
