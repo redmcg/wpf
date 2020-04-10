@@ -46,6 +46,7 @@
 #define __post_invalid
 #define __success(x)
 #define __typefix(x)
+#define __xcount(x)
 
 #ifndef __clang__
 #define __bcount(x)
