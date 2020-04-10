@@ -78,7 +78,56 @@ protected:
         MilRTInitialization::Flags dwFlags
         );
 
-    enum State;
+    // Expected state transitions:
+    //
+    //  Ready to:
+    //    Ready: not expected
+    //    NeedSetPosition: SetPosition failed for a reason other than WGXERR_DISPLAYSTATEINVALID
+    //    NeedResize: RT Present returned ERROR_INCORRECT_SIZE (Present)
+    //    NeedRecreate: RT Present returned WGXERR_DISPLAYSTATEINVALID (Present)
+    //      or RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
+    //
+    //  NeedSetPosition to:
+    //    Ready: SetPosition has been successful
+    //    NeedSetPosition: Initial or multiple SetPositions failed (SetPosition)
+    //    NeedResize: not expected
+    //    NeedRecreate: RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
+    //
+    //  NeedResize to:
+    //    Ready: SetPosition has been successful
+    //    NeedSetPosition: SetPosition is called, but fails
+    //    NeedResize: not expected
+    //    NeedRecreate: RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
+    //
+    //  NeedRecreate to:
+    //    Ready: not expected
+    //    NeedSetPosition: not expected
+    //    NeedResize: not expected
+    //    NeedRecreate: RT Present returned WGXERR_DISPLAYSTATEINVALID and
+    //      SetPosition was called to resize RTs to 0 x 0
+    //
+
+    enum State {
+        // Invalid state. Set only temporarily during initialization
+        Invalid = 0,
+
+        // Normal operating state.
+        Ready = 1,
+
+        // A successful update to the current window position via SetPosition
+        // is needed.
+        FlagNeedSetPosition = 0x80000000,
+        NeedSetPosition = 2 | FlagNeedSetPosition,
+
+        // A special case of NeedSetPosition set when a desktop RT no longer
+        // matches target layered window size and desktop RT needs resized via
+        // a successful call to SetPosition.
+        NeedResize = 3 | FlagNeedSetPosition,
+
+        // A RT has been lost and entire desktop RT needs recreated.
+        NeedRecreate = 4,
+	};
+
     MIL_FORCEINLINE void TransitionToState(
         enum State eNewState
 #if DBG
@@ -231,56 +280,7 @@ protected:
     //
     // State of desktop RT
     //
-    // Expected state transitions:
-    //
-    //  Ready to:
-    //    Ready: not expected
-    //    NeedSetPosition: SetPosition failed for a reason other than WGXERR_DISPLAYSTATEINVALID
-    //    NeedResize: RT Present returned ERROR_INCORRECT_SIZE (Present)
-    //    NeedRecreate: RT Present returned WGXERR_DISPLAYSTATEINVALID (Present)
-    //      or RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
-    //
-    //  NeedSetPosition to:
-    //    Ready: SetPosition has been successful
-    //    NeedSetPosition: Initial or multiple SetPositions failed (SetPosition)
-    //    NeedResize: not expected
-    //    NeedRecreate: RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
-    //
-    //  NeedResize to:
-    //    Ready: SetPosition has been successful
-    //    NeedSetPosition: SetPosition is called, but fails
-    //    NeedResize: not expected
-    //    NeedRecreate: RT Resize/Create returned WGXERR_DISPLAYSTATEINVALID (SetPosition)
-    //
-    //  NeedRecreate to:
-    //    Ready: not expected
-    //    NeedSetPosition: not expected
-    //    NeedResize: not expected
-    //    NeedRecreate: RT Present returned WGXERR_DISPLAYSTATEINVALID and
-    //      SetPosition was called to resize RTs to 0 x 0
-    //
-
-    enum State {
-        // Invalid state. Set only temporarily during initialization
-        Invalid = 0,
-
-        // Normal operating state.
-        Ready = 1,
-
-        // A successful update to the current window position via SetPosition
-        // is needed.
-        FlagNeedSetPosition = 0x80000000,
-        NeedSetPosition = 2 | FlagNeedSetPosition,
-
-        // A special case of NeedSetPosition set when a desktop RT no longer
-        // matches target layered window size and desktop RT needs resized via
-        // a successful call to SetPosition.
-        NeedResize = 3 | FlagNeedSetPosition,
-
-        // A RT has been lost and entire desktop RT needs recreated.
-        NeedRecreate = 4,
-
-    } m_eState;
+    enum State m_eState;
 
     // Location of client region OR fullscreen RTs in virtual desktop space.
     // For HWND targets this is the last position successfuly reported to
