@@ -28,7 +28,7 @@ MtExtern(CRectangle);
     #define ASSERT_COMPACT_VALID Assert(m_fDbgValid)
 #else
     #define COMPACT_VALID_FLAG
-    #define SET_COMPACT_VALID
+    #define SET_COMPACT_VALID(x) (void)(x)
     #define ASSERT_COMPACT_VALID
 #endif
     
