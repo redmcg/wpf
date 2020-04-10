@@ -642,6 +642,7 @@ VOID CResampleSpan<TColor>::ReleaseExpensiveResources()
 //      ScanOps
 //
 
+//TODO: Fix friend declaration in bilinearspan.h so this can compile.
 template <class TResampleClass, class TColor>
 VOID FASTCALL ColorSource_Image_ScanOp(
     __in_ecount(1) const PipelineParams *pPP,

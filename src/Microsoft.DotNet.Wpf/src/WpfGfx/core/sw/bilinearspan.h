@@ -83,9 +83,11 @@ protected:
         __in_ecount_opt(1) const MilColorF *pBorderColor
         );
 
+/* TODO: Take care of this when we have to compile bilinearspan.cpp
     template <class TResampleClass, class TColor>
     friend VOID FASTCALL ColorSource_Image_ScanOp(
         __in_ecount(1) const PipelineParams *, __in_ecount(1) const ScanOpParams *);
+*/
 
     IWGXBitmapSource *m_pIBitmapSource;
     IWGXBitmap *m_pIBitmap;
