@@ -7,6 +7,7 @@
 #define __annotation(...) (void)0
 #define __bound
 #define __deref_bcount(x)
+#define __deref_ecount(x)
 #define __deref_in_range(x,y)
 #define __deref_inout_ecount(x)
 #define __deref_inout_ecount_opt(x)
