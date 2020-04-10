@@ -28,6 +28,7 @@
 #define __ecount_opt(x)
 #define __field_bcount(x)
 #define __field_ecount_full(x)
+#define __field_ecount_full_opt(x)
 #define __field_ecount_part(x,y)
 #define __field_ecount_part_opt(x,y)
 #define __field_range(x,y)
