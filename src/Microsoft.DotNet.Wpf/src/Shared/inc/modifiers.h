@@ -43,6 +43,7 @@
 #define __out_xcount(x)
 #define __out_xcount_opt(x)
 #define __out_xcount_part(x,y)
+#define __override
 #define __post_invalid
 #define __success(x)
 #define __typefix(x)
