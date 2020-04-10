@@ -11,6 +11,7 @@
 #define __deref_in_range(x,y)
 #define __deref_inout_ecount(x)
 #define __deref_inout_ecount_opt(x)
+#define __deref_inout_xcount(x)
 #define __deref_opt_inout_ecount(x)
 #define __deref_opt_inout_ecount_opt(x)
 #define __deref_opt_out
