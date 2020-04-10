@@ -65,7 +65,7 @@ protected:
     virtual ~CDesktopRenderTarget();
 
 
-    override STDMETHOD(HrFindInterface)(__in_ecount(1) REFIID riid, __deref_out void **ppv);
+    STDMETHOD(HrFindInterface)(__in_ecount(1) REFIID riid, __deref_out void **ppv);
 
     virtual HRESULT EditMetaData() = 0;
 
@@ -113,58 +113,58 @@ public:
 
     // IMILRenderTarget.
 
-    override STDMETHOD(Clear)(
+    STDMETHOD(Clear)(
         __in_ecount_opt(1) const MilColorF *pColor,
         __in_ecount_opt(1) const CAliasedClip *pAliasedClip
         );
 
-    override STDMETHODIMP Begin3D(
+    STDMETHODIMP Begin3D(
         __in_ecount(1) MilRectF const &rcBounds,
         MilAntiAliasMode::Enum AntiAliasMode,
         bool fUseZBuffer,
         FLOAT rZ
         );
 
-    override STDMETHODIMP End3D(
+    STDMETHODIMP End3D(
         );
 
     // IMILRenderTargetHWND.
 
-    override STDMETHOD(Present)(
+    STDMETHOD(Present)(
         );
 
-    override STDMETHOD(ScrollBlt) (
+    STDMETHOD(ScrollBlt) (
         __in_ecount(1) const RECT *prcSource,
         __in_ecount(1) const RECT *prcDest
         );
 
-    override STDMETHOD(Invalidate)(
+    STDMETHOD(Invalidate)(
         __in_ecount_opt(1) MilRectF const *prc
         );
 
-    override STDMETHOD_(VOID, GetBounds)(
+    STDMETHOD_(VOID, GetBounds)(
         __out_ecount(1) MilRectF * const pBounds
         );
 
 
-    override STDMETHOD(WaitForVBlank)(
+    STDMETHOD(WaitForVBlank)(
         );
 
-    override STDMETHOD_(VOID, AdvanceFrame)(
+    STDMETHOD_(VOID, AdvanceFrame)(
         UINT uFrameNumber
         );
 
-    override STDMETHOD(GetNumQueuedPresents)(
+    STDMETHOD(GetNumQueuedPresents)(
         __out_ecount(1) UINT *puNumQueuedPresents
         );
 
-    override STDMETHOD(CanAccelerateScroll)(
+    STDMETHOD(CanAccelerateScroll)(
         __out_ecount(1) bool *pfCanAccelerateScroll
         );
 
     // IRenderTargetInternal.
 
-    override STDMETHOD(CreateRenderTargetBitmap)(
+    STDMETHOD(CreateRenderTargetBitmap)(
         UINT width,
         UINT height,
         IntermediateRTUsage usageInfo,
@@ -182,13 +182,13 @@ public:
 
     // IRenderTargetInternal.
 
-    override STDMETHOD(DrawBitmap)(
+    STDMETHOD(DrawBitmap)(
         __inout_ecount(1) CContextState *pContextState,
         __inout_ecount(1) IWGXBitmapSource *pIBitmap,
         __inout_ecount_opt(1) IMILEffectList *pIEffect
         );
 
-    override STDMETHOD(DrawMesh3D)(
+    STDMETHOD(DrawMesh3D)(
         __inout_ecount(1) CContextState* pContextState,
         __inout_ecount_opt(1) BrushContext *pBrushContext,
         __inout_ecount(1) CMILMesh3D *pMesh3D,
@@ -196,7 +196,7 @@ public:
         __inout_ecount_opt(1) IMILEffectList *pIEffect
         );
 
-    override STDMETHOD(DrawPath)(
+    STDMETHOD(DrawPath)(
         __inout_ecount(1) CContextState *pContextState,
         __inout_ecount_opt(1) BrushContext *pBrushContext,
         __inout_ecount(1) IShapeData *pShape,
@@ -205,11 +205,11 @@ public:
         __inout_ecount_opt(1) CBrushRealizer *pFillBrush
         );
 
-    override STDMETHOD(DrawGlyphs)(
+    STDMETHOD(DrawGlyphs)(
         __inout_ecount(1) DrawGlyphsParameters &pars
         );
 
-    override STDMETHOD(DrawVideo)(
+    STDMETHOD(DrawVideo)(
         __inout_ecount(1) CContextState *pContextState,
         __inout_ecount(1) IAVSurfaceRenderer *pSurfaceRenderer,
         __inout_ecount(1) IWGXBitmapSource *pBitmapSource,
