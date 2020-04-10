@@ -231,9 +231,9 @@ protected:
         __out_ecount(1) UINT *pidxFirstEnabledRT
         ) const;
 
-    override STDMETHOD(GetNumQueuedPresents)(
+    STDMETHOD(GetNumQueuedPresents)(
         __out_ecount(1) UINT *puNumQueuedPresents
-        );
+        ) override;
 
 protected:
 
