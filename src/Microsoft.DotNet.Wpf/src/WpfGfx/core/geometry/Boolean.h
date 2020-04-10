@@ -255,7 +255,9 @@ protected:
         __inout_ecount(1) CChain *&pRightmost);
             // The rightmost head/tail, modified here
 
-    void operator = (__in_ecount(1) const COutline &other) {other;}
+	// operator= was defined as a no-op which seems wrong.
+	// Let's not worry about it unless it's actually used.
+    // void operator = (__in_ecount(1) const COutline &other) {other;}
 
     // Figure construction
 
