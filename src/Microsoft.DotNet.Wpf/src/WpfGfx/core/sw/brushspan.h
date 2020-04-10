@@ -36,6 +36,12 @@ MtExtern(CShaderEffectBrushSpan);
 //      CColorSource implementation that emits a constant color
 //
 //------------------------------------------------------------------------------
+
+VOID FASTCALL ColorSource_Constant_32bppPARGB(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *
+	);
+
 class CConstantColorBrushSpan : public CColorSource
 {
 public:
@@ -145,6 +151,12 @@ protected:
 //      resampling mechanism, CResampleSpan
 //
 //------------------------------------------------------------------------------
+    
+VOID FASTCALL ColorSource_LinearGradient_32bppPARGB(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *
+	);
+
 class CLinearGradientBrushSpan : public CGradientBrushSpan
 {
 public:
@@ -283,6 +295,12 @@ CLinearGradientBrushSpan::GenerateColorsInit(
 //      one-dimensional gradient textures on MMX-enabled CPU's.   
 //
 //------------------------------------------------------------------------------
+    
+VOID FASTCALL ColorSource_LinearGradient_32bppPARGB_MMX(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *
+	);    
+
 class CLinearGradientBrushSpan_MMX : public CLinearGradientBrushSpan
 {
 public:
@@ -327,6 +345,12 @@ private:
 //      RadialGradientBrushes with a Focus equal to it's center.
 //
 //------------------------------------------------------------------------------
+    
+VOID FASTCALL ColorSource_RadialGradient_32bppPARGB(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *
+	);    
+
 class CRadialGradientBrushSpan : public CGradientBrushSpan
 {
 public:
@@ -387,6 +411,12 @@ private:
 //      RadialGradientBrush's with a Focus that isn't equal to it's center
 //
 //------------------------------------------------------------------------------
+
+VOID FASTCALL ColorSource_FocalGradient_32bppPARGB(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *
+	);
+
 class CFocalGradientBrushSpan : public CRadialGradientBrushSpan
 {
 public:
@@ -440,6 +470,10 @@ private:
 };
 
 
+
+VOID FASTCALL ColorSource_ShaderEffect_32bppPARGB(
+	__in_ecount(1) const PipelineParams *, 
+	__in_ecount(1) const ScanOpParams *);
 
 class CShaderEffectBrushSpan : public CColorSource
 {
