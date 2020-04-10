@@ -143,7 +143,7 @@ public:
 
     void Reset();
 
-    void CMatrix22::Set(
+    void Set(
         GpReal rM11,
             // In: The value to set for M11
         GpReal rM12,
