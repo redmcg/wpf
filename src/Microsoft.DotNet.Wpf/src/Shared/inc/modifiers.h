@@ -15,6 +15,7 @@
 #define __deref_opt_inout_ecount(x)
 #define __deref_opt_inout_ecount_opt(x)
 #define __deref_opt_out
+#define __deref_opt_out_ecount(x)
 #define __deref_opt_out_xcount_part(x,y)
 #define __deref_out
 #define __deref_out_bcount(x)
