@@ -948,7 +948,7 @@ public:
         __in_ecount(1) const MILMatrix3x2 *pmatDevicePointToTextureUV
         );
 
-    override HRESULT SetWaffling(
+    HRESULT SetWaffling(
         DWORD dwCoordIndex,
         __in_ecount(1) const CMilPointAndSizeF *pSubrect,
         WaffleModeFlags waffleMode
@@ -957,12 +957,12 @@ public:
     HRESULT FinalizeMappings(
         );
 
-    override void SetOutsideBounds(
+    void SetOutsideBounds(
         __in_ecount_opt(1) const CMILSurfaceRect *prcBounds,
         bool fNeedInside
         );
 
-    override bool HasOutsideBounds() const
+    bool HasOutsideBounds() const
     {
         return NeedOutsideGeometry();
     }
@@ -1020,7 +1020,7 @@ public:
         __deref_opt_out_ecount(1) CHwVertexBuffer **ppVertexBuffer
         );
 
-    override HRESULT FlushInternal(
+    HRESULT FlushInternal(
         __deref_opt_out_ecount_opt(1) CHwVertexBuffer **ppVertexBuffer
         );
             
