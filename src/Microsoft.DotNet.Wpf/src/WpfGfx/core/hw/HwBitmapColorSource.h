@@ -351,24 +351,24 @@ public:
         RequiredBoundsCheck::Enum eCheckRequest
         );
 
-    override bool IsValid() const;
+    bool IsValid() const;
 
     //
     // CHwColorSource methods
     //
 
-    override bool IsOpaque(
+    bool IsOpaque(
         ) const;
 
-    override virtual HRESULT Realize(
+    virtual HRESULT Realize(
         );
 
-    override HRESULT SendDeviceStates(
+    HRESULT SendDeviceStates(
         DWORD dwStage,
         DWORD dwSampler
         );
 
-    override HRESULT SendVertexMapping(
+    HRESULT SendVertexMapping(
         __inout_ecount_opt(1) CHwVertexBuffer::Builder *pVertexBuilder,
         MilVertexFormatAttribute mvfaLocation
         );
