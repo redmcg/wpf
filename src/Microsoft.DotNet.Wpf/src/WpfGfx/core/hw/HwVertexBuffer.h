@@ -769,7 +769,7 @@ public:
 
 protected:
 
-    CHwVertexBuffer::Builder()
+    Builder()
     {
         m_mvfIn = MILVFAttrNone;
 
