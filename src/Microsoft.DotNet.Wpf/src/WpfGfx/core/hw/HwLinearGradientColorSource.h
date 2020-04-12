@@ -64,13 +64,13 @@ public:
     // CHwColorSource methods
     //
 
-    override bool IsOpaque(
+    bool IsOpaque(
         ) const;
 
-    override HRESULT Realize(
+    HRESULT Realize(
         );
 
-    override HRESULT SendDeviceStates(
+    HRESULT SendDeviceStates(
         DWORD dwStage,
         DWORD dwSampler
         );
