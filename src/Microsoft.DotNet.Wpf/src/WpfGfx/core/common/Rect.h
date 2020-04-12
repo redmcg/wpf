@@ -41,7 +41,8 @@ class TRect_ : public TBaseMILRect
 
 template <typename TBaseMILRect, typename Space>
 class TRect_<TBaseMILRect, Space,
-	typename std::enable_if<std::is_pointer<decltype(&TBaseMILRect::HasBaseType)>::value>::type>
+	typename std::enable_if<std::is_pointer<decltype(&TBaseMILRect::HasBaseType)>::value>::type> :
+	public TBaseMILRect
 {
 protected:
 
