@@ -49,6 +49,7 @@
 #define __inout_ecount_part_opt(x,y)
 #define __nullterminated
 #define __out
+#define __out_ecount_full_opt(x)
 #define __out_ecount_opt(x)
 #define __out_range(x,y)
 #define __out_xcount(x)
