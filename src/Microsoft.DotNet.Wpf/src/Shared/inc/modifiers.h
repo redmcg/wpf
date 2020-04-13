@@ -10,6 +10,7 @@
 #define __deref_bcount(x)
 #define __deref_ecount(x)
 #define __deref_in_range(x,y)
+#define __deref_inout
 #define __deref_inout_ecount(x)
 #define __deref_inout_ecount_opt(x)
 #define __deref_inout_opt
