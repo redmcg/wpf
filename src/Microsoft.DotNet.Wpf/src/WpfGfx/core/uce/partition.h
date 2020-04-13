@@ -123,7 +123,11 @@ enum PartitionState
 // from the partition manager. 
 //
 
+#ifdef _MSC_VER
 class __declspec(novtable) Partition : 
+#else
+class Partition : 
+#endif
     public IMILRefCount,
     public LIST_ENTRY
 {
