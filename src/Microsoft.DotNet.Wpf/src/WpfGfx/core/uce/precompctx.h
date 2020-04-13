@@ -78,7 +78,7 @@ MtExtern(CPreComputeContext);
 //      bounding-boxes for each node and also collects dirty region
 //----------------------------------------------------------------------------------
 
-class CPreComputeContext : IGraphIteratorSink
+class CPreComputeContext final : IGraphIteratorSink
 {
 #if DBG==1
     // Needed for debug dirty region disabled nesting check. See PreComputeContext::{PreSubgraph, PostSubgraph}
