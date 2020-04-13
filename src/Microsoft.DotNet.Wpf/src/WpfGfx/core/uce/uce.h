@@ -37,12 +37,12 @@ Environment:
 #include "clientchannel.h"
 #include "serverchannel.h"
 
+#include "htslave.h"
 #include "resslave.h"
 #include "resources/valueres.h"
 #include "idrawingcontext.h"
 #include "schedulemanager.h"
 
-#include "htslave.h"
 #include "generated_resource_factory.h"
 
 #include "partition.h"

@@ -23,6 +23,8 @@ MtExtern(CMilSlaveHandleTable);
 
 class CComposition;
 
+class CMilCyclicResourceListEntry;
+
 class CMilSlaveHandleTable :
     public CMILHandleTable
 {
