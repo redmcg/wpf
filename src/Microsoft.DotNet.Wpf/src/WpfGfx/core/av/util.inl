@@ -2,6 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#ifndef NS_S_WMPCORE_COMMAND_NOT_AVAILABLE
+#define NS_S_WMPCORE_COMMAND_NOT_AVAILABLE 0x000d1105
+#endif
 
 //+-----------------------------------------------------------------------------
 //
