@@ -19,8 +19,9 @@
 #pragma warning(disable:4061)          // case not handled
 #pragma warning(disable:4127)          // constant conditional
 
-#undef C_ASSERT                        // Only defined in Winnt.h (SIMDJit doesn't include)
+#ifndef C_ASSERT                        // Only defined in Winnt.h (SIMDJit doesn't include)
 #define C_ASSERT(e) typedef char __C_ASSERT__[(e)?1:-1]
+#endif
 
 #ifndef NO_DEFAULT
 #define NO_DEFAULT __assume(0)
