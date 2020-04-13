@@ -166,7 +166,6 @@ protected:
     CMILBrushRadialGradient(__in_ecount_opt(1) CMILFactory *pFactory = NULL);
     virtual ~CMILBrushRadialGradient();
 
-private:
     // Create should be used to instantiate this object, not operator new.
     DECLARE_METERHEAP_ALLOC(ProcessHeap, Mt(CMILBrushRadialGradient));
 
@@ -266,8 +265,6 @@ protected:
 
     CMILBrushBitmap(OPTIONAL CMILFactory *pFactory = NULL);
     virtual ~CMILBrushBitmap();
-
-private:
 
     // Create should be used to instantiate this object, not operator new.
     DECLARE_METERHEAP_ALLOC(ProcessHeap, Mt(CMILBrushBitmap));
@@ -515,7 +512,6 @@ protected:
     CMILBrushShaderEffect(__in CMilEffectDuce *pShaderEffect);
     ~CMILBrushShaderEffect() override;
 
-private:
     DECLARE_METERHEAP_ALLOC(ProcessHeap, Mt(CMILBrushShaderEffect));
 
 public:
