@@ -1403,7 +1403,6 @@ HRESULT CDrawingContext::DrawBitmap(
     )
 {
     HRESULT hr = S_OK;
-    static const UINT PARALLELOGRAM_COUNT = 4;
     CCompoundShapeNoRef drawRegionWorldSpace;
     CParallelogram drawRectInLocalSpaceShape;
 
