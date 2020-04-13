@@ -126,6 +126,7 @@ CMilGradientBrushDuce::IsConstantOpaqueInternal(
     MilGradientStop *pStop = pThis->m_data.m_pGradientStopsData;
 
     bool fIsConstantOpaque = false;
+	UINT count;
 
     IFC((GetOpacity(
         pThis->m_data.m_Opacity,
@@ -139,7 +140,7 @@ CMilGradientBrushDuce::IsConstantOpaqueInternal(
         goto Cleanup;
     }
 
-    UINT count = pThis->m_data.m_cbGradientStopsSize / sizeof(pStop[0]);
+    count = pThis->m_data.m_cbGradientStopsSize / sizeof(pStop[0]);
 
     for (UINT i = 0; i < count; i++)
     {
@@ -185,6 +186,7 @@ CMilGradientBrushDuce::GetGradientColorData(
     HRESULT hr = S_OK;
 
     FLOAT rOpacity;
+	UINT count;
 
     MilGradientStop *pStop = pThis->m_data.m_pGradientStopsData;
 
@@ -201,7 +203,7 @@ CMilGradientBrushDuce::GetGradientColorData(
     // this count will be zero -- guaranteed by the marshaling code.
     //
 
-    UINT count = pThis->m_data.m_cbGradientStopsSize / sizeof(pStop[0]);
+    count = pThis->m_data.m_cbGradientStopsSize / sizeof(pStop[0]);
 
     for(UINT i = 0; i < count; i++)
     {
