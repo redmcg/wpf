@@ -264,6 +264,7 @@ CContentBounder::GetVisualInnerBounds(
     HRESULT hr = S_OK;
 
     CMilRectF rcBounds;
+	UINT childCount;
 
     //
     // Calculate the inner bounds of the content.  pNode->m_Bounds contains the bounds
@@ -277,7 +278,7 @@ CContentBounder::GetVisualInnerBounds(
     // 
     // The cached bounds (m_Bounds) of the children contain their subgraph bounds
     // transformed into this node's coordinate inner space.
-    UINT childCount = static_cast<UINT>(pNode->m_rgpChildren.GetCount());
+    childCount = static_cast<UINT>(pNode->m_rgpChildren.GetCount());
     for (UINT i = 0; i < childCount; i++)
     {
         const CMilVisual *pChild = pNode->m_rgpChildren[i];
