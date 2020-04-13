@@ -975,6 +975,8 @@ CComposition::Present(
 {
     HRESULT hr = S_OK;
     QPC_TIME qpcPresentationTime = UINT64_MAX;
+	UINT uiRefreshRate;
+	MilPresentationResults::Enum ePresentationResults;
 
     if (m_deviceState == MilCompositionDeviceState::Occluded)
     {
@@ -1004,9 +1006,9 @@ CComposition::Present(
     // In case we can't get the refresh rate of the device set the default as 60
     //
 
-    MilPresentationResults::Enum ePresentationResults = MilPresentationResults::VSyncUnsupported;
+    ePresentationResults = MilPresentationResults::VSyncUnsupported;
 
-    UINT uiRefreshRate = 0;
+    uiRefreshRate = 0;
 
     //
     //  If someone has requested a presentation notification see if there is a
@@ -1964,6 +1966,7 @@ HRESULT CComposition::DetachChannel(
     )
 {
     HRESULT hr = S_OK;
+	bool fShouldShrink;
 
     CMilServerChannel *pChannel = NULL;
 
@@ -1997,7 +2000,7 @@ HRESULT CComposition::DetachChannel(
     // Shrink the table size if possible.
     //
 
-    bool fShouldShrink = false;
+    fShouldShrink = false;
 
     while (m_rgpAttachedChannels.GetCount() > 0
            && m_rgpAttachedChannels.Last() == NULL)
