@@ -4737,8 +4737,10 @@ CDrawingContext::PreSubgraph(__out_ecount(1) BOOL *pfVisitChildren)
 {
     HRESULT hr = S_OK;
     BOOL fPushEffect = FALSE;
+    bool fNeedMoreCycles = false;
     CRectF<CoordinateSpace::LocalRendering> localBounds;
     CRectF<CoordinateSpace::PageInPixels> clippedBoundsWorldAAInflated;
+    float flAlphaValue;
 
     AssertMsg(m_pGraphIterator, "There is a problem with using the render context from the UiThread. You can only call this for visuals.");
 
@@ -4803,7 +4805,7 @@ CDrawingContext::PreSubgraph(__out_ecount(1) BOOL *pfVisitChildren)
     //
     
     // If there's no opacity, let's go ahead and skip this subgraph
-    float flAlphaValue = static_cast<float>(ClampAlpha(pNode->m_alpha));
+    flAlphaValue = static_cast<float>(ClampAlpha(pNode->m_alpha));
     if (IsCloseReal(flAlphaValue, 0.0f))
     {
         pNode->m_fSkipNodeRender = TRUE;
@@ -5033,7 +5035,6 @@ CDrawingContext::PreSubgraph(__out_ecount(1) BOOL *pfVisitChildren)
     // If (pNode->m_pGuidelineCollection == null) then PushGuidelineCollection
     // should be called anyway. The rule for visual is that content of visual is
     // never affected by parent's guidelines (in oppose to drawing group).
-    bool fNeedMoreCycles = false;
     IFC(PushGuidelineCollection(pNode->m_pGuidelineCollection, fNeedMoreCycles));
     if (fNeedMoreCycles)
     {
@@ -5337,6 +5338,10 @@ CDrawingContext::DetermineEffectCompositionMode(
     )
 {
     HRESULT hr = S_OK;
+    bool hasHardwareSupport = false;
+    bool hasSoftwareSupport = false;
+    bool requiresPS30;
+    ShaderEffectShaderRenderMode::Enum effectRenderMode;
     
     // Note that the call to GetType() will return HW for Meta RTs if any of the
     // displays is being rendered in hardware.  This means that on any software
@@ -5344,12 +5349,10 @@ CDrawingContext::DetermineEffectCompositionMode(
     DWORD renderTargetType = 0;
     IFC(m_pIRenderTarget->GetType(&renderTargetType));
     
-    bool hasHardwareSupport = false;
-    bool hasSoftwareSupport = false;
-    bool requiresPS30 = (pEffect->GetShaderMajorVersion() == 3);
+    requiresPS30 = (pEffect->GetShaderMajorVersion() == 3);
     CheckEffectSupport(&hasHardwareSupport, &hasSoftwareSupport, requiresPS30);
 
-    ShaderEffectShaderRenderMode::Enum effectRenderMode = pEffect->GetShaderRenderMode();
+    effectRenderMode = pEffect->GetShaderRenderMode();
 
     if (renderTargetType == HWRasterRenderTarget)
     {
