@@ -54,6 +54,7 @@
 #define __out_ecount_opt(x)
 #define __out_range(x,y)
 #define __out_xcount(x)
+#define __out_xcount_full(x)
 #define __out_xcount_opt(x)
 #define __out_xcount_part(x,y)
 #define __override
