@@ -205,7 +205,9 @@ public:
         {
             __if_exists(TypedRef::IndexScale)
             {
-                C_pVoid::AddOperator(ot, result.GetID(), src.GetID(), m_uBaseVarID, m_uIndexVarID, TypedRef::IndexScale, m_uDisplacement);
+				// This path is broken and must not have ever been used. Error if it is.
+                // C_pVoid::AddOperator(ot, result.GetID(), src.GetID(), m_uBaseVarID, m_uIndexVarID, TypedRef::IndexScale, m_uDisplacement);
+				char broken[sizeof(TypedRef) - sizeof(TypedRef) - 1];
             }
 
             __if_not_exists(TypedRef::IndexScale)
