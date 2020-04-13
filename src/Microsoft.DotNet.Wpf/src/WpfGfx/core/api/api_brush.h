@@ -55,7 +55,6 @@ protected:
     CMILBrushSolid(__in_ecount_opt(1) CMILFactory *pFactory = NULL);
     virtual ~CMILBrushSolid();
 
-private:
     DECLARE_METERHEAP_ALLOC(ProcessHeap, Mt(CMILBrushSolid));
 
 public:
