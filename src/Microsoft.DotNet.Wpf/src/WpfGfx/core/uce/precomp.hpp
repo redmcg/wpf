@@ -28,6 +28,11 @@ Environment:
 #include <wingdip.h>
 #endif
 
+#ifndef _MSC_VER
+// Wine Mono hack: There are way too many "overrides" in the wrong place, just ignore them.
+#define override
+#endif
+
 #include "wgx_core_types.h"
 #include "wgx_render_types.h"
 #include "wgx_core_dllname.h"
