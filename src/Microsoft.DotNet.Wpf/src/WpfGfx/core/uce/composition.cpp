@@ -1603,7 +1603,7 @@ CComposition::Channel_RequestTier(
     //
 
     {
-        static const PTSTR szWinSatKey = _T("Software\\Microsoft\\Windows NT\\CurrentVersion\\WinSAT");
+        static const PCTSTR szWinSatKey = _T("Software\\Microsoft\\Windows NT\\CurrentVersion\\WinSAT");
         
         // Grab WinSAT dropped bandwidth number
         DWORD VideoMemoryBandwidth = 0;
