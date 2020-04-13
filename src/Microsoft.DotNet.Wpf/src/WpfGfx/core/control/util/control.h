@@ -33,7 +33,7 @@ struct ARGB;
 class CPerformanceCounter
 {
 public:
-    static void CPerformanceCounter::Initialize(); 
+    static void Initialize(); 
     
     CPerformanceCounter(UINT minIntervalMilliseconds);
 
@@ -128,7 +128,7 @@ private:
         __in PCWSTR lpName);
     HRESULT InitializeAttach(
         __in PCWSTR lpName);
-    void CMediaControl::UpdateMaxValuePair(
+    void UpdateMaxValuePair(
         __inout_ecount(1) DWORD* pdwMaxValue,
         __inout_ecount(1) DWORD* pdwCurrentValue);
 public:
