@@ -5,6 +5,7 @@
 
 #define __allocator
 #define __annotation(...) (void)0
+#define __bcount_opt(x)
 #define __bound
 #define __deref_bcount(x)
 #define __deref_ecount(x)
