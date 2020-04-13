@@ -112,7 +112,6 @@ protected:
     CMILBrushLinearGradient(__in_ecount_opt(1) CMILFactory *pFactory = NULL);
     virtual ~CMILBrushLinearGradient();
 
-private:
     // Create should be used to instantiate this object, not operator new.
     DECLARE_METERHEAP_ALLOC(ProcessHeap, Mt(CMILBrushLinearGradient));
 
