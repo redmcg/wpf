@@ -82,6 +82,8 @@
 #include "d3ddevice.h"          // needs d3dresource.h, dxbrush.h, d3dstats.h, d3dlog.h
                                 // d3dglyphbank.h, hwsurfrtdata.h, d3dglyphrun.h, HwCaps.h
 
+#include "HwVertexBuffer.inl"   // needs d3ddevice.h
+
 #include "d3dswapchain.h"       // needs d3dresource.h, d3ddevice.h
 
 
