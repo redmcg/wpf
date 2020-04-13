@@ -1603,13 +1603,13 @@ CComposition::Channel_RequestTier(
     //
 
     {
-        static const PCTSTR szWinSatKey = _T("Software\\Microsoft\\Windows NT\\CurrentVersion\\WinSAT");
+        static const PCTSTR szWinSatKey = L"Software\\Microsoft\\Windows NT\\CurrentVersion\\WinSAT";
         
         // Grab WinSAT dropped bandwidth number
         DWORD VideoMemoryBandwidth = 0;
         DWORD VideoMemorySize = 0;
 
-        if (!RegGetHKLMDword(szWinSatKey, _T("VideoMemoryBandwidth"), &VideoMemoryBandwidth))
+        if (!RegGetHKLMDword(szWinSatKey, L"VideoMemoryBandwidth", &VideoMemoryBandwidth))
         {
             VideoMemoryBandwidth = 0;  // assume no bandwidth if there's no assessment
         }
@@ -1617,7 +1617,7 @@ CComposition::Channel_RequestTier(
         tierMessage.tierData.Assessment.VideoMemoryBandwidth = VideoMemoryBandwidth;
 
         // Read the video memory size
-        if (!RegGetHKLMDword(szWinSatKey, _T("VideoMemorySize"), &VideoMemorySize))
+        if (!RegGetHKLMDword(szWinSatKey, L"VideoMemorySize", &VideoMemorySize))
         {
             VideoMemorySize = 0; // assume no memory if there's no assessment
         }
