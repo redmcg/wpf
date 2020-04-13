@@ -100,7 +100,7 @@ public:
         // emits a compile-time error if TResourceType doesn't inherit from
         // CMilSlaveResource.
         //
-        static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
+        (void)static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
 
         UnRegisterNotifierInternal(pNotifier);
 
@@ -130,7 +130,7 @@ public:
         // emits a compile-time error if TResourceType doesn't inherit from
         // CMilSlaveResource.
         //
-        static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
+        (void)static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
 
         return RegisterNNotifiersInternal(reinterpret_cast<CMilSlaveResource **>(prgNotifiers), n);
     }
@@ -144,7 +144,7 @@ public:
         // emits a compile-time error if TResourceType doesn't inherit from
         // CMilSlaveResource.
         //
-        static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
+        (void)static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
 
         UnRegisterNNotifiersInternal(reinterpret_cast<CMilSlaveResource **>(prgNotifiers), n);
     }
