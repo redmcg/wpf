@@ -50,6 +50,7 @@
 #define __in_range(x,y)
 #define __in_xcount(x)
 #define __in_xcount_opt(x)
+#define __in_z
 #define __inout_bcount_part_opt(x,y)
 #define __inout_ecount(x)
 #define __inout_ecount_opt(x)
