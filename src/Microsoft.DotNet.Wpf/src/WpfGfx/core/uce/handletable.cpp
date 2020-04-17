@@ -219,6 +219,8 @@ HRESULT HANDLE_TABLE::Resize(
 
     UINT cbOldMemSize = 0;
     UINT cbNewMemSize = 0;
+    VOID *pvTable;
+    PBYTE pRem;
 
     if (cTableSize < m_cHandleCount)
     {
@@ -229,7 +231,7 @@ HRESULT HANDLE_TABLE::Resize(
     IFC(MultiplyUINT(m_cHandleCount, m_cbEntry, cbOldMemSize));
     IFC(MultiplyUINT(cTableSize, m_cbEntry, cbNewMemSize));
 
-    VOID *pvTable = ReallocHeap(m_pvTable, cbNewMemSize);
+    pvTable = ReallocHeap(m_pvTable, cbNewMemSize);
 
     IFCOOM(pvTable);
 
@@ -237,7 +239,7 @@ HRESULT HANDLE_TABLE::Resize(
     // Zero out the remainder of the allocation.
     //
 
-    PBYTE pRem = static_cast<PBYTE>(pvTable) + cbOldMemSize;
+    pRem = static_cast<PBYTE>(pvTable) + cbOldMemSize;
     RtlZeroMemory(pRem, cbNewMemSize - cbOldMemSize);
 
     //
@@ -276,6 +278,7 @@ HRESULT HANDLE_TABLE::GetNewEntry(
     )
 {
     HRESULT hr = S_OK;
+    UINT nFreePos;
 
     //
     // EMPTY_ENTRY (==0) is used to indicate an empty table entry.
@@ -312,7 +315,7 @@ HRESULT HANDLE_TABLE::GetNewEntry(
     // stopping the application earlier.
     //
 
-    UINT nFreePos = m_nFreeIndex;
+    nFreePos = m_nFreeIndex;
 
     while (ENTRY_TYPE_FIELD(nFreePos) != EMPTY_ENTRY)
     {
