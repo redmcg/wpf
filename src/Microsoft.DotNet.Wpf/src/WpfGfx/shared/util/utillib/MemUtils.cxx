@@ -12,6 +12,11 @@
 
 #include "pch.h"
 
+#ifndef _MSC_VER
+#include <stdint.h>
+#define SIZE_T_MAX SIZE_MAX
+#endif
+
 // Globals ---------------------------------------------------------------------
 HANDLE g_hProcessHeap;
 #if PERFMETER
