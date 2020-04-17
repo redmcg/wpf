@@ -4,6 +4,7 @@
 #ifndef _MSC_VER
 
 #define __allocator
+#define __analysis_noreturn
 #define __annotation(...) (void)0
 #define __bcount_opt(x)
 #define __bound
