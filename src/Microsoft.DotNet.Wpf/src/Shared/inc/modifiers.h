@@ -76,6 +76,7 @@
 #define __success(x)
 #define __typefix(x)
 #define __xcount(x)
+#define _Pre_maybenull_
 
 #ifndef __clang__
 #define __bcount(x)
