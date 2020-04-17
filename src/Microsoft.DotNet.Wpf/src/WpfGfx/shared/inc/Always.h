@@ -72,6 +72,8 @@
 #include <malloc.h>
 
 
+#include "modifiers.h"
+
 #ifndef AVALON_NOMEMSYSTEM
 #undef _strdup
 #undef _wcsdup
