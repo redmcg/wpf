@@ -212,7 +212,7 @@ CPartitionManager::Initialize(
             FALSE /* HKEY LOCAL MACHINE */)))
     {
         RegReadDWORD(hRegAvalonGraphics,
-            _T("EnableDebugControl"),
+            L"EnableDebugControl",
             &fEnableDebugControl);
     }
 
