@@ -214,10 +214,11 @@ HRESULT WINAPI WgxConnection_Disconnect(
     )
 {
     HRESULT hr = S_OK;
+    CMilConnection *pConnection;
 
     CHECKPTRARG(hConnection);
 
-    CMilConnection *pConnection = HandleToPointer(hConnection);
+    pConnection = HandleToPointer(hConnection);
 
     pConnection->Release();
 
@@ -233,14 +234,15 @@ HRESULT WINAPI MilConnection_CreateChannel(
 {
     HRESULT hr = S_OK;
     HMIL_CHANNEL hPartSource = NULL;
+    CMilConnection *pConnection = NULL;
+    const CMilChannel *pSourceChannel;
+    CMilChannel *pChannel = NULL;
 
     CHECKPTRARG(phChannel);
 
-    CMilConnection *pConnection = NULL;
     CHECKPTRARG(hConnection);
 
-    const CMilChannel *pSourceChannel = HandleToPointer(hSourceChannel);
-    CMilChannel *pChannel = NULL;
+    pSourceChannel = HandleToPointer(hSourceChannel);
 
     pConnection = HandleToPointer(hConnection);
 
