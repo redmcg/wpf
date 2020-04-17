@@ -397,8 +397,8 @@ struct GUIHandleQuotaInfo {
     PCTSTR szRegValue;
 } g_GUIHandleQuota[] =
 {
-  /* GR_GDIOBJECTS  */ { 0, _T("GDIProcessHandleQuota") },
-  /* GR_USEROBJECTS */ { 0, _T("USERProcessHandleQuota") }
+  /* GR_GDIOBJECTS  */ { 0, L"GDIProcessHandleQuota" },
+  /* GR_USEROBJECTS */ { 0, L"USERProcessHandleQuota" }
 };
 
 HRESULT
@@ -450,7 +450,7 @@ CheckGUIHandleQuota(
 
             if (RegOpenKeyEx(
                 HKEY_LOCAL_MACHINE,
-                _T("Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows"),
+                L"Software\\Microsoft\\Windows NT\\CurrentVersion\\Windows",
                 0,
                 KEY_QUERY_VALUE,
                 &hKey) == ERROR_SUCCESS)
