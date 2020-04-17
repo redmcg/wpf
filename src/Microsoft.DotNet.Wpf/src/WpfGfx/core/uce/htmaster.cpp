@@ -176,6 +176,7 @@ HRESULT CMilMasterHandleTable::DuplicateHandle(
     const HANDLE_ENTRY* pOriginalEntry = NULL;
     HANDLE_ENTRY* pDuplicateEntry = NULL;
     HMIL_RESOURCE hDuplicate = NULL;
+    CMilMasterHandleTable *pTargetHandleTable;
 
 
     //
@@ -191,7 +192,7 @@ HRESULT CMilMasterHandleTable::DuplicateHandle(
     // reserve space in the handle table and mark it with the type.
     //
 
-    CMilMasterHandleTable *pTargetHandleTable = &pTargetChannel->m_handleTable;
+    pTargetHandleTable = &pTargetChannel->m_handleTable;
     IFC(pTargetHandleTable->m_handletable.GetNewEntry(pOriginalEntry->type, &hDuplicate));
 
 
