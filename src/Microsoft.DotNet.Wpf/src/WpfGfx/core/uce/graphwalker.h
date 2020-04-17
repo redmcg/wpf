@@ -97,8 +97,10 @@ private:
         UINT m_childIndex;           // This is the index of m_pCurrentParent in his parents child array.
     };
 
+#ifdef DBG
     bool       m_walkable;            // Specifies whether graph is correctly setup and consistent with 
                                       // being "walkable"
+#endif
 
     UINT       m_currentDepth;        // Current distance from the root node.
     
