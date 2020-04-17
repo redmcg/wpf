@@ -67,6 +67,7 @@
 #define __out_xcount_part(x,y)
 #define __override
 #define __post_invalid
+#define __range(x,y)
 #define __success(x)
 #define __typefix(x)
 #define __xcount(x)
