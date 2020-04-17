@@ -75,7 +75,7 @@
 #include "HwTexturedColorSourceBrush.h"
 #include "D3DTextureSurface.h"
 
-#include "D3DSwapChainWithSwDC.h"
+#include "d3dswapchainwithswdc.h"
 
 #include "control\util\control.h"
 
