@@ -22,9 +22,15 @@ INCLUDE_DIRS= \
 all: $(OBJDIR)/wpfgfx_cor3.dll
 .PHONY: all
 
+CXX_FLAGS=-c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Wno-inline-new-delete -Wno-ignored-pragma-optimize -Wno-undefined-inline -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-undefined-var-template -Wno-switch -Werror -fms-extensions -municode -DD3D9EXTENSIONS -DNOASM $(INCLUDE_DIRS:%=-I%)
+
 $(OBJDIR)/%.cpp.o: %.cpp
 	mkdir -p $(@D)
-	$(MINGW)-g++ -o $@ -c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Wno-inline-new-delete -Wno-ignored-pragma-optimize -Wno-undefined-inline -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-undefined-var-template -Wno-switch -Werror -fms-extensions -municode -DD3D9EXTENSIONS -DNOASM $(INCLUDE_DIRS:%=-I%) $<
+	$(MINGW)-g++ -o $@ $(CXX_FLAGS) $<
+
+$(OBJDIR)/%.cxx.o: %.cxx
+	mkdir -p $(@D)
+	$(MINGW)-g++ -o $@ $(CXX_FLAGS) $<
 
 $(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
 	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(C_SRCS:%=$(OBJDIR)/%.o)

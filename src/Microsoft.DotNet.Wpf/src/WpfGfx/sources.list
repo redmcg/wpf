@@ -41,3 +41,13 @@ core/uce/apifunc.cpp
 core/uce/VisualCacheManager.cpp
 core/uce/connection.cpp
 core/uce/rendertargetmanager.cpp
+shared/util/utillib/list.cxx
+shared/util/utillib/pch.cxx
+shared/util/utillib/DebugBreak.cpp
+shared/util/utillib/StrUtil.cxx
+shared/util/utillib/Registry.cxx
+shared/util/utillib/HiResTimer.cxx
+shared/util/utillib/Instrumentation.cxx
+shared/util/utillib/MemUtils.cxx
+shared/util/utillib/Misc.cxx
+shared/util/utillib/Assert.cxx
