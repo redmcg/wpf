@@ -382,7 +382,6 @@ GpRealInstrinsics::Pow(
 
 #if defined(_X86_)
     
-    static const double fphalf = 0.5;
     static const double fpone = 1.0;
 
     if ( x == 0.0 )
