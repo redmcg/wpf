@@ -278,11 +278,20 @@ AssertA(
     );
 
 VOID
-AssertW(
+AssertMixed(
     __in_opt PCWSTR Message,
     __in_opt PCSTR FailedAssertion,
     __in PCSTR Function,
     __in PCSTR FileName,
+    ULONG LineNumber
+    );
+
+VOID
+AssertW(
+    __in_opt PCWSTR Message,
+    __in_opt PCWSTR FailedAssertion,
+    __in PCWSTR Function,
+    __in PCWSTR FileName,
     ULONG LineNumber
     );
 
@@ -297,11 +306,11 @@ AssertW(
     (AssertA(_msg, NULL, __WFUNCTION__, __WFILE__, __LINE__))
 
 #define FRERIPW(_msg) \
-    (AssertW(_msg, NULL, __WFUNCTION__, __WFILE__, __LINE__))
+    (AssertMixed(_msg, NULL, __WFUNCTION__, __WFILE__, __LINE__))
 
 #define FREASSERT(_exp) \
     ((!(_exp)) ? \
-        (AssertW(NULL, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
+        (AssertMixed(NULL, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
         TRUE)
 
 #define FREASSERTMSGA(_msg, _exp) \
@@ -311,7 +320,7 @@ AssertW(
 
 #define FREASSERTMSGW(_msg, _exp) \
     ((!(_exp)) ? \
-        (AssertW(_msg, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
+        (AssertMixed(_msg, #_exp, __WFUNCTION__, __WFILE__, __LINE__),FALSE) : \
         TRUE)
 
 #else
