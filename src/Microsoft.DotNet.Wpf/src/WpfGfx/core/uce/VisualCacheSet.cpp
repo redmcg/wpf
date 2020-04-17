@@ -596,6 +596,7 @@ CMilVisualCacheSet::AddCacheInternal(
 
     // Our cache mode for lookup will either be the specified cache mode or the default cache.
     CMilBitmapCacheDuce *pCacheModeForLookup = pBitmapCacheMode;
+    BrushCacheToken *pCacheToken;
 
     // Should only be called with a positive number of cache references.
     Assert(refCount >= 1);
@@ -630,7 +631,7 @@ CMilVisualCacheSet::AddCacheInternal(
 
     // Try to find an existing cache to re-use.  We can re-use a cache if the specified
     // cache mode is identical.
-    BrushCacheToken *pCacheToken = LookupCache(pCacheModeForLookup);
+    pCacheToken = LookupCache(pCacheModeForLookup);
     if (pCacheToken != NULL)
     {
         // Re-use the cache, increment use counter.
@@ -773,6 +774,7 @@ CMilVisualCacheSet::GetBitmapSource (
 
     // Our cache mode for lookup will either be the specified cache mode or the default cache.
     const CMilBitmapCacheDuce *pCacheModeForLookup = pCacheMode;
+    BrushCacheToken *pCacheToken;
     
     // If the caller doesn't specify a cache mode, return
     // the cache on this node if it exists, otherwise return
@@ -800,7 +802,7 @@ CMilVisualCacheSet::GetBitmapSource (
     }
 
     // Look-up the corresponding cache token.
-    BrushCacheToken *pCacheToken = LookupCache(pCacheModeForLookup);
+    pCacheToken = LookupCache(pCacheModeForLookup);
     if (pCacheToken != NULL)
     {
         IFC(pCacheToken->pCache->GetBitmapSource(
@@ -840,6 +842,7 @@ CMilVisualCacheSet::GetRenderTargetBitmap (
 
     // Our cache mode for lookup will either be the specified cache mode or the default cache.
     const CMilBitmapCacheDuce *pCacheModeForLookup = pCacheMode;
+    BrushCacheToken *pCacheToken;
     
     // If the caller doesn't specify a cache mode, return
     // the cache on this node if it exists, otherwise return
@@ -867,7 +870,7 @@ CMilVisualCacheSet::GetRenderTargetBitmap (
     }
 
     // Look-up the corresponding cache token.
-    BrushCacheToken *pCacheToken = LookupCache(pCacheModeForLookup);
+    pCacheToken = LookupCache(pCacheModeForLookup);
     if (pCacheToken != NULL)
     {
         IFC(pCacheToken->pCache->GetRenderTargetBitmap(
