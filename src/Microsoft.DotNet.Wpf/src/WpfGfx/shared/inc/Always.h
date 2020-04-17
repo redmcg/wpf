@@ -97,7 +97,7 @@ __declspec(deprecated) void   __cdecl free(void *);
 #endif // UNIX
 
 #include <w4warn.h>
-#include "AvalonDebugP.h"
+#include "avalondebugp.h"
 
 
 #ifdef _PREFIX_
