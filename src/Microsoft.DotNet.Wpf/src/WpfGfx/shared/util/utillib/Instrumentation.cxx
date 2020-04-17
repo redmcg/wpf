@@ -10,7 +10,7 @@
 //  Contents:  Implementation of MIL instrumentation functions
 //
 //------------------------------------------------------------------------
-#include "Pch.h"
+#include "pch.h"
 
 //
 // Captured stack failures
