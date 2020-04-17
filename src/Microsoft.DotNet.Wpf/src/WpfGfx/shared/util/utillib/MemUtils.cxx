@@ -753,13 +753,13 @@ operator new[](size_t cbSize)
 }
 
 void  __cdecl
-operator delete(void * pv)
+operator delete(void * pv) noexcept
 {
     WPFFree(ProcessHeap, pv);
 }
 
 void  __cdecl
-operator delete[](void * pv)
+operator delete[](void * pv) noexcept
 {
     WPFFree(ProcessHeap, pv);
 }
