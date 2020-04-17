@@ -682,6 +682,8 @@ CMilVisualCache::GetRenderTargetBitmap (
     
     IRenderTargetInternal *pBaseIRT = NULL;
     DynArray<bool> arrActiveDisplays;
+    UINT cDisplays;
+    bool fNeedsDisplayUpdate = false;
     
     // If we are rendering in hardware anywhere, we choose to render caches only in hardware.  
     // This means that in some scenarios (a VisualBrush in a software HWnd, certain cases of 
@@ -699,11 +701,10 @@ CMilVisualCache::GetRenderTargetBitmap (
     IFC(EnsureDisplaySet());
 
     // Get target display(s) from the destination RT.
-    UINT cDisplays = m_pDisplaySet->GetDisplayCount();
+    cDisplays = m_pDisplaySet->GetDisplayCount();
     IFC(arrActiveDisplays.AddAndSet(cDisplays, false));
     IFC(pDestRT->ReadEnabledDisplays(&arrActiveDisplays));
 
-    bool fNeedsDisplayUpdate = false;
     for (UINT i = 0; i < cDisplays; i++)
     {
         // If we need to render to a display we haven't created a backing texture for, 
