@@ -20,6 +20,10 @@ Environment:
 
 --*/
 
+#include <uce/handletable.h>
+#include <uce/cmdbatch.h>
+#include <uce/serverchannel.h>
+#include <uce/htslave.h>
 #include <uce/resslave.h>
 #include <uce/glyphcacheslave.h>    // Should be in resources directory
 #include <uce/graphwalker.h>
