@@ -184,14 +184,14 @@ CGraphWalker::GotoSibling(__deref_out IGraphNode** ppSibling)
     if ((m_pCurrentParent != NULL) && // Make sure that we are not at the root.
         
         // Check that there is another sibling to the right.
-        ((m_walkDirection == RightDirection) &&                               
-         (m_currentChildIndex < UINT_MAX) &&                                   
-         (m_currentChildIndex + 1 < m_pCurrentParent->GetChildrenCount()) ||  
+        (((m_walkDirection == RightDirection) &&                               
+          (m_currentChildIndex < UINT_MAX) &&                                   
+          (m_currentChildIndex + 1 < m_pCurrentParent->GetChildrenCount())) ||  
 
         // Check that there is another sibling to the left.
-         (m_walkDirection == LeftDirection) &&                                 
-         (m_currentChildIndex > 0)
-         )
+         ((m_walkDirection == LeftDirection) &&                                 
+          (m_currentChildIndex > 0)
+         ))
          )
     {
         //
