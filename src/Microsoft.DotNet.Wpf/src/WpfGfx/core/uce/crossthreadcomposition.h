@@ -108,12 +108,6 @@ private:
     // This is the list of the most recently flushed batches.
     PSLIST_ENTRY m_activeBatches;
 
-    UINT     m_lastNotifiedSysmemUsagePercent;
-
-    UTC_TIME m_timeMemoryUsageLastChecked;
-
-    UTC_TIME m_timeVideoMemoryUsageLastChecked;
-
 
     //+-------------------------------------------------------------------------
     //
