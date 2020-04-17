@@ -53,6 +53,8 @@ GetGraphicsStreamClient(
     )
 {
     HRESULT hr = S_OK;
+    PFNDWMGETGRAPHICSSTREAMCLIENT pfnGetGraphicsStreamClient = NULL;
+    
 
     //
     // Don't break on E_INVALIDARG -- this error code is used to report that
@@ -80,8 +82,6 @@ GetGraphicsStreamClient(
     //
     
     IFC(DWMAPI::Load());
-    
-    PFNDWMGETGRAPHICSSTREAMCLIENT pfnGetGraphicsStreamClient = NULL;
     
     IFCW32(pfnGetGraphicsStreamClient = 
            reinterpret_cast<PFNDWMGETGRAPHICSSTREAMCLIENT>(
