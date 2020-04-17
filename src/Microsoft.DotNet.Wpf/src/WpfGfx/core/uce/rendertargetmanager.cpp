@@ -594,6 +594,7 @@ CRenderTargetManager::Present(
     HRESULT hr = S_OK;
 
     bool fGPUThrottlingEnabled = false;
+    UINT cTargets;
 
     //
     // We need to call this every time we present because we could
@@ -632,7 +633,7 @@ CRenderTargetManager::Present(
     //
     m_iRefreshRateLastFrame = *puiRefreshRate;
 
-    UINT cTargets = m_rgpTarget.GetCount();
+    cTargets = m_rgpTarget.GetCount();
 
     for (UINT i = 0; i < cTargets; i++)
     {
