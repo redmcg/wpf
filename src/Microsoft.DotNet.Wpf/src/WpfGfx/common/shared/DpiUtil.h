@@ -30,6 +30,9 @@ DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
 #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 ((DPI_AWARENESS_CONTEXT)-4)
 #endif
 
+// Wine Mono hack: clang doesn't like having this defined in multiple compilation units
+#define user32_dll "user32.dll"
+
 namespace wpf
 {
     namespace util
@@ -45,7 +48,7 @@ namespace wpf
             using LoadLibraryFlags = wpf::util::DynamicCall::LoadLibraryFlags;
             using DynCall = wpf::util::DynamicCall::DynCall;
 
-            static const char* user32_dll;
+            //static const char* user32_dll;
 
         public:
             /// <summary>
@@ -218,8 +221,9 @@ namespace wpf
             }
         };
 
-		template <>
-        const char* DpiUtilT<void>::user32_dll = "user32.dll";
+#undef user32_dll
+		// template <>
+        // const char* DpiUtilT<void>::user32_dll = "user32.dll";
         typedef DpiUtilT<void> DpiUtil;
 
         /// <summary>
