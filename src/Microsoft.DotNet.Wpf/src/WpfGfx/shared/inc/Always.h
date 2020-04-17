@@ -43,7 +43,9 @@
 //
 // Make HRESULT_FROM_WIN32 an inline method rather than a macro
 //
+#ifndef __GNUC__
 #define INLINE_HRESULT_FROM_WIN32
+#endif
 
 // Windows include
 #include <w4warn.h>
