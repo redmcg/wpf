@@ -84,10 +84,10 @@ CSlaveHWndRenderTarget::Render(
     )
 {
     HRESULT hr = S_OK;
+    CDrawingContext *pDrawingContext = NULL;
 
     IFC(EnsureRenderTargetInternal());
 
-    CDrawingContext *pDrawingContext = NULL;
     IFC(GetDrawingContext(&pDrawingContext));
     
     if (m_pRenderTarget
