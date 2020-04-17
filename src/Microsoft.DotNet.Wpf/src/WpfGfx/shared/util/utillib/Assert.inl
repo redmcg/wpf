@@ -517,7 +517,7 @@ AssertW(
     }
 #endif DBG
 
-    PSTR szKDPrompt = 
+    PCSTR szKDPrompt = 
 #if DBG
         fCanDisable ?
         "Break, Go (continue), Ignore all, terminate Process, or terminate Thread (bgipt)? " :
