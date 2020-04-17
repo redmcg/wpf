@@ -14,6 +14,10 @@
 
 #include "precomp.hpp"
 
+#ifndef DWM_E_COMPOSITIONDISABLED
+#define DWM_E_COMPOSITIONDISABLED 0x80263001
+#endif
+
 MtDefine(CRenderTargetManager, MILRender, "CRenderTargetManager");
 
 //+-----------------------------------------------------------------------------
