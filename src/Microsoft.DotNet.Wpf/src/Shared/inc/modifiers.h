@@ -32,6 +32,7 @@
 #define __deref_out_xcount(x)
 #define __deref_out_xcount_full(x)
 #define __deref_out_xcount_opt(x)
+#define __drv_formatString(x)
 #define __drv_functionClass(x)
 #define __drv_sameIRQL
 #define __ecount_opt(x)
