@@ -224,7 +224,8 @@ retry:
 
     ReleaseStubs();
 
-    CD3DGlyphTank* pTankReuse = NULL;
+    CD3DGlyphTank* pTankReuse;
+    pTankReuse = NULL;
 
     if (CountTanks() == MAX_TANK_NUM)
     {
@@ -332,18 +333,21 @@ HRESULT CD3DGlyphBank::RectFillAlpha(
 
     IFC( EnsureTempSurface(uWidth, uHeight, &pTempSurface) );
 
-    int srcPitch = fullDataRect.right - fullDataRect.left;
+    int srcPitch;
+    srcPitch = fullDataRect.right - fullDataRect.left;
 
     IFC(pTempSurface->LockRect(&lockedRect, &rcTemp, 0 ) );
 
-    BYTE *pDst00 = (BYTE*)lockedRect.pBits
+    BYTE *pDst00;
+    pDst00 = (BYTE*)lockedRect.pBits
                  - lockedRect.Pitch*srcRect.top
                  - srcRect.left;
 
     // pDst00 points to the texel in destination that corresponds
     // to point (x,y) = (0,0) in source array
 
-    const BYTE *pSrc00 = pSrcData
+    const BYTE *pSrc00;
+    pSrc00 = pSrcData
                         - srcPitch*fullDataRect.top
                         - fullDataRect.left;
     // pSrc00 points to (x,y) = (0,0) in given data array
@@ -357,9 +361,10 @@ HRESULT CD3DGlyphBank::RectFillAlpha(
     }
 
     // fill real data and side edges
-    int ymax = min(fullDataRect.bottom, srcRect.bottom);
-    int xmin = max(fullDataRect.left,   srcRect.left  );
-    int xmax = min(fullDataRect.right,  srcRect.right );
+	int ymax, xmin, xmax;
+    ymax = min(fullDataRect.bottom, srcRect.bottom);
+    xmin = max(fullDataRect.left,   srcRect.left  );
+    xmax = min(fullDataRect.right,  srcRect.right );
     if (xmax > xmin)
     {
         for (; y < ymax; y++)
