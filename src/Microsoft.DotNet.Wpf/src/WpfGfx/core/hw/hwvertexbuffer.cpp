@@ -100,6 +100,9 @@ ExternTag(tagWireframe);
 const float c_rMinWaffleWidthPixels = 0.25f;
 
 
+const DWORD FLOAT_ZERO = 0x00000000;
+const DWORD FLOAT_ONE  = 0x3f800000;
+
 //+----------------------------------------------------------------------------
 //
 //  Class:     CHwVertexBuffer and CHwTVertexBuffer<class TVertex>
@@ -2673,9 +2676,6 @@ CHwTVertexBuffer<TVertex>::Builder::FlushInternal(
 //             directly, but rather through a wrapper method like
 //             ExpandVerticesGeneral and ExpandVerticesFast.
 //
-
-const DWORD FLOAT_ZERO = 0x00000000;
-const DWORD FLOAT_ONE  = 0x3f800000;
 
 template <class TVertex>
 MIL_FORCEINLINE
