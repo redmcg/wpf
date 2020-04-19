@@ -226,12 +226,14 @@ CHwShader::FixedFunctionDrawMesh3D(
     // Note: no copy is done here (pdwColors is const)
     //
     const DWORD *pdwColors;
-    size_t cbColors = 0;
+    size_t cbColors;
+    cbColors = 0;
 
     // For Diffuse/Specular vertex colors should be precomputed by lighting.
     // For Emissive we initialize this to the Emissive material color.
     // This default value should never affect rendering.
-    DWORD dwDefaultColor = 0xFFFFFFFF;
+    DWORD dwDefaultColor;
+    dwDefaultColor = 0xFFFFFFFF;
     
     switch(GetRequiredLightingValues())
     {
