@@ -84,23 +84,25 @@ CD3DSwapChainWithSwDC::Init(
     )
 {
     HRESULT hr = S_OK;
+    D3DSURFACE_DESC const *surfDesc;
+    MilPixelFormat::Enum milFormat;
 
     // The base class must be initialized first
     IFC(CD3DSwapChain::Init(pResourceManager));
 
     Assert(m_cBackBuffers >= 1);
-    D3DSURFACE_DESC const &surfDesc = m_rgBackBuffers[0]->Desc();
+    surfDesc = &m_rgBackBuffers[0]->Desc();
 
     // We don't handle anything else yet
-    Assert(   surfDesc.Format == D3DFMT_A8R8G8B8
-           || surfDesc.Format == D3DFMT_X8R8G8B8
+    Assert(   surfDesc->Format == D3DFMT_A8R8G8B8
+           || surfDesc->Format == D3DFMT_X8R8G8B8
           );
 
     BITMAPINFO bmi;
 
     bmi.bmiHeader.biSize = sizeof(bmi);
-    bmi.bmiHeader.biWidth = surfDesc.Width;
-    bmi.bmiHeader.biHeight = -INT(surfDesc.Height);
+    bmi.bmiHeader.biWidth = surfDesc->Width;
+    bmi.bmiHeader.biHeight = -INT(surfDesc->Height);
     bmi.bmiHeader.biPlanes = 1;
     bmi.bmiHeader.biBitCount = 32;
     bmi.bmiHeader.biCompression = BI_RGB;
@@ -119,15 +121,15 @@ CD3DSwapChainWithSwDC::Init(
         0
         ));
 
-    MilPixelFormat::Enum milFormat = D3DFormatToPixelFormat(surfDesc.Format, TRUE);
+    milFormat = D3DFormatToPixelFormat(surfDesc->Format, TRUE);
 
-    IFC(HrCalcDWordAlignedScanlineStride(surfDesc.Width, milFormat, OUT m_stride));
+    IFC(HrCalcDWordAlignedScanlineStride(surfDesc->Width, milFormat, OUT m_stride));
 
     IFC(HrGetRequiredBufferSize(
         milFormat,
         m_stride,
-        surfDesc.Width,
-        surfDesc.Height,
+        surfDesc->Width,
+        surfDesc->Height,
         &m_cbBuffer));
 
     IFCW32(SelectObject(
