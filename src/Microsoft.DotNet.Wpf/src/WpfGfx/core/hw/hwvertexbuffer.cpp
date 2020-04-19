@@ -260,7 +260,8 @@ CHwTVertexBuffer<TVertex>::AddTriListVertices(
     {
         IFC(WGXERR_INVALIDPARAMETER);
     }
-    UINT newCount = uDelta + uCount;
+    UINT newCount;
+    newCount = uDelta + uCount;
 
     if (newCount > SHRT_MAX)
     {
@@ -1557,8 +1558,10 @@ CHwTVertexBuffer<TVertex>::Builder::AddComplexScan(
                   static_cast<float>(nPixelY+1),
                   false /* Not a trapezoid. */ ));
 
-    float rPixelY = float(nPixelY) + 0.5f;
+    float rPixelY;
+    rPixelY = float(nPixelY) + 0.5f;
 
+{
     LineWaffler<PointXYA> wafflers[NUM_OF_VERTEX_TEXTURE_COORDS(TVertex) * 2];
 
     // Use sink for waffling & the first line fix up (aka the complicated cases.)
@@ -1698,6 +1701,7 @@ CHwTVertexBuffer<TVertex>::Builder::AddComplexScan(
 
         pIntervalSpanStart = pIntervalSpanStart->m_pNext;
     }
+}
 
 Cleanup:
     RRETURN(hr);
@@ -2053,9 +2057,11 @@ CHwTVertexBuffer<TVertex>::Builder::AddTrapezoidStandard(
     // Add the vertices
     //
 
-    UINT cVertices = 8;
-    bool fNeedOutsideGeometry = NeedOutsideGeometry();
-    bool fNeedInsideGeometry = NeedInsideGeometry();
+	UINT cVertices;
+	bool fNeedOutsideGeometry, fNeedInsideGeometry;
+    cVertices = 8;
+    fNeedOutsideGeometry = NeedOutsideGeometry();
+    fNeedInsideGeometry = NeedInsideGeometry();
 
     if (!fNeedOutsideGeometry)
     {
