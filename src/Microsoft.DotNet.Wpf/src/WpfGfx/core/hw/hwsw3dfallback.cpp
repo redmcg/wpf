@@ -91,6 +91,13 @@ CHw3DSoftwareSurface::Create(
     *ppHw3DFallbackRT = NULL;
 
     CD3DDeviceLevel1 *pD3DDevice = NULL;
+    D3DFORMAT d3dfmtTarget;
+
+    //
+    // Only two formats are supported by copy optimization: 32bpp BGR and PBGRA
+    //
+    bool const fComposeWithCopy = (   fmtTarget == MilPixelFormat::BGR32bpp
+                                   || fmtTarget == MilPixelFormat::PBGRA32bpp);
 
     //
     // Grab the D3DDeviceManager and then get an RGBRast Device
@@ -100,12 +107,6 @@ CHw3DSoftwareSurface::Create(
 
     IFC(pD3DDeviceManager->GetSWDevice(&pD3DDevice));
 
-    //
-    // Only two formats are supported by copy optimization: 32bpp BGR and PBGRA
-    //
-    bool const fComposeWithCopy = (   fmtTarget == MilPixelFormat::BGR32bpp
-                                   || fmtTarget == MilPixelFormat::PBGRA32bpp);
-
     if (!fComposeWithCopy)
     {
         // Select a format that we can source over blend with
@@ -113,7 +114,7 @@ CHw3DSoftwareSurface::Create(
     }
 
     // Make sure device is capable of using this target format
-    D3DFORMAT d3dfmtTarget = PixelFormatToD3DFormat(fmtTarget);
+    d3dfmtTarget = PixelFormatToD3DFormat(fmtTarget);
     IFC(pD3DDevice->CheckRenderTargetFormat(d3dfmtTarget));
 
     pHw3DFallback = new CHw3DSoftwareSurface(
