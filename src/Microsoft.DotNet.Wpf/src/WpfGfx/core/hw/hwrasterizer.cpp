@@ -502,6 +502,10 @@ CHwRasterizer::RasterizePath(
 
     INT nPixelYClipBottom = m_rcClipBounds.Y + m_rcClipBounds.Height;
 
+    UINT nTotalCount;
+    INT nSubpixelYCurrent;
+    INT nSubpixelYBottom;
+
     // Scale the clip bounds rectangle by 16 to account for our
     // scaling to 28.4 coordinates:
 
@@ -540,7 +544,7 @@ CHwRasterizer::RasterizePath(
         goto Cleanup;
     }
 
-    UINT nTotalCount = edgeStore.StartEnumeration();
+    nTotalCount = edgeStore.StartEnumeration();
     if (nTotalCount == 0)
     {
         hr = S_OK;     // We're outta here (empty path or entirely clipped)
@@ -567,14 +571,14 @@ CHwRasterizer::RasterizePath(
 
     // Initialize and sort the inactive array:
 
-    INT nSubpixelYCurrent = InitializeInactiveArray(
+    nSubpixelYCurrent = InitializeInactiveArray(
         &edgeStore,
         pInactiveArray,
         nTotalCount,
         &edgeTail
         );
 
-    INT nSubpixelYBottom = edgeContext.MaxY;
+    nSubpixelYBottom = edgeContext.MaxY;
 
     Assert(nSubpixelYBottom > 0);
 
