@@ -364,6 +364,7 @@ CHwSoftwareFallback::FillPath(
     // For 2D rendering, local rendering and world sampling spaces are identical
     //
 
+{
     const CMatrix<CoordinateSpace::BaseSampling,CoordinateSpace::Device> &
         matBaseSamplingToDevice =
         ReinterpretLocalRenderingAsBaseSampling(pContextState->WorldToDevice);
@@ -429,6 +430,7 @@ CHwSoftwareFallback::FillPath(
         //
         IFC(DrawCurrentTile());
     }
+}
 
 Cleanup:
     RRETURN(hr);
