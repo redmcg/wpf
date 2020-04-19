@@ -165,6 +165,7 @@ CHwRadialGradientColorSource::SendShaderData(
         pShader
         ));
 
+{
     const CMILBrushRadialGradient *pRadialGradientBrushNoRef =
         DYNCAST(const CMILBrushRadialGradient, this->GetGradientBrushNoRef());
     Assert(pRadialGradientBrushNoRef);
@@ -250,6 +251,7 @@ CHwRadialGradientColorSource::SendShaderData(
             gradInfo.flHalfTexelSizeNormalized
             ));
     }
+}
 
 Cleanup:
     RRETURN(hr);
