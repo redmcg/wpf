@@ -94,6 +94,8 @@ CHwLinearGradientColorSource::SetBrushAndContext(
 
     D3DTEXTUREADDRESS taU;
 
+    CoordinateSpaceId::Enum SourceCoordSpace;
+
     //
     // This brush is not referenced- we expect its lifetime to be
     // longer than it's use here the linear gradient color source.
@@ -135,8 +137,7 @@ CHwLinearGradientColorSource::SetBrushAndContext(
         );
 
     // Calculate XSpaceToTexture
-    const CoordinateSpaceId::Enum SourceCoordSpace =
-        pContextState->GetSamplingSourceCoordSpace();
+    SourceCoordSpace = pContextState->GetSamplingSourceCoordSpace();
     if (SourceCoordSpace == CoordinateSpaceId::Device)
     {
         matXSpaceToTexture = matSampleSpaceToTexture;
