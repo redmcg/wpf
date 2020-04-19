@@ -158,6 +158,7 @@ CDeviceBitmap::Lock(
     Assert(rcLock.top >= 0);
     Assert(!rcLock.IsEmpty());
 
+{
     CMilRectU const &rcLockU = reinterpret_cast<CMilRectU &>(rcLock);
 
     IFC(EnsureUpdatedSysMemBuffer(rcLockU));
@@ -179,6 +180,7 @@ CDeviceBitmap::Lock(
         dwFlags,
         ppILock
         ));
+}
 
 Cleanup:
     RRETURN(hr);
