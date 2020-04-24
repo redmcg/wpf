@@ -515,11 +515,11 @@ CD3DGlyphRunPainter::TDrawRectangle()
 
     TVertex* vertices = NULL;
 
-    TVertex::buffer *pBuffer;
+    typename TVertex::buffer *pBuffer;
     IFC(m_pDevice->StartPrimitive(&pBuffer));
     IFC(pBuffer->GetNewVertices(
         4,
-        (TVertex::base **)&vertices
+        (typename TVertex::base **)&vertices
         ));
 
     vertices[0].Set(m_xMin, m_yMin, &m_data);
