@@ -112,8 +112,6 @@ private:
 
     TChain<CD3DSubGlyph> m_subglyphs;
 
-    UINT64 m_uCacheSignature;
-
 };
 
 #define DX9_SUBGLYPH_OVERLAP_X 3
