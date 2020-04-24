@@ -315,7 +315,8 @@ CD3DSurface::ReadIntoSysMemBuffer(
 
     Assert(Device().IsInAUseContext());
 
-    D3DFORMAT d3dfmtOut = PixelFormatToD3DFormat(fmtOut);
+    D3DFORMAT d3dfmtOut;
+    d3dfmtOut = PixelFormatToD3DFormat(fmtOut);
 
     if ((m_d3dsd.Pool == D3DPOOL_MANAGED) || (m_d3dsd.Pool == D3DPOOL_SYSTEMMEM))
     {
