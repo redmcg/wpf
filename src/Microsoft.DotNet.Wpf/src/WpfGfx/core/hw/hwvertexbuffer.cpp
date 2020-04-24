@@ -2708,7 +2708,17 @@ CHwTVertexBuffer<TVertex>::Builder::TransferAndOrExpandVerticesInline(
     // Create a reference to the pointer that will be used for input vertices.
     // A reference is used make the compiler only track a single pointer
     // through this routine in the pIn == pOut case as an optimization.
+#ifdef __GNUC__
+	// The code below is rejected by clang because it's technically unsafe.
+	// One could assign a const* to pInputVertex, then use pOutputVertex
+	// to write to that pointer. Clang correctly understands that the
+	// resulting pointer reference must also be const.
+	//
+	// So, the best I can come up with is to alias pInputVertex_ in all cases.
+	TVertex const * &pInputVertex = pInputVertex_;
+#else
     TVertex const * &pInputVertex = *(fInputOutputAreSameBuffer ? &pOutputVertex : &pInputVertex_);
+#endif
 
     //
     // Set the diffuse color and components we need for fast blending
@@ -3025,7 +3035,9 @@ CHwTVertexBuffer<TVertex>::Builder::TransferAndOrExpandVerticesInline(
 
         // When buffers are the same pOutputVertex just refers to pInputVertex,
         // so advancing both would be a mistake for that case.
+#ifndef __GNUC__
         if (!fInputOutputAreSameBuffer)
+#endif
         {
             pOutputVertex++;
         }
