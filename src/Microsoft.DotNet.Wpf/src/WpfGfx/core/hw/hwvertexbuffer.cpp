@@ -633,7 +633,7 @@ CHwTVertexMappings<TVertex>::SetTextureMapping(
     Assert(!(m_mvfMapped & mvfLocation));
 
     // Only mappings using matrix transforms from the position is supported
-    if (dwSourceCoordIndex != DWORD_MAX) IFC(E_NOTIMPL);
+    if (dwSourceCoordIndex != MAXDWORD) IFC(E_NOTIMPL);
     if (!pmatDevicePointToTextureUV) IFC(E_NOTIMPL);
 
     m_rgmatPointToUV[dwDestinationCoordIndex] = *pmatDevicePointToTextureUV;
