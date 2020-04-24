@@ -309,7 +309,8 @@ HRESULT CHwSurfaceRenderTargetSharedData::GetCachedBrush(
         goto Cleanup;
     }
 
-    CMILBrushGradient *pBrushGradientNoRef = DYNCAST(CMILBrushGradient, pBrush);
+    CMILBrushGradient *pBrushGradientNoRef;
+    pBrushGradientNoRef = DYNCAST(CMILBrushGradient, pBrush);
     Assert(pBrushGradientNoRef);
 
     //
@@ -323,7 +324,8 @@ HRESULT CHwSurfaceRenderTargetSharedData::GetCachedBrush(
         goto Cleanup;
     }
 
-    IMILCacheableResource *pICachedResource = NULL;
+    IMILCacheableResource *pICachedResource;
+    pICachedResource = NULL;
 
     IFC(pBrushGradientNoRef->GetResource(
         m_uCacheIndex,
