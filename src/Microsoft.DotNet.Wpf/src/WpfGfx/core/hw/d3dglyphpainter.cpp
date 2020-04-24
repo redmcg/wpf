@@ -96,7 +96,8 @@ CD3DGlyphRunPainter::Paint(
         goto Cleanup;
     }
 
-    bool fClearType = (m_recommendedBlendMode == ClearType) && fTargetSupportsClearType;
+    bool fClearType;
+    fClearType = (m_recommendedBlendMode == ClearType) && fTargetSupportsClearType;
 
     // Rendering preparation:
     // Choose rendering branch (set m_pfnDrawRectangle)
