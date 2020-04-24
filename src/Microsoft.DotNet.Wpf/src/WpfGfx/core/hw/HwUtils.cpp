@@ -193,6 +193,7 @@ ReadRenderTargetIntoSysMemBuffer(
         IFC(E_INVALIDARG);
     }
 
+{
     const D3DFORMAT d3dfmtOut = PixelFormatToD3DFormat(fmtOut);
     if (d3dsd.Format != d3dfmtOut)
     {
@@ -323,6 +324,7 @@ ReadRenderTargetIntoSysMemBuffer(
 
         IGNORE_HR(pD3DLockableSurface->UnlockRect());
     }
+}
 
 Cleanup:
     ReleaseInterface(pD3DLockableTexture);
