@@ -26,8 +26,8 @@
 // NOTE: This MUST be in the same order as the StockShader enum definition 
 //       in shaderutils.h or there will be a mismatch on load
 WCHAR const *g_rgstrStockShaderNames[] = {
-    _T("SS_RadialGradientCenteredShader2D"),
-    _T("SS_RadialGradientNonCenteredShader2D"),
+    L"SS_RadialGradientCenteredShader2D",
+    L"SS_RadialGradientNonCenteredShader2D",
     };
 
 //+-----------------------------------------------------------------------------
