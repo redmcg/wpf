@@ -705,6 +705,7 @@ CHwDeviceBitmapColorSource::UpdateSurfaceSharedHandle(
     
     IFC(pISrcSurface->GetDevice(&pID3DSrcDevice));
 
+{
     const D3DSURFACE_DESC &desc = m_pVidMemOnlyTexture->D3DSurface0Desc();
 
     IFC(pID3DSrcDevice->CreateTexture(
@@ -740,6 +741,7 @@ CHwDeviceBitmapColorSource::UpdateSurfaceSharedHandle(
     // of the shared surface, the flush won't happen because D3D doesn't
     // have cross-device object dependency tracking.
     IFC(Flush(pID3DSrcDevice, pIDestSurface, desc));
+}
 
 Cleanup:
     ReleaseInterface(pIDestSurface);
