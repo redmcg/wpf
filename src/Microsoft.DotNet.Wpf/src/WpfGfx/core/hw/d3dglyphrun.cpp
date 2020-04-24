@@ -63,10 +63,12 @@ CD3DSubGlyph::ValidateAlphaMap(CD3DGlyphRunPainter* pPainter)
 
     IFC(pPainter->EnsureAlphaMap());
 
-    int wid = m_rcFiltered.right - m_rcFiltered.left;
-    int hei = m_rcFiltered.bottom - m_rcFiltered.top;
+    int wid, hei;
+    wid = m_rcFiltered.right - m_rcFiltered.left;
+    hei = m_rcFiltered.bottom - m_rcFiltered.top;
 
-    const CD3DGlyphRun* pRun = pPainter->GetGlyphRun();
+    const CD3DGlyphRun* pRun;
+    pRun = pPainter->GetGlyphRun();
     Assert(pRun);
 
     POINT tankLocation;
