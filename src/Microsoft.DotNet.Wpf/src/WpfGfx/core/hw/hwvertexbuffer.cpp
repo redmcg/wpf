@@ -399,6 +399,47 @@ Cleanup:
 
 //+----------------------------------------------------------------------------
 //
+//  Member:    CHwTVertexBuffer<TVertex>::Builder::GetOutVertexFormat
+//
+//  Synopsis:  Return MIL vertex format covered by specific builders
+//
+//-----------------------------------------------------------------------------
+
+template <>
+MilVertexFormat
+CHwTVertexBuffer<CD3DVertexXYZDUV2>::Builder::GetOutVertexFormat()
+{
+    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV2);
+}
+
+template <>
+MilVertexFormat
+CHwTVertexBuffer<CD3DVertexXYZDUV8>::Builder::GetOutVertexFormat()
+{
+    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV8);
+}
+
+template <>
+MilVertexFormat
+CHwTVertexBuffer<CD3DVertexXYZDUV6>::Builder::GetOutVertexFormat()
+{
+    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV6);
+}
+
+template <>
+MilVertexFormat
+CHwTVertexBuffer<CD3DVertexXYZNDSUV4>::Builder::GetOutVertexFormat()
+{
+    return (MILVFAttrXYZ |
+            MILVFAttrNormal |
+            MILVFAttrDiffuse |
+            MILVFAttrSpecular |
+            MILVFAttrUV4);
+}
+
+
+//+----------------------------------------------------------------------------
+//
 //  Member:    CHwVertexBuffer::Builder::Create
 //
 //  Synopsis:  Choose the appropriate final vertex format and instantiate the
@@ -759,47 +800,6 @@ CHwTVertexBuffer<TVertex>::Builder::sc_pfnExpandVerticesTable[8*2] =
 #endif // !_PREFIX_
 
 };
-
-
-//+----------------------------------------------------------------------------
-//
-//  Member:    CHwTVertexBuffer<TVertex>::Builder::GetOutVertexFormat
-//
-//  Synopsis:  Return MIL vertex format covered by specific builders
-//
-//-----------------------------------------------------------------------------
-
-template <>
-MilVertexFormat
-CHwTVertexBuffer<CD3DVertexXYZDUV2>::Builder::GetOutVertexFormat()
-{
-    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV2);
-}
-
-template <>
-MilVertexFormat
-CHwTVertexBuffer<CD3DVertexXYZDUV8>::Builder::GetOutVertexFormat()
-{
-    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV8);
-}
-
-template <>
-MilVertexFormat
-CHwTVertexBuffer<CD3DVertexXYZDUV6>::Builder::GetOutVertexFormat()
-{
-    return (MILVFAttrXYZ | MILVFAttrDiffuse | MILVFAttrUV6);
-}
-
-template <>
-MilVertexFormat
-CHwTVertexBuffer<CD3DVertexXYZNDSUV4>::Builder::GetOutVertexFormat()
-{
-    return (MILVFAttrXYZ |
-            MILVFAttrNormal |
-            MILVFAttrDiffuse |
-            MILVFAttrSpecular |
-            MILVFAttrUV4);
-}
 
 
 //+----------------------------------------------------------------------------
