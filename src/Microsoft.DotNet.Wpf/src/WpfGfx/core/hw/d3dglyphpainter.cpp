@@ -257,10 +257,10 @@ CD3DGlyphRunPainter::IsSubglyphClippedOut(MilPointAndSizeL const* prcClip) const
         bot = float(prcClip->Y + prcClip->Height);
 
     return
-        x0 > rig && x1 > rig && x2 > rig && x3 > rig ||
-        x0 < lef && x1 < lef && x2 < lef && x3 < lef ||
-        y0 > bot && y1 > bot && y2 > bot && y3 > bot ||
-        y0 < top && y1 < top && y2 < top && y3 < top;
+        (x0 > rig && x1 > rig && x2 > rig && x3 > rig) ||
+        (x0 < lef && x1 < lef && x2 < lef && x3 < lef) ||
+        (y0 > bot && y1 > bot && y2 > bot && y3 > bot) ||
+        (y0 < top && y1 < top && y2 < top && y3 < top);
 }
 
 //+-----------------------------------------------------------------------------
