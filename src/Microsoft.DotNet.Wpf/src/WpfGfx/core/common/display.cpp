@@ -87,7 +87,7 @@ bool IsMultiAdapterCodeEnabled()
             HKEY hKey = NULL;
             LONG r = RegOpenKeyEx(
                 HKEY_CURRENT_USER,
-                _T("Software\\Microsoft\\Avalon.Graphics\\MultiAdapterSupport"),
+                L"Software\\Microsoft\\Avalon.Graphics\\MultiAdapterSupport",
                 0,
                 KEY_QUERY_VALUE,
                 &hKey
@@ -109,7 +109,7 @@ bool IsMultiAdapterCodeEnabled()
             {
                 r = RegOpenKeyEx(
                     HKEY_LOCAL_MACHINE,
-                    _T("Software\\Microsoft\\Avalon.Graphics\\MultiAdapterSupport"),
+                    L"Software\\Microsoft\\Avalon.Graphics\\MultiAdapterSupport",
                     0,
                     KEY_QUERY_VALUE,
                     &hKey
@@ -157,7 +157,7 @@ CDisplayRegKey::CDisplayRegKey(
 
     LONG r = RegOpenKeyEx(
         hKeyRoot,
-        _T("Software\\Microsoft\\Avalon.Graphics"),
+        L"Software\\Microsoft\\Avalon.Graphics",
         0,
         KEY_QUERY_VALUE,
         &hKeyAvalonGraphics
@@ -2051,9 +2051,9 @@ void
 CDisplaySet::ReadRequiredVideoDriverDate(
     )
 {
-    CDisplayRegKey regkey(HKEY_CURRENT_USER, _T(""));
+    CDisplayRegKey regkey(HKEY_CURRENT_USER, L"");
     TCHAR str[11]; // "YYYY/MM/DD"
-    if (regkey.ReadString(_T("RequiredVideoDriverDate"), sizeof(str), str))
+    if (regkey.ReadString(L"RequiredVideoDriverDate", sizeof(str), str))
     {
         UINT64 binaryTime;
         SYSTEMTIME  time;
@@ -2353,7 +2353,7 @@ CDisplay::CDisplay(
         //
         // Attempt to read true memory size out of registry
         //
-        keyDev.ReadUINT(_T("HardwareInformation.MemorySize"), &m_uMemorySize);
+        keyDev.ReadUINT(L"HardwareInformation.MemorySize", &m_uMemorySize);
 
         //
         // The idea of reading the InstalledDisplayDrivers key and checking the
@@ -2362,7 +2362,7 @@ CDisplay::CDisplay(
         // and run the check after we've determined our driver model.
         //
         if (!keyDev.ReadString(
-                _T("InstalledDisplayDrivers"),
+                L"InstalledDisplayDrivers",
                 sizeof(m_szInstalledDisplayDrivers),
                 m_szInstalledDisplayDrivers))
         {
@@ -2795,7 +2795,7 @@ GetDriverDate(
 
     IFC(StringCchCat(rgPath,
                      ARRAY_SIZE(rgPath),
-                     _T("\\")));
+                     L"\\"));
 
     IFC(StringCchCat(rgPath,
                      ARRAY_SIZE(rgPath),
@@ -2803,7 +2803,7 @@ GetDriverDate(
 
     IFC(StringCchCat(rgPath,
                      ARRAY_SIZE(rgPath),
-                     _T(".dll")));
+                     L".dll"));
 
     hFind = FindFirstFile(rgPath, &findFileData);
     if (hFind == INVALID_HANDLE_VALUE)
