@@ -376,8 +376,9 @@ CD3DDeviceLevel1::Init(
         m_caps.MaxAnisotropy = 1;
     }
 
-    bool fSupportsMagAniso = ((m_caps.TextureFilterCaps & D3DPTFILTERCAPS_MAGFANISOTROPIC) != 0);
-    bool fSupportsMinAniso = ((m_caps.TextureFilterCaps & D3DPTFILTERCAPS_MINFANISOTROPIC) != 0);
+    bool fSupportsMagAniso, fSupportsMinAniso;
+    fSupportsMagAniso = ((m_caps.TextureFilterCaps & D3DPTFILTERCAPS_MAGFANISOTROPIC) != 0);
+    fSupportsMinAniso = ((m_caps.TextureFilterCaps & D3DPTFILTERCAPS_MINFANISOTROPIC) != 0);
 
     if (fSupportsMagAniso && fSupportsMinAniso)
     {
@@ -3214,8 +3215,9 @@ CD3DDeviceLevel1::Present(
     // Call EndScene
     //
 
-    bool fRestoreScene = m_fInScene;
-    bool fPresentProcessed = false;
+    bool fRestoreScene, fPresentProcessed;
+    fRestoreScene = m_fInScene;
+    fPresentProcessed = false;
 
     if (m_fInScene)
     {
