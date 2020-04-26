@@ -322,7 +322,8 @@ CInteropDeviceBitmap::Create(
         }
     }
 
-    FrontBufferUpdateMethod method = 
+    FrontBufferUpdateMethod method;
+    method = 
         CInteropDeviceBitmap::GetUpdateMethod(pID3DUserDevice, pID3DUserDeviceEx, pID3DUserSurface);
 
     //
@@ -844,7 +845,8 @@ CInteropDeviceBitmap::GetDisplayFromUserDevice(
     IFC(m_pIUserSurface->GetDevice(&pID3DUserDevice));
     IFC(pID3DUserDevice->GetDirect3D(&pID3DUserObject));
 
-    HMONITOR hMon = pID3DUserObject->GetAdapterMonitor(m_uAdapter);
+    HMONITOR hMon;
+    hMon = pID3DUserObject->GetAdapterMonitor(m_uAdapter);
 
     g_DisplayManager.GetCurrentDisplaySet(&pDisplaySet);
     UINT uDisplayIndex;
