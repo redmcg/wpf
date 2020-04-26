@@ -460,8 +460,9 @@ LineWaffler<T>::AddLine(
         IFC(E_FAIL);
     }
 
-    int cellNum0 = GpFloorSat(score0);
-    int cellNum1 = GpFloorSat(score1);
+	int cellNum0, cellNum1;
+    cellNum0 = GpFloorSat(score0);
+    cellNum1 = GpFloorSat(score1);
 
     Assert(cellNum1 >= cellNum0);
 
