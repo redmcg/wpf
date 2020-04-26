@@ -22,7 +22,7 @@ CDWriteFactory g_DWriteLoader;
 //      ctor
 //
 //------------------------------------------------------------------------------
-CDWriteFactory::CDWriteFactory() : m_pfnDWriteCreateFactory(NULL), m_hDWriteLibrary(NULL) 
+CDWriteFactory::CDWriteFactory() 
 {
 }
 
@@ -77,13 +77,6 @@ CDWriteFactory::Startup()
 void
 CDWriteFactory::Shutdown()
 {
-    if (m_hDWriteLibrary)
-    {
-        IGNORE_W32(0, FreeLibrary(m_hDWriteLibrary));
-        m_hDWriteLibrary = NULL;
-        m_pfnDWriteCreateFactory = NULL;
-    }
-
     m_csManagement.DeInit();
 }
 
@@ -105,22 +98,7 @@ CDWriteFactory::DWriteCreateFactory(
 {
     HRESULT hr = S_OK;
     
-    {
-        CGuard<CCriticalSection> oGuard(m_csManagement);
-
-        if (!m_hDWriteLibrary)
-        {
-            void *pfnDWriteCreateFactory = NULL;
-            
-            m_hDWriteLibrary = WPFUtils::LoadDWriteLibraryAndGetProcAddress(&pfnDWriteCreateFactory);
-            m_pfnDWriteCreateFactory = static_cast<DWRITECREATEFACTORY>(pfnDWriteCreateFactory);
-            
-            IFCNULL(m_hDWriteLibrary);
-            IFCNULL(m_pfnDWriteCreateFactory);   
-        }
-    }
-
-    IFC((*m_pfnDWriteCreateFactory)(factoryType, iid, factory));
+    IFC(::DWriteCreateFactory(factoryType, iid, factory));
     
 Cleanup:
     RRETURN(hr);

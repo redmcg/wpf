@@ -36,14 +36,6 @@ public:
         );
 
 private:
-    typedef HRESULT (WINAPI *DWRITECREATEFACTORY)(
-        DWRITE_FACTORY_TYPE factoryType,
-        REFIID iid,
-        IUnknown **factory
-        );
-    
-    DWRITECREATEFACTORY m_pfnDWriteCreateFactory;
-    HMODULE m_hDWriteLibrary;
     CCriticalSection m_csManagement;
 };
 
