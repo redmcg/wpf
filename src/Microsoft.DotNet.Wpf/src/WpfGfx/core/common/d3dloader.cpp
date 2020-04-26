@@ -735,7 +735,7 @@ CD3DModuleLoaderInternal::RegisterSoftwareDevice(
     // Register
     //
 
-    IFC(pID3D->RegisterSoftwareDevice(m_pfnSwRastD3D9GetSWInfo));
+    IFC(pID3D->RegisterSoftwareDevice((void*)m_pfnSwRastD3D9GetSWInfo));
 
 Cleanup:
 
