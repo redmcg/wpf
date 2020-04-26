@@ -23,7 +23,6 @@
 #include "precomp.hpp"
 
 
-const TierType kDefaultTier = MIL_TIER(0, 0);
 
 
 //+-----------------------------------------------------------------------------
