@@ -280,7 +280,7 @@ CD3DRegistryDatabase::InitializeDriversFromRegistry(
     dwDataSize = 4;
     if (RegQueryValueEx(
         hRegAvalonGraphics,
-        _T("DisableHWAcceleration"),
+        L"DisableHWAcceleration",
         NULL,
         &dwType,
         (LPBYTE)&dwDisableHWAccleration,
