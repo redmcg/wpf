@@ -263,7 +263,7 @@ HRESULT TriangleWaffler<T>::AddTriangle(
              
 #define EDGE(a,b,o)                                                     \
         T e##a##b##o;                                                   \
-        SplitEdge(s[##a],v##a,s[##b],v##b,static_cast<float>(i+o),e##a##b##o) \
+        SplitEdge(s[a],v##a,s[b],v##b,static_cast<float>(i+o),e##a##b##o) \
 
         switch (configuration)
         {
