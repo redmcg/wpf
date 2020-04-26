@@ -149,7 +149,7 @@ CHwTexturedColorSource::SendVertexMapping(
 
         IFC(pVertexBuilder->SetTextureMapping(
             dwCoordIndex,
-            DWORD_MAX,  // Invalid index
+            MAXDWORD,  // Invalid index
             &GetDevicePointToTextureUV()
             ));
     }
