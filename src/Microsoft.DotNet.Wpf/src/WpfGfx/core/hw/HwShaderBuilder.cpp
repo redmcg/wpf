@@ -740,7 +740,8 @@ CHwShaderPipelineBuilder::Mul_TextureInternal(
         eFunction
         ));
 
-    UINT uNumParams = 0;
+    UINT uNumParams;
+    uNumParams = 0;
 
     if (   eFunction != ShaderFunctions::MultiplyTexture_NoTransformFromTexCoord
         && eFunction != ShaderFunctions::MultiplyAlphaMask_NoTransformFromTexCoord)
