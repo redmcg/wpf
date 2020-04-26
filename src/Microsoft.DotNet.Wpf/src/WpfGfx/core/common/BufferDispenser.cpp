@@ -58,7 +58,8 @@ CBufferDispenser::CBufferDispenser(
 //
 
 __allocator __bcount(size) void *
-CBufferDispenser::Allocate(
+CBufferDispenser_Allocate(
+	CBufferDispenser *this_ptr,
     __in_range(1,SIZE_T_MAX)       size_t size,
     __in_range(1,(SIZE_T_MAX+1)/2) size_t alignment,
     PERFMETERTAG mt
@@ -77,24 +78,24 @@ CBufferDispenser::Allocate(
     // Fix up size and alignment if needed
     //
 
-    if (alignment > kMinBufferAllocationAlignment)
+    if (alignment > CBufferDispenser::kMinBufferAllocationAlignment)
     {
-        size += (alignment - kMinBufferAllocationAlignment);
+        size += (alignment - CBufferDispenser::kMinBufferAllocationAlignment);
         // Maximum add is (SIZE_T_MAX+1)/2, use SSIZE_T_MAX+1 to avoid C4307: '+' : integral constant overflow
-        C_ASSERT(SIZE_T(SSIZE_MAX)+1 + kOverheadPerBufferAllocation <= SIZE_MAX);
+        C_ASSERT(SIZE_T(SSIZE_MAX)+1 + CBufferDispenser::kOverheadPerBufferAllocation <= SIZE_MAX);
     }
-    else if (alignment < kMinBufferAllocationAlignment)
+    else if (alignment < CBufferDispenser::kMinBufferAllocationAlignment)
     {
         // Increase alignment to buffer dispenser's minimum
-        size = IncrAlignTo(size, kMinBufferAllocationAlignment, alignment);
-        alignment = kMinBufferAllocationAlignment;
+        size = IncrAlignTo(size, CBufferDispenser::kMinBufferAllocationAlignment, alignment);
+        alignment = CBufferDispenser::kMinBufferAllocationAlignment;
         // Maximum add is kMinBufferAllocationAlignment-1
-        C_ASSERT(kMinBufferAllocationAlignment-1 + kOverheadPerBufferAllocation <= SIZE_MAX);
+        C_ASSERT(CBufferDispenser::kMinBufferAllocationAlignment-1 + CBufferDispenser::kOverheadPerBufferAllocation <= SIZE_MAX);
     }
 
     // Add space for pointer storage
-    C_ASSERT(kOverheadPerBufferAllocation > 0);
-    size += kOverheadPerBufferAllocation;
+    C_ASSERT(CBufferDispenser::kOverheadPerBufferAllocation > 0);
+    size += CBufferDispenser::kOverheadPerBufferAllocation;
 
     Assert(IsAlignedTo(size, kMinBufferAllocationAlignment));
 
@@ -110,9 +111,9 @@ CBufferDispenser::Allocate(
     // need this one overflow check.
     if (size > sizeRequested)
     {
-        if (this && m_cbSpaceLeft >= size)
+        if (this_ptr && this_ptr->m_cbSpaceLeft >= size)
         {
-            ptrRet = AllocateFromBuffer(size, alignment, mt);
+            ptrRet = this_ptr->AllocateFromBuffer(size, alignment, mt);
         }
         else
         {
@@ -120,7 +121,7 @@ CBufferDispenser::Allocate(
             // buffer fails.
             MtAdd(Mt(CBufferDispenser_overflow_count), 1, 0);
 
-            ptrRet = AllocateFromHeap(size, alignment, mt);
+            ptrRet = CBufferDispenser::AllocateFromHeap(size, alignment, mt);
         }
     }
 
