@@ -868,7 +868,8 @@ CHwSurfaceRenderTarget::SoftwareFillPath(
     //       realization is done in SW
     //
 
-    CHwSoftwareFallback *pswFallback = NULL;
+    CHwSoftwareFallback *pswFallback;
+    pswFallback = NULL;
 
     IFC(m_pD3DDevice->GetSoftwareFallback(
         &pswFallback,
@@ -1329,6 +1330,7 @@ CHwSurfaceRenderTarget::DrawPathInternal(
     // For 2D rendering, local rendering and world sampling spaces are identical
     //
 
+{
     const CMatrix<CoordinateSpace::BaseSampling,CoordinateSpace::Device> &
         matBaseSamplingToDevice =
         ReinterpretLocalRenderingAsBaseSampling(pContextState->WorldToDevice);
@@ -1420,6 +1422,7 @@ CHwSurfaceRenderTarget::DrawPathInternal(
         *pmatShapeToDevice
         );
 #endif
+}
 
 Cleanup:
 
@@ -1908,7 +1911,8 @@ CHwSurfaceRenderTarget::SoftwareDrawGlyphs(
     //       realization is done in SW
     //
 
-    CHwSoftwareFallback *pswFallback = NULL;
+    CHwSoftwareFallback *pswFallback;
+    pswFallback = NULL;
 
     IFC(m_pD3DDevice->GetSoftwareFallback(
         &pswFallback,
@@ -1965,7 +1969,8 @@ CHwSurfaceRenderTarget::DrawGlyphs(
     //
     // We can only draw text in hardware if the device is capable of it.
     //
-    BOOL fAttemptHWText = m_pD3DDevice->CanDrawText();
+    BOOL fAttemptHWText;
+    fAttemptHWText = m_pD3DDevice->CanDrawText();
 
     //
     // We can only draw text if the realized hardware brush will not need
@@ -2138,7 +2143,8 @@ CHwSurfaceRenderTarget::CreateRenderTargetBitmap(
         IFC(WGXERR_UNSUPPORTEDTEXTURESIZE);
     }
 
-    bool fWrapModeForcesSW = false;
+    bool fWrapModeForcesSW;
+    fWrapModeForcesSW = false;
     if (usageInfo.wrapMode != MilBitmapWrapMode::Extend)
     {
         if (usageInfo.flags & IntermediateRTUsage::ForUseIn3D)
@@ -2278,6 +2284,7 @@ HRESULT CHwSurfaceRenderTarget::BeginLayerInternal(
 
     EventWriteLayerEventStart();
 
+{
     CMILSurfaceRect rgCopyRects[MAX_NUM_PARTIAL_LAYER_CAPTURE_RECTS];
     UINT cCopyRects = 0;
     bool fCopyEntireLayer = true;
@@ -2363,6 +2370,7 @@ HRESULT CHwSurfaceRenderTarget::BeginLayerInternal(
                 ));
         }
     }
+}
 
 Cleanup:
     EventWriteLayerEventEnd();
@@ -2543,7 +2551,8 @@ HRESULT CHwSurfaceRenderTarget::EndLayerInternal(
     // Render fixups
     //
 
-    bool fNeedConstantAlphaFixup = !AlphaScalePreservesOpacity(layer.rAlpha);
+    bool fNeedConstantAlphaFixup;
+    fNeedConstantAlphaFixup = !AlphaScalePreservesOpacity(layer.rAlpha);
 
     //
     // Check for geometric mask fixups
@@ -3427,6 +3436,7 @@ CHwSurfaceRenderTarget::PopulateDestinationTexture(
         &pD3DSurface
         ));
 
+{
     const D3DTEXTUREFILTERTYPE d3dFilter = D3DTEXF_NONE;
 
     IFC(m_pD3DDevice->StretchRect(
@@ -3436,6 +3446,7 @@ CHwSurfaceRenderTarget::PopulateDestinationTexture(
         prcDest,
         d3dFilter
         ));
+}
 
 Cleanup:
     ReleaseInterface(pD3DSurface);
