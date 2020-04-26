@@ -121,7 +121,6 @@ namespace dxlayer
             return hResult;
         }
 
-#if 0 // Does not compile with mingw, but also appears to be unused
 #pragma region get_pixel_shader_profile_name
 
         // Returns the name of the highest high-level shader language(HLSL) pixel-shader 
@@ -132,7 +131,7 @@ namespace dxlayer
         // Specialization of get_pixel_shader_profile_name with 
         // ID3DDevice = IDirect3DDevice9
         template<>
-        inline static std::string get_pixel_shader_profile_name<IDirect3DDevice9>(
+        inline std::string get_pixel_shader_profile_name<IDirect3DDevice9>(
             IDirect3DDevice9* pD3DDevice)
         {
             return D3DXGetPixelShaderProfile(pD3DDevice);
@@ -150,14 +149,13 @@ namespace dxlayer
         // Specialization of get_vertex_shader_profile_name with 
         // ID3DDevice = IDirect3DDevice9
         template<>
-        static std::string get_vertex_shader_profile_name<IDirect3DDevice9>(
+        std::string get_vertex_shader_profile_name<IDirect3DDevice9>(
             IDirect3DDevice9* pD3DDevice)
         {
             return D3DXGetVertexShaderProfile(pD3DDevice);
         }
 
 #pragma endregion
-#endif
 
         // Changes an error HRESULT to the more descriptive 
         // WGXERR_SHADER_COMPILE_FAILED if appropriate, and 
