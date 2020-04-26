@@ -579,8 +579,9 @@ CHwPipelineBuilder::TryToMultiplyConstantAlphaToExistingStage(
         goto Cleanup;
     }
 
-    int iLastAlphaScalableItem = GetLastAlphaScalableItem();
-    int iItemAvailableForAlphaMultiply = GetEarliestItemAvailableForAlphaMultiply();
+	int iLastAlphaScalableItem, iItemAvailableForAlphaMultiply;
+    iLastAlphaScalableItem = GetLastAlphaScalableItem();
+    iItemAvailableForAlphaMultiply = GetEarliestItemAvailableForAlphaMultiply();
 
     //  We can add logic to recognize that an alpha scale of 0 would give us a
     //  completely transparent result and then "compress" previous stages.
@@ -758,9 +759,11 @@ CHwPipelineBuilder::SetupVertexBuilder(
     IFC(ChooseVertexBuilder(ppVertexBuilder));
 
     // Send vertex mappings for each color source
-    HwPipelineItem *pItem = m_pHP->m_rgItem.GetDataBuffer();
+    HwPipelineItem *pItem;
+    pItem = m_pHP->m_rgItem.GetDataBuffer();
 
-    CHwVertexBuffer::Builder *pVertexBuilder = *ppVertexBuilder;
+    CHwVertexBuffer::Builder *pVertexBuilder;
+    pVertexBuilder = *ppVertexBuilder;
 
     if (VerticesArePreGenerated())
     {
@@ -1537,8 +1540,10 @@ CHwFFPipelineBuilder::Mul_ConstAlpha(
     // Add an additional blending stage.
     //
 
-    MilVertexFormatAttribute mvfa = MILVFAttrNone;
-    HwBlendArg hba = HBA_None;
+    MilVertexFormatAttribute mvfa;
+    mvfa = MILVFAttrNone;
+    HwBlendArg hba;
+    hba = HBA_None;
 
     //
     // Find an acceptable vertex field
