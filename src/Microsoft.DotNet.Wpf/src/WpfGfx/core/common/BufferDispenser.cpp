@@ -81,7 +81,7 @@ CBufferDispenser::Allocate(
     {
         size += (alignment - kMinBufferAllocationAlignment);
         // Maximum add is (SIZE_T_MAX+1)/2, use SSIZE_T_MAX+1 to avoid C4307: '+' : integral constant overflow
-        C_ASSERT(SIZE_T(SSIZE_T_MAX)+1 + kOverheadPerBufferAllocation <= SIZE_T_MAX);
+        C_ASSERT(SIZE_T(SSIZE_MAX)+1 + kOverheadPerBufferAllocation <= SIZE_MAX);
     }
     else if (alignment < kMinBufferAllocationAlignment)
     {
@@ -89,7 +89,7 @@ CBufferDispenser::Allocate(
         size = IncrAlignTo(size, kMinBufferAllocationAlignment, alignment);
         alignment = kMinBufferAllocationAlignment;
         // Maximum add is kMinBufferAllocationAlignment-1
-        C_ASSERT(kMinBufferAllocationAlignment-1 + kOverheadPerBufferAllocation <= SIZE_T_MAX);
+        C_ASSERT(kMinBufferAllocationAlignment-1 + kOverheadPerBufferAllocation <= SIZE_MAX);
     }
 
     // Add space for pointer storage
