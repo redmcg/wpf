@@ -781,10 +781,10 @@ CD3DDeviceLevel1::GatherSupportedMultisampleTypes(
         IsLDDMDevice() ? D3DMULTISAMPLE_4_SAMPLES : D3DMULTISAMPLE_NONE;
 
     // Get default multi-sample max from the registry
-    CDisplayRegKey keyDisplay(HKEY_LOCAL_MACHINE, _T(""));
+    CDisplayRegKey keyDisplay(HKEY_LOCAL_MACHINE, L"");
 
     keyDisplay.ReadDWORD(
-        _T("MaxMultisampleType"),
+        L"MaxMultisampleType",
         reinterpret_cast<DWORD *>(&MaxMultisampleType)
         );
 
