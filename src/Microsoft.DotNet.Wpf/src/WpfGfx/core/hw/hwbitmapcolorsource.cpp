@@ -364,7 +364,8 @@ HRESULT CHwBitmapColorSource::DeriveFromBrushAndContext(
         pHwBitmapColorSource = NULL;
     }
 
-    const CParallelogram *pWorldSpaceMaskParallelogramNoRef = NULL;
+    const CParallelogram *pWorldSpaceMaskParallelogramNoRef;
+    pWorldSpaceMaskParallelogramNoRef = NULL;
     //
     // When bitmap is to be source clipped and the current mode is 3D then we
     // have no mechanism to trim our geometry; so, use mask texture instead.
@@ -1211,7 +1212,8 @@ CHwBitmapColorSource::ComputeRealizationParameters(
     // NOTE that we currently only use transparent border and we have no plans to
     // use any other border color so we don't bother to check whether the border
     // is opaque.
-    bool fForceAlpha = (wrapMode == MilBitmapWrapMode::Border);
+    bool fForceAlpha;
+    fForceAlpha = (wrapMode == MilBitmapWrapMode::Border);
     
     MIL_THR(pDevice->GetSupportedTextureFormat(fmtBitmapSource,
                                                fmtRenderTarget,
@@ -1238,8 +1240,9 @@ CHwBitmapColorSource::ComputeRealizationParameters(
     IFC(pIBitmapSource->GetSize(&oRealizationParams.uBitmapWidth,
                                 &oRealizationParams.uBitmapHeight));
 
-    UINT uMaxTextureWidth = pDevice->GetMaxTextureWidth();
-    UINT uMaxTextureHeight = pDevice->GetMaxTextureHeight();
+	UINT uMaxTextureWidth, uMaxTextureHeight;
+    uMaxTextureWidth = pDevice->GetMaxTextureWidth();
+    uMaxTextureHeight = pDevice->GetMaxTextureHeight();
 
     IFC(ComputeRealizationSize(
         uMaxTextureWidth,
@@ -2707,7 +2710,8 @@ CHwBitmapColorSource::FillTexture(
 
     // This variable should be true iff m_pBitmap refers to the same bitmap
     // as pIWICBitmapSourceNoRef
-    BOOL fBitmapSourceIsBitmap = (m_pBitmap != NULL);
+    BOOL fBitmapSourceIsBitmap;
+    fBitmapSourceIsBitmap = (m_pBitmap != NULL);
 
     //
     // Disable CDeviceBitmap as a IWGXBitmap even when transforms aren't
