@@ -237,6 +237,7 @@ CHwBoxColorSource::FillTexture()
 
     fLockedTexture = true;
 
+{
     DWORD *pdwTexel = reinterpret_cast<DWORD *>(d3dRect.pBits);
 
     const DWORD c_0 = 0x00000000;
@@ -266,6 +267,7 @@ CHwBoxColorSource::FillTexture()
     pdwTexel[0xd] = c_0;
     pdwTexel[0xe] = c_0;
     pdwTexel[0xf] = c_0;
+}
     
 Cleanup:
     if (fLockedTexture)
