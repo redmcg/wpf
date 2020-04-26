@@ -25,7 +25,7 @@ MtExtern(CHwRasterizer);
 //
 //------------------------------------------------------------------------------
 
-class CHwRasterizer : public IGeometryGenerator
+class CHwRasterizer final : public IGeometryGenerator
 {
 public:
     DECLARE_BUFFERDISPENSER_NEW(CHwRasterizer, Mt(CHwRasterizer));
