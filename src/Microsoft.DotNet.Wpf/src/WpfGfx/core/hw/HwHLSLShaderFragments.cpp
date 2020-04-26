@@ -69,22 +69,15 @@ namespace name \
 #define VS_LOOPABLE \
     static const bool sc_fLoopable
 #define VS_END \
-    static const VertexShaderFunction VS                  \
+	__if_not_exists(sc_fLoopable) { static const bool sc_fLoopable = false; } \
+	__if_exists(sc_rg_VS_Data) { static const size_t VS_Data_Size = ARRAYSIZE(sc_rg_VS_Data); } \
+	__if_not_exists(sc_rg_VS_Data) { static const size_t VS_Data_Size = 0; static const FunctionConstDataParameter* sc_rg_VS_Data = NULL; } \
+	static const VertexShaderFunction VS                  \
     (                                               \
         sc_szBody, sizeof(sc_szBody),       \
         ARRAYSIZE(sc_rg_VS_Inputs), sc_rg_VS_Inputs,  \
-        __if_exists(sc_rg_VS_Data) { \
-        ARRAYSIZE(sc_rg_VS_Data)  , sc_rg_VS_Data,     \
-        }\
-        __if_not_exists(sc_rg_VS_Data) { \
-        0, NULL,     \
-        }\
-        __if_exists(sc_fLoopable) { \
+        VS_Data_Size  , sc_rg_VS_Data,     \
         sc_fLoopable \
-        }\
-        __if_not_exists(sc_fLoopable) { \
-        false \
-        }\
     );                                              \
 }
 
@@ -97,16 +90,13 @@ namespace name \
 #define PS_DATA \
     static const FunctionConstDataParameter sc_rg_PS_Data[] 
 #define PS_END \
+	__if_exists(sc_rg_PS_Data) { static const size_t PS_Data_Size = ARRAYSIZE(sc_rg_PS_Data); } \
+	__if_not_exists(sc_rg_PS_Data) { static const size_t PS_Data_Size = 0; static const FunctionConstDataParameter* sc_rg_PS_Data = NULL; } \
     static const PixelShaderFunction PS                  \
     (                                               \
         sc_szBody, sizeof(sc_szBody),       \
         ARRAYSIZE(sc_rg_PS_Inputs), sc_rg_PS_Inputs,  \
-        __if_exists(sc_rg_PS_Data) { \
-        ARRAYSIZE(sc_rg_PS_Data)  , sc_rg_PS_Data     \
-        }\
-        __if_not_exists(sc_rg_PS_Data) { \
-        0, NULL     \
-        }\
+        PS_Data_Size  , sc_rg_PS_Data     \
     );                                              \
 }
 
