@@ -378,8 +378,10 @@ CHwDisplayRenderTarget::Present(
         goto Cleanup;
     }
 
-    bool fPresent = false;
-    RGNDATA *pDirtyRegion = NULL;
+    bool fPresent;
+    fPresent = false;
+    RGNDATA *pDirtyRegion;
+    pDirtyRegion = NULL;
     IFC(ShouldPresent(
         pRect,
         &presentRect,
