@@ -285,7 +285,8 @@ CMilVisualBrushDuce::PreComputeHelper(
 
     // If we collected any dirty region, then add that as AdditionDirtyRegion
     // on the parent of the root
-    CMilVisual *parent = pVisual->GetParent();
+    CMilVisual *parent;
+    parent = pVisual->GetParent();
     if (parent)
     {
         const MilRectF *prgrcDirtyRegions = pPreComputeContext->GetUninflatedDirtyRegions();
