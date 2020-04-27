@@ -2238,8 +2238,11 @@ CMilBlurEffectDuce::TakeNSamples(C_u32 sampleCount,
 C_u32x4 
 CMilBlurEffectDuce::Sample(P_u32 pSampleSource)
 {
+	R_u32 rSampleSource = *pSampleSource;
+	C_u32 sampleSource = rSampleSource;
+
     // Convert to a 4x32 integer vector 0000 0000 0000 argb
-    C_u32x4 u4Sample = *pSampleSource;
+    C_u32x4 u4Sample = sampleSource;
 
     // Interleave to get 0000 0000 aarr ggbb
     u4Sample = u4Sample.AsC_u8x16().InterleaveLow(u4Sample.AsC_u8x16());
