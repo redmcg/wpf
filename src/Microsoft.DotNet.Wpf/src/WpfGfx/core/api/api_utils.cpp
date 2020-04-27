@@ -52,7 +52,8 @@ HRESULT HrValidateInitializeCall(
 
     // Make sure that no more than one of MilRTInitialization::UseRefRast,
     // MilRTInitialization::UseRgbRast, or MilRTInitialization::SoftwareOnly is set
-    DWORD dwMask = dwFlags & (MilRTInitialization::SoftwareOnly | MilRTInitialization::UseRefRast | MilRTInitialization::UseRgbRast);
+    DWORD dwMask;
+    dwMask = dwFlags & (MilRTInitialization::SoftwareOnly | MilRTInitialization::UseRefRast | MilRTInitialization::UseRgbRast);
 
     if (dwMask & (dwMask - 1))
     {
