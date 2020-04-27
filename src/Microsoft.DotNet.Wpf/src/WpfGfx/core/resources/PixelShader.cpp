@@ -177,7 +177,8 @@ CMilPixelShaderDuce::GetHwPixelShaderEffectFromCache(
 
     //
     // Have a resource cache - check if there is a hw shader effect cached for the pDevice.
-    CMILResourceCache::ValidIndex deviceCacheIndex = CMILResourceCache::InvalidToken;
+    CMILResourceCache::ValidIndex deviceCacheIndex;
+    deviceCacheIndex = CMILResourceCache::InvalidToken;
 
     // Get the unique device cache index for pDevice. 
     IFC(pDevice->GetCacheIndex(&deviceCacheIndex));
