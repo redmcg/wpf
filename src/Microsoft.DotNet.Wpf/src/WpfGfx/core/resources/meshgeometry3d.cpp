@@ -90,8 +90,9 @@ HRESULT CMilMeshGeometry3DDuce::Realize(
         goto Cleanup;
     }
 
-    UINT cTriangleIndices = 0;
-    UINT cVertices = 0;
+    UINT cTriangleIndices, cVertices;
+    cTriangleIndices = 0;
+    cVertices = 0;
     if (m_data.m_cbTriangleIndicesSize != 0)
     {
         //
@@ -143,7 +144,8 @@ HRESULT CMilMeshGeometry3DDuce::Realize(
         ));
 
     // cVertices is not necessarily equal to GetPositionsCount()
-    size_t cbNewPositionBufferSize = cVertices * sizeof(m_data.m_pPositionsData[0]);
+    size_t cbNewPositionBufferSize;
+    cbNewPositionBufferSize = cVertices * sizeof(m_data.m_pPositionsData[0]);
     Assert(cbNewPositionBufferSize <= m_data.m_cbPositionsSize);
 
     C_ASSERT(sizeof(vector3) == sizeof(m_data.m_pPositionsData[0]));
@@ -168,7 +170,8 @@ HRESULT CMilMeshGeometry3DDuce::Realize(
     // We don't trust the user to normalize all of the normals they provided, so
     // we will do so here.
     C_ASSERT(sizeof(vector3) == sizeof(m_data.m_pNormalsData[0]));
-    auto pvec3NormalsData = reinterpret_cast<vector3*>(m_data.m_pNormalsData);
+    vector3* pvec3NormalsData;
+    pvec3NormalsData = reinterpret_cast<vector3*>(m_data.m_pNormalsData);
     for (UINT i = 0; i < GetNormalsCount(); i++)
     {     
         pvec3NormalsData[i] = pvec3NormalsData[i].normalize();
