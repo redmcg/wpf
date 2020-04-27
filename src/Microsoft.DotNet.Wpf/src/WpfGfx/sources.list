@@ -301,3 +301,16 @@ core/resources/transform3d.cpp
 core/resources/viewport3dvisual.cpp
 core/resources/geometry3d.cpp
 core/resources/emissivematerial.cpp
+core/api/precomp.cpp
+core/api/api_base.cpp
+core/api/api_basebrushes.cpp
+core/api/api_brush.cpp
+core/api/api_codecfactory.cpp
+core/api/api_factory.cpp
+core/api/api_lightdata.cpp
+core/api/api_lights.cpp
+core/api/api_mesh3d.cpp
+core/api/api_renderstate.cpp
+core/api/api_shader.cpp
+core/api/api_utils.cpp
+core/api/exports.cpp
