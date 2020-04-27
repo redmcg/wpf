@@ -60,9 +60,10 @@ HRESULT CMilTranslateTransform3DDuce::Append(
 
     IFC(SynchronizeAnimatedFields());
 
-    float tx = static_cast<float>(m_data.m_offsetX);
-    float ty = static_cast<float>(m_data.m_offsetY);
-    float tz = static_cast<float>(m_data.m_offsetZ);
+	float tx, ty, tz;
+    tx = static_cast<float>(m_data.m_offsetX);
+    ty = static_cast<float>(m_data.m_offsetY);
+    tz = static_cast<float>(m_data.m_offsetZ);
 
     pMat->_11 += pMat->_14 * tx; pMat->_12 += pMat->_14 * ty; pMat->_13 += pMat->_14 * tz;
     pMat->_21 += pMat->_24 * tx; pMat->_22 += pMat->_24 * ty; pMat->_23 += pMat->_24 * tz;
