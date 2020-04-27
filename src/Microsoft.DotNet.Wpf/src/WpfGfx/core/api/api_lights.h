@@ -56,6 +56,8 @@ public:
         float flScale
         ) PURE;
 
+	virtual ~CMILLight() = 0;
+
 protected:
     CMILLight() 
     {
