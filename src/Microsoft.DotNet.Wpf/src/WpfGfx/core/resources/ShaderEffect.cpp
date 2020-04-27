@@ -92,7 +92,8 @@ CMilShaderEffectDuce::ProcessUpdate(
             (UINT32)SHADEREFFECT_MAX_TEXTURE_STAGE_CONFIGURATIONS);
 
     // Verify that we have enough info entries.
-    UINT32 numInfos = 
+    UINT32 numInfos;
+    numInfos = 
         min((UINT32)(m_data.m_cbShaderSamplerRegistrationInfoSize / (2 * sizeof(UINT32))),
             (UINT32)SHADEREFFECT_MAX_TEXTURE_STAGE_CONFIGURATIONS);
     if (numInfos != m_samplerDataCount)
@@ -829,8 +830,9 @@ CMilShaderEffectDuce::DrawIntoIntermediate(
     brushContext.pContentBounder = NULL;
     IFC(CContentBounder::Create(brushContext.pBrushDeviceNoRef, &brushContext.pContentBounder));
    
-    UINT textureWidth = static_cast<UINT>(implicitInputWidth);
-    UINT textureHeight = static_cast<UINT>(implicitInputHeight);
+    UINT textureWidth, textureHeight;
+    textureWidth = static_cast<UINT>(implicitInputWidth);
+    textureHeight = static_cast<UINT>(implicitInputHeight);
 
     rtUsage.flags = IntermediateRTUsage::ForBlending;
     rtUsage.wrapMode = MilBitmapWrapMode::Extend;
@@ -917,6 +919,7 @@ CMilShaderEffectDuce::SendShaderConstantsHw(
         pFloatValues += 4;
     }
 
+{
     // Int values
     int *pIntValues = m_data.m_pDependencyPropertyIntValuesData;
     UINT32 intCount = m_data.m_cbShaderConstantIntRegistersSize / sizeof(short);
@@ -936,6 +939,7 @@ CMilShaderEffectDuce::SendShaderConstantsHw(
         IFC(pDevice->SetPixelShaderConstantB(*pBoolRegisterIndices++, *pBoolValues));
         pBoolValues++;
     }
+}
 
 Cleanup:
     RRETURN(hr);
