@@ -562,6 +562,7 @@ CMilVisual::ProcessSetCacheMode(
         IFCSUB1(RegisterNotifier(m_pCaches));
     }
 
+{
     const CMilCacheModeDuce *pOldCacheMode = m_pCaches->GetNodeCacheMode();
     if (pCacheMode != pOldCacheMode)
     {
@@ -570,6 +571,7 @@ CMilVisual::ProcessSetCacheMode(
         // Mark the node as dirty for precompute to ensure the cache is updated.
         MarkDirtyForPrecompute();
     }
+}
     
 SubCleanup1:
     // Release the add-ref from creation; we're still holding a ref from RegisterNotifier
@@ -778,7 +780,8 @@ CMilVisual::ProcessSetAlphaMask(
         IFCSUB1(CMilAlphaMaskWrapper::Create(&m_pAlphaMaskWrapper));
     }
 
-    CMilBrushDuce *pOldAlphaMask = m_pAlphaMaskWrapper->GetAlphaMask();
+    CMilBrushDuce *pOldAlphaMask;
+    pOldAlphaMask = m_pAlphaMaskWrapper->GetAlphaMask();
     if (pAlphaMask != pOldAlphaMask)
     {
         // Replace the old resource with the new one
