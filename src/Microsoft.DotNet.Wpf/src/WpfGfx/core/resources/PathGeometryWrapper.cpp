@@ -1555,12 +1555,12 @@ const IFigureData &PathGeometryData::GetFigure(IN UINT index) const
         {
             while (m_uCurIndex < index)
             {
-                if (!NextFigure()) return *reinterpret_cast<IFigureData*>(NULL);
+                if (!NextFigure()) abort();
             }
             
             while (m_uCurIndex > index)
             {
-                if (!PrevFigure()) return *reinterpret_cast<IFigureData*>(NULL);
+                if (!PrevFigure()) abort();
             }
         }
     }
