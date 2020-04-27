@@ -529,8 +529,9 @@ CTessellator::MergeTheBands(
     QUIT_IF_NOT(pLeftmostTail && pRightmostTail  && (pLeftmostTail != pRightmostTail));
 
     // Get the ceiling links of the leftmost and rightmost tail
-    CVertexRef *pLeftCeiling = GetCeiling(pLeftmostTail);
-    CVertexRef *pRightCeiling = GetCeiling(pRightmostTail);
+    CVertexRef *pLeftCeiling, *pRightCeiling;
+    pLeftCeiling = GetCeiling(pLeftmostTail);
+    pRightCeiling = GetCeiling(pRightmostTail);
 
     // The right ceiling and left ceiling should meet at the junction point
     QUIT_IF_NOT(pLeftCeiling  && pRightCeiling);
@@ -606,13 +607,15 @@ CTessellator::SplitTheBand(
     CChain *pFrom;
     CChain *pTo;
     CVertexRef *pRightCeiling;
-    CChain *pLeft = m_oJunction.GetLeft();
+    CChain *pLeft;
+    pLeft = m_oJunction.GetLeft();
 
     QUIT_IF_NOT(NULL != pLeft); 
     // Because we know that the leftmost head is a right chain, otherwise we wouldn't be here
 
     // Find the lowest vertex in the ceiling above this junction
-    CVertexRef *pLeftCeiling = GetCeiling(pLeft);
+    CVertexRef *pLeftCeiling;
+    pLeftCeiling = GetCeiling(pLeft);
     while (pLeftCeiling->GetRight() && pLeftCeiling->GetRight()->IsLowerThan(pLeftCeiling))
     {
         pLeftCeiling = pLeftCeiling->GetRight();
