@@ -14,6 +14,10 @@
 
 #include "precomp.hpp"
 
+#ifndef WINCODEC_ERR_INVALIDPARAMETER
+#define WINCODEC_ERR_INVALIDPARAMETER E_INVALIDARG
+#endif
+
 //+---------------------------------------------------------------------------
 //
 //  Function:   MILGradientStop operator >
