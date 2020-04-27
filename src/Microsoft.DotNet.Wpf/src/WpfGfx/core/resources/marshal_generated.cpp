@@ -34,7 +34,7 @@ UnmarshalResourceArray(
     // emits a compile-time error if TResourceType doesn't inherit from
     // CMilSlaveResource.
     //
-    static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL));
+    (void)(static_cast<CMilSlaveResource *>(static_cast<TResourceType *>(NULL)));
 
     CMilSlaveResource **rgpResourcesTemp;
 
