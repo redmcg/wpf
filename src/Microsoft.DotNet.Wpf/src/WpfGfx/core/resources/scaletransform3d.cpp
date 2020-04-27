@@ -40,9 +40,10 @@ HRESULT CMilScaleTransform3DDuce::GetRealization(
 
     IFC(SynchronizeAnimatedFields());
 
-    float sx = static_cast<float>(m_data.m_scaleX);
-    float sy = static_cast<float>(m_data.m_scaleY);
-    float sz = static_cast<float>(m_data.m_scaleZ);
+    float sx, sy, sz;
+    sx = static_cast<float>(m_data.m_scaleX);
+    sy = static_cast<float>(m_data.m_scaleY);
+    sz = static_cast<float>(m_data.m_scaleZ);
 
     pRealization->_12 = pRealization->_13 = pRealization->_14 =
     pRealization->_21 = pRealization->_23 = pRealization->_24 =
@@ -82,9 +83,10 @@ HRESULT CMilScaleTransform3DDuce::Append(
 
     IFC(SynchronizeAnimatedFields());
     
-    float sx = static_cast<float>(m_data.m_scaleX);
-    float sy = static_cast<float>(m_data.m_scaleY);
-    float sz = static_cast<float>(m_data.m_scaleZ);
+    float sx, sy, sz;
+    sx = static_cast<float>(m_data.m_scaleX);
+    sy = static_cast<float>(m_data.m_scaleY);
+    sz = static_cast<float>(m_data.m_scaleZ);
 
     if (m_data.m_centerX == 0.0 && m_data.m_centerY == 0.0 && m_data.m_centerZ == 0.0)
     {
