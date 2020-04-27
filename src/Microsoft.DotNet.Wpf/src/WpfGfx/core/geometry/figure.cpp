@@ -873,7 +873,8 @@ CFigureData::BeziersTo(
     }
        
     // Add the curve
-    int cSegments = count / 3;
+    int cSegments;
+    cSegments = count / 3;
 
     if (cSegments * 3 == count)
     {
