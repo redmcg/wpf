@@ -17,6 +17,11 @@ Environment:
 
 --*/
 
+#ifndef _MSC_VER
+// Wine Mono hack: There are way too many "overrides" in the wrong place, just ignore them.
+#define override
+#endif
+
 #include <wpfsdl.h>
 #include "std.h"
 #include "d2d1.h"
