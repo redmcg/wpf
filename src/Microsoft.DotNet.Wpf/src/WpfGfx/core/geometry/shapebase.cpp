@@ -545,17 +545,18 @@ CShapeBase::ClipWithParallelogram(
     
     pClipParallelogram->GetParallelogramVertices(vertices);
 
-    double a1 = vertices[1].Y - vertices[0].Y;
-    double b1 = vertices[0].X - vertices[1].X;
+	double a1, b1, a2, b2, c1, d1, c2, d2;
+    a1 = vertices[1].Y - vertices[0].Y;
+    b1 = vertices[0].X - vertices[1].X;
 
-    double a2 = vertices[2].Y - vertices[1].Y;
-    double b2 = vertices[1].X - vertices[2].X;
+    a2 = vertices[2].Y - vertices[1].Y;
+    b2 = vertices[1].X - vertices[2].X;
 
-    double c1 = a1 * vertices[0].X + b1 * vertices[0].Y;
-    double d1 = a1 * vertices[2].X + b1 * vertices[2].Y;
+    c1 = a1 * vertices[0].X + b1 * vertices[0].Y;
+    d1 = a1 * vertices[2].X + b1 * vertices[2].Y;
 
-    double c2 = a2 * vertices[1].X + b2 * vertices[1].Y;
-    double d2 = a2 * vertices[3].X + b2 * vertices[3].Y;
+    c2 = a2 * vertices[1].X + b2 * vertices[1].Y;
+    d2 = a2 * vertices[3].X + b2 * vertices[3].Y;
 
     //
     // if a == b == 0, our equations cease to be line equations:
