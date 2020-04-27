@@ -687,8 +687,10 @@ CShape::ConstructFromGpPath(
         m_eFillMode = MilFillMode::Alternate;
     }
 
-    CFigureData *pFigure = NULL;
-    BOOL fClosed = FALSE;
+    CFigureData *pFigure;
+    pFigure = NULL;
+    BOOL fClosed;
+    fClosed = FALSE;
 
     if ((pTypes[0] & PathPointTypePathTypeMask) != PathPointTypeStart)
     {
