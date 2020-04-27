@@ -1034,17 +1034,24 @@ CMILLightData::Copy(
     // Copy other members
     // 
 
-    RtlCopyMemory(this, &rvalue, offsetof(CMILLightData, m_dynDirectionalLights));
-
-    size_t const offsetPostDynArrays =
-        offsetof(CMILLightData,m_dynPointAndSpotLights)+sizeof(m_dynPointAndSpotLights);
-    size_t const sizePostDynArrays =
-        sizeof(CMILLightData)-offsetPostDynArrays;
-
-    RtlCopyMemory(reinterpret_cast<BYTE *>(this)+offsetPostDynArrays,
-                  reinterpret_cast<BYTE const *>(&rvalue)+offsetPostDynArrays,
-                  sizePostDynArrays
-                  );
+#define COPY_FIELD(x) this->x = rvalue.x
+	COPY_FIELD(m_fCalcDiffuse);
+	COPY_FIELD(m_fCalcSpecular);
+	COPY_FIELD(m_flSpecularPower);
+	COPY_FIELD(m_matAmbientColor);
+	COPY_FIELD(m_matDiffuseColor);
+	COPY_FIELD(m_matSpecularColor);
+	COPY_FIELD(m_matEmissiveColor);
+	COPY_FIELD(m_vec3CameraPosition);
+	COPY_FIELD(m_flNormalScale);
+	COPY_FIELD(m_lightAmbient);
+	COPY_FIELD(m_uNumPointLights);
+#if DBG
+	COPY_FIELD(m_uDbgNumSpotLights);
+#endif
+	COPY_FIELD(m_lvLightingPass);
+	COPY_FIELD(m_hFirstConstantParameter);
+#undef COPY_FIELD
 
 Cleanup:
     RRETURN(hr);
