@@ -4172,6 +4172,7 @@ CScanner::SplitAtCoincidentIntersection(
     // a common point.
     Assert(pChain->GetCurrentEdgeBase()->CoincidesWith(pRight->GetCurrentEdgeBase()));
 
+{
     // First, let's find out if the support segments for the two edges are collinear.
     double ab[4] = {pChain->GetCurrentSegmentBase()->GetExactCoordinates().X,
                     pChain->GetCurrentSegmentBase()->GetExactCoordinates().Y,
@@ -4224,6 +4225,7 @@ CScanner::SplitAtCoincidentIntersection(
 
         pChain->SetCoincidentWithRight();
     }
+}
 
 Cleanup:
     RRETURN(hr);
