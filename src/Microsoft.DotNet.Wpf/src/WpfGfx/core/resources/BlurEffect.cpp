@@ -26,8 +26,6 @@ GenerateColorsBlur CMilBlurEffectDuce::s_pfnBlurFunctionGaussian = NULL;
 
 const f32x4 c_rZero = {0.0f, 0.0f, 0.0f, 0.0f};
 const u32x4 c_uZero = {0, 0, 0, 0};
-const f32x4 c_rOne = {1.0f, 1.0f, 1.0f, 1.0f};
-const u32x4 c_uOne = {1, 1, 1, 1};
 
 // SSE2 memory operations require 16 byte boundary alignment
 #define SSE2_ALIGNMENT_BOUNDARY 16
