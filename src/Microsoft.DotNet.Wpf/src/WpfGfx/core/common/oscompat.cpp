@@ -176,25 +176,17 @@ UpdateLayeredWindowEx(
             IFC(s_hrULWFound);
         }
 
-        //
-        // Note: ULW shouldn't modify pptDst, psize, pptSrc, or pblend, but
-        //  make a local copy to respect the prototype specification anyway.
-        //
-
-        #pragma warning( push )
-        #pragma warning( disable : 4238 ) // class rvalue used as lvalue
         IFCW32(UpdateLayeredWindow(
             hWnd,
             hdcDst,
-            (pXY) ? &POINT(*pXY) : NULL,
-            (psize) ? &SIZE(*psize) : NULL,
+            const_cast<POINT*>(pXY),
+            const_cast<SIZE*>(psize),
             hdcSrc,
-            (pptSrc) ? &POINT(*pptSrc) : NULL,
+            const_cast<POINT*>(pptSrc),
             crKey,
-            (pblend) ? &BLENDFUNCTION(*pblend) : NULL,
+            const_cast<BLENDFUNCTION*>(pblend),
             dwFlags
             ));
-        #pragma warning( pop )
     }
 
 Cleanup:
