@@ -711,7 +711,7 @@ CMilBlurEffectDuce::ApplyGaussianBlurSw(__in_ecount(sourceWidth * sourceHeight *
     CalculateGaussianSamplingWeightsFullKernel(radius, &pGaussianWeights);
 
     // Do vertical pass from source into intermediate
-    BYTE *pPassInputBuffer, pPassOutputBuffer;
+    BYTE *pPassInputBuffer, *pPassOutputBuffer;
     pPassInputBuffer = pInputOutputBuffer;
     pPassOutputBuffer = pIntermediateBuffer;
 
