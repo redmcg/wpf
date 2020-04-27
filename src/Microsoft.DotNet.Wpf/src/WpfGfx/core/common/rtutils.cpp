@@ -25,13 +25,15 @@
 //
 //-----------------------------------------------------------------------------
 
-const CMILSurfaceRect::Rect_t CMILSurfaceRect::sc_rcEmpty(
+template<>
+const TMilRect<INT,MilRectL,RectUniqueness::_CMILSurfaceRect_>::Rect_t TMilRect<INT,MilRectL,RectUniqueness::_CMILSurfaceRect_>::sc_rcEmpty(
     0, 0,
     0, 0,
     LTRB_Parameters
     );
 
-const CMILSurfaceRect::Rect_t CMILSurfaceRect::sc_rcInfinite(
+template<>
+const TMilRect<INT,MilRectL,RectUniqueness::_CMILSurfaceRect_>::Rect_t TMilRect<INT,MilRectL,RectUniqueness::_CMILSurfaceRect_>::sc_rcInfinite(
     SURFACE_RECT_MIN, SURFACE_RECT_MIN,
     SURFACE_RECT_MAX, SURFACE_RECT_MAX,
     LTRB_Parameters
