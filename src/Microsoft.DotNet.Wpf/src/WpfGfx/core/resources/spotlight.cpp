@@ -46,7 +46,8 @@ HRESULT CMilSpotLightDuce::PreRender(
 
     Assert(pSpotLightNoRef);
 
-    float flScale =
+    float flScale;
+    flScale =
         static_cast<float>(pow(fabs(pTransform->GetUpper3x3Determinant3D()), 1.0 / 3.0));
     
     if (flScale != 0.0)
