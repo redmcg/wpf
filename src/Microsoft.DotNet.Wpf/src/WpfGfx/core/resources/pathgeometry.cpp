@@ -200,6 +200,7 @@ CMilPathGeometryDuce::ValidateData()
     // Parse the path geometry data.
     //
 
+{
     const BYTE *pPreviousFigure = pFigureData;
 
     while (nBytesLeft >= sizeof(MilPathFigure))
@@ -376,6 +377,7 @@ CMilPathGeometryDuce::ValidateData()
     {
         IFC(WGXERR_UCE_MALFORMEDPACKET);
     }
+}
 
 
 Cleanup:
