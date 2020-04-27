@@ -298,7 +298,8 @@ CMilBlurEffectDuce::CalculateGaussianSamplingWeightsFullKernel(
 
     CalculateSamplingWeights(radius, &pWeights, MilKernelType::Gaussian);
 
-    float *pSamplingWeights = *ppSamplingWeightsReplicate;
+    float *pSamplingWeights;
+    pSamplingWeights = *ppSamplingWeightsReplicate;
 
     for (UINT i = 0; i <= radius; i++)
     {        
@@ -432,7 +433,8 @@ CMilBlurEffectDuce::ClearMarginPixels(
         IFC(E_INVALIDARG);
     }
 
-    UINT *pCurrent = pStart;
+    UINT *pCurrent;
+    pCurrent = pStart;
     UINT clearSize, clearElements;
     
     // Do top rows
@@ -448,7 +450,8 @@ CMilBlurEffectDuce::ClearMarginPixels(
     UINT rightMarginSize;
     IFC(UIntMult(sizeof(UINT), rightMargin, &rightMarginSize));    
  
-    UINT distanceToRightMarginStart = width - rightMargin;    
+    UINT distanceToRightMarginStart;    
+    distanceToRightMarginStart = width - rightMargin;    
     if ((leftMargin > 0) || (rightMargin > 0))
     {
         for (UINT j = 0; j < height - (topMargin + bottomMargin); j++)
@@ -701,14 +704,16 @@ CMilBlurEffectDuce::ApplyGaussianBlurSw(__in_ecount(sourceWidth * sourceHeight *
         Assert(s_pfnBlurFunctionGaussian);
     }
 
-    float *pGaussianWeights = reinterpret_cast<float*>WPFAlloc(ProcessHeap, Mt(CMilBlurEffectDuce), (sizeof(float) * (2*radius + 1)));
+    float *pGaussianWeights;
+    pGaussianWeights = reinterpret_cast<float*>WPFAlloc(ProcessHeap, Mt(CMilBlurEffectDuce), (sizeof(float) * (2*radius + 1)));
     IFCOOM(pGaussianWeights);
 
     CalculateGaussianSamplingWeightsFullKernel(radius, &pGaussianWeights);
 
     // Do vertical pass from source into intermediate
-    BYTE *pPassInputBuffer = pInputOutputBuffer;
-    BYTE *pPassOutputBuffer = pIntermediateBuffer;
+    BYTE *pPassInputBuffer, pPassOutputBuffer;
+    pPassInputBuffer = pInputOutputBuffer;
+    pPassOutputBuffer = pIntermediateBuffer;
 
     // Clear top and bottom rows since the vertical blur pass won't fill them.
     IFC(ClearMarginPixels(reinterpret_cast<UINT*>(pIntermediateBuffer), sourceWidth, sourceHeight, 0, radius, 0, radius));
@@ -791,7 +796,8 @@ CMilBlurEffectDuce::ApplyBoxBlurSw(__in_ecount(sourceWidth * sourceHeight * 4) B
     // Need a buffer aligned to 16 byte boundary for SSE2 load/save operations,
     // so make sure there's space in allocation to align the pointer.
     //
-    UINT alignedAllocationSize = (sourceWidth +1) * sizeof(u32x4);
+    UINT alignedAllocationSize;
+    alignedAllocationSize = (sourceWidth +1) * sizeof(u32x4);
 
     if (!m_pBoxBlurLineBuffer || (m_boxBlurLineBufferSize < alignedAllocationSize))
     {
@@ -812,7 +818,8 @@ CMilBlurEffectDuce::ApplyBoxBlurSw(__in_ecount(sourceWidth * sourceHeight * 4) B
     // Clear the output pixels that the blur won't produce.
     IFC(ClearMarginPixels(reinterpret_cast<UINT*>(pOutputBuffer), sourceWidth, sourceHeight, radius, radius, radius, radius));
         
-    void *pBoxBlurLineBufferAligned = reinterpret_cast<void *>(IncrAlignTo(reinterpret_cast<uintptr_t>(m_pBoxBlurLineBuffer), SSE2_ALIGNMENT_BOUNDARY));
+    void *pBoxBlurLineBufferAligned;
+    pBoxBlurLineBufferAligned = reinterpret_cast<void *>(IncrAlignTo(reinterpret_cast<uintptr_t>(m_pBoxBlurLineBuffer), SSE2_ALIGNMENT_BOUNDARY));
 
     //
     // Adjust output buffer to location of first output pixel. This is at position (radius, radius),
@@ -961,7 +968,8 @@ CMilBlurEffectDuce::ApplyEffectImpl(
 
     //
     // The pass information for the current radius. 
-    UINT radius = 0;
+    UINT radius;
+    radius = 0;
     GetScaledRadius(pScaleTransform, &radius);
 
     // If the blur radius is zero, we skip the loop below and we just need to render the source into
@@ -1438,7 +1446,8 @@ CMilBlurEffectDuce::ExecutePasses(
     // The last intermediate drawn into contains the horizontally blurred image.
     // On odd quality passes, sample from C.  On even quality passes and
     // all performance passes, sample from B.
-    bool useTextureCAsSource = isQuality && (passNumber%2 == 1);
+    bool useTextureCAsSource;
+    useTextureCAsSource = isQuality && (passNumber%2 == 1);
     IFC(pDevice->SetTexture(0, (useTextureCAsSource) ? pTexture_C : pTexture_B));
 
 Cleanup:
@@ -1558,6 +1567,7 @@ CMilBlurEffectDuce::SetupShader(
     HRESULT hr = S_OK;
     CHwPixelShaderEffect *pHwPixelShaderEffect = NULL;
 
+{
     // The shaders are assigned slots in the hw cache as follows:
     //   Slot    Shader
     //    0        Horizontal single-input
@@ -1605,6 +1615,7 @@ CMilBlurEffectDuce::SetupShader(
         }
     }
     IFC(pDevice->SetPixelShaderConstantF(3, arrWeights, 4));
+}
 
 Cleanup:
     ReleaseInterface(pHwPixelShaderEffect);
