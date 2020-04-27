@@ -223,9 +223,11 @@ HRESULT CMilDataStreamWriter::EndItem()
     //
 
     // Calculate the padding needed
-    UINT nPreviousItemSize = m_nItemSize;    
+    UINT nPreviousItemSize;    
+    nPreviousItemSize = m_nItemSize;    
     IFC(RoundUpToAlignDWORD(&m_nItemSize));
-    UINT cbRounded = m_nItemSize - nPreviousItemSize;    
+    UINT cbRounded;    
+    cbRounded = m_nItemSize - nPreviousItemSize;    
 
     // Add the alignment padding to the amount written
     IFC(IncreaseWrittenByteCount(cbRounded));
