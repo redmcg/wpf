@@ -196,8 +196,6 @@ CMilBitmapCacheBrushDuce::GetRenderTargetBitmap(
     }
     else
     {
-        CMILMatrix matSurfaceToSamplingSpace = CMILMatrix(true);
-        
         // PreCompute must be called to ensure cached content is visited, since the target
         // visual might not be attached to the Visual tree elsewhere.
         IFC(PreCompute(pComposition));
