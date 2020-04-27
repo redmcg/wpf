@@ -131,14 +131,18 @@ CMILLightDirectional::SendShaderData(
     // This sends diffuse
     IFC(CMILLightAmbient::SendShaderData(pShader, materialColor, hCurrentRegister));
 
+{
+	std::array<float,3> arr3 = m_vec3InvDirectionViewSpace;
+
     IFC(pShader->SetFloat3(
         hCurrentRegister, 
-        static_cast<const std::array<float,3>>(m_vec3InvDirectionViewSpace).data(),
+        arr3.data(),
         0.0
         ));
 
     hCurrentRegister += 
         GetShaderConstantRegisterSize(ShaderFunctionConstantData::Float3); 
+}
 
 Cleanup:
     RRETURN(hr);
@@ -240,7 +244,11 @@ CMILLightPoint::SendShaderData(
 { 
     HRESULT hr = S_OK;
 
-    vector4 vec4Position(m_vec3PositionViewSpace, 1.0f);
+    vector4 vec4Position(
+		m_vec3PositionViewSpace.x,
+		m_vec3PositionViewSpace.y,
+		m_vec3PositionViewSpace.z,
+		1.0f);
 
     vector4 vec4AttenAndRange = 
     {
@@ -253,21 +261,29 @@ CMILLightPoint::SendShaderData(
     // This sends diffuse
     IFC(CMILLightAmbient::SendShaderData(pShader, materialColor, hCurrentRegister));
     
+{
+	std::array<float,4> arr4 = vec4Position;
+
     IFC(pShader->SetFloat4(
         hCurrentRegister, 
-        static_cast<const std::array<float,4>>(vec4Position).data()
+        arr4.data()
         ));
 
     hCurrentRegister += 
         GetShaderConstantRegisterSize(ShaderFunctionConstantData::Float4); 
+}
+
+{
+	std::array<float,4> arr4 = vec4AttenAndRange;
 
     IFC(pShader->SetFloat4(
         hCurrentRegister, 
-        static_cast<const std::array<float,4>>(vec4AttenAndRange).data()
+        arr4.data()
         ));
 
     hCurrentRegister += 
         GetShaderConstantRegisterSize(ShaderFunctionConstantData::Float4);    
+}
 
 Cleanup:
     RRETURN(hr);
@@ -444,24 +460,32 @@ CMILLightSpot::SendShaderData(
     // This sends diffuse, position, atten, and range
     IFC(CMILLightPoint::SendShaderData(pShader, materialColor, hCurrentRegister));
 
+{
+	std::array<float,3> arr3 = m_vec3InvDirectionViewSpace;
+
     // To send the direction, we can't call CMILLightDirectional::SendShaderData
     // because it will sends the color as well which we just did above.
     IFC(pShader->SetFloat3(
         hCurrentRegister, 
-        static_cast<std::array<float,3>>(m_vec3InvDirectionViewSpace).data(),
+        arr3.data(),
         0.0
         ));
 
     hCurrentRegister += 
         GetShaderConstantRegisterSize(ShaderFunctionConstantData::Float3); 
+}
+
+{
+	std::array<float,4> arr4 = vec4CosHalfPhiAndCosDiff;
 
     IFC(pShader->SetFloat4(
         hCurrentRegister, 
-        static_cast<const std::array<float,4>>(vec4CosHalfPhiAndCosDiff).data()
+        arr4.data()
         ));
 
     hCurrentRegister += 
         GetShaderConstantRegisterSize(ShaderFunctionConstantData::Float4);
+}
 
 Cleanup:
     RRETURN(hr);
