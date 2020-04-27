@@ -77,8 +77,10 @@ CMilBitmapCacheBrushDuce::ProcessUpdate(
     // If the cache mode or Visual has changed, ensure we have
     // unregistered the previous CacheMode/Visual pair and
     // registered the new pair.
-    CMilBitmapCacheDuce *pNewBitmapCacheMode = m_data.m_pBitmapCache;
-    CMilVisual *pNewTarget = m_data.m_pInternalTarget;
+    CMilBitmapCacheDuce *pNewBitmapCacheMode;
+    pNewBitmapCacheMode = m_data.m_pBitmapCache;
+    CMilVisual *pNewTarget;
+    pNewTarget = m_data.m_pInternalTarget;
     if (pOldBitmapCacheMode != pNewBitmapCacheMode || pOldTarget != pNewTarget)
     {
         if (pOldTarget != NULL)
