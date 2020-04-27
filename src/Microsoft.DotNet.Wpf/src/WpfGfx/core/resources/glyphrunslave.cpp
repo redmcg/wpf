@@ -229,9 +229,11 @@ CGlyphRunResource::GetAvailableScale(
         IFC(WGXERR_INVALIDPARAMETER);  // We should only add realizations for scales below Geometry threshold
     }
 
-    double matchScoreHighQuality = 0;
-    bool fFoundExactMatch = false;
-    bool fFoundMatch = false;
+    double matchScoreHighQuality;
+    matchScoreHighQuality = 0;
+    bool fFoundExactMatch, fFoundMatch;
+    fFoundExactMatch = false;
+    fFoundMatch = false;
     UINT foundIndexHighQuality;
     UINT foundIndexAnimationQuality;
 
@@ -856,11 +858,13 @@ CGlyphRunResource::CreateRealization(
     glyphRun.bidiLevel = m_bidiLevel;
     glyphRun.isSideways = IsSideways();
 
-    IDWriteFactory *pIDWriteFactoryNoRef = m_pGlyphCache->GetDWriteFactoryNoRef();
+    IDWriteFactory *pIDWriteFactoryNoRef;
+    pIDWriteFactoryNoRef = m_pGlyphCache->GetDWriteFactoryNoRef();
     Assert(pIDWriteFactoryNoRef != NULL);
 
     DWRITE_RENDERING_MODE dwriteRenderingMode;
-    float scaleFactor = max(scaleX / m_muSize, scaleY / m_muSize);
+    float scaleFactor;
+    scaleFactor = max(scaleX / m_muSize, scaleY / m_muSize);
 
     GetDWriteRenderingMode(pIDWriteFontFace, textRenderingMode, fAnimationQuality, scaleFactor, pDisplaySettings, &dwriteRenderingMode);
     
@@ -889,7 +893,8 @@ CGlyphRunResource::CreateRealization(
     pRealization->AddRef();    
     pRealization->SetAnalysis(pIDWriteGlyphRunAnalysis);
 
-    DynArrayIA <CGlyphRunRealization*, 2> *pArrayToCreateIn = NULL;
+    DynArrayIA <CGlyphRunRealization*, 2> *pArrayToCreateIn;
+    pArrayToCreateIn = NULL;
     if (fBiLevelRequested)
     {
         pArrayToCreateIn = &m_prgBiLevelRealizationArray;
@@ -901,8 +906,9 @@ CGlyphRunResource::CreateRealization(
     }
 
     // Find an unused array index in the appropriate array to store the new realization
-    UINT realizationHandle = CMilSlaveGlyphCache::c_invalidHandleValue;
-    UINT count = pArrayToCreateIn->GetCount();
+    UINT realizationHandle, count;
+    realizationHandle = CMilSlaveGlyphCache::c_invalidHandleValue;
+    count = pArrayToCreateIn->GetCount();
     for (UINT n = 0; n < count; n++)
     {
         if ((*pArrayToCreateIn)[n] == NULL)
@@ -1278,7 +1284,8 @@ CGlyphRunResource::ShouldUseGeometry(
                             &renderingMode
                             ));
 
-    bool fShouldUseGeometry = (renderingMode == DWRITE_RENDERING_MODE_OUTLINE);
+    bool fShouldUseGeometry;
+    fShouldUseGeometry = (renderingMode == DWRITE_RENDERING_MODE_OUTLINE);
 
     // If we can't get a geometry, just return false and try to render bitmaps,
     // else render nothing.
