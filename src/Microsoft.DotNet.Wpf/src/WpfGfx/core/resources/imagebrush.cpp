@@ -530,6 +530,7 @@ HRESULT CMilImageBrushDuce::SourceClipApproximatesContentBounds(
     // stretching the image to be exactly equal to the Viewport, because doing so would alter 
     // the rendering behavior of every tile.
     //
+{
     const float renderingTolerance = INSIGNIFICANT_PIXEL_COVERAGE_SRGB / 2.0f;        
 
     *pfSourceClipApproximatesContentBounds = AreTransformedRectanglesClose(
@@ -538,6 +539,7 @@ HRESULT CMilImageBrushDuce::SourceClipApproximatesContentBounds(
         &matViewportToSampleSpace,
         renderingTolerance
         );
+}
 
 Cleanup:
     RRETURN(hr);
