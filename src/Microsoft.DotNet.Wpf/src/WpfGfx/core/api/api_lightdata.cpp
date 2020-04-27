@@ -820,9 +820,10 @@ CMILLightData::SendShaderData(
             
             // 1. get spec pow
             vector4 vec4SpecPower(m_flSpecularPower, 0.0f, 0.0f, 0.0f);
+			const std::array<float, 4> arraySpecPower = vec4SpecPower;
             IFC(pShader->SetFloat4(
                 hParameter, 
-                static_cast<const std::array<float,4>>(vec4SpecPower).data()
+                arraySpecPower.data()
                 ));
 
             hParameter += 
