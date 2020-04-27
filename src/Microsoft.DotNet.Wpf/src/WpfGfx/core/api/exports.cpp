@@ -872,7 +872,8 @@ MILCreateStreamFromStreamDescriptor(
     CHECKPTRARG(ppStream);
     CHECKPTRARG(pSD);
 
-    IStream* pStream = new CManagedStreamWrapper(*pSD);
+    IStream* pStream;
+    pStream = new CManagedStreamWrapper(*pSD);
     IFCOOM(pStream);
 
     pStream->AddRef();
