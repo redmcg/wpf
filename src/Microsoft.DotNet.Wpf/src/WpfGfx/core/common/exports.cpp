@@ -315,16 +315,19 @@ MilUtility_CopyPixelBuffer(
         IFC(E_INVALIDARG);
     }
 
-    UINT minimumOutputBufferStrideInBits = 0;
+    UINT minimumOutputBufferStrideInBits;
+    minimumOutputBufferStrideInBits = 0;
     IFC(UIntAdd(outputBufferOffsetInBits, copyWidthInBits, &minimumOutputBufferStrideInBits));
-    UINT minimumOutputBufferStride = BitsToBytes(minimumOutputBufferStrideInBits);
+    UINT minimumOutputBufferStride;
+    minimumOutputBufferStride = BitsToBytes(minimumOutputBufferStrideInBits);
     if (outputBufferStride < minimumOutputBufferStride)
     {
         // The stride of the output buffer is too small.
         IFC(E_INVALIDARG);
     }
 
-    UINT minimumOutputBufferSize = 0;
+    UINT minimumOutputBufferSize;
+    minimumOutputBufferSize = 0;
     IFC(UIntMult(outputBufferStride, (height-1), &minimumOutputBufferSize));
     IFC(UIntAdd(minimumOutputBufferSize, minimumOutputBufferStride, &minimumOutputBufferSize));
     if (outputBufferSize < minimumOutputBufferSize)
@@ -333,16 +336,19 @@ MilUtility_CopyPixelBuffer(
         IFC(E_INVALIDARG);
     }
 
-    UINT minimumInputBufferStrideInBits = 0;
+    UINT minimumInputBufferStrideInBits;
+    minimumInputBufferStrideInBits = 0;
     IFC(UIntAdd(inputBufferOffsetInBits, copyWidthInBits, &minimumInputBufferStrideInBits));
-    UINT minimumInputBufferStride = BitsToBytes(minimumInputBufferStrideInBits);
+    UINT minimumInputBufferStride;
+    minimumInputBufferStride = BitsToBytes(minimumInputBufferStrideInBits);
     if (inputBufferStride < minimumInputBufferStride)
     {
         // The stride of the input buffer is too small.
         IFC(E_INVALIDARG);
     }
 
-    UINT minimumInputBufferSize = 0;
+    UINT minimumInputBufferSize;
+    minimumInputBufferSize = 0;
     IFC(UIntMult(inputBufferStride, (height-1), &minimumInputBufferSize));
     IFC(UIntAdd(minimumInputBufferSize, minimumInputBufferStride, &minimumInputBufferSize));
     if (inputBufferSize < minimumInputBufferSize)
