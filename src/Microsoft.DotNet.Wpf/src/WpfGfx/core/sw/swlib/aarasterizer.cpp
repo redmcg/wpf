@@ -263,6 +263,33 @@ static VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
 //  Synopsis:  Antialised filler state.
 //
 
+VOID FASTCALL ScalePPAACoverage_128bppPRGBA(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP);
+
+VOID FASTCALL ScalePPAACoverage_32bppPBGRA(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP);
+
+VOID FASTCALL ScalePPAACoverage_32bppBGR(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP);
+
+VOID FASTCALL ScalePPAACoverage_Complement_32bppBGR(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP);
+
+VOID FASTCALL ScalePPAACoverage_Complement_32bppBGRA(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP);
+
+VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP,
+	bool fHasAlpha,
+	bool fUseComplementFactor
+	);
+
 class CAntialiasedFiller : public OpSpecificData
 {
 private:
