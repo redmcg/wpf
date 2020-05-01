@@ -125,7 +125,8 @@ CEdgeStore::NextAddBuffer(
     // We have to grow our data structure by adding a new buffer
     // and adding it to the list:
 
-    CEdgeAllocation *newBuffer = static_cast<CEdgeAllocation*>
+    CEdgeAllocation *newBuffer;
+    newBuffer = static_cast<CEdgeAllocation*>
         (GpMalloc(Mt(MAARasterizerEdge),
                   sizeof(CEdgeAllocation) +
                   sizeof(CEdge) * (EDGE_STORE_ALLOCATION_NUMBER
@@ -3065,14 +3066,15 @@ RasterizePath(
 
     // Initialize and sort the inactive array:
 
-    INT iCurrentY = InitializeInactiveArray(
+    INT iCurrentY, yBottom;
+    iCurrentY = InitializeInactiveArray(
         &edgeStore,
         inactiveArray,
         totalCount,
         &tailEdge
         );
 
-    INT yBottom = edgeContext.MaxY;
+    yBottom = edgeContext.MaxY;
 
     Assert(yBottom > 0);
 
