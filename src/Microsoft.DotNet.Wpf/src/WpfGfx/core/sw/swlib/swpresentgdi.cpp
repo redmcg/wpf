@@ -306,6 +306,7 @@ HRESULT CSwPresenter32bppGDI::CopyPixels(
     Assert(rcCopy.Width > 0);
     Assert(rcCopy.Height > 0);
 
+{
     INT_PTR iBitLeft = rcCopy.X * GetPixelFormatSize(m_RenderPixelFormat);
 
     const BYTE *pbSurface = static_cast<BYTE *>(m_pvRenderBits) +
@@ -346,6 +347,7 @@ HRESULT CSwPresenter32bppGDI::CopyPixels(
         pbSurface += m_nBufferStride;
         pbPixels += cbOutputBufferStride;
     }
+}
 
 Cleanup:
     RRETURN(hr);
@@ -1148,7 +1150,8 @@ HRESULT CSwPresenter32bppGDI::CreateFormatConverter(
     //     128bppBGR    |     N/A              |  128BGR -> ?RGB
     //
 
-    MilPixelFormat::Enum fmtBackBuffer = m_RenderPixelFormat;
+    MilPixelFormat::Enum fmtBackBuffer;
+    fmtBackBuffer = m_RenderPixelFormat;
 
     if (m_eWindowLayerType != MilWindowLayerType::ApplicationManagedLayer)
     {
