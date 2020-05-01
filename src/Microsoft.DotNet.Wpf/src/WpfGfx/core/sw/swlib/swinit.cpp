@@ -21,6 +21,9 @@
 
 #include "precomp.hpp"
 
+#if defined(NOASM)
+const
+#endif
 bool g_fUseMMX = false;
 bool g_fUseSSE2 = false;
 
@@ -90,10 +93,12 @@ SwStartup()
     }
 #endif
 
+#if defined(NOASM)
     if (dwDisableMMX == 0 && CCPUInfo::HasMMX())
     {
         g_fUseMMX = true;
     }
+#endif
 
     if (dwDisableSSE2 == 0 && CCPUInfo::HasSSE2())
     {

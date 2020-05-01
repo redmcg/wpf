@@ -3255,7 +3255,7 @@ void CBilinearSpan_MMX::GenerateColors(
     Assert((((ULONG_PTR) m_pvBits) & 3) == 0);
     Assert((m_cbStride & 3) == 0);
 
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
     // Transform an array of points using the matrix v' = v M:
     //
