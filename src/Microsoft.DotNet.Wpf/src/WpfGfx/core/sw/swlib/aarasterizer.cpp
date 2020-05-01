@@ -1781,30 +1781,6 @@ TurnLeft(
 *
 * Function Description:
 *
-*   Computes the index of the NominalDrawVertex table to be use as the
-*   drawing vertex.  The result is numbered such that a traversal using
-*   an increasing pointer will go counter-clockwise around the pen.
-*
-* Created:
-*
-*   04/09/2000 andrewgo
-*
-\**************************************************************************/
-
-const POINT NominalDrawVertex[] =
-{
-    // Don't forget that in device space, positive 'y' is down:
-
-    {0,  -8},
-    {-8, 0},
-    {0,  8},
-    {8,  0}
-};
-
-/**************************************************************************\
-*
-* Function Description:
-*
 *   Does complete parameter checking on the 'types' array of a path.
 *
 * Created:
