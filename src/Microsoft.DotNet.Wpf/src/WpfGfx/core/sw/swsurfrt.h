@@ -165,7 +165,7 @@ public:
     // CSpanSink interface
 
     void OutputSpan(INT y, INT xMin, INT xMax)  override;
-    // void AddDirtyRect(__in_ecount(1) const MilPointAndSizeL *prcDirty) override;
+    virtual void AddDirtyRect(__in_ecount(1) const MilPointAndSizeL *prcDirty);
 
     HRESULT SetupPipeline(
         MilPixelFormat::Enum fmtColorData,
