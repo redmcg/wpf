@@ -59,6 +59,7 @@
 #define __inout_ecount(x)
 #define __inout_ecount_opt(x)
 #define __inout_ecount_part_opt(x,y)
+#define __inout_xcount(x)
 #define __kernel_entry
 #define __notnull
 #define __nullterminated
