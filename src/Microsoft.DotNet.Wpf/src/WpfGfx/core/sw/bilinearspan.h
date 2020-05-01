@@ -450,6 +450,12 @@ public:
 *
 **************************************************************************/
 
+VOID FASTCALL ConstantAlpha_32bppPARGB(
+	const PipelineParams *, const ScanOpParams *);
+
+VOID FASTCALL ConstantAlpha_32bppRGB(
+	const PipelineParams *, const ScanOpParams *);
+
 static VOID MIL_FORCEINLINE ConstantAlpha_32bppPARGB_or_32bppRGB_Slow(
 	const PipelineParams *, const ScanOpParams *, bool);
 
@@ -482,6 +488,12 @@ private:
 *   Span class applying alpha mask on its input.
 *
 **************************************************************************/
+
+VOID FASTCALL MaskAlpha_32bppPARGB_32bppPARGB(
+	const PipelineParams *, const ScanOpParams *);
+
+VOID FASTCALL MaskAlpha_32bppRGB_32bppPARGB(
+	const PipelineParams *, const ScanOpParams *);
 
 static VOID MIL_FORCEINLINE MaskAlpha_32bpp_Slow_32bppPARGB(
 	const PipelineParams *,
@@ -535,6 +547,9 @@ private:
 *
 **************************************************************************/
 
+VOID FASTCALL ConstantAlpha_128bppPABGR(
+	const PipelineParams *, const ScanOpParams *);
+
 class CConstantAlphaSpan_scRGB : public COwnedOSD
 {
 public:
@@ -557,6 +572,9 @@ private:
 *   Span class applying alpha mask on its input.
 *
 **************************************************************************/
+
+VOID FASTCALL MaskAlpha_128bppPABGR_128bppPABGR(
+	const PipelineParams *, const ScanOpParams *);
 
 class CMaskAlphaSpan_scRGB : public COwnedOSD
 {
