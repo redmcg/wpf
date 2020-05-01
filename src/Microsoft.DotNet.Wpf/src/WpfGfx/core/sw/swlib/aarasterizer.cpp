@@ -293,7 +293,6 @@ VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
 class CAntialiasedFiller : public OpSpecificData
 {
 private:
-    CScanPipeline *m_pScanPipeline;
     CCoverageBuffer m_coverageBuffer;
 
     COutputSpan *m_pOutputSpan;
