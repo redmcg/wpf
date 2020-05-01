@@ -230,7 +230,8 @@ RenderingBuilder::Append_AlphaMask(
 
     IFC(AddOp_Unary(pfnOp, pNewOSD, SP_BLENDSOURCE));
 
-    CScanPipelineRendering *pSPR = GetPipelineRendering();
+    CScanPipelineRendering *pSPR;
+    pSPR = GetPipelineRendering();
     Assert(pSPR);
 
     IFC(pSPR->m_rgosdOwned.Add(pNewOSD));
@@ -269,7 +270,8 @@ RenderingBuilder::AddOp_ScalePPAACoverage(
     // We only support 1 of these operations in the pipeline.
     // Check that we haven't added one already.
 
-    CScanPipelineRendering *pSPR = GetPipelineRendering();
+    CScanPipelineRendering *pSPR;
+    pSPR = GetPipelineRendering();
     Assert(pSPR);
     Assert(pSPR->m_idxosdAAFiller == -1);
 
@@ -348,7 +350,8 @@ HRESULT RenderingBuilder::Append_AlphaScale(
 
     IFC(AddOp_Unary(pfnOp, pNewOSD, SP_BLENDSOURCE));
 
-    CScanPipelineRendering *pSPR = GetPipelineRendering();
+    CScanPipelineRendering *pSPR;
+    pSPR = GetPipelineRendering();
     Assert(pSPR);
     IFC(pSPR->m_rgosdOwned.Add(pNewOSD));
     pNewOSD = NULL;   // Ownership transfered to pSPR->m_rgosdOwned.
