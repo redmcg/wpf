@@ -120,7 +120,7 @@ class CScanPipelineRendering::Builder2
 {
 public:
 
-    CScanPipelineRendering::Builder2(
+    Builder2(
         __in_ecount(1) CScanPipelineRendering *pSP,
         __in_ecount(1) CSPIntermediateBuffers *pIntermediateBuffers
         );
