@@ -400,7 +400,8 @@ CScanPipelineRendering::Builder2::AllocIntermediateBuffer(VBID vbid)
         goto Cleanup; // already allocated
 
     // Do allocate
-    UINT i = 0;
+    UINT i;
+    i = 0;
     for (; i < NUM_SCAN_PIPELINE_INTERMEDIATE_BUFFERS; i++)
     {
         if (m_fIntermediateBufferFree[i])
