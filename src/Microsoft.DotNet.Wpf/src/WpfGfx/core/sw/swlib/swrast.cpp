@@ -436,6 +436,7 @@ HRESULT CSoftwareRasterizer::DrawGlyphRun(
 
     if (!fVisible) goto Cleanup;
 
+{
     //
     // For text rendering, local rendering and world sampling spaces are identical
     //
@@ -504,6 +505,7 @@ HRESULT CSoftwareRasterizer::DrawGlyphRun(
     }
 
     pSpanSink->ReleaseExpensiveResources();
+}
 
 Cleanup:
 
@@ -980,10 +982,13 @@ HRESULT CResampleSpanCreator_sRGB::GetCS_Resample(
         pIWICBitmapSourceNoRef = pConverter; // No ref change
     }
 
-    UINT width = 0, height = 0;
+    UINT width, height;
+    width = 0;
+	height = 0;
     IFC(pIWICBitmapSourceNoRef->GetSize(&width, &height));
 
-    CResampleSpan<GpCC> *pResampleSpan = NULL;
+    CResampleSpan<GpCC> *pResampleSpan;
+    pResampleSpan = NULL;
 
     // Go through our hierarchy of scan drawers:
     if (IsMatrixIntegerTranslate(pmatTextureHPCToDeviceHPC) &&
