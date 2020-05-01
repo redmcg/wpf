@@ -378,7 +378,7 @@ public:
 
 private:
 
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     static int RoundWithHalvesToEven(float x);
     static int LargeFloor(float x);
     static int LargeCeiling(float x);
@@ -466,7 +466,7 @@ CFloatFPU::RoundWithHalvesToEven(float x)
 MIL_FORCEINLINE int
 CFloatFPU::RoundWithHalvesUp(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
     int i = RoundWithHalvesToEven(x);
 
@@ -502,7 +502,7 @@ CFloatFPU::RoundWithHalvesUp(float x)
 MIL_FORCEINLINE int
 CFloatFPU::RoundWithHalvesDown(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
     int i = RoundWithHalvesToEven(x);
 
@@ -538,7 +538,7 @@ CFloatFPU::RoundWithHalvesDown(float x)
 MIL_FORCEINLINE int
 CFloatFPU::FloorFPU(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     int i = RoundWithHalvesToEven(x);
 
     if (static_cast<float>(i) > x)
@@ -565,7 +565,7 @@ CFloatFPU::FloorFPU(float x)
 MIL_FORCEINLINE int
 CFloatFPU::Floor(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     // cut off sign
     UINT32 xAbs = *reinterpret_cast<const UINT*>(&x) & 0x7FFFFFFF;
 
@@ -600,7 +600,7 @@ CFloatFPU::Floor(float x)
 MIL_FORCEINLINE int
 CFloatFPU::CeilingFPU(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     int i = RoundWithHalvesToEven(x);
 
     if (static_cast<float>(i) < x)
@@ -628,7 +628,7 @@ CFloatFPU::CeilingFPU(float x)
 MIL_FORCEINLINE int
 CFloatFPU::Ceiling(float x)
 {
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     // cut off sign
     UINT32 xAbs = *reinterpret_cast<const UINT*>(&x) & 0x7FFFFFFF;
 
@@ -727,7 +727,7 @@ MIL_FORCEINLINE float FASTCALL CFloatFPU::FloorF(float x)
 MIL_FORCEINLINE float FASTCALL CFloatFPU::FloorFFast(float x)
 {
     // Floats greater than or equal to MIN_FLOAT_WITHOUT_FRACTION are all integers
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
     // cut off sign
     UINT32 xAbs = *reinterpret_cast<const UINT*>(&x) & 0x7FFFFFFF;
     if (xAbs >= MIN_FLOAT_WITHOUT_FRACTION_AS_UINT)

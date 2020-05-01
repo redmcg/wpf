@@ -592,7 +592,7 @@ int CFloatFPU::LargeRound(float x)
 #endif
 }
 
-#if defined(_X86_)
+#if !defined(NOASM) && defined(_X86_)
 
 //+------------------------------------------------------------------------
 //
