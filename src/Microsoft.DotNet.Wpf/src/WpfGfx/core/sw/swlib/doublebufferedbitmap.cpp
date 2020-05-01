@@ -135,7 +135,8 @@ CSwDoubleBufferedBitmap::HrInit(
         &m_pBackBuffer
         ));
 
-    MilPixelFormat::Enum frontBufferPixelFormat = HasAlphaChannel(m_backBufferPixelFormat) ?
+    MilPixelFormat::Enum frontBufferPixelFormat;
+    frontBufferPixelFormat = HasAlphaChannel(m_backBufferPixelFormat) ?
                                                     MilPixelFormat::PBGRA32bpp :
                                                     MilPixelFormat::BGR32bpp;
 
