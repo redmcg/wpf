@@ -164,7 +164,6 @@ private:
     // variables for simplified translation-only rendering
     //
 
-    int m_dy;
     int m_offsetS, m_fractionS, m_offsetT;
 
     //
