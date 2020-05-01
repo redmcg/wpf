@@ -25,6 +25,11 @@
 *
 **************************************************************************/
 
+#ifndef _MSC_VER
+// Wine Mono hack: There are way too many "overrides" in the wrong place, just ignore them.
+#define override
+#endif
+
 #include <wpfsdl.h>
 // system includes
 
