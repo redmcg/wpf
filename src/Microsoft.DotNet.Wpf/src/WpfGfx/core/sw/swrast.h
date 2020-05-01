@@ -603,7 +603,6 @@ private:
     CColorSourceCreator_sRGB m_Creator_sRGB;
 
     CColorSourceCreator *m_pCSCreator;
-    MilPixelFormat::Enum m_fmtColorSource;     // Either 32bppPARGB, or 128bppPABGR.
 };
 
 
