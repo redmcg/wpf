@@ -827,6 +827,7 @@ HRESULT CSwRenderTargetSurface::DrawPathInternal(
         MilBitmapLock::Write | MilBitmapLock::Read
         ));
 
+{
     //
     // For 2D rendering, local rendering and world sampling spaces are identical
     //
@@ -882,6 +883,7 @@ HRESULT CSwRenderTargetSurface::DrawPathInternal(
             DBG_STEP_RENDERING_COMMA_PARAM(m_pDisplayRTParent)
             ));
     }
+}
 
 Cleanup:
     // Some failure HRESULTs should only cause the primitive
@@ -1088,7 +1090,8 @@ STDMETHODIMP CSwRenderTargetSurface::DrawGlyphs(
     // This target supports ClearType rendering if ClearTypeHint has beeen set
     // (m_forceClearType) or it doesn't support per pixel transparency
     //
-    bool fTargetSupportsClearType = m_forceClearType || !HasAlpha();
+    bool fTargetSupportsClearType;
+    fTargetSupportsClearType = m_forceClearType || !HasAlpha();
 
     // Lock the internal surface so that we can access the pixels.
     IFC(LockInternalSurface(NULL, MilBitmapLock::Write | MilBitmapLock::Read));
