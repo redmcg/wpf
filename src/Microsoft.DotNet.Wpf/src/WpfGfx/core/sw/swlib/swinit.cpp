@@ -40,7 +40,9 @@ HRESULT
 SwStartup()
 {
     HRESULT hr = S_OK;
+#if !defined(NOASM)
     DWORD dwDisableMMX = 0;
+#endif
     DWORD dwDisableSSE2 = 0;
 
 #if PRERELEASE
@@ -59,6 +61,7 @@ SwStartup()
         DWORD dwValue = 0;
         DWORD dwDataSize = sizeof(dwValue);
 
+#if !defined(NOASM)
         LONG r = RegQueryValueEx(
             hKeyAvalonGraphics,
             _T("DisableMMXForSwRast"),
@@ -74,6 +77,7 @@ SwStartup()
         }
 
         dwDataSize = sizeof(dwValue);        
+#endif
 
         r = RegQueryValueEx(
             hKeyAvalonGraphics,
@@ -93,7 +97,7 @@ SwStartup()
     }
 #endif
 
-#if defined(NOASM)
+#if !defined(NOASM)
     if (dwDisableMMX == 0 && CCPUInfo::HasMMX())
     {
         g_fUseMMX = true;

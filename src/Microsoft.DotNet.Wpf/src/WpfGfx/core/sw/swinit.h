@@ -22,6 +22,9 @@
 HRESULT SwStartup();
 void SwShutdown();
 
+#if defined(NOASM)
+const
+#endif
 extern bool g_fUseMMX;
 extern bool g_fUseSSE2;
 
