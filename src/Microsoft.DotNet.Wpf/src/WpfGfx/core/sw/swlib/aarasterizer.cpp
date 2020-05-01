@@ -249,6 +249,13 @@ AssertActiveListOrder(
 
 #endif
 
+static VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
+	__in_ecount(1) const PipelineParams *pPP,
+	__in_ecount(1) const ScanOpParams *pSOP,
+	bool fHasAlpha,
+	bool fUseComplementFactor
+	);
+
 //+-----------------------------------------------------------------------------
 //
 //  Class:     CAntialiasedFiller
@@ -297,7 +304,7 @@ private:
     // Non-complement    PBGRA             BGR
     //
     // In all cases the output is PBGRA.
-    friend static VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
+    friend VOID MIL_FORCEINLINE ScalePPAACoverage_32bppPBGRA_Out_Slow(
         __in_ecount(1) const PipelineParams *pPP,
         __in_ecount(1) const ScanOpParams *pSOP,
         bool fHasAlpha,
