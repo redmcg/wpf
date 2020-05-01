@@ -16,6 +16,7 @@ INCLUDE_DIRS= \
 	shared/inc \
 	shared/util/utillib \
 	core \
+	core/sw \
 	../Shared/Tracing/native \
 	../../../../wine
 
