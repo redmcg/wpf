@@ -85,6 +85,7 @@ CSWGlyphRunPainter::Init(
         goto Cleanup;
     }
 
+{
     RECT const &rcf = m_pSWGlyph->GetFilteredRect();
     m_uFilteredWidth = rcf.right - rcf.left;
     m_uFilteredHeight = rcf.bottom - rcf.top;
@@ -234,6 +235,7 @@ CSWGlyphRunPainter::Init(
 
     IFC(pars.pGlyphRun->GetGammaTable(pDisplaySettings, &m_pGammaTable));
     Assert(m_pGammaTable);
+}
 
 Cleanup:
     RRETURN(hr);
