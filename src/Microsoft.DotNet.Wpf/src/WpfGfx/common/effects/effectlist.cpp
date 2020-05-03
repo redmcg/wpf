@@ -328,7 +328,8 @@ CEffectList::GetParameters(
         IFC(E_INVALIDARG);
     }
 
-    void* pParamData = m_rgDataBlock.GetDataBuffer() + m_rgParamBlock[idxEffect].cbParamOffset;
+    void* pParamData;
+    pParamData = m_rgDataBlock.GetDataBuffer() + m_rgParamBlock[idxEffect].cbParamOffset;
     GpMemcpy(pData, pParamData, uiSize);
 
 Cleanup:
@@ -397,7 +398,8 @@ CEffectList::GetResources(
         IFC(E_INVALIDARG);
     }
 
-    void* ppResourceData = m_rgResourceBlock.GetDataBuffer() + m_rgParamBlock[idxEffect].uResourceOffset;
+    void* ppResourceData;
+    ppResourceData = m_rgResourceBlock.GetDataBuffer() + m_rgParamBlock[idxEffect].uResourceOffset;
     GpMemcpy(rgpResources, ppResourceData, cResources * sizeof(*rgpResources));
 
     for (UINT i = 0; i < cResources; i++)
@@ -570,8 +572,10 @@ CEffectList::ReplaceResource(
         IFC(E_INVALIDARG);
     }
 
+{
     IUnknown * &pICurrent = m_rgResourceBlock[idxResource];
     ReplaceInterface(pICurrent, pIUnknown);
+}
 
 Cleanup:
     API_CHECK(hr);
