@@ -387,7 +387,7 @@ protected:
 
 private:
     
-    template<typename TPlatform>
+    template<typename TFloat>
     VOID GenerateColors(
         __in INT nX, 
         __in INT nY, 

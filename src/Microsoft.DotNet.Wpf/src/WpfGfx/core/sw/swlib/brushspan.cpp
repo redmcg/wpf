@@ -864,9 +864,6 @@ CRadialGradientBrushSpan::Initialize(
     RRETURN(hr);
 }
 
-class TypeSSE { bool SSE; };
-class TypeNoSSE {};
-
 VOID 
 FASTCALL ColorSource_RadialGradient_32bppPARGB(
     __in_ecount(1) const PipelineParams *pPP,
@@ -880,7 +877,7 @@ FASTCALL ColorSource_RadialGradient_32bppPARGB(
 #if defined(_X86_)
     if (CCPUInfo::HasSSE())
     {
-        pColorSource->GenerateColors<TypeSSE>(
+        pColorSource->GenerateColors<CXmmFloat>(
             pPP->m_iX,
             pPP->m_iY, 
             pPP->m_uiCount, 
@@ -889,7 +886,7 @@ FASTCALL ColorSource_RadialGradient_32bppPARGB(
     }
     else
     {
-        pColorSource->GenerateColors<TypeNoSSE>(
+        pColorSource->GenerateColors<FLOAT>(
             pPP->m_iX,
             pPP->m_iY,
             pPP->m_uiCount,
@@ -897,14 +894,14 @@ FASTCALL ColorSource_RadialGradient_32bppPARGB(
             );
     }
 #elif defined(_AMD64_)
-    pColorSource->GenerateColors<TypeSSE>(
+    pColorSource->GenerateColors<CXmmFloat>(
         pPP->m_iX,
         pPP->m_iY,
         pPP->m_uiCount,
         (ARGB*) pSOP->m_pvDest
         );
 #else
-    pColorSource->GenerateColors<TypeNoSSE>(
+    pColorSource->GenerateColors<FLOAT>(
         pPP->m_iX,
         pPP->m_iY,
         pPP->m_uiCount,
@@ -929,7 +926,37 @@ CRadialGradientBrushSpan::ReleaseExpensiveResources()
    // This class doesn't hold onto resources that need to be released
 }
 
-template<typename TPlatform>
+static CXmmFloat TFloat_sqrt(const CXmmFloat& x)
+{
+	return CXmmFloat::Sqrt(x);
+}
+
+static FLOAT TFloat_sqrt(FLOAT x)
+{
+	return sqrtf(x);
+}
+
+static CXmmFloat TFloat_min(const CXmmFloat& x, const CXmmFloat& y)
+{
+	return CXmmFloat::Min(x, y);
+}
+
+static FLOAT TFloat_min(FLOAT x, FLOAT y)
+{
+	return min(x, y);
+}
+
+static int TFloat_round(const CXmmFloat& x)
+{
+	return x.Round();
+}
+
+static int TFloat_round(FLOAT x)
+{
+	return GpRealToFix16(x);
+}
+
+template<typename TFloat>
 VOID
 CRadialGradientBrushSpan::GenerateColors(
     __in INT nX, 
@@ -956,24 +983,13 @@ CRadialGradientBrushSpan::GenerateColors(
     // Given our start point in device space, figure out the corresponding
     // normalized brush point and then the texel(s).
 
-    __if_exists(TPlatform::SSE)
-    {
-        CXmmFloat rXIncrement = m_rM11;
-        CXmmFloat rYIncrement = m_rM12;
+	TFloat rXIncrement = m_rM11;
+	TFloat rYIncrement = m_rM12;
 
-        CXmmFloat x(nX), y(nY);
+	TFloat x(nX), y(nY);
 
-        CXmmFloat rXPositionHPC = x * rXIncrement + y * m_rM21 + m_rDx;
-        CXmmFloat rYPositionHPC = x * rYIncrement + y * m_rM22 + m_rDy;
-    }
-    __if_not_exists(TPlatform::SSE)
-    {
-        FLOAT rXIncrement = m_rM11;
-        FLOAT rYIncrement = m_rM12;
-
-        FLOAT rXPositionHPC = nX * rXIncrement + nY * m_rM21 + m_rDx;
-        FLOAT rYPositionHPC = nX * rYIncrement + nY * m_rM22 + m_rDy;
-    }
+	TFloat rXPositionHPC = x * rXIncrement + y * m_rM21 + m_rDx;
+	TFloat rYPositionHPC = x * rYIncrement + y * m_rM22 + m_rDy;
             
     //
     // Both TexelCount and FIXED16_INT_MAX + 1 should be powers of 2. This
@@ -994,34 +1010,18 @@ CRadialGradientBrushSpan::GenerateColors(
         // normalized brush space.  The distance is the unwrapped index into
         // the texture.
 
-        __if_exists(TPlatform::SSE)
-        {
-            CXmmFloat rDistanceHPC = CXmmFloat::Sqrt( rXPositionHPC * rXPositionHPC + rYPositionHPC * rYPositionHPC );
-            rXPositionHPC += rXIncrement;
-            rYPositionHPC += rYIncrement;
+		TFloat rDistanceHPC = TFloat_sqrt( rXPositionHPC * rXPositionHPC + rYPositionHPC * rYPositionHPC );
+		rXPositionHPC += rXIncrement;
+		rYPositionHPC += rYIncrement;
 
-            // Clamping to FIXED16_INT_MAX will cause us to choose the last
-            // texel in the texture because
-            // (FIXED16_INT_MAX % m_uTexelCount) == (m_uTexelCount - 1)
-            // See assertions above.
-            CXmmFloat rDistanceIPC = CXmmFloat::Min(rDistanceHPC - 0.5f, CXmmFloat(FIXED16_INT_MAX));
-            rDistanceIPC = rDistanceIPC * FIX16_ONE;
+		// Clamping to FIXED16_INT_MAX will cause us to choose the last
+		// texel in the texture because
+		// (FIXED16_INT_MAX % m_uTexelCount) == (m_uTexelCount - 1)
+		// See assertions above.
+		TFloat rDistanceIPC = TFloat_min(rDistanceHPC - 0.5f, TFloat(FIXED16_INT_MAX));
+		rDistanceIPC = rDistanceIPC * FIX16_ONE;
 
-            nDistanceIPC = rDistanceIPC.Round();
-        }
-        __if_not_exists(TPlatform::SSE)
-        {
-            FLOAT rDistanceHPC = sqrtf( rXPositionHPC * rXPositionHPC + rYPositionHPC * rYPositionHPC );
-            rXPositionHPC += rXIncrement;
-            rYPositionHPC += rYIncrement;
-
-            // Clamping to FIXED16_INT_MAX will cause us to choose the last
-            // texel in the texture because
-            // (FIXED16_INT_MAX % m_uTexelCount) == (m_uTexelCount - 1)
-            // See assertions above.
-            FLOAT rDistanceIPC = min(rDistanceHPC - 0.5f, static_cast<float>(FIXED16_INT_MAX));
-            nDistanceIPC = GpRealToFix16(rDistanceIPC);
-        }
+		nDistanceIPC = TFloat_round(rDistanceIPC);
 
         {
             // We want to linearly interpolate between two texels,
