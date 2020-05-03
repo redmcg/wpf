@@ -3,4 +3,5 @@
 // See the LICENSE file in the project root for more information.
 
 
+#define INITGUID
 #include "precomp.hpp"
