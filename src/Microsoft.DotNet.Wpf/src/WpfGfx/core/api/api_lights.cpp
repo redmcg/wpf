@@ -24,6 +24,10 @@ MtDefine(CMILLightDirectional, MILApi, "CMILLightDirectional");
 MtDefine(CMILLightPoint,       MILApi, "CMILLightPoint");
 MtDefine(CMILLightSpot,        MILApi, "CMILLightSpot");
 
+CMILLight::~CMILLight()
+{
+}
+
 //-----------------------------------------------------------------------------
 //
 //  Function: CMILLightAmbient::Set
