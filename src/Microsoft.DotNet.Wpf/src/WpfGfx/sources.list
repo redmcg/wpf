@@ -334,3 +334,4 @@ core/sw/swlib/SwIntermediateRTCreator.cpp
 core/sw/swlib/scanpipelinerender.cpp
 core/sw/swlib/swbitmapcolorsource.cpp
 core/sw/swlib/brushspan.cpp
+common/effects/effectlist.cpp
