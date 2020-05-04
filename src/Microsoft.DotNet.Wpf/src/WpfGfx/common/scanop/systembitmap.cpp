@@ -691,7 +691,8 @@ HRESULT CDummySource::CopyPixels(
 
     UINT nStride;
     IFC(HrCalcDWordAlignedScanlineStride(rcLock.right, m_PixelFormat, nStride));
-    BYTE *pbPixels = pvPixels;
+    BYTE *pbPixels;
+    pbPixels = pvPixels;
     for (INT n = 0; n < rcLock.bottom; n++)
     {
 #pragma prefast(push)
