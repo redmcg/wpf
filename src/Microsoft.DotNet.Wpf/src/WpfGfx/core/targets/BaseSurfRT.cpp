@@ -464,6 +464,11 @@ CBaseSurfaceRenderTarget<TRenderTargetLayerData>::DbgAssertBoundsState()
 
 // Explicit template instantiation
 
+#ifndef _MSC_VER
+// Wine Mono hack: There are way too many "overrides" in the wrong place, just ignore them.
+#define override
+#endif
+
 #include "scanop\scanop.h"
 #include "glyph\glyph.h"
 #include "sw\sw.h"
