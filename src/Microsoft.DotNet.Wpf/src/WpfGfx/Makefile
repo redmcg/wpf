@@ -19,6 +19,7 @@ INCLUDE_DIRS= \
 	core/sw \
 	../Shared/Tracing/native \
 	core/fxjit/public \
+	core/fxjit/Compiler \
 	../../../../wine
 
 all: $(OBJDIR)/wpfgfx_cor3.dll
