@@ -337,3 +337,4 @@ core/sw/swlib/brushspan.cpp
 common/effects/effectlist.cpp
 core/control/util/control.cpp
 Shared/OSVersionHelper/osversionhelper.cpp
+common/DynamicCall/DelayCall.cpp
