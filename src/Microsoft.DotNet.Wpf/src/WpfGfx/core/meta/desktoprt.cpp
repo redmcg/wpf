@@ -115,7 +115,8 @@ HRESULT CDesktopRenderTarget::Create(
     // Allocate and initialize a desktop render target
     //
 
-    CDesktopRenderTarget *pRT = NULL;
+    CDesktopRenderTarget *pRT;
+    pRT = NULL;
 
     pRT = new(cAdapters) CDesktopHWNDRenderTarget(cAdapters, pDisplaySet, eWindowLayerType);
     IFCOOM(pRT);
@@ -1362,7 +1363,8 @@ CDesktopRenderTarget::CanAccelerateScroll(
     IFC(ReadEnabledDisplays(&rgActiveDisplays));
 
 
-    bool fFoundIntersection = false;
+    bool fFoundIntersection;
+    fFoundIntersection = false;
     for (UINT i = 0; i < displayCount; i++)
     {
         if (rgActiveDisplays[i])
