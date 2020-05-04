@@ -1503,7 +1503,8 @@ CMetaRenderTarget::DrawVideo(
     }
 
     // Disable prefiltering for video.
-    bool fSavePrefilterEnable = pContextState->RenderState->PrefilterEnable;
+    bool fSavePrefilterEnable;
+    fSavePrefilterEnable = pContextState->RenderState->PrefilterEnable;
     pContextState->RenderState->PrefilterEnable = false;
 
     UINT idxFirstEnabledRT;
