@@ -307,13 +307,15 @@ void CPSTrans::Initialize(  const DWORD *pCode,
         EXIT_WITH_STATUS(E_FAIL);
     }
 
-    FLOAT fMax = FLT_MAX;
-    FLOAT fMin = -fMax;
+	FLOAT fMax, fMin;
+    fMax = FLT_MAX;
+    fMin = -fMax;
 
     // Process flags
-    BOOL  bKeepDebugInfo =              (0!=(PSTRANS_FLAGS_KEEP_DEBUGINFO_INSTRUCTION_LIST & Flags));
-    BOOL  bInsertD3DPSInstMarkers =     (0!=(PSTRANS_FLAGS_INSERT_D3DPSINST_MARKERS & Flags));
-    BOOL  bAllowLegacyApproximations =  (0!=(PSTRANS_FLAGS_ENABLE_LEGACY_APPROXIMATIONS & Flags));
+	BOOL bKeepDebugInfo, bInsertD3DPSInstMarkers, bAllowLegacyApproximations;
+    bKeepDebugInfo =              (0!=(PSTRANS_FLAGS_KEEP_DEBUGINFO_INSTRUCTION_LIST & Flags));
+    bInsertD3DPSInstMarkers =     (0!=(PSTRANS_FLAGS_INSERT_D3DPSINST_MARKERS & Flags));
+    bAllowLegacyApproximations =  (0!=(PSTRANS_FLAGS_ENABLE_LEGACY_APPROXIMATIONS & Flags));
 
     m_ColorOutPresentMask               = 0;
 
