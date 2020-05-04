@@ -25,6 +25,8 @@ all: $(OBJDIR)/wpfgfx_cor3.dll
 
 CXX_FLAGS=-c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Wno-inline-new-delete -Wno-ignored-pragma-optimize -Wno-undefined-inline -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-undefined-var-template -Wno-switch -Wno-missing-braces -Wno-parentheses-equality -Wno-implicit-int-float-conversion -Werror -fms-extensions -municode -DD3D9EXTENSIONS -DNOASM -D_UNICODE $(INCLUDE_DIRS:%=-I%)
 
+LINK_FLAGS=-lgdi32
+
 $(OBJDIR)/Shared/%.cpp.o: ../Shared/%.cpp
 	mkdir -p $(@D)
 	$(MINGW)-g++ -o $@ $(CXX_FLAGS) $<
@@ -38,4 +40,4 @@ $(OBJDIR)/%.cxx.o: %.cxx
 	$(MINGW)-g++ -o $@ $(CXX_FLAGS) $<
 
 $(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
-	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(C_SRCS:%=$(OBJDIR)/%.o)
+	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o)
