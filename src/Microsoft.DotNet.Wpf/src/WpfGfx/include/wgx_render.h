@@ -319,7 +319,7 @@ DECLARE_INTERFACE_(IMILRenderTargetBitmap, IMILRenderTarget)
     STDMETHOD(GetNumQueuedPresents)(
         THIS_
         UINT *puNumQueuedPresents
-        );
+        ) PURE;
 };
 
 /*=========================================================================*\
