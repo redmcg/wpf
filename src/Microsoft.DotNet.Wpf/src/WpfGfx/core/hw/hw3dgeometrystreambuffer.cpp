@@ -1463,8 +1463,8 @@ Cleanup:
 }
 
 // Forcing the compiler to generate code to avoid linker errors...
-typedef CHw3DGeometryRenderer<DWORD> CHw3DGeometryRenderer_DWORD;
-typedef CHw3DGeometryRenderer<vector3> CHw3DGeometryRenderer_vector3;
+template class CHw3DGeometryRenderer<DWORD>;
+template class CHw3DGeometryRenderer<vector3>;
 
 
 
