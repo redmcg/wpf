@@ -561,7 +561,8 @@ ScanPipelineBuilder::Append_Convert_NonHalftoned_ReportNOP(
 
     IFC(Append_Convert_NonHalftoned(fmtDest, fmtSrc, fSrcOpaque, eSubpipe));
 
-    UINT uEnd = GetOpCount();
+    UINT uEnd;
+    uEnd = GetOpCount();
 
     *fIsNop = (uEnd == uStart);
 
