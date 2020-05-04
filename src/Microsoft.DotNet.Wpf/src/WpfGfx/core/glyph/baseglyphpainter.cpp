@@ -166,11 +166,6 @@ CBaseGlyphRunPainter::Init(
     }
 }
 
-static const UINT sc_uCriticalTime = 200; // msec
-static const UINT sc_uWakeTime = 50; // msec
-static const float sc_rAllowedStep = 0.05f; // pixel
-static const float sc_rBigJumpThreshold = 3.0f; // pixels
-
 //+-----------------------------------------------------------------------------
 //
 //  Member:
