@@ -12,7 +12,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-class RDPSTrans : public CPSTrans
+class RDPSTrans final : public CPSTrans
 {
 protected:
     void            SetOutputBufferGrowSize(DWORD dwGrowSize); // implementing pure method
