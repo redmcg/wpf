@@ -26,7 +26,7 @@
 #define _DWordCount() (pToken - pCode)
 #define EXIT_WITH_STATUS(hr) {m_Status = (hr); goto ERROR_EXIT;}
 
-#define DPFERR
+#define DPFERR(...) (void)0
 #define UNREFERENCED_PARAMETER(x)   (x)
 
 // attribute array offsets
