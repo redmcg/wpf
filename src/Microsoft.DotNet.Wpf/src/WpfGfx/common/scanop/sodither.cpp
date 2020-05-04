@@ -72,6 +72,7 @@ const UINT32 Dither5BitB[16] = { 0x00000000, 0x00000004, 0x00000001, 0x00000005,
 // arrays for adding straight to an ARGB dword value.  Every row
 // is repeated to allow us to do 128-bit reads with wrapping.
 
+#if !defined(NOASM) && defined(_X86_)
 const UINT32 Dither565[32] = { 0x00000000, 0x00040204, 0x00010001, 0x00050205,
                          0x00000000, 0x00040204, 0x00010001, 0x00050205,
                          0x00060306, 0x00020102, 0x00070307, 0x00030103,
@@ -94,6 +95,7 @@ const UINT32 Dither555[32] = { 0x00000000, 0x00040404, 0x00010101, 0x00050505,
 // routine:
 
 const UINT32 DitherNone[4] = { 0, 0, 0, 0 };
+#endif
 
 // Dither to 16bppRGB565
 
