@@ -108,7 +108,8 @@ CBaseWGXBitmap::AddDirtyRect(
         IFC(E_INVALIDARG);
     }
 
-    CMilRectU const *prcDirty = reinterpret_cast<CMilRectU const *>(prcDirtyRect);
+    CMilRectU const *prcDirty;
+    prcDirty = reinterpret_cast<CMilRectU const *>(prcDirtyRect);
 
     // No need to remember dirty rects for a bitmap that is not
     // cached yet.
