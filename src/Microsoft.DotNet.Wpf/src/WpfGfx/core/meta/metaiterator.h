@@ -55,8 +55,6 @@ private:
         );
 
 private:
-    bool m_fMoreIterationsNeeded;
-
     CContextState *m_pContextState;
     CDisplaySet const *m_pDisplaySet;
 
