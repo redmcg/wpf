@@ -359,3 +359,8 @@ core/targets/precomp.cpp
 core/targets/BaseRT.cpp
 core/targets/BaseSurfRT.cpp
 core/targets/ShapeClipperForFEB.cpp
+core/glyph/precomp.cpp
+core/glyph/glyphruncore.cpp
+core/glyph/perf.cpp
+core/glyph/BitmapDbgIO.cpp
+core/glyph/baseglyphpainter.cpp
