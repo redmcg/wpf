@@ -355,3 +355,7 @@ common/scanop/halftone.cpp
 common/scanop/soquantize.cpp
 common/scanop/soalphamultiply.cpp
 common/scanop/sodither.cpp
+core/targets/precomp.cpp
+core/targets/BaseRT.cpp
+core/targets/BaseSurfRT.cpp
+core/targets/ShapeClipperForFEB.cpp
