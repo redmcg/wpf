@@ -14,6 +14,7 @@
 #include <wpfsdl.h>
 #include <sal.h>
 #include <salextra.h>
+#include <stddef.h> // for size_t
 
 //----------------------------------------------------------------------------
 //
