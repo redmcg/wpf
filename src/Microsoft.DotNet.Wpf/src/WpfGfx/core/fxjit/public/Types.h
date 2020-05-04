@@ -13,6 +13,7 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
+#ifndef __GNUC__
 #if !defined(_BASETSD_H_)
 
 typedef __int32 BOOL;
@@ -97,5 +98,5 @@ typedef unsigned __int64 UINT64;
 #ifndef __STDCALL
 #define __STDCALL  __stdcall
 #endif
-
+#endif
 
