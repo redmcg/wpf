@@ -426,6 +426,14 @@ IsKernelDebuggerPresent()
     return kdInfo.KernelDebuggerEnabled && !kdInfo.KernelDebuggerNotPresent;
 }
 
+VOID AssertFull(
+	__in_opt PCSTR MessageA, __in_opt PCWSTR MessageW,
+	__in_opt PCSTR FailedAssertionA, __in_opt PCWSTR FailedAssertionW,
+	__in_opt PCSTR FunctionA, __in_opt PCWSTR FunctionW,
+	__in_opt PCSTR FileNameA, __in_opt PCWSTR FileNameW,
+	ULONG LineNumber
+	);
+
 
 //+----------------------------------------------------------------------------
 //
@@ -443,22 +451,21 @@ AssertA(
     ULONG LineNumber
     )
 {
-    WCHAR wszBuffer[1024] = L"";
-
-    IGNORE_HR(StringCbPrintfW(
-        wszBuffer, sizeof(wszBuffer), L"%hs",
-        Message
-        ));
-
-    AssertW(
-        wszBuffer,
-        FailedAssertion,
-        Function,
-        FileName,
-        LineNumber
-        );
+	AssertFull(Message, NULL, NULL, FailedAssertion, NULL, Function, NULL, FileName, LineNumber);
 }
 
+
+VOID
+AssertMixed(
+    __in_opt PCWSTR Message,
+    __in_opt PCSTR FailedAssertion,
+    __in PCSTR Function,
+    __in PCSTR FileName,
+    ULONG LineNumber
+    )
+{
+	AssertFull(NULL, Message, FailedAssertion, NULL, Function, NULL, FileName, NULL, LineNumber);
+}
 
 
 //+----------------------------------------------------------------------------
@@ -479,6 +486,17 @@ AssertW(
     __in PCWSTR Function,
     __in PCWSTR FileName,
     ULONG LineNumber
+    )
+{
+	AssertFull(NULL, Message, NULL, FailedAssertion, NULL, Function, NULL, FileName, LineNumber);
+}
+
+VOID AssertFull(
+	__in_opt PCSTR MessageA, __in_opt PCWSTR MessageW,
+	__in_opt PCSTR FailedAssertionA, __in_opt PCWSTR FailedAssertionW,
+	__in_opt PCSTR FunctionA, __in_opt PCWSTR FunctionW,
+	__in_opt PCSTR FileNameA, __in_opt PCWSTR FileNameW,
+	ULONG LineNumber
     )
 {
     // NOTE: This function has a variety of exit points, but none at the end.
@@ -559,14 +577,18 @@ AssertW(
         DbgPrintEx(
             g_uDPFltrID,
             DPFLTR_ERROR_LEVEL,
-            "\n*** Assertion failed: %ls%ls%ls\n***   %s%ls%sSource: `%ls:%ld`\n\n",
-            Message ? Message : L"",
-            (Message && FailedAssertion) ? L"\n***  " : L"",
-            FailedAssertion ? FailedAssertion : L"",
-            Function ? "Function: " : "",
-            Function ?  Function    : L"",
-            Function ? ", "         : "",
-            FileName,
+            "\n*** Assertion failed: %hs%ls%ls%hs%ls\n***   %s%hs%ls%sSource: `%hs%ls:%ld`\n\n",
+            MessageA ? MessageA : "",
+            MessageW ? MessageW : L"",
+            ((MessageA || MessageW) && (FailedAssertionA || FailedAssertionW)) ? L"\n***  " : L"",
+            FailedAssertionA ? FailedAssertionA : "",
+            FailedAssertionW ? FailedAssertionW : L"",
+            (FunctionA || FunctionW) ? "Function: " : "",
+            FunctionA ?  FunctionA    : "",
+            FunctionW ?  FunctionW    : L"",
+            (FunctionA || FunctionW) ? ", "         : "",
+            FileNameA ? FileNameA : "",
+            FileNameW ? FileNameW : L"",
             LineNumber
             );
 
