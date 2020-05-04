@@ -365,3 +365,10 @@ core/glyph/glyphruncore.cpp
 core/glyph/perf.cpp
 core/glyph/BitmapDbgIO.cpp
 core/glyph/baseglyphpainter.cpp
+core/meta/precomp.cpp
+core/meta/metart.cpp
+core/meta/dummyrt.cpp
+core/meta/metabitmaprt.cpp
+core/meta/desktophwndrt.cpp
+core/meta/metaiterator.cpp
+core/meta/desktoprt.cpp
