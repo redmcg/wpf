@@ -373,3 +373,8 @@ core/meta/desktophwndrt.cpp
 core/meta/metaiterator.cpp
 core/meta/desktoprt.cpp
 core/av/stub.cpp
+core/fxjit/PixelShader/precomp.cpp
+core/fxjit/PixelShader/rdpstrans.cpp
+core/fxjit/PixelShader/pstrans.cpp
+core/fxjit/PixelShader/pshader.cpp
+core/fxjit/PixelShader/shaderreg.cpp
