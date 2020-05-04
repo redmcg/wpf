@@ -68,20 +68,26 @@ namespace wpf
             class SehGuard
             {
             private:
+#ifndef __GNUC__
                 _se_translator_function m_prev;
+#endif
 
             public:
                 SehGuard()
                 {
+#ifndef __GNUC__
                     m_prev = _set_se_translator([](unsigned int code, struct _EXCEPTION_POINTERS*)
                     {
                         throw SehException(code);
                     });
+#endif
                 }
 
                 ~SehGuard()
                 {
+#ifndef __GNUC__
                     _set_se_translator(m_prev);
+#endif
                 }
             };
         }
