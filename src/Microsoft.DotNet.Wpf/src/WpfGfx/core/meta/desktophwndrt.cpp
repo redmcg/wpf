@@ -498,6 +498,7 @@ STDMETHODIMP CDesktopHWNDRenderTarget::SetPosition(
     Assert(rcNewPosition.IsWellOrdered());
     Assert(m_rcCurrentPosition.IsWellOrdered());
 
+{
     UINT uWidthNew = static_cast<UINT>(rcNewPosition.right - rcNewPosition.left);
     UINT uHeightNew = static_cast<UINT>(rcNewPosition.bottom - rcNewPosition.top);
 
@@ -749,6 +750,7 @@ STDMETHODIMP CDesktopHWNDRenderTarget::SetPosition(
     {
         Assert(hr == WGXERR_DISPLAYSTATEINVALID);
     }
+}
 
 Cleanup:
     RRETURN(hr);
@@ -1044,7 +1046,8 @@ STDMETHODIMP CDesktopHWNDRenderTarget::UpdatePresentProperties(
     m_ePresentTransparency = transparencyFlags;
     m_bPresentAlpha = static_cast<BYTE>(CFloatFPU::SmallRound(ClampAlpha(constantAlpha)*255.0f));
 
-    MilColorB oColorKey = Convert_MilColorF_scRGB_To_Premultiplied_MilColorB_sRGB(&colorKey);
+    MilColorB oColorKey;
+    oColorKey = Convert_MilColorF_scRGB_To_Premultiplied_MilColorB_sRGB(&colorKey);
     m_crPresentColorKey = RGB(MIL_COLOR_GET_RED(oColorKey),
                               MIL_COLOR_GET_GREEN(oColorKey),
                               MIL_COLOR_GET_BLUE(oColorKey));
