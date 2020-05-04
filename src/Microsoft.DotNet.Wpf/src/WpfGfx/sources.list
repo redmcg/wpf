@@ -139,6 +139,7 @@ core/hw/d3ddevicemanager.cpp
 core/hw/HwShaderEffect.cpp
 core/hw/HwBoxColorSource.cpp
 core/hw/hwffshaders.cpp
+core/hw/HwBitmapBrush.cpp
 core/common/precomp.cpp
 core/common/3dutils.cpp
 core/common/AssertDllInUse.cpp
