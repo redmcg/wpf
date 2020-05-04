@@ -904,6 +904,7 @@ __inline BOOL IsRectEmpty(_In_ LPCRECT pRect)
 
 /* Define offsetof macro */
 
+#ifndef offsetof
 #ifdef  _WIN64
 typedef __int64             ptrdiff_t;
 #define offsetof(s,m)   (size_t)( (ptrdiff_t)&(((s *)0)->m) )
@@ -916,6 +917,7 @@ typedef __int64             ptrdiff_t;
     #else // __MACINTOSH__
         #define offsetof(s,m)   (size_t)&(((s *)0)->m)
     #endif
+#endif
 #endif
 
 #define HRESULT XRESULT
