@@ -78,6 +78,7 @@
 #define __success(x)
 #define __typefix(x)
 #define __xcount(x)
+#define _IRQL_requires_max_(x)
 #define _Post_invalid_
 #define _Pre_maybenull_
 

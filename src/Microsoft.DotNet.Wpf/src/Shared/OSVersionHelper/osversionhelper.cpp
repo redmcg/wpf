@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 
+#include "modifiers.h"
 #include "wpfntddk.h"
 #include "wpfsdkddkver.h"
 #include "osversionhelper.h"
