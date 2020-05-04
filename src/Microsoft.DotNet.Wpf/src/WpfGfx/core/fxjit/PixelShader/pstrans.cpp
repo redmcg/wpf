@@ -42,7 +42,6 @@
 #define RDATTR_SPECULAR             36
 #define RDATTR_FOG                  40
 #define RDATTR_DEPTH                (MAX(41,PSTR_MAX_NUMINPUTREG*PSTR_NUM_COMPONENTS_IN_REGISTER))
-const UINT RDPRIM_MAX_ATTRIBUTES = (RDATTR_DEPTH+1);
 
 //-----------------------------------------------------------------------------
 //
