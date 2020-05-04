@@ -72,3 +72,8 @@
 #include "shaderreg.h"
 #include "pshader.h"
 
+#ifdef __GNUC__
+#undef C_ASSERT
+#define C_ASSERT(x) static_assert(x, #x)
+#endif
+
