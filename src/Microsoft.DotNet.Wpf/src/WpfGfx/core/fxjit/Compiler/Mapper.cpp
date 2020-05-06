@@ -153,7 +153,6 @@ public:
         : m_pRegState(pRegState)
         , m_pNextInStack(pNextInStack)
         , m_pOpShuffleHolder(pOpShuffleHolder)
-        , m_fLoop(fLoop)
     {
         for (UINT32 u = 0; u < g_uRegsTotal; u++)
             m_history[u] = rh_unused;
@@ -279,7 +278,6 @@ private:
     COperator * const m_pOpShuffleHolder;
     ExtRegState * const m_pRegState;
     CMapContext * const m_pNextInStack;
-    bool const m_fLoop;
     RegHistory m_history[g_uRegsTotal];
 };
 
