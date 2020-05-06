@@ -22,6 +22,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include "precomp.h"
 
+#include "float.h" // for FLT_MAX
+
 #define _BAD_VALUE (-1)
 #define _DWordCount() (pToken - pCode)
 #define EXIT_WITH_STATUS(hr) {m_Status = (hr); goto ERROR_EXIT;}
