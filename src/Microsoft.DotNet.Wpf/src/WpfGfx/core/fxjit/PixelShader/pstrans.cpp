@@ -29,7 +29,9 @@
 #define EXIT_WITH_STATUS(hr) {m_Status = (hr); goto ERROR_EXIT;}
 
 #define DPFERR(...) (void)0
+#ifndef UNREFERENCED_PARAMETER
 #define UNREFERENCED_PARAMETER(x)   (x)
+#endif
 
 // attribute array offsets
 #define RDATTR_TEXTURE0             0
