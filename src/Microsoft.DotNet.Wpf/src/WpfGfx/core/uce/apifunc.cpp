@@ -19,6 +19,11 @@ extern void DumpInstrumentationData();
 
 ExternTag(tagMILConnection);
 
+UINT g_uMilPerfInstrumentationFlags = 0;
+
+extern "C"
+{
+
 //+-----------------------------------------------------------------------------
 //
 //    Function:
@@ -951,7 +956,6 @@ Routine Description:
     See comments for "MilPerfInstrumentationFlags" in partition.h.
 --*/
 
-UINT g_uMilPerfInstrumentationFlags = 0;
 VOID WINAPI SetMilPerfInstrumentationFlags(UINT flags)
 {
     g_uMilPerfInstrumentationFlags = flags;
@@ -1066,4 +1070,5 @@ GetNextPerfElementId()
     return old + 1;
 }
 
+}
 
