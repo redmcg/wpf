@@ -424,25 +424,25 @@ DECLARE_INTERFACE_(IMILMesh3D, IUnknown)
         THIS_
         __in_bcount(cbSize) const dxlayer::vector3 *pVertexPositions,
         size_t cbSize
-        );
+        ) PURE;
 
     STDMETHOD(CopyNormalsFrom)(
         THIS_
         __in_bcount_opt(cbSize) const dxlayer::vector3 *pVertexNormals,
         size_t cbSize
-        );
+        ) PURE;
 
     STDMETHOD(CopyTextureCoordinatesFrom)(
         THIS_
         __in_bcount_opt(cbSize) const dxlayer::vector2 *pVertexTextureCoordinates,
         size_t cbSize
-        );
+        ) PURE;
 
     STDMETHOD(CopyIndicesFrom)(
         THIS_
         __in_bcount(cbSize) const UINT *rgIndices,
         size_t cbSize
-        );
+        ) PURE;
 
     STDMETHOD(CloneMesh)(
         THIS_
