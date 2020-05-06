@@ -400,3 +400,4 @@ core/fxjit/Collector/C_u32x4.cpp
 core/fxjit/Collector/C_u16x8.cpp
 core/fxjit/Collector/C_u8x8.cpp
 core/fxjit/Collector/PVOID.cpp
+core/fxjit/Platform/Platform.cpp
