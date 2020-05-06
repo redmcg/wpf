@@ -211,7 +211,7 @@ DECLARE_INTERFACE_(IMILCoreFactory, IUnknown)
         __in bool fReturnCommonMinimum,
         __out_ecount(1) ULONG *pulDisplayUniqueness,
         __out_ecount(1) MilGraphicsAccelerationCaps *pCaps
-        );
+        ) PURE;
 
     // Bitmap Render Target
 
