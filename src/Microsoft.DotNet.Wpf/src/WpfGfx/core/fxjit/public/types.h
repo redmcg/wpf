@@ -13,7 +13,9 @@
 //-----------------------------------------------------------------------------
 #pragma once
 
-#ifndef __GNUC__
+#ifdef __GNUC__
+#include <windows.h>
+#else
 #if !defined(_BASETSD_H_)
 
 typedef __int32 BOOL;
