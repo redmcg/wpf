@@ -20,6 +20,8 @@
 
 #include "precomp.hpp"
 #include "milav.tmh"
+#include "av/av.h"
+#include "av/avloader.h"
 
 //+-----------------------------------------------------------------------------
 //

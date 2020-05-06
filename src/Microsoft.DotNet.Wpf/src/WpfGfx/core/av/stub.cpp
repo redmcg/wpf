@@ -9,6 +9,7 @@
 #include <d3d9.h>
 #include <mfidl.h>
 #include <dxva2api.h>
+#include "av.h"
 #include "avloader.h"
 #include "internal.h"
 
@@ -28,4 +29,15 @@ HRESULT AvDllInitialize(void)
 
 void AvDllShutdown(void)
 {
+}
+
+HRESULT
+CMILAV::
+CreateMedia(
+    __in        CEventProxy *pEventProxy,
+    __in        bool        canOpenAnyMedia,
+    __deref_out IMILMedia   **ppMedia
+    )
+{
+	return E_NOTIMPL;
 }
