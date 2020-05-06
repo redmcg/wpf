@@ -20,12 +20,15 @@ INCLUDE_DIRS= \
 	../Shared/Tracing/native \
 	core/fxjit/public \
 	core/fxjit/Compiler \
-	../../../../wine
+	../../../../wine \
+	../../../..
 
 all: $(OBJDIR)/wpfgfx_cor3.dll
 .PHONY: all
 
 CXX_FLAGS=-c -Wall -Wno-format -Wno-unknown-pragmas -Wno-endif-labels -Wno-reorder -Wno-conversion-null -Wno-overloaded-virtual -Wno-inline-new-delete -Wno-ignored-pragma-optimize -Wno-undefined-inline -Wno-inconsistent-missing-override -Wno-deprecated-register -Wno-undefined-var-template -Wno-switch -Wno-missing-braces -Wno-parentheses-equality -Wno-implicit-int-float-conversion -Werror -fms-extensions -municode -DD3D9EXTENSIONS -DNOASM -D_UNICODE $(INCLUDE_DIRS:%=-I%)
+
+C_FLAGS=-c -D_WIN32_WINNT=0x0602 -D__WINESRC__ --std=c99 -Wall -Wno-format -Werror $(INCLUDE_DIRS:%=-I%)
 
 LINK_FLAGS=-lgdi32 -lntdll -ld3dx9 -lwindowscodecs -lwinmm -luuid -ldwrite -lole32 -static-libstdc++
 
@@ -40,6 +43,10 @@ $(OBJDIR)/%.cpp.o: %.cpp
 $(OBJDIR)/%.cxx.o: %.cxx
 	mkdir -p $(@D)
 	$(MINGW)-g++ -o $@ $(CXX_FLAGS) $<
+
+$(OBJDIR)/wine/%.c.o: ../../../../wine/%.c
+	mkdir -p $(@D)
+	$(MINGW)-gcc -o $@ $(C_FLAGS) $<
 
 $(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
 	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o)

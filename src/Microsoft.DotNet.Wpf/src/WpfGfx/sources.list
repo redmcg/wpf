@@ -417,3 +417,4 @@ core/fxjit/Compiler/program.cpp
 core/fxjit/Compiler/FlushMemory.cpp
 core/fxjit/Compiler/Shuffle.cpp
 core/dll/dllentry.cpp
+wine/debug.c
