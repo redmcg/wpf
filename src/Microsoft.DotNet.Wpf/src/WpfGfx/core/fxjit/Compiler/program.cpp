@@ -1229,8 +1229,8 @@ CProgram::OptimizeAndNot(COperator * pOperator)
         // The condition for equal operands below catches weird codes
         // like a = ~b then c = a&a. We don't care.
         //
-        if (pConsumer->m_ot != otXmmIntAnd &&
-            pConsumer->m_ot != otXmmFloat4And ||
+        if ((pConsumer->m_ot != otXmmIntAnd &&
+             pConsumer->m_ot != otXmmFloat4And) ||
             pConsumer->m_vOperand1 == pConsumer->m_vOperand2
             )
         {
