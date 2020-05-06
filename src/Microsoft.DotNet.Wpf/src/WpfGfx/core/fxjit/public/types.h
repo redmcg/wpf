@@ -83,19 +83,19 @@ typedef unsigned __int64 UINT64;
 #define RRETURN(hr) return (hr)
 #endif
 
+#ifndef ReleaseInterface
+#define ReleaseInterface(p) if ((p)) {(p)->Release(); (p) = NULL;}
+#endif
+
+#endif //_BASETSD_H_
+#endif
+
 #ifndef IFC
 #define IFC(x) { hr = (x); if (FAILED(hr)) goto Cleanup; }
 #endif
 
 #ifndef IFCOOM
 #define IFCOOM(x) if ((x) == NULL) {hr = E_OUTOFMEMORY; goto Cleanup;}
-#endif
-
-#ifndef ReleaseInterface
-#define ReleaseInterface(p) if ((p)) {(p)->Release(); (p) = NULL;}
-#endif
-
-#endif //_BASETSD_H_
 #endif
 
 #ifndef __STDCALL
