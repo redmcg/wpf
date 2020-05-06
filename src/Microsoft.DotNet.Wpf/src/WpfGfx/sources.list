@@ -416,3 +416,4 @@ core/fxjit/Compiler/Operator.cpp
 core/fxjit/Compiler/program.cpp
 core/fxjit/Compiler/FlushMemory.cpp
 core/fxjit/Compiler/Shuffle.cpp
+core/dll/dllentry.cpp
