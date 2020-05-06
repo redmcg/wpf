@@ -211,6 +211,7 @@ C_u32::operator*(UINT32 src) const
         unsigned long shift;
         auto success = _BitScanReverse(&shift, src);
         Assert(success != FALSE);
+		(void)success; // Silence warning if Assert isn't compiled in
 
         SOperator *pOperator = pProgram->AddOperator(otUINT32ImmShiftLeft, tmp.m_ID, m_ID);
         pOperator->m_shift = (UINT32)shift;
