@@ -307,7 +307,8 @@ CProgram::GrowOperators(UINT32 uDelta)
         goto Cleanup;
     }
 
-    COperator **pp = reinterpret_cast<COperator **>(AllocMem(uOperatorsDesired * sizeof(COperator*)));
+    COperator **pp;
+    pp = reinterpret_cast<COperator **>(AllocMem(uOperatorsDesired * sizeof(COperator*)));
     IFCOOM(pp);
 
     for (UINT32 u = 0; u < m_uOperatorsCount; u++)
@@ -333,6 +334,7 @@ CProgram::AllocVar(VariableType vt)
         IFC(GrowVars());
     }
 
+{
     VarDesc &vd = m_prgVarDesc[m_uVarsCount];
     vd.varType = vt;
     vd.varInitialized = 0;
@@ -340,6 +342,7 @@ CProgram::AllocVar(VariableType vt)
     m_prgVarSources[m_uVarsCount] = NULL;
 
     uVarIndex = m_uVarsCount++;
+}
 
 Cleanup:
     return uVarIndex;
@@ -360,7 +363,8 @@ CProgram::GrowVars()
         goto Cleanup;
     }
 
-    VarDesc *p = reinterpret_cast<VarDesc*>(AllocMem(uVarsDesired * sizeof(VarDesc)));
+    VarDesc *p;
+    p = reinterpret_cast<VarDesc*>(AllocMem(uVarsDesired * sizeof(VarDesc)));
     IFCOOM(p);
 
     if(UINT_MAX/sizeof(COperator*) < uVarsDesired)
@@ -369,7 +373,8 @@ CProgram::GrowVars()
         goto Cleanup;
     }
 
-    COperator **q = reinterpret_cast<COperator**>(AllocMem(uVarsDesired * sizeof(COperator*)));
+    COperator **q;
+    q = reinterpret_cast<COperator**>(AllocMem(uVarsDesired * sizeof(COperator*)));
     IFCOOM(q);
 
     for (UINT32 u = 0; u < m_uVarsCount; u++)
@@ -622,8 +627,9 @@ CProgram::RemoveAssignUp(COperator * pAssigner)
     if (pAssigner->m_refType != RefType_Direct)
         goto Cleanup;
 
-    UINT32 A = pAssigner->m_vOperand1;
-    UINT32 B = pAssigner->m_vResult;
+    UINT32 A, B;
+    A = pAssigner->m_vOperand1;
+    B = pAssigner->m_vResult;
 
     if (!IsSimpleVar(A))
         goto Cleanup;
@@ -631,7 +637,8 @@ CProgram::RemoveAssignUp(COperator * pAssigner)
     // "A" is not mentioned anywhere, except provider and assigner.
     // So it is safe to stop using A.
 
-    COperator * pProvider = pAssigner->m_pProviders->m_pProvider;
+    COperator * pProvider;
+    pProvider = pAssigner->m_pProviders->m_pProvider;
     if (!VarUnusedInBetween(pProvider, pAssigner, B))
         goto Cleanup;
 
@@ -684,8 +691,9 @@ CProgram::RemoveAssignDown(COperator * pAssigner)
     if (pAssigner->m_refType != RefType_Direct)
         goto Cleanup;
 
-    UINT32 A = pAssigner->m_vOperand1;
-    UINT32 B = pAssigner->m_vResult;
+    UINT32 A, B;
+    A = pAssigner->m_vOperand1;
+    B = pAssigner->m_vResult;
 
     if (IsUniqueProvider(pAssigner) && IsSimpleVar(A))
     {
@@ -787,11 +795,13 @@ CProgram::OptimizeLoadDWord(COperator * pAssigner)
     if (pAssigner->m_refType != RefType_Direct)
         goto Cleanup;
 
-    COperator * pProvider = pAssigner->m_pProviders->m_pProvider;
+    COperator * pProvider;
+    pProvider = pAssigner->m_pProviders->m_pProvider;
     if (pProvider->m_ot != otUINT32Load) goto Cleanup;
 
-    UINT32 A = pAssigner->m_vOperand1;
-    UINT32 B = pAssigner->m_vResult;
+    UINT32 A, B;
+    A = pAssigner->m_vOperand1;
+    B = pAssigner->m_vResult;
 
     if (!IsSimpleVar(A))
         goto Cleanup;
@@ -954,11 +964,13 @@ CProgram::OptimizePtrCompute(COperator * pOperator)
     }
 
 
-    Link* pLink = FindUniqueProvider(pOperator, pOperator->m_vOperand1);
+    Link* pLink;
+    pLink = FindUniqueProvider(pOperator, pOperator->m_vOperand1);
     if (pLink == NULL)
         goto Cleanup;
 
-    COperator *pProvider = pLink->m_pProvider;
+    COperator *pProvider;
+    pProvider = pLink->m_pProvider;
     if (pProvider->m_ot == otPtrAssignImm)
     {
         //
@@ -1072,6 +1084,7 @@ CProgram::OptimizeIndicesUsage(COperator * pOperator)
     }
     else goto Cleanup;
 
+{
     UINT32 &uVar = fUseOperand2 ? pOperator->m_vOperand2 : pOperator->m_vOperand1;
     Link* pLink = FindUniqueProvider(pOperator, uVar);
     if (pLink == NULL)
@@ -1129,6 +1142,7 @@ CProgram::OptimizeIndicesUsage(COperator * pOperator)
 
     WarpAssert(pProvider->m_pConsumers == NULL);
     NopifyOperator(pProvider);
+}
 
 Cleanup:
     return hr;
@@ -1463,7 +1477,8 @@ CProgram::Assemble(
 #if DBG
     g_uTotalCodeSize += m_uCodeSize;
 #endif
-    UINT32 uSizeToAlloc =
+    UINT32 uSizeToAlloc;
+    uSizeToAlloc =
         m_storage16.AllocateSpace(
             m_storage8.AllocateSpace(
                 m_storage4.AllocateSpace(
