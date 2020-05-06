@@ -94,9 +94,9 @@ typedef unsigned __int64 UINT64;
 #endif
 
 #endif //_BASETSD_H_
+#endif
 
 #ifndef __STDCALL
 #define __STDCALL  __stdcall
-#endif
 #endif
 
