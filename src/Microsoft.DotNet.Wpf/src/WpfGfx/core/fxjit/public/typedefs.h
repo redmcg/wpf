@@ -26,7 +26,9 @@
     #define PASCAL
 #endif
 
-#ifndef _WINDEF_
+#if 1
+#include <windef.h>
+#elif !defined(_WINDEF_)
 #define _WINDEF_
 
 #ifndef NO_STRICT
