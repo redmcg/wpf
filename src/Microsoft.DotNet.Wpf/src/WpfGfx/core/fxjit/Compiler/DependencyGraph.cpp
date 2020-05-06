@@ -1115,7 +1115,7 @@ CProgram::SetInUse(COperator *pOperator)
         WarpAssert(pProvider);
         if (pProvider->m_uFlags)
             continue; // we've already considered this operator useful
-            SetInUse(pProvider);
+        SetInUse(pProvider);
     }
 }
 
