@@ -288,6 +288,9 @@ enum REX
 
 #endif
 
+#define or _or
+#define and _and
+#define xor _xor
 
 enum OpCode : UINT32
 {
