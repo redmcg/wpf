@@ -12,6 +12,8 @@
 **************************************************************************/
 #pragma once
 
+#include <stddef.h> // for size_t
+
 #pragma warning(disable:4480)          // nonstandard extension used: specifying underlying type for enum
 #pragma warning(disable:4512)          // assignment operator could not be generated
 #pragma warning(disable:4201)          // nonstandard extension used : nameless struct/union
