@@ -822,6 +822,7 @@ EXTERN_C const GUID GUID_NULL;
 // From winbase.h - probably not necessary, since we don't use security atts
 // when creating  any events in media layer.
 //
+#if 0
 typedef struct _SECURITY_ATTRIBUTES {
     DWORD nLength;
     LPVOID lpSecurityDescriptor;
@@ -842,6 +843,7 @@ typedef struct _OVERLAPPED {
 
     HANDLE  hEvent;
 } OVERLAPPED, *LPOVERLAPPED;
+#endif
 
 
 __inline BOOL IsRectEmpty(_In_ LPCRECT pRect)
