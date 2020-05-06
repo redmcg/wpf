@@ -43,9 +43,11 @@ CProgram::BuildSpanGraph()
     m_pSpanGraph = (OpSpan*)AllocMem(sizeof(OpSpan) * m_uSpanCount);
     IFCOOM(m_pSpanGraph);
 
-    OpSpan *pSpan = NULL;
-    OpSpan *pPreviousSpan = NULL;
-    UINT32 uSpanIdx = 0;
+    OpSpan *pSpan, *pPreviousSpan;
+    pSpan = NULL;
+    pPreviousSpan = NULL;
+    UINT32 uSpanIdx;
+    uSpanIdx = 0;
     for (UINT32 uOp = 0; uOp < m_uOperatorsCount; uOp++)
     {
         if (!pSpan)
