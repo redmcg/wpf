@@ -37,7 +37,7 @@
 // Basic d3d and refrast headers
 //
 
-#include "d3d9types.h"
+#include "d3d9typesex.h"
 #include "d3d9caps.h"
 #include "warpplatform.h"
 #include "d3dhal.h"

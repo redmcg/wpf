@@ -12,9 +12,12 @@
  *
  ***************************************************************************/
 
-#ifndef _d3d9TYPES_H_
-#define _d3d9TYPES_H_
+//#ifndef _d3d9TYPES_H_
+//#define _d3d9TYPES_H_
 
+#include <d3d9types.h>
+
+#if 0
 #ifndef DIRECT3D_VERSION
 #define DIRECT3D_VERSION         0x0900
 #endif  //DIRECT3D_VERSION
@@ -919,10 +922,6 @@ typedef enum _D3DSHADER_COMPARISON
     D3DSPC_RESERVED1= 7  // 1 1 1
 } D3DSHADER_COMPARISON;
 
-// Comparison is part of instruction opcode token:
-#define D3DSHADER_COMPARISON_SHIFT D3DSP_OPCODESPECIFICCONTROL_SHIFT
-#define D3DSHADER_COMPARISON_MASK  (0x7<<D3DSHADER_COMPARISON_SHIFT)
-
 //---------------------------------------------------------------------
 // Predication flags on instruction token
 #define D3DSHADER_INSTRUCTION_PREDICATED    (0x1 << 28)
@@ -1104,31 +1103,6 @@ typedef enum _D3DSHADER_ADDRESSMODE_TYPE
     ( (0 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
       (1 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
       (2 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
-      (3 << (D3DSP_SWIZZLE_SHIFT + 6)) )
-
-// pixel-shader swizzle ops
-#define D3DSP_REPLICATERED \
-    ( (0 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
-      (0 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
-      (0 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
-      (0 << (D3DSP_SWIZZLE_SHIFT + 6)) )
-
-#define D3DSP_REPLICATEGREEN \
-    ( (1 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
-      (1 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
-      (1 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
-      (1 << (D3DSP_SWIZZLE_SHIFT + 6)) )
-
-#define D3DSP_REPLICATEBLUE \
-    ( (2 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
-      (2 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
-      (2 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
-      (2 << (D3DSP_SWIZZLE_SHIFT + 6)) )
-
-#define D3DSP_REPLICATEALPHA \
-    ( (3 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
-      (3 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
-      (3 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
       (3 << (D3DSP_SWIZZLE_SHIFT + 6)) )
 
 // source parameter modifiers
@@ -1729,4 +1703,37 @@ typedef struct _D3DDEVINFO_D3D9CACHEUTILIZATION
 #endif /* _d3d9TYPES(P)_H_ */
 
 
+
+// pixel-shader swizzle ops
+#ifndef D3DSP_REPLICATERED
+#define D3DSP_REPLICATERED \
+    ( (0 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
+      (0 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
+      (0 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
+      (0 << (D3DSP_SWIZZLE_SHIFT + 6)) )
+
+#define D3DSP_REPLICATEGREEN \
+    ( (1 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
+      (1 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
+      (1 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
+      (1 << (D3DSP_SWIZZLE_SHIFT + 6)) )
+
+#define D3DSP_REPLICATEBLUE \
+    ( (2 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
+      (2 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
+      (2 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
+      (2 << (D3DSP_SWIZZLE_SHIFT + 6)) )
+
+#define D3DSP_REPLICATEALPHA \
+    ( (3 << (D3DSP_SWIZZLE_SHIFT + 0)) | \
+      (3 << (D3DSP_SWIZZLE_SHIFT + 2)) | \
+      (3 << (D3DSP_SWIZZLE_SHIFT + 4)) | \
+      (3 << (D3DSP_SWIZZLE_SHIFT + 6)) )
+#endif
+
+#ifndef D3DSHADER_COMPARISON_SHIFT
+// Comparison is part of instruction opcode token:
+#define D3DSHADER_COMPARISON_SHIFT D3DSP_OPCODESPECIFICCONTROL_SHIFT
+#define D3DSHADER_COMPARISON_MASK  (0x7<<D3DSHADER_COMPARISON_SHIFT)
+#endif
 
