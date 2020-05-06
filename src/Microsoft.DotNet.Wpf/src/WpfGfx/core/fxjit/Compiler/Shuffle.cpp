@@ -282,7 +282,8 @@ CProgram::ShuffleSpan(OpSpan * pSpan)
         }
     }
 
-    COperator *pLastSheduledOperator = NULL;
+    COperator *pLastSheduledOperator;
+    pLastSheduledOperator = NULL;
     while (!ctx.readyList.IsEmpty() || pLastSheduledOperator)
     {
         COperator *pOperatorToShedule = NULL;
