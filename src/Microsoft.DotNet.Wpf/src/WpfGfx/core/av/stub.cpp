@@ -41,3 +41,11 @@ CreateMedia(
 {
 	return E_NOTIMPL;
 }
+
+HRESULT CEventProxy::Create(
+    __in_ecount(1) const CEventProxyDescriptor &epd,
+    __deref_out_ecount(1) CEventProxy **ppEventProxy
+    )
+{
+	return E_NOTIMPL;
+}
