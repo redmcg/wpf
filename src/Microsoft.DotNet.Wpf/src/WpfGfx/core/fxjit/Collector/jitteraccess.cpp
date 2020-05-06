@@ -44,7 +44,8 @@ CJitterAccess::Enter(UINT16 usCallParametersSize)
 
     WarpPlatform::AcquireLock(g_LockJitterAccess);
 
-    IFC(CProgram::Create(usCallParametersSize, &pProgram));
+    hr = CProgram::Create(usCallParametersSize, &pProgram);
+	if (FAILED(hr)) goto Cleanup;
 
     WarpPlatform::BeginCompile(pProgram);
     pProgram = NULL;
