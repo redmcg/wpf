@@ -549,11 +549,13 @@ CMapper::MapSubroutineCall()
     // Assuming for now that subroutine will free all the registers too.
     // We only need to take care of m_locator.
 
+{
     UINT32 uSpanIdx = m_pOp->m_uSpanIdx;
     const OpSpan * pNextSpan = m_pProgram->GetSpanGraph() + uSpanIdx + 1;
     const CBitArray * pUsage = pNextSpan->m_pVarsInUseBefore;
 
     m_locator.Setup(pUsage);
+}
 
 Cleanup:
     return hr;
@@ -567,11 +569,13 @@ CMapper::MapSubroutineStart()
     // Assuming for now that subroutine starts with empty registers.
     IFC(FreeRegs());
 
+{
     UINT32 uSpanIdx = m_pOp->m_uSpanIdx;
     const OpSpan * pSpan = m_pProgram->GetSpanGraph() + uSpanIdx;
     const CBitArray * pUsage = pSpan->m_pVarsInUseBefore;
 
     m_locator.Setup(pUsage);
+}
 
 Cleanup:
     return hr;
@@ -1253,7 +1257,8 @@ CMapper::MapOperator()
     SetAllocException(rOperand2);
     SetAllocException(rOperand3);
 
-    bool fOperand1NeedsLoad = false;
+    bool fOperand1NeedsLoad;
+    fOperand1NeedsLoad = false;
 
     if (vOperand1 != 0)
     {
@@ -1651,8 +1656,10 @@ CMapper::SaveReg(COperator * pOp, UINT32 uVarID, CRegID regSrc)
     HRESULT hr = S_OK;
     UINT8 * pMem = m_pProgram->AllocMem(sizeof(CShuffleRecord));
     IFCOOM(pMem);
-    VariableType vt = m_pProgram->GetVarType(uVarID);
-    CShuffleRecord * psr = new(pMem) CShuffleRecord(uVarID, regSrc, vt);
+    VariableType vt;
+    vt = m_pProgram->GetVarType(uVarID);
+    CShuffleRecord * psr;
+    psr = new(pMem) CShuffleRecord(uVarID, regSrc, vt);
     HookShuffleRecord(pOp, psr);
 
 Cleanup:
@@ -1665,8 +1672,10 @@ CMapper::LoadReg(COperator * pOp, CRegID regDst, UINT32 uVarID)
     HRESULT hr = S_OK;
     UINT8 * pMem = m_pProgram->AllocMem(sizeof(CShuffleRecord));
     IFCOOM(pMem);
-    VariableType vt = m_pProgram->GetVarType(uVarID);
-    CShuffleRecord * psr = new(pMem) CShuffleRecord(regDst, uVarID, vt);
+    VariableType vt;
+    vt = m_pProgram->GetVarType(uVarID);
+    CShuffleRecord * psr;
+    psr = new(pMem) CShuffleRecord(regDst, uVarID, vt);
     HookShuffleRecord(pOp, psr);
 
 Cleanup:
@@ -1679,7 +1688,8 @@ CMapper::MoveReg(COperator * pOp, CRegID regDst, CRegID regSrc, VariableType vt)
     HRESULT hr = S_OK;
     UINT8 * pMem = m_pProgram->AllocMem(sizeof(CShuffleRecord));
     IFCOOM(pMem);
-    CShuffleRecord * psr = new(pMem) CShuffleRecord(regDst, regSrc, vt);
+    CShuffleRecord * psr;
+    psr = new(pMem) CShuffleRecord(regDst, regSrc, vt);
     HookShuffleRecord(pOp, psr);
 
 Cleanup:
