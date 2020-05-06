@@ -11,7 +11,7 @@
 #endif
 #endif
 
-#include "Types.h"
+#include "types.h"
 #include "JitterSupport.h"
 #include "JitterAccess.h"
 #include "Operations.h"
