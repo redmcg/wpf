@@ -24,7 +24,7 @@ void CAVLoader::Shutdown()
 
 HRESULT AvDllInitialize(void)
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void AvDllShutdown(void)
