@@ -14,7 +14,21 @@
 extern "C" {
 #endif
 
+#ifdef __GNUC__
+#define _DllMainCRTStartup CoreDllMain
+extern "C"
+BOOL
+__stdcall
+CoreDllMain(
+    HANDLE      dllHandle,
+    ULONG       reason,
+    LPVOID		reserved
+    );
+
+BOOL WINAPI DllMain
+#else
 BOOL WINAPI _DllMainStartupImpl
+#endif
 (
     __in_ecount(1) HANDLE hDllHandle,
     DWORD dwReason,

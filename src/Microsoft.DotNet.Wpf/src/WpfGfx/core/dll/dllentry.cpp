@@ -17,7 +17,7 @@
 extern "C"
 BOOL
 __stdcall
-DllMain(
+CoreDllMain(
     HINSTANCE   dllHandle,
     ULONG       reason,
     __in_ecount(1) CONTEXT* /* context */
