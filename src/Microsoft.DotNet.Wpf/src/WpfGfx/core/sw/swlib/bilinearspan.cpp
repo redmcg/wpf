@@ -1427,8 +1427,10 @@ void CBilinearSpan::GenerateColors(
     Assert((((ULONG_PTR) m_pvBits) & 3) == 0);
     Assert((m_cbStride & 3) == 0);
 
+#if defined(_X86_)
     static const UINT SSE_THRESHOLD = 1; // SSE_THRESHOLD is the value where the setup costs of SSE2
                                          // are less than the performance gain of using SSE2
+#endif
 
     // Transform an array of points using the matrix v' = v M:
     //
