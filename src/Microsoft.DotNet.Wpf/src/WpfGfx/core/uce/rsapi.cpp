@@ -106,6 +106,9 @@ Cleanup:
     RRETURN(hr);
 }
 
+extern "C"
+{
+
 //+-----------------------------------------------------------------------------
 //
 //  Method: MilGraphicsContent_AttachToHwnd
@@ -182,4 +185,5 @@ MilContent_DetachFromHwnd(HWND hwnd)
 
 
 
+}
 

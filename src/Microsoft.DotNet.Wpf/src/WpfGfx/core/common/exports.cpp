@@ -22,6 +22,7 @@
 //
 //-------------------------------------------------------------------------
 
+extern "C"
 HRESULT WINAPI
 MIL3DCalcProjected2DBounds(
     __in_ecount(1) const CMatrix<CoordinateSpace::Local3D,CoordinateSpace::PageInPixels> *pFullTransform3D,
@@ -287,6 +288,7 @@ CopyUnalignedPixelBuffer(
 //
 //------------------------------------------------------------------------------
 
+extern "C"
 HRESULT WINAPI
 MilUtility_CopyPixelBuffer(
     __out_bcount(outputBufferSize) BYTE* pOutputBuffer,

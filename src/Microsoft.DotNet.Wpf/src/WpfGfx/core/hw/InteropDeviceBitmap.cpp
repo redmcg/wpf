@@ -13,6 +13,9 @@
 
 MtDefine(CInteropDeviceBitmap, MILRender, "CInteropDeviceBitmap");
 
+extern "C"
+{
+
 //+-----------------------------------------------------------------------------
 //
 //  WPFGFX Exported Function:
@@ -173,6 +176,8 @@ InteropDeviceBitmap_GetAsSoftwareBitmap(
     
 Cleanup:
     RRETURN(hr);
+}
+
 }
 
 //+-----------------------------------------------------------------------------

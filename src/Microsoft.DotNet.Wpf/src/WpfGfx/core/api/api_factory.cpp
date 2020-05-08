@@ -26,6 +26,7 @@ DeclareTag(tagUseRemoting, "CompEng", "Use remoting")
 //  Synopsis:  Create factory object
 //
 //-----------------------------------------------------------------------------
+extern "C"
 HRESULT WINAPI
 MILCreateFactory(
     __deref_out_ecount(1) IMILCoreFactory **ppIFactory,

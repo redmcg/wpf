@@ -148,6 +148,9 @@ HRESULT InitializePen(
     RRETURN(SetPenDoubleDashArray(pPen, pDashArray, cDash));
 }
 
+extern "C"
+{
+
 HRESULT WINAPI MilUtility_PathGeometryWiden(
     __in_ecount(1) MilPenData *pPenData,
     __in_bcount(pPenData->DashArraySize) double *pDashArray,
@@ -919,4 +922,5 @@ MilUtility_ArcToBezier(
 }
 
 
+}
 
