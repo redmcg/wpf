@@ -11,6 +11,8 @@
 
 #include "precomp.hpp"
 
+extern "C"
+{
 
 ULONG
 MILAddRef(
@@ -1009,5 +1011,6 @@ Cleanup:
 }
 
 
+}
 
 

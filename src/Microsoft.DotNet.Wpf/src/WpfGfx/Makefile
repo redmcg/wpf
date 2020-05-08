@@ -3,6 +3,8 @@
 
 C_SRCS=$(shell cat sources.list)
 
+DEF_SRC=core/dll/wpfgfx.def
+
 INCLUDE_DIRS= \
 	../Shared/inc \
 	shared/inc \
@@ -48,5 +50,5 @@ $(OBJDIR)/wine/%.c.o: ../../../../wine/%.c
 	mkdir -p $(@D)
 	$(MINGW)-gcc -o $@ $(C_FLAGS) $<
 
-$(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o)
-	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o)
+$(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o) $(DEF_SRC)
+	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o) $(DEF_SRC)

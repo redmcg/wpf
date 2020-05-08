@@ -11,6 +11,9 @@
 
 #include "precomp.hpp"
 
+extern "C"
+{
+
 void WINAPI
 RenderOptions_ForceSoftwareRenderingModeForProcess(BOOL fForce)
 {
@@ -21,6 +24,8 @@ BOOL WINAPI
 RenderOptions_IsSoftwareRenderingForcedForProcess()
 {
     return RenderOptions::IsSoftwareRenderingForcedForProcess();
+}
+
 }
 
 // m_cs must be entered before accessing m_fForceSoftware because multiple
