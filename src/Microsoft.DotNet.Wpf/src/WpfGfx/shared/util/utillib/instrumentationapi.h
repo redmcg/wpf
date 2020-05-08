@@ -2,6 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#include "wine/debug.h"
+
+WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
 
 //+-----------------------------------------------------------------------
 //
@@ -482,6 +485,7 @@
     do { \
         if(NULL == (ptr)) { \
             hr = THR((hrFailed)); \
+			WINE_WARN("Check failed: %s is NULL\n", #ptr); \
             MILINSTRUMENTATION_CALLHRESULTCHECKFUNCTION(hr); \
             goto dest; \
             } \
@@ -509,6 +513,7 @@
     do  { \
             hr = THR((expr)); /* Evaluate expr here*/ \
             if (FAILED(hr)) { \
+				WINE_WARN("Check failed: %s failed with hr 0x%x\n", #expr, hr); \
                 MILINSTRUMENTATION_CALLHRESULTCHECKFUNCTION(hr); \
                 goto dest; \
             } \
@@ -536,6 +541,7 @@
     do  { \
             NTSTATUS __Status = TNT((expr)); /* Evaluate expr here*/ \
             if (!NT_SUCCESS(__Status)) { \
+				WINE_WARN("Check failed: %s failed with NTSTATUS 0x%x\n", #expr, __Status); \
                 hr = HRESULT_FROM_NT(__Status); \
                 MILINSTRUMENTATION_CALLHRESULTCHECKFUNCTION(hr); \
                 goto dest; \
@@ -566,6 +572,7 @@
             ASSIGN_FAIL(__Status, 0, expr); /* Evaluate expr here*/     \
             hr = __HRESULT_FROM_WIN32(__Status);                        \
             if (FAILED(hr)) {                                           \
+				WINE_WARN("Check failed: %s failed with RPC_STATUS %d\n", #expr, __Status); \
                 MILINSTRUMENTATION_CALLHRESULTCHECKFUNCTION(hr);        \
                 goto dest;                                              \
             }                                                           \
@@ -602,6 +609,7 @@
             if (!__fSuccess) { \
                 const DWORD __dwLastError = GetLastError(); \
                 /* No THR because we already did TW32 */ \
+				WINE_WARN("Check failed: %s failed with win32 error %d\n", #expr, __dwLastError); \
                 hr = HRESULT_FROM_WIN32(__dwLastError); \
                 if (SUCCEEDED(hr)) { \
                     hr = THR(WGXERR_WIN32ERROR); \
@@ -645,6 +653,7 @@
             if (!__fSuccess) { \
                 const DWORD __dwLastError = GetLastError(); \
                 /* No THR because we already did TW32 */ \
+				WINE_WARN("Check failed: %s failed with win32 error %d\n", #expr, __dwLastError); \
                 hr = HRESULT_FROM_WIN32(__dwLastError); \
                 if (SUCCEEDED(hr)) { \
                     hr = THR(CheckGUIHandleQuota(type, E_OUTOFMEMORY, WGXERR_WIN32ERROR)); \
@@ -776,6 +785,7 @@
             if ((result) == (failureCode)) { \
                 const DWORD __dwLastError = GetLastError(); \
                 /* No THR because we already did TW32 */ \
+				WINE_WARN("Check failed: %s failed with win32 error %d\n", #expr, __dwLastError); \
                 hr = HRESULT_FROM_WIN32(__dwLastError); \
                 if (SUCCEEDED(hr)) { \
                     hr = THR(WGXERR_WIN32ERROR); \
@@ -805,6 +815,7 @@
         if (!TW32(0, expr)) { \
             DWORD dwLastError = GetLastError(); \
             hr = HRESULT_FROM_WIN32(dwLastError); \
+			WINE_WARN("Check failed: %s failed with win32 error %d\n", #expr, dwLastError); \
             if (hr == E_HANDLE) { \
                 hr = THR(WGXERR_SCREENACCESSDENIED); \
             } \
