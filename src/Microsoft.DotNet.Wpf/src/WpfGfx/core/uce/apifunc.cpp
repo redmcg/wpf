@@ -13,6 +13,7 @@
 //------------------------------------------------------------------------------
 
 #include "precomp.hpp"
+#include <windows.h>
 #include "osversionhelper.h"
 
 extern void DumpInstrumentationData();
@@ -1046,16 +1047,6 @@ MilGlyphRun_ReleasePathGeometryData(
 //        can be identified by tools like VisualProfiler.
 //
 //------------------------------------------------------------------------------
-
-// Definition for _InterlockedCompareExchange64 from intrin.h
-extern "C" {
-#if defined(_M_AMD64)
-__int64 _InterlockedCompareExchange64_np(__int64 volatile *, __int64, __int64);
-#define _InterlockedCompareExchange64 _InterlockedCompareExchange64_np
-#else
-__int64 _InterlockedCompareExchange64(__int64 volatile *, __int64, __int64);
-#endif
-}
 
 LONGLONG WINAPI
 GetNextPerfElementId()
