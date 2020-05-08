@@ -1158,7 +1158,9 @@ private:
 
     // We need to save the FPU control word so we can restore it.
     
+	#if defined(_X86_)
     WORD m_wFPUControl;
+	#endif
 
     #if DBG
     
