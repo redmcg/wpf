@@ -11,7 +11,7 @@
 //-----------------------------------------------------------------------------
 #define AVALON_INCLUDE_NT_HEADERS
 
-#include "Always.h"
+#include "always.h"
 
 #include <strsafe.h>
 
