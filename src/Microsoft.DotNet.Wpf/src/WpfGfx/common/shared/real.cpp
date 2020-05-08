@@ -580,7 +580,7 @@ int CFloatFPU::LargeRound(float x)
 #elif defined(_AMD64_)
     __m128 given = _mm_set_ss(x);                       // load given value
     __int32 result = _mm_cvtss_si32(given);             // convert it to integer (rounding mode doesn't matter)
-    __m128 rounded = _mm_cvtsi32_ss(rounded, result);   // convert back to float
+    __m128 rounded = _mm_cvtsi32_ss(given, result);     // convert back to float
     __m128 diff = _mm_sub_ss(rounded, given);           // diff = (rounded - given)
     __m128 negHalf = _mm_set_ss(-0.5f);                 // load -0.5f
     __m128 mask = _mm_cmple_ss(diff, negHalf);          // get all-ones if (rounded - given) < -0.5f
