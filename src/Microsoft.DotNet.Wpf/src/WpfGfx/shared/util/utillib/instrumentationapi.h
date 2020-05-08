@@ -2,9 +2,11 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+#ifndef WPFGFX_DECLARED_DEBUG_CHANNEL
 #include "wine/debug.h"
-
 WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
+#define WPFGFX_DECLARED_DEBUG_CHANNEL
+#endif
 
 //+-----------------------------------------------------------------------
 //

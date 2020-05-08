@@ -622,7 +622,37 @@ SetDbgPrintFilterID(
 //------------------------------------------------------------------------------
 //-------------------------- Trace Tag MACRO wrappers --------------------------
 //------------------------------------------------------------------------------
-#if DBG != 1 && RETAILDEBUGLIB != 1
+#if 1
+
+	#ifndef WPFGFX_DECLARED_DEBUG_CHANNEL
+	#include "wine/debug.h"
+	WINE_DEFAULT_DEBUG_CHANNEL(wpfgfx);
+	#define WPFGFX_DECLARED_DEBUG_CHANNEL
+	#endif
+
+	#define WineTraceTag(tag, format, ...) WINE_TRACE(format "\n", ## __VA_ARGS__)
+	#define TraceTag(x) WineTraceTag x
+    #define TraceTagEx(x)
+    #define TaggedTraceListEx(tag, usFlags, szFmt, valMarker)
+    #define TraceCallers(tag, iStart, cTotal)
+    #define DeclareTag(tag, szOwner, szDescription)
+    #define DeclareTagEx(tag, szOwner, szDescription, fEnabled)
+    #define DeclareTagOther(tag, szOwner, szDescription)
+    #define ExternTag(tag)
+    #define IsTagEnabled(tag) (UNCONDITIONAL_EXPR(FALSE))
+    #define EnableTag(tag, fEnable)
+    #define SetDiskFlag(tag, fSendToDisk)
+    #define SetBreakFlag(tag, fBreak)
+    #define FindTag(szTagDesc) NULL
+    #define PerfDbgTag(tag, szOwner, szDescrip) \
+            PerfTag(tag, szOwner, szDescrip)
+    #define PerfDbgTagOther(tag, szOwner, szDescrip) \
+            PerfTag(tag, szOwner, szDescrip)
+    #define PerfDbgExtern(tag) \
+            PerfExtern(tag)
+    #define IsPerfDbgEnabled(tag) IsPerfEnabled(tag)
+
+#elif DBG != 1 && RETAILDEBUGLIB != 1
     #define TraceTag(x)
     #define TraceTagEx(x)
     #define TaggedTraceListEx(tag, usFlags, szFmt, valMarker)
