@@ -15,7 +15,7 @@
 
 HRESULT CAVLoader::Startup()
 {
-	return E_NOTIMPL;
+	return S_OK;
 }
 
 void CAVLoader::Shutdown()
