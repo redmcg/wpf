@@ -576,7 +576,7 @@ CFloatFPU::Floor(float x)
 #elif defined(_AMD64_)
     __m128 given = _mm_set_ss(x);                       // load given value to xmm register
     __int32 result = _mm_cvtss_si32(given);             // convert it to integer (rounding mode doesn't matter)
-    __m128 rounded = _mm_cvtsi32_ss(rounded, result);   // convert back to float
+    __m128 rounded = _mm_cvtsi32_ss(given, result);     // convert back to float
     __m128 mask = _mm_cmpgt_ss(rounded, given);         // get all-ones 32-bit value if converted is greater than given
     __int32 correction;
     _mm_store_ss(reinterpret_cast<float*>(&correction), mask);  // get comparison result as integer
@@ -639,7 +639,7 @@ CFloatFPU::Ceiling(float x)
 #elif defined(_AMD64_)
     __m128 given = _mm_set_ss(x);                       // load given value to xmm register
     __int32 result = _mm_cvtss_si32(given);             // convert it to integer (rounding mode doesn't matter)
-    __m128 rounded = _mm_cvtsi32_ss(rounded, result);   // convert back to float
+    __m128 rounded = _mm_cvtsi32_ss(given, result);     // convert back to float
     __m128 mask = _mm_cmplt_ss(rounded, given);         // get all-ones 32-bit value if converted is less than given
     __int32 correction;
     _mm_store_ss(reinterpret_cast<float*>(&correction), mask);   // get comparison result as integer
