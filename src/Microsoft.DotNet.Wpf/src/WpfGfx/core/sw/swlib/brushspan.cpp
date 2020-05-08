@@ -926,6 +926,10 @@ CRadialGradientBrushSpan::ReleaseExpensiveResources()
    // This class doesn't hold onto resources that need to be released
 }
 
+#pragma clang diagnostic push
+// The functions below are only used on some architectures, and it's not worth marking which.
+#pragma clang diagnostic ignored "-Wunused-function"
+
 static CXmmFloat TFloat_sqrt(const CXmmFloat& x)
 {
 	return CXmmFloat::Sqrt(x);
@@ -955,6 +959,8 @@ static int TFloat_round(FLOAT x)
 {
 	return GpRealToFix16(x);
 }
+
+#pragma clang diagnostic pop
 
 template<typename TFloat>
 VOID
