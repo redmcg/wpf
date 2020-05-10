@@ -49,7 +49,7 @@ namespace System.Windows.Media.TextFormatting
             }
             
             // create a new instance of TextFormatter which allows the use of multiple contexts.
-            return new TextFormatterImp(textFormattingMode);
+            return CreateFromContext(null, textFormattingMode);
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace System.Windows.Media.TextFormatting
         static public TextFormatter Create()
         {
             // create a new instance of TextFormatter which allows the use of multiple contexts.
-            return new TextFormatterImp();
+            return CreateFromContext(null, TextFormattingMode.Ideal);
         }
 
 
@@ -77,8 +77,11 @@ namespace System.Windows.Media.TextFormatting
         {
             // create a new instance of TextFormatter for the specified context.
             // This creation prohibits the use of multiple contexts within the same TextFormatter via reentrance.
-            return new TextFormatterImp(soleContext, TextFormattingMode.Ideal);
+            return CreateFromContext(soleContext, TextFormattingMode.Ideal);
         }
+
+		internal static bool use_managed = false;
+		internal static bool presentationnative_works = false;
 
         /// <summary>
         /// Client to create a new instance of TextFormatter from the specified TextFormatter context
@@ -94,7 +97,24 @@ namespace System.Windows.Media.TextFormatting
         {
             // create a new instance of TextFormatter for the specified context.
             // This creation prohibits the use of multiple contexts within the same TextFormatter via reentrance.
-            return new TextFormatterImp(soleContext, textFormattingMode);
+			if (!use_managed && !presentationnative_works)
+			{
+				try
+				{
+					MS.Internal.TextFormatting.TextStore.IsSpace(' ');
+				}
+				catch (TypeInitializationException e)
+				{
+					use_managed = true;
+				}
+
+				if (!use_managed)
+					presentationnative_works = true;
+			}
+			if (use_managed)
+				return new Managed.TextFormatting.TextFormatterImp(soleContext, textFormattingMode);
+			else
+	            return new MS.Internal.TextFormatting.TextFormatterImp(soleContext, textFormattingMode);
         }
 
 
@@ -131,11 +151,11 @@ namespace System.Windows.Media.TextFormatting
             TextFormatter defaultTextFormatter;
             if (textFormattingMode == TextFormattingMode.Display)
             {
-                defaultTextFormatter = (TextFormatterImp)dispatcher.Reserved4;
+                defaultTextFormatter = (TextFormatter)dispatcher.Reserved4;
             }
             else
             {
-                defaultTextFormatter = (TextFormatterImp)dispatcher.Reserved1;
+                defaultTextFormatter = (TextFormatter)dispatcher.Reserved1;
             }
                         
             if (defaultTextFormatter == null)

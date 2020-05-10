@@ -1333,3 +1333,4 @@ System/Windows/Navigation/BaseUriHelper.cs
 System/Windows/Resources/AssemblyAssociatedContentFileAttribute.cs
 SRID.generated.cs
 ../../../../PresentationNative/UnicodeClass.cs
+Managed/TextFormatting/TextFormatterImp.cs
