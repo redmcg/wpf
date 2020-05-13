@@ -13,6 +13,19 @@
 
 #include "precomp.hpp"
 
+HRESULT
+UnmarshalResourceArray(
+    __inout_pcount_in_bcount(1, cbRawArray) BYTE const *&pbRawArray,
+    __inout_ecount(1) UINT32 &cbRawArray,
+    UINT32 cbReqArray,
+    MIL_RESOURCE_TYPE resType,
+    PERFMETERTAG mt,
+    __out_ecount(1) UINT32 &cResources,
+    __out_pcount_out_out_ecount_full(1,cResources) CMilSlaveResource ** &rgpResources,
+    __in_ecount(1) CMilSlaveHandleTable *pHandleTable,
+    bool fAllowNullHandles = true
+    );
+
 template <class TResourceType>
 inline
 HRESULT
@@ -65,7 +78,7 @@ UnmarshalResourceArray(
     __out_ecount(1) UINT32 &cResources,
     __out_pcount_out_out_ecount_full(1,cResources) CMilSlaveResource ** &rgpResources,
     __in_ecount(1) CMilSlaveHandleTable *pHandleTable,
-    bool fAllowNullHandles = true
+    bool fAllowNullHandles
     )
 {
     HRESULT hr = S_OK;
