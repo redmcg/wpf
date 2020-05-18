@@ -134,7 +134,14 @@ namespace Managed.TextFormatting
             TextLineBreak               previousLineBreak
             )
         {
-			throw new NotImplementedException("Managed.TextFormatting.TextFormatter.FormatLine");
+			return FormatLineInternal(
+				textSource,
+				firstCharIndex,
+				0,
+				paragraphWidth,
+				paragraphProperties,
+				previousLineBreak,
+				new TextRunCache());
         }
 
 
@@ -158,9 +165,33 @@ namespace Managed.TextFormatting
             TextRunCache                textRunCache
             )
         {
-			throw new NotImplementedException("Managed.TextFormatting.TextFormatter.FormatLine");
+			return FormatLineInternal(
+				textSource,
+				firstCharIndex,
+				0,
+				paragraphWidth,
+				paragraphProperties,
+				previousLineBreak,
+				textRunCache);
         }
 
+		
+        /// <summary>
+        /// Format and produce a text line either with or without previously known
+        /// line break point.
+        /// </summary>
+        private TextLine FormatLineInternal(
+            TextSource                  textSource,
+            int                         firstCharIndex,
+            int                         lineLength,
+            double                      paragraphWidth,
+            TextParagraphProperties     paragraphProperties,
+            TextLineBreak               previousLineBreak,
+            TextRunCache                textRunCache
+            )
+        {
+			return new TextLineImp();
+		}
 
 
         /// <summary>
