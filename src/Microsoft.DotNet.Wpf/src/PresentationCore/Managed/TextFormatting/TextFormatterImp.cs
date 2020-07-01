@@ -219,7 +219,7 @@ namespace Managed.TextFormatting
             TextRunCache                textRunCache
             )
         {
-			throw new NotImplementedException("Managed.TextFormatting.TextFormatter.FormatLine");
+			throw new NotImplementedException("Managed.TextFormatting.TextFormatter.RecreateLine");
         }
 
 
