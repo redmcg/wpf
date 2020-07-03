@@ -20,6 +20,17 @@ using MS.Internal.TextFormatting;
 
 namespace System.Windows.Media.TextFormatting
 {
+	internal interface ITextRunCache
+	{
+        void Change(
+            int     textSourceCharacterIndex,
+            int     addition,
+            int     removal
+            );
+
+        IList<TextSpan<TextRun>> GetTextRunSpans();
+	}
+
     /// <summary>
     /// TextFormatter caches runs it receives from GetTextRun callback. This cache 
     /// object is managed by text layout client. 
@@ -100,12 +111,12 @@ namespace System.Windows.Media.TextFormatting
         /// <summary>
         /// Get/set the actual cache instance
         /// </summary>
-        internal TextRunCacheImp Imp
+        internal ITextRunCache Imp
         {
             get { return _imp; }
             set { _imp = value; }
         }
 
-        private TextRunCacheImp   _imp;
+        private ITextRunCache   _imp;
     }
 }

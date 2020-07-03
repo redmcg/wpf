@@ -33,7 +33,6 @@ using MS.Internal.PresentationCore;
 #endif
 
 using MS.Internal;
-using Constants = MS.Internal.TextFormatting.Constants;
 
 namespace Managed.TextFormatting
 {
@@ -192,6 +191,19 @@ namespace Managed.TextFormatting
         {
 			VerifyTextFormattingArguments(textSource, firstCharIndex, paragraphWidth, paragraphProperties, textRunCache);
 
+            // prepare formatting settings
+            FormatSettings settings = PrepareFormatSettings(
+                textSource,
+                firstCharIndex,
+                paragraphWidth,
+                paragraphProperties,
+                previousLineBreak,
+                textRunCache,
+                (lineLength != 0),  // Do optimal break if break is given
+                true,    // isSingleLineFormatting
+                _textFormattingMode
+                );
+
 			return new TextLineImp();
 		}
 
@@ -301,6 +313,50 @@ namespace Managed.TextFormatting
             )
         {
 			throw new NotImplementedException("Managed.TextFormatting.TextFormatter.CreateParagraphCache");
+        }
+
+
+
+        /// <summary>
+        /// Validate all the relevant text formatting initial settings and package them
+        /// </summary>
+        private FormatSettings PrepareFormatSettings(
+            TextSource                  textSource,
+            int                         firstCharIndex,
+            double                      paragraphWidth,
+            TextParagraphProperties     paragraphProperties,
+            TextLineBreak               previousLineBreak,
+            TextRunCache                textRunCache,
+            bool                        useOptimalBreak,
+            bool                        isSingleLineFormatting,
+            TextFormattingMode              textFormattingMode
+            )
+        {
+            VerifyTextFormattingArguments(
+                textSource,
+                firstCharIndex,
+                paragraphWidth,
+                paragraphProperties,
+                textRunCache
+                );
+
+            if (textRunCache.Imp == null)
+            {
+                // No run cache object available, create one
+                textRunCache.Imp = new TextRunCacheImp();
+            }
+
+            // initialize formatting settings
+            return new FormatSettings(
+                this,
+                textSource,
+                (TextRunCacheImp)textRunCache.Imp,
+                new ParaProp(this, paragraphProperties, useOptimalBreak),
+                previousLineBreak,
+                isSingleLineFormatting,
+                textFormattingMode,
+                false
+                );
         }
 
 

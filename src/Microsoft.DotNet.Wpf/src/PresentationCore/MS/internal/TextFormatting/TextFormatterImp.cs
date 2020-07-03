@@ -444,7 +444,7 @@ namespace MS.Internal.TextFormatting
             return new FormatSettings(
                 this,
                 textSource,
-                textRunCache.Imp,
+                (TextRunCacheImp)textRunCache.Imp,
                 new ParaProp(this, paragraphProperties, useOptimalBreak),
                 previousLineBreak,
                 isSingleLineFormatting,

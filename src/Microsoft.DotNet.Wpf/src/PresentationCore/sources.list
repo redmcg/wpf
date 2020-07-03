@@ -1335,3 +1335,13 @@ SRID.generated.cs
 ../../../../PresentationNative/UnicodeClass.cs
 Managed/TextFormatting/TextFormatterImp.cs
 Managed/TextFormatting/TextLineImp.cs
+Managed/TextFormatting/TextProperties.cs
+Managed/TextFormatting/ITextSymbols.cs
+Managed/TextFormatting/TextShapeableSymbols.cs
+Managed/TextFormatting/FormatSettings.cs
+Managed/TextFormatting/NumberSubstitution.cs
+Managed/TextFormatting/TextRunCacheImp.cs
+Managed/TextFormatting/Constants.cs
+Managed/TextFormatting/CultureMapper.cs
+Managed/TextFormatting/TextStore.cs
+Managed/TextFormatting/Bidi.cs
