@@ -228,7 +228,6 @@ MS/internal/Shaping/CompositeTypefaceMetrics.cs
 MS/internal/Shaping/Context.cs
 MS/internal/Shaping/GlyphInfoList.cs
 MS/internal/Shaping/GlyphingCache.cs
-MS/internal/Shaping/IShapeableTextCollector.cs
 MS/internal/Shaping/OpenTypeCommon.cs
 MS/internal/Shaping/OpenTypeLayout.cs
 MS/internal/Shaping/OpenTypeLayoutCache.cs
@@ -1346,3 +1345,4 @@ Managed/TextFormatting/FormattedTextSymbols.cs
 Common/TextFormatting/TextShapeableSymbols.cs
 Common/TextFormatting/ITextSymbols.cs
 Common/TextFormatting/CultureMapper.cs
+Common/TextFormatting/IShapeableTextCollector.cs
