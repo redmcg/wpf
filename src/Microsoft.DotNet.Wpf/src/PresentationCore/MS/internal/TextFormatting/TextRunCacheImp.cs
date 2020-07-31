@@ -16,6 +16,7 @@ using System.Globalization;
 using System.Windows;
 using System.Diagnostics;
 using System.Windows.Media.TextFormatting;
+using Common.TextFormatting;
 
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;

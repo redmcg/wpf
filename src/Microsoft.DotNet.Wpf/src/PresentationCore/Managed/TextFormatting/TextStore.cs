@@ -26,6 +26,7 @@ using System.Security;
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;
 using MS.Internal;
+using Common.TextFormatting;
 
 namespace Managed.TextFormatting
 {

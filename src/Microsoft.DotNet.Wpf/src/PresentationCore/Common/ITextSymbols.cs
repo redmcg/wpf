@@ -19,11 +19,10 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
-using Common.TextFormatting;
 
 using MS.Internal.Shaping;
 
-namespace Managed.TextFormatting
+namespace Common.TextFormatting
 {
     /// <summary>
     /// Provide definition for a group of symbols that may be represented by 

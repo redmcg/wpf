@@ -249,7 +249,6 @@ MS/internal/TextFormatting/FullTextLine.cs
 MS/internal/TextFormatting/FullTextState.cs
 MS/internal/TextFormatting/GenericTextProperties.cs
 MS/internal/TextFormatting/ITextMetrics.cs
-MS/internal/TextFormatting/ITextSymbols.cs
 MS/internal/TextFormatting/LexicalChunk.cs
 MS/internal/TextFormatting/LineServices.cs
 MS/internal/TextFormatting/LineServicesCallbacks.cs
@@ -1334,7 +1333,6 @@ SRID.generated.cs
 ../../../../PresentationNative/UnicodeClass.cs
 Managed/TextFormatting/TextFormatterImp.cs
 Managed/TextFormatting/TextProperties.cs
-Managed/TextFormatting/ITextSymbols.cs
 Managed/TextFormatting/FormatSettings.cs
 Managed/TextFormatting/NumberSubstitution.cs
 Managed/TextFormatting/TextRunCacheImp.cs
@@ -1348,3 +1346,4 @@ Managed/TextFormatting/TextMetrics.cs
 Managed/TextFormatting/FullTextLine.cs
 Managed/TextFormatting/FormattedTextSymbols.cs
 Common/TextShapeableSymbols.cs
+Common/ITextSymbols.cs
