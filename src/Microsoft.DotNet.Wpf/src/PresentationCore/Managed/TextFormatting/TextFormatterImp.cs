@@ -189,8 +189,6 @@ namespace Managed.TextFormatting
             TextRunCache                textRunCache
             )
         {
-			VerifyTextFormattingArguments(textSource, firstCharIndex, paragraphWidth, paragraphProperties, textRunCache);
-
             // prepare formatting settings
             FormatSettings settings = PrepareFormatSettings(
                 textSource,
