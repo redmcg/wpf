@@ -1345,5 +1345,5 @@ Managed/TextFormatting/ThousandthOfEmRealDoubles.cs
 Managed/TextFormatting/TextMetrics.cs
 Managed/TextFormatting/FullTextLine.cs
 Managed/TextFormatting/FormattedTextSymbols.cs
-Common/TextShapeableSymbols.cs
-Common/ITextSymbols.cs
+Common/TextFormatting/TextShapeableSymbols.cs
+Common/TextFormatting/ITextSymbols.cs
