@@ -204,7 +204,26 @@ namespace Managed.TextFormatting
                 _textFormattingMode
                 );
 
-			return new TextLineImp();
+            TextLine textLine = null;
+
+            if (    !settings.Pap.AlwaysCollapsible
+                &&  previousLineBreak == null
+                &&  lineLength <= 0
+                )
+            {
+                // simple text line.
+                textLine = SimpleTextLine.Create(
+                    settings,
+                    firstCharIndex,
+                    RealToIdealFloor(paragraphWidth),
+                    textSource.PixelsPerDip
+                    ) as TextLine;
+            }
+
+			if (textLine is null)
+				throw new NotImplementedException("complex content");
+
+			return textLine;
 		}
 
 
