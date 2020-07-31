@@ -21,7 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal.Shaping;
 
-namespace MS.Internal.TextFormatting
+namespace Common.TextFormatting
 {
     /// <summary>
     /// Provide definition for a group of characters in which measuring, hittesting 

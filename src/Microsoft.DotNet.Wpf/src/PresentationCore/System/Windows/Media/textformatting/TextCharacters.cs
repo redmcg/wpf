@@ -22,6 +22,7 @@ using System.Windows;
 using MS.Internal;
 using MS.Internal.Shaping;
 using MS.Internal.TextFormatting;
+using Common.TextFormatting;
 
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;

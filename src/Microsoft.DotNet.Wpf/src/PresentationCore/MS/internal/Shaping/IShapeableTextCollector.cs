@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal.Shaping;
+using Common.TextFormatting;
 
 namespace MS.Internal.TextFormatting
 {

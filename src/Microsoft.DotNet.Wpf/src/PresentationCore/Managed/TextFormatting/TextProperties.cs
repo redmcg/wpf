@@ -20,6 +20,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal;
 using MS.Internal.Shaping;
+using Common.TextFormatting;
 
 namespace Managed.TextFormatting
 {

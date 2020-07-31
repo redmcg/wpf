@@ -24,6 +24,7 @@ using MS.Internal.FontCache;
 using MS.Internal.FontFace;
 using MS.Internal.TextFormatting;
 using System.Runtime.InteropServices;
+using Common.TextFormatting;
 
 using FontFace = MS.Internal.FontFace;
 

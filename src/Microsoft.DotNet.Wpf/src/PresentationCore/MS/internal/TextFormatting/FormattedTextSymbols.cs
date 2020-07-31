@@ -23,6 +23,7 @@ using MS.Internal.Text.TextInterface;
 using MS.Internal.Shaping;
 using System.Globalization;
 using MS.Internal.FontCache;
+using Common.TextFormatting;
 
 
 namespace MS.Internal.TextFormatting

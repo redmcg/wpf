@@ -23,6 +23,7 @@ using System.Runtime.InteropServices;
 using MS.Internal.Shaping;
 using MS.Internal.Generic;
 using System.Security;
+using Common.TextFormatting;
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;
 

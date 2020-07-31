@@ -26,6 +26,7 @@ using MS.Internal.FontCache;
 using MS.Internal.TextFormatting;
 using MS.Internal.Shaping;
 using MS.Internal.Text.TextInterface;
+using Common.TextFormatting;
 
 namespace System.Windows.Media.TextFormatting
 {

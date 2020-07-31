@@ -263,7 +263,6 @@ MS/internal/TextFormatting/TextPenaltyModule.cs
 MS/internal/TextFormatting/TextProperties.cs
 MS/internal/TextFormatting/TextRunCacheImp.cs
 MS/internal/TextFormatting/TextShapeableCharacters.cs
-MS/internal/TextFormatting/TextShapeableSymbols.cs
 MS/internal/TextFormatting/TextStore.cs
 MS/internal/TextFormatting/ThousandthOfEmRealDoubles.cs
 MS/internal/TextFormatting/ThousandthOfEmRealPoints.cs
@@ -1336,7 +1335,6 @@ SRID.generated.cs
 Managed/TextFormatting/TextFormatterImp.cs
 Managed/TextFormatting/TextProperties.cs
 Managed/TextFormatting/ITextSymbols.cs
-Managed/TextFormatting/TextShapeableSymbols.cs
 Managed/TextFormatting/FormatSettings.cs
 Managed/TextFormatting/NumberSubstitution.cs
 Managed/TextFormatting/TextRunCacheImp.cs
@@ -1349,3 +1347,4 @@ Managed/TextFormatting/ThousandthOfEmRealDoubles.cs
 Managed/TextFormatting/TextMetrics.cs
 Managed/TextFormatting/FullTextLine.cs
 Managed/TextFormatting/FormattedTextSymbols.cs
+Common/TextShapeableSymbols.cs
