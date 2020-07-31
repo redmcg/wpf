@@ -11,6 +11,7 @@ using MS.Internal.FontCache;
 using MS.Internal.FontFace;
 using MS.Internal.Shaping;
 using MS.Win32;
+using Common.TextFormatting;
 
 namespace Managed.TextFormatting
 {

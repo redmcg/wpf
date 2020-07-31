@@ -240,7 +240,6 @@ MS/internal/Shaping/Substitution.cs
 MS/internal/Shaping/TypefaceMap.cs
 MS/internal/Shaping/UshortList2.cs
 MS/internal/TextFormatting/Bidi.cs
-MS/internal/TextFormatting/CultureMapper.cs
 MS/internal/TextFormatting/DrawingState.cs
 MS/internal/TextFormatting/FormatSettings.cs
 MS/internal/TextFormatting/FormattedTextSymbols.cs
@@ -1337,7 +1336,6 @@ Managed/TextFormatting/FormatSettings.cs
 Managed/TextFormatting/NumberSubstitution.cs
 Managed/TextFormatting/TextRunCacheImp.cs
 Managed/TextFormatting/Constants.cs
-Managed/TextFormatting/CultureMapper.cs
 Managed/TextFormatting/TextStore.cs
 Managed/TextFormatting/Bidi.cs
 Managed/TextFormatting/SimpleTextLine.cs
@@ -1347,3 +1345,4 @@ Managed/TextFormatting/FullTextLine.cs
 Managed/TextFormatting/FormattedTextSymbols.cs
 Common/TextFormatting/TextShapeableSymbols.cs
 Common/TextFormatting/ITextSymbols.cs
+Common/TextFormatting/CultureMapper.cs

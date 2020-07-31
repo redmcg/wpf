@@ -24,6 +24,7 @@ using System.Windows.Media.TextFormatting;
 using MS.Internal;
 using MS.Internal.Shaping;
 using MS.Internal.FontCache;
+using Common.TextFormatting;
 
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;

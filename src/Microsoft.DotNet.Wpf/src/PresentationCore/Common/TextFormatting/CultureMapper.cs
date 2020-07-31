@@ -16,7 +16,7 @@ using System.Diagnostics;
 using MS.Internal.PresentationCore;
 using System.Windows.Markup;
 
-namespace Managed.TextFormatting
+namespace Common.TextFormatting
 {
     /// <summary>
     /// Implements static methods for mapping CultureInfo objects.

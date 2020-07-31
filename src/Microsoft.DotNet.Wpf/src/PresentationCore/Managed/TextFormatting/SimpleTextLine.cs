@@ -21,6 +21,7 @@ using System.Diagnostics;
 using MS.Internal.Shaping;
 using MS.Internal.FontCache;
 using MS.Internal;
+using Common.TextFormatting;
 
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;
