@@ -220,10 +220,21 @@ namespace Managed.TextFormatting
                     ) as TextLine;
             }
 
-			if (textLine is null)
-				throw new NotImplementedException("complex content");
+            if (textLine == null)
+            {
+                // content is complex, creating complex line
+                textLine = new TextMetrics.FullTextLine(
+                    settings,
+                    firstCharIndex,
+                    lineLength,
+                    RealToIdealFloor(paragraphWidth),
+                    LineFlags.None
+                    ) as TextLine;
+            }
 
-			return textLine;
+            EventTrace.EasyTraceEvent(EventTrace.Keyword.KeywordText, EventTrace.Level.Verbose, EventTrace.Event.WClientStringEnd, "TextFormatterImp.FormatLineInternal End");
+
+            return textLine;
 		}
 
 

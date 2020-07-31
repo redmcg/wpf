@@ -1346,3 +1346,6 @@ Managed/TextFormatting/TextStore.cs
 Managed/TextFormatting/Bidi.cs
 Managed/TextFormatting/SimpleTextLine.cs
 Managed/TextFormatting/ThousandthOfEmRealDoubles.cs
+Managed/TextFormatting/TextMetrics.cs
+Managed/TextFormatting/FullTextLine.cs
+Managed/TextFormatting/FormattedTextSymbols.cs
