@@ -51,7 +51,7 @@ namespace MS.Internal.Text.TextInterface
         /// positive or zero but can be negative, in which case the recommended line spacing is less than the height
         /// of the character alignment box.
         /// </summary>
-        [FieldOffset(8)] 
+        [FieldOffset(6)] 
         public short LineGap;
 
         /// <summary>
@@ -59,14 +59,14 @@ namespace MS.Internal.Text.TextInterface
         /// Cap height is the distance from English baseline to the top of a typical English capital.
         /// Capital "H" is often used as a reference character for the purpose of calculating the cap height value.
         /// </summary>
-        [FieldOffset(10)] 
+        [FieldOffset(8)] 
         public ushort CapHeight;
 
         /// <summary>
         /// x-height value of the font face in font design units.
         /// x-height is the distance from English baseline to the top of lowercase letter "x", or a similar lowercase character.
         /// </summary>
-        [FieldOffset(12)]         
+        [FieldOffset(10)]         
         public ushort XHeight;
 
         /// <summary>
@@ -74,13 +74,13 @@ namespace MS.Internal.Text.TextInterface
         /// Underline position is the position of underline relative to the English baseline.
         /// The value is usually made negative in order to place the underline below the baseline.
         /// </summary>
-        [FieldOffset(14)]         
+        [FieldOffset(12)]         
         public short UnderlinePosition;
 
         /// <summary>
         /// The suggested underline thickness value of the font face in font design units.
         /// </summary>
-        [FieldOffset(16)]
+        [FieldOffset(14)]
         public ushort UnderlineThickness;
 
         /// <summary>
@@ -88,13 +88,13 @@ namespace MS.Internal.Text.TextInterface
         /// Strikethrough position is the position of strikethrough relative to the English baseline.
         /// The value is usually made positive in order to place the strikethrough above the baseline.
         /// </summary>
-        [FieldOffset(18)] 
+        [FieldOffset(16)] 
         public short StrikethroughPosition;
 
         /// <summary>
         /// The suggested strikethrough thickness value of the font face in font design units.
         /// </summary>
-        [FieldOffset(20)] 
+        [FieldOffset(18)] 
         public ushort StrikethroughThickness;
 
         /// <summary>
