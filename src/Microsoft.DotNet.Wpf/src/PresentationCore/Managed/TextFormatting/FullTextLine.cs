@@ -46,6 +46,27 @@ namespace Managed.TextFormatting
         /// </summary>
         internal class FullTextLine : TextLine
         {
+            private TextMetrics                         _metrics;                       // Text metrics
+            private StatusFlags                         _statusFlags;                   // status flags of the line
+            private TextFormattingMode                  _textFormattingMode;            // The TextFormattingMode of the line (Ideal or Display).
+
+            [Flags]
+            private enum StatusFlags
+            {
+                None                = 0,
+                IsDisposed          = 0x00000001,
+                HasOverflowed       = 0x00000002,
+                BoundingBoxComputed = 0x00000004,
+                RightToLeft         = 0x00000008,
+                HasCollapsed        = 0x00000010,
+                KeepState           = 0x00000020,
+                IsTruncated         = 0x00000040,
+                IsJustified         = 0x00000080, // Indicates whether the text alignment is set to justified
+                                                  // This flag is needed later to decide how the metrics
+                                                  // will be rounded in display mode when converted
+                                                  // from ideal to real values.
+            }
+
             internal FullTextLine(
                 FormatSettings          settings,
                 int                     cpFirst,
@@ -53,8 +74,32 @@ namespace Managed.TextFormatting
                 int                     paragraphWidth,
                 LineFlags               lineFlags
                 )
+                : this(settings.TextFormattingMode, settings.Pap.Justify, settings.TextSource.PixelsPerDip)
 			{
+                if (    (lineFlags & LineFlags.KeepState) != 0
+                    ||  settings.Pap.AlwaysCollapsible)
+                {
+                    _statusFlags |= StatusFlags.KeepState;
+                }
+
+                int finiteFormatWidth = settings.GetFiniteFormatWidth(paragraphWidth);
+
+                FullTextState fullText = FullTextState.Create(settings, cpFirst, finiteFormatWidth);
 			}
+
+            /// <summary>
+            /// Empty private constructor
+            /// </summary>
+            private FullTextLine(TextFormattingMode textFormattingMode, bool justify, double pixelsPerDip) : base(pixelsPerDip)
+            {
+                _textFormattingMode = textFormattingMode;
+                if (justify)
+                {
+                    _statusFlags |= StatusFlags.IsJustified;
+                }
+                _metrics = new TextMetrics();
+                _metrics._pixelsPerDip = pixelsPerDip;
+            }
 
 			~FullTextLine()
 			{
