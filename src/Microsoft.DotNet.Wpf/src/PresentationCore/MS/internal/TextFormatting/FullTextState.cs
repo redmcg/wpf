@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal.Shaping;
 using MS.Internal.Generic;
+using Common.TextFormatting;
 
 
 namespace MS.Internal.TextFormatting

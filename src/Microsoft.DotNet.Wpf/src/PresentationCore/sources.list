@@ -247,7 +247,6 @@ MS/internal/TextFormatting/FullTextLine.cs
 MS/internal/TextFormatting/FullTextState.cs
 MS/internal/TextFormatting/GenericTextProperties.cs
 MS/internal/TextFormatting/ITextMetrics.cs
-MS/internal/TextFormatting/LexicalChunk.cs
 MS/internal/TextFormatting/LineServices.cs
 MS/internal/TextFormatting/LineServicesCallbacks.cs
 MS/internal/TextFormatting/LineServicesRun.cs
@@ -1346,3 +1345,4 @@ Common/TextFormatting/TextShapeableSymbols.cs
 Common/TextFormatting/ITextSymbols.cs
 Common/TextFormatting/CultureMapper.cs
 Common/TextFormatting/IShapeableTextCollector.cs
+Common/TextFormatting/LexicalChunk.cs

@@ -13,9 +13,10 @@
 using System;
 using System.Windows.Media.TextFormatting;
 using MS.Internal.Generic;
+using MS.Internal;
 
 
-namespace MS.Internal.TextFormatting
+namespace Common.TextFormatting
 {
     /// <summary>
     /// Lexical chunk represents the character analysis of a piece of raw character string.
