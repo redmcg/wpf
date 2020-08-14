@@ -21,6 +21,7 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal;
 using MS.Internal.Shaping;
+using Common.TextFormatting;
 using ITextMetrics = MS.Internal.TextFormatting.ITextMetrics;
 
 using SR = MS.Internal.PresentationCore.SR;
@@ -48,6 +49,8 @@ namespace Managed.TextFormatting
         {
             private TextMetrics                         _metrics;                       // Text metrics
             private StatusFlags                         _statusFlags;                   // status flags of the line
+            private TextDecorationCollection            _paragraphTextDecorations;      // Paragraph-level text decorations (or null if none)
+            private Brush                               _defaultTextDecorationsBrush;   // Default brush for paragraph text decorations
             private TextFormattingMode                  _textFormattingMode;            // The TextFormattingMode of the line (Ideal or Display).
 
             [Flags]
@@ -85,6 +88,18 @@ namespace Managed.TextFormatting
                 int finiteFormatWidth = settings.GetFiniteFormatWidth(paragraphWidth);
 
                 FullTextState fullText = FullTextState.Create(settings, cpFirst, finiteFormatWidth);
+
+                // formatting the line
+                FormatLine(
+                    fullText,
+                    cpFirst,
+                    lineLength,
+                    fullText.FormatWidth,
+                    finiteFormatWidth,
+                    paragraphWidth,
+                    lineFlags,
+                    null    // collapsingSymbol
+                    );
 			}
 
             /// <summary>
@@ -114,6 +129,73 @@ namespace Managed.TextFormatting
 
 			private void DisposeInternal(bool finalizing)
 			{
+			}
+
+            /// <summary>
+            /// format text line using LS
+            /// </summary>
+            /// <param name="fullText">state of the full text backing store</param>
+            /// <param name="cpFirst">first cp to format</param>
+            /// <param name="lineLength">character length of the line</param>
+            /// <param name="formatWidth">width used to format</param>
+            /// <param name="finiteFormatWidth">width used to detect overflowing of format result</param>
+            /// <param name="paragraphWidth">paragraph width</param>
+            /// <param name="lineFlags">line formatting control flags</param>
+            /// <param name="collapsingSymbol">line end collapsing symbol</param>
+            private void FormatLine(
+                FullTextState           fullText,
+                int                     cpFirst,
+                int                     lineLength,
+                int                     formatWidth,
+                int                     finiteFormatWidth,
+                int                     paragraphWidth,
+                LineFlags               lineFlags,
+                FormattedTextSymbols    collapsingSymbol
+                )
+            {
+                _metrics._formatter = fullText.Formatter;
+                Debug.Assert(_metrics._formatter != null);
+
+                TextStore store = fullText.TextStore;
+                TextStore markerStore = fullText.TextMarkerStore;
+                FormatSettings settings = store.Settings;
+                ParaProp pap = settings.Pap;
+
+                _paragraphTextDecorations = pap.TextDecorations;
+                if (_paragraphTextDecorations != null)
+                {
+                    if (_paragraphTextDecorations.Count != 0)
+                    {
+                        _defaultTextDecorationsBrush = pap.DefaultTextDecorationsBrush;
+                    }
+                    else
+                    {
+                        _paragraphTextDecorations = null;
+                    }
+                }
+
+				int pos = cpFirst;
+
+				while (lineLength <= 0 || cpFirst + lineLength > pos)
+				{
+					TextRun textRun;
+					int runLength;
+					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
+
+					if (textRun is ITextSymbols || textRun is TextShapeableSymbols)
+					{
+						Console.WriteLine("got text");
+						pos += runLength;
+					}
+					else if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
+					{
+						break;
+					}
+					else
+					{
+						throw new NotImplementedException(String.Format("Managed.TextFormatting.FormatLine for {0}", textRun.GetType().FullName));
+					}
+				}
 			}
 
 			public override void Draw(DrawingContext drawingContext, Point origin, InvertAxes inversion)
