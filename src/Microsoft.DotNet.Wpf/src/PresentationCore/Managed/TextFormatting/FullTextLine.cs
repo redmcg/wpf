@@ -187,6 +187,7 @@ namespace Managed.TextFormatting
 					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
 					{
 						pos += runLength;
+						_metrics._cchNewline = 1;
 						break;
 					}
 
@@ -342,7 +343,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_NewlineLength");
+					return _metrics.NewlineLength;
 				}
 			}
 
