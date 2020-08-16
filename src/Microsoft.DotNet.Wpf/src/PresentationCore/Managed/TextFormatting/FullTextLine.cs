@@ -160,6 +160,7 @@ namespace Managed.TextFormatting
                 TextStore markerStore = fullText.TextMarkerStore;
                 FormatSettings settings = store.Settings;
                 ParaProp pap = settings.Pap;
+				var pixelsPerDip = settings.TextSource.PixelsPerDip;
 
                 _paragraphTextDecorations = pap.TextDecorations;
                 if (_paragraphTextDecorations != null)
@@ -175,6 +176,7 @@ namespace Managed.TextFormatting
                 }
 
 				int pos = cpFirst;
+				int content_height = 0;
 
 				while (lineLength <= 0 || cpFirst + lineLength > pos)
 				{
@@ -182,19 +184,70 @@ namespace Managed.TextFormatting
 					int runLength;
 					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
 
-					if (textRun is ITextSymbols || textRun is TextShapeableSymbols)
-					{
-						Console.WriteLine("got text");
-						pos += runLength;
-					}
-					else if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
-					{
+					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
 						break;
-					}
-					else
-					{
-						throw new NotImplementedException(String.Format("Managed.TextFormatting.FormatLine for {0}", textRun.GetType().FullName));
-					}
+
+					TextMetrics runMetrics = GetRunMetrics(textRun, cpFirst, pos, cpFirst + lineLength);
+
+					if (content_height < runMetrics._height)
+						content_height = runMetrics._height;
+
+					pos += runLength;
+				}
+
+				_metrics._pixelsPerDip = pixelsPerDip;
+
+				if (pap.LineHeight > 0)
+				{
+                    // Host specifies line height, honor it.
+                    _metrics._height = pap.LineHeight;
+                    _metrics._baselineOffset = (int)Math.Round(
+                        _metrics._height
+                        * pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
+                        / pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
+                        );
+				}
+
+				if (content_height > 0)
+				{
+					_metrics._height = content_height;
+
+					// TODO: VerticalAdjust
+				}
+				else
+				{
+                    // Line is empty so text height and text baseline are based on the default typeface;
+                    // it doesn't make sense even for an emtpy line to have zero text height
+                    _metrics._textAscent = (int)Math.Round(pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
+                    _metrics._textHeight = (int)Math.Round(pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
+				}
+
+				if (_metrics._height <= 0)
+				{
+                    _metrics._height = _metrics._textHeight;
+                    _metrics._baselineOffset = _metrics._textAscent;
+				}
+			}
+
+			private TextMetrics GetRunMetrics(TextRun textRun, int lineStart, int runPos, int lineEnd)
+			{
+				if (textRun is TextCharacters)
+				{
+					var textChars = (TextCharacters)textRun;
+					var result = new TextMetrics();
+					var props = textChars.Properties;
+					var typeface = props.Typeface;
+					var ideal_emsize = TextFormatterImp.RealToIdeal(props.FontRenderingEmSize);
+
+                    result._textAscent = (int)Math.Round(typeface.Baseline(ideal_emsize, Constants.DefaultIdealToReal, props.PixelsPerDip, _textFormattingMode));
+                    result._textHeight = (int)Math.Round(typeface.LineSpacing(ideal_emsize, Constants.DefaultIdealToReal, props.PixelsPerDip, _textFormattingMode));
+					result._height = result._textHeight;
+					result._baselineOffset = result._textAscent;
+					return result;
+				}
+				else
+				{
+					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetRunMetrics for {0}", textRun.GetType().FullName));
 				}
 			}
 
@@ -317,7 +370,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_Height");
+					return _metrics.Height;
 				}
 			}
 
