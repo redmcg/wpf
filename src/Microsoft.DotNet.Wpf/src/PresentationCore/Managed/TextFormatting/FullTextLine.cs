@@ -185,7 +185,10 @@ namespace Managed.TextFormatting
 					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
 
 					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
+					{
+						pos += runLength;
 						break;
+					}
 
 					TextMetrics runMetrics = GetRunMetrics(textRun, cpFirst, pos, cpFirst + lineLength);
 
@@ -196,6 +199,7 @@ namespace Managed.TextFormatting
 				}
 
 				_metrics._pixelsPerDip = pixelsPerDip;
+				_metrics._cchLength = pos - cpFirst;
 
 				if (pap.LineHeight > 0)
 				{
@@ -322,7 +326,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_Length");
+					return _metrics.Length;
 				}
 			}
 
