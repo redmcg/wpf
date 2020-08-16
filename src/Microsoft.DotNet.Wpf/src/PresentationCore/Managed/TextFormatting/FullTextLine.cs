@@ -52,6 +52,7 @@ namespace Managed.TextFormatting
             private TextDecorationCollection            _paragraphTextDecorations;      // Paragraph-level text decorations (or null if none)
             private Brush                               _defaultTextDecorationsBrush;   // Default brush for paragraph text decorations
             private TextFormattingMode                  _textFormattingMode;            // The TextFormattingMode of the line (Ideal or Display).
+			private List<TextSpan<TextRun>>				_textRunSpans;					// List of TextRun objects in this line and their lengths
 
             [Flags]
             private enum StatusFlags
@@ -114,6 +115,7 @@ namespace Managed.TextFormatting
                 }
                 _metrics = new TextMetrics();
                 _metrics._pixelsPerDip = pixelsPerDip;
+				_textRunSpans = new List<TextSpan<TextRun>> ();
             }
 
 			~FullTextLine()
@@ -187,7 +189,8 @@ namespace Managed.TextFormatting
 					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
 					{
 						pos += runLength;
-						_metrics._cchNewline = 1;
+						_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
+						_metrics._cchNewline = runLength;
 						break;
 					}
 
@@ -197,6 +200,7 @@ namespace Managed.TextFormatting
 						content_height = runMetrics._height;
 
 					pos += runLength;
+					_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
 				}
 
 				_metrics._pixelsPerDip = pixelsPerDip;
@@ -302,7 +306,12 @@ namespace Managed.TextFormatting
 
 			public override IList<TextSpan<TextRun>> GetTextRunSpans()
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetTextRunSpans");
+                if ((_statusFlags & StatusFlags.IsDisposed) != 0)
+                {
+                    throw new ObjectDisposedException(SR.Get(SRID.TextLineHasBeenDisposed));
+                }
+
+				return new List<TextSpan<TextRun>> (_textRunSpans);
 			}
 
 			public override IEnumerable<IndexedGlyphRun> GetIndexedGlyphRuns()
