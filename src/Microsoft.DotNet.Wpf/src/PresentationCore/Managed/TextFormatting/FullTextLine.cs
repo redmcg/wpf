@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows;
 using System.Windows.Media;
@@ -186,6 +187,11 @@ namespace Managed.TextFormatting
 					int runLength;
 					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
 
+					if (lineLength > 0 && pos + runLength > cpFirst + lineLength)
+					{
+						runLength = cpFirst + lineLength - pos;
+					}
+
 					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
 					{
 						pos += runLength;
@@ -194,10 +200,12 @@ namespace Managed.TextFormatting
 						break;
 					}
 
-					TextMetrics runMetrics = GetRunMetrics(textRun, cpFirst, pos, cpFirst + lineLength);
+					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, cpFirst, pos, runLength);
 
 					if (content_height < runMetrics._height)
 						content_height = runMetrics._height;
+
+					_metrics._textWidth += runMetrics._textWidth;
 
 					pos += runLength;
 					_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
@@ -238,7 +246,38 @@ namespace Managed.TextFormatting
 				}
 			}
 
-			private TextMetrics GetRunMetrics(TextRun textRun, int lineStart, int runPos, int lineEnd)
+			private int GetShapeableSymbolsWidth(TextShapeableSymbols textRun)
+			{
+				int result = 0;
+				int text_length = textRun.Length;
+				int[] advance_widths = new int[text_length];
+				GCHandle pin_handle;
+				CharacterBuffer char_buf = textRun.CharacterBufferReference.CharacterBuffer;
+				unsafe
+				{
+					IntPtr run_characters = char_buf.PinAndGetCharacterPointer(textRun.CharacterBufferReference.OffsetToFirstChar, out pin_handle);
+					try
+					{
+						fixed (int* widths_ptr = advance_widths)
+						{
+							textRun.GetAdvanceWidthsUnshaped((char*)run_characters.ToPointer(), text_length, TextFormatterImp.ToIdeal, widths_ptr);
+						}
+					}
+					finally
+					{
+						char_buf.UnpinCharacterPointer(pin_handle);
+					}
+				}
+
+				for (int i=0; i<text_length; i++)
+				{
+					result += advance_widths[i];
+				}
+
+				return result;
+			}
+
+			private TextMetrics GetRunMetrics(FullTextState textState, TextRun textRun, int lineStart, int runStart, int runLength)
 			{
 				if (textRun is TextCharacters)
 				{
@@ -252,6 +291,31 @@ namespace Managed.TextFormatting
                     result._textHeight = (int)Math.Round(typeface.LineSpacing(ideal_emsize, Constants.DefaultIdealToReal, props.PixelsPerDip, _textFormattingMode));
 					result._height = result._textHeight;
 					result._baselineOffset = result._textAscent;
+
+					// width calculation
+					CultureInfo digitCulture = null;
+
+					if (!textChars.Properties.Typeface.Symbol)
+						digitCulture = textState.TextStore.Settings.DigitState.DigitCulture;
+
+					// TODO: calculate bidi stuff using TextStore and pass that in
+					var shapeable_symbols_list = ((ITextSymbols)(textChars)).GetTextShapeableSymbols(
+						textState.Formatter.GlyphingCache,
+						textChars.CharacterBufferReference,
+						runLength,
+						false, // rightToLeft
+						textState.TextStore.Settings.Pap.RightToLeft, // isRightToLeftParagraph
+						digitCulture,
+						null, // TextModifierScope
+						_textFormattingMode,
+						false // isSideways
+						);
+					// for each shapeablesymbols:
+					foreach (var shapeable_symbols in shapeable_symbols_list)
+					{
+						result._textWidth += GetShapeableSymbolsWidth(shapeable_symbols);
+					}
+
 					return result;
 				}
 				else
@@ -376,7 +440,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_WidthIncludingTrailingWhitespace");
+					return _metrics.WidthIncludingTrailingWhitespace;
 				}
 			}
 
