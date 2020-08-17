@@ -179,7 +179,8 @@ namespace Managed.TextFormatting
                 }
 
 				int pos = cpFirst;
-				int content_height = 0;
+				int content_ascent = 0;
+				int content_descent = 0;
 
 				while (lineLength <= 0 || cpFirst + lineLength > pos)
 				{
@@ -202,8 +203,11 @@ namespace Managed.TextFormatting
 
 					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, cpFirst, pos, runLength);
 
-					if (content_height < runMetrics._height)
-						content_height = runMetrics._height;
+					if (content_ascent < runMetrics._textAscent)
+						content_ascent = runMetrics._textAscent;
+
+					if (content_descent < runMetrics._textHeight - runMetrics._textAscent)
+						content_descent = runMetrics._textHeight - runMetrics._textAscent;
 
 					_metrics._textWidth += runMetrics._textWidth;
 
@@ -225,9 +229,10 @@ namespace Managed.TextFormatting
                         );
 				}
 
-				if (content_height > 0)
+				if (content_ascent > 0)
 				{
-					_metrics._height = content_height;
+					_metrics._textAscent = content_ascent;
+					_metrics._textHeight = content_ascent + content_descent;
 
 					// TODO: VerticalAdjust
 				}
@@ -464,7 +469,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_Baseline");
+					return _metrics.Baseline;
 				}
 			}
 
