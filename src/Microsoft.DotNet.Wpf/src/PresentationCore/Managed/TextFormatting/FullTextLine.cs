@@ -217,6 +217,7 @@ namespace Managed.TextFormatting
 
 				_metrics._pixelsPerDip = pixelsPerDip;
 				_metrics._cchLength = pos - cpFirst;
+				_metrics._textWidthAtTrailing = _metrics._textWidth; // FIXME
 
 				if (pap.LineHeight > 0)
 				{
@@ -437,7 +438,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_Width");
+					return _metrics.Width;
 				}
 			}
 
