@@ -50,6 +50,7 @@ namespace Managed.TextFormatting
         {
             private TextMetrics                         _metrics;                       // Text metrics
             private StatusFlags                         _statusFlags;                   // status flags of the line
+            private FullTextState                       _fullText;                      // full text state kept for collapsing purpose (only have it when StatusFlags.HasOverflowed is set)
             private TextDecorationCollection            _paragraphTextDecorations;      // Paragraph-level text decorations (or null if none)
             private Brush                               _defaultTextDecorationsBrush;   // Default brush for paragraph text decorations
             private TextFormattingMode                  _textFormattingMode;            // The TextFormattingMode of the line (Ideal or Display).
@@ -250,6 +251,31 @@ namespace Managed.TextFormatting
                     _metrics._height = _metrics._textHeight;
                     _metrics._baselineOffset = _metrics._textAscent;
 				}
+
+                if (collapsingSymbol == null)
+                {
+                    // overflow detection for potential collapsible line
+                    if (_metrics._textStart + _metrics._textWidthAtTrailing > finiteFormatWidth)
+                    {
+                        bool hasOverflowed = true;
+                        if (_textFormattingMode == TextFormattingMode.Display)
+                        {
+                            // apply display-mode rounding before checking for overflow
+                            double realWidth = Width;
+                            double realFormatWidth = _metrics._formatter.IdealToReal(finiteFormatWidth, PixelsPerDip);
+                            hasOverflowed = (TextFormatterImp.CompareReal(realWidth, realFormatWidth, PixelsPerDip, _textFormattingMode) > 0);
+                        }
+
+                        if (hasOverflowed)
+                        {
+                            // line has overflowed
+                            _statusFlags |= StatusFlags.HasOverflowed;
+
+                            // let's keep the full text state around. We'll need it later for collapsing
+                            _fullText = fullText;
+                        }
+                    }
+                }
 			}
 
 			private int GetShapeableSymbolsWidth(TextShapeableSymbols textRun)
@@ -532,10 +558,7 @@ namespace Managed.TextFormatting
 
 			public override bool HasOverflowed
 			{
-				get
-				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_HasOverflowed");
-				}
+                get { return (_statusFlags & StatusFlags.HasOverflowed) != 0; }
 			}
 
 			public override bool HasCollapsed
