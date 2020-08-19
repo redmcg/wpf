@@ -458,7 +458,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_Start");
+					return _metrics.Start;
 				}
 			}
 
