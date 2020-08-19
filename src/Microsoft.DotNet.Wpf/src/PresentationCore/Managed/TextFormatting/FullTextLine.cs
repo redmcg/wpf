@@ -417,7 +417,9 @@ namespace Managed.TextFormatting
 
 			public override TextLineBreak GetTextLineBreak()
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetTextLineBreak");
+				// FIXME: Under what circumstances does this return non-null?
+				// Apparently, specifying a too small width isn't enough.
+				return null;
 			}
 
 			public override int TrailingWhitespaceLength
