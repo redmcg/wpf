@@ -43,3 +43,9 @@ INT WINAPI GetKeyboardLayoutListWrapper(INT size, HKL* list)
 	SetLastError(0);
 	return GetKeyboardLayoutList(size, list);
 }
+
+INT WINAPI MapWindowPointsWrapper(HWND from, HWND to, LPPOINT points, UINT count)
+{
+	SetLastError(0);
+	return MapWindowPoints(from, to, points, count);
+}
