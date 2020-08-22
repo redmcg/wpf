@@ -241,7 +241,8 @@ public class TextAnalyzer
                 glyphIndices[i] = blankGlyphIndex;
             }
             clusterMap     [i] = i;
-            pfCanGlyphAlone[i] = 1;
+            if (pfCanGlyphAlone != null)
+				pfCanGlyphAlone[i] = 1;
         }
     }
 
