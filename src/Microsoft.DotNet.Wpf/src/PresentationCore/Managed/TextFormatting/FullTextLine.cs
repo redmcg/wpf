@@ -49,6 +49,7 @@ namespace Managed.TextFormatting
         internal class FullTextLine : TextLine
         {
             private TextMetrics                         _metrics;                       // Text metrics
+            private int                                 _paragraphWidth;                // paragraph width
             private StatusFlags                         _statusFlags;                   // status flags of the line
             private FullTextState                       _fullText;                      // full text state kept for collapsing purpose (only have it when StatusFlags.HasOverflowed is set)
             private TextDecorationCollection            _paragraphTextDecorations;      // Paragraph-level text decorations (or null if none)
@@ -158,6 +159,8 @@ namespace Managed.TextFormatting
                 )
             {
                 _metrics._formatter = fullText.Formatter;
+				_fullText = fullText;
+				_paragraphWidth = paragraphWidth;
                 Debug.Assert(_metrics._formatter != null);
 
                 TextStore store = fullText.TextStore;
@@ -270,9 +273,6 @@ namespace Managed.TextFormatting
                         {
                             // line has overflowed
                             _statusFlags |= StatusFlags.HasOverflowed;
-
-                            // let's keep the full text state around. We'll need it later for collapsing
-                            _fullText = fullText;
                         }
                     }
                 }
@@ -325,6 +325,7 @@ namespace Managed.TextFormatting
 					result._baselineOffset = result._textAscent;
 
 					// width calculation
+					// FIXME: Use FormattedTextSymbols for this so it matches DrawTextLine
 					CultureInfo digitCulture = null;
 
 					if (!textChars.Properties.Typeface.Symbol)
@@ -342,7 +343,6 @@ namespace Managed.TextFormatting
 						_textFormattingMode,
 						false // isSideways
 						);
-					// for each shapeablesymbols:
 					foreach (var shapeable_symbols in shapeable_symbols_list)
 					{
 						result._textWidth += GetShapeableSymbolsWidth(shapeable_symbols);
@@ -358,7 +358,130 @@ namespace Managed.TextFormatting
 
 			public override void Draw(DrawingContext drawingContext, Point origin, InvertAxes inversion)
 			{
+                if (drawingContext == null)
+                {
+                    throw new ArgumentNullException("drawingContext");
+                }
+
+                if ((_statusFlags & StatusFlags.IsDisposed) != 0)
+                {
+                    throw new ObjectDisposedException(SR.Get(SRID.TextLineHasBeenDisposed));
+                }
+
+                MatrixTransform antiInversion = TextFormatterImp.CreateAntiInversionTransform(
+                    inversion,
+                    _metrics._formatter.IdealToReal(_paragraphWidth, PixelsPerDip),
+                    _metrics._formatter.IdealToReal(_metrics._height, PixelsPerDip)
+                    );
+
+                if (antiInversion == null)
+                {
+                    DrawTextLine(drawingContext, origin, null);
+                }
+                else
+                {
+                    // Apply anti-inversion transform to correct the visual
+                    drawingContext.PushTransform(antiInversion);
+                    try
+                    {
+                        DrawTextLine(drawingContext, origin, antiInversion);
+                    }
+                    finally
+                    {
+                        drawingContext.Pop();
+                    }
+                }
 			}
+
+			internal struct OrderedTextRun
+			{
+				internal int BidiLevel;
+				internal TextRun TextRun;
+				internal int Length;
+			}
+
+			private List<OrderedTextRun> ReorderRuns()
+			{
+				var result = new List<OrderedTextRun> ();
+				var store = _fullText.TextStore;
+				var settings = store.Settings;
+				int cpFirst = store.CpFirst;
+				int pos = cpFirst;
+				int remaining_length = Length;
+
+				// FIXME: Fetch bidi levels, reset to 0 for trailing whitespace
+
+				while (remaining_length > 0)
+				{
+					TextRun run;
+					int runLength;
+					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out run, out runLength);
+
+					if (runLength > remaining_length)
+						runLength = remaining_length;
+
+					// FIXME: determine bidi level and shorten runLength to keep bidi level constant
+
+					var ordered = new OrderedTextRun();
+					ordered.BidiLevel = 0;
+					ordered.TextRun = run;
+					ordered.Length = runLength;
+					result.Add(ordered);
+
+					remaining_length -= runLength;
+					pos += runLength;
+				}
+
+				// FIXME: reverse bidi levels
+
+				return result;
+			}
+
+            /// <summary>
+            /// Draw complex text line
+            /// </summary>
+            /// <param name="drawingContext">drawing surface</param>
+            /// <param name="origin">offset to the line origin</param>
+            /// <param name="antiInversion">anti-inversion transform applied on the surface</param>
+            private void DrawTextLine(
+                DrawingContext      drawingContext,
+                Point               origin,
+                MatrixTransform     antiInversion
+                )
+            {
+				origin.Y += Baseline;
+
+				foreach (var ordered in ReorderRuns())
+				{
+					if (ordered.TextRun is TextEndOfParagraph || ordered.TextRun is TextEndOfLine)
+					{
+						break;
+					}
+					else if (ordered.TextRun is TextCharacters)
+					{
+						var textChars = (TextCharacters)ordered.TextRun;
+						var formatted = new FormattedTextSymbols(
+							_fullText.Formatter.GlyphingCache,
+							textChars,
+							ordered.Length,
+							(ordered.BidiLevel & 1) == 1, // rightToLeft
+							1.0, // scalingFactor
+							(float)_fullText.TextStore.Settings.TextSource.PixelsPerDip,
+							_fullText.TextStore.Settings.TextFormattingMode,
+							false); // isSideways
+
+						formatted.Draw(drawingContext, origin);
+
+						origin.X += formatted.Width;
+					}
+					else
+					{
+						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.Draw for {0}", ordered.TextRun.GetType().FullName));
+					}
+				}
+
+				//FIXME: collapsingsymbol & overhang calculation
+            }
 
 			public override TextLine Collapse(params TextCollapsingProperties[] collapsingPropertiesList)
 			{
