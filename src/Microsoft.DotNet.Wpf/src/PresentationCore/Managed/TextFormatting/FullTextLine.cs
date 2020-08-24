@@ -338,6 +338,12 @@ namespace Managed.TextFormatting
 
 					return result;
 				}
+				else if (textRun is TextHidden)
+				{
+					var result = new TextMetrics();
+					// Default should be empty
+					return result;
+				}
 				else
 				{
 					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetRunMetrics for {0}", textRun.GetType().FullName));
@@ -462,6 +468,10 @@ namespace Managed.TextFormatting
 						formatted.Draw(drawingContext, origin);
 
 						origin.X += formatted.Width;
+					}
+					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
 					}
 					else
 					{
