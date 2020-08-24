@@ -178,14 +178,6 @@ namespace Managed.TextFormatting
         }
 
         /// <summary>
-        /// Set tab stops
-        /// </summary>
-        internal void SetTabs(TextFormatterContext context)
-        {
-			throw new NotImplementedException("FullTextState.SetTabs");
-        }
-
-        /// <summary>
         /// Get distance from the start of main text to the end of marker
         /// </summary>
         /// <remarks>

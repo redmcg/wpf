@@ -41,7 +41,6 @@ namespace Managed.TextFormatting
     /// </summary>
     internal sealed class TextFormatterImp : TextFormatter
     {
-        private FrugalStructList<TextFormatterContext>  _contextList;               // LS context free list
         private bool                                    _multipleContextProhibited; // prohibit multiple contexts within the same formatter
         private GlyphingCache                           _glyphingCache;             // Glyphing cache for font linking process
         private TextFormattingMode                      _textFormattingMode;
@@ -53,34 +52,15 @@ namespace Managed.TextFormatting
         /// Construct an instance of TextFormatter implementation
         /// </summary>
         internal TextFormatterImp(TextFormattingMode textFormattingMode)
-            : this(null, textFormattingMode)
-        { }
+        {
+            _textFormattingMode = textFormattingMode;
+		}
 
         /// <summary>
         /// Construct an instance of TextFormatter implementation
         /// </summary>
-        internal TextFormatterImp() : this(null, TextFormattingMode.Ideal)
+        internal TextFormatterImp() : this(TextFormattingMode.Ideal)
         {}
-
-        /// <summary>
-        /// Construct an instance of TextFormatter implementation with the specified context
-        /// </summary>
-        /// <param name="soleContext"></param>
-        /// <remarks>
-        /// TextFormatter created via this special ctor takes a specified context and uses it as the only known
-        /// context within its entire lifetime. It prohibits reentering of TextFormatter during formatting as only
-        /// one context is allowed. This restriction is critical to the optimal break algorithm supported by the current
-        /// version of PTLS.
-        /// </remarks>
-        internal TextFormatterImp(TextFormatterContext soleContext, TextFormattingMode textFormattingMode)
-        {
-            _textFormattingMode = textFormattingMode;
-
-            if (soleContext != null)
-                _contextList.Add(soleContext);
-
-            _multipleContextProhibited = (_contextList.Count != 0);
-        }
 
 
         /// <summary>
@@ -108,11 +88,6 @@ namespace Managed.TextFormatting
         /// </summary>
         private void CleanupInternal()
         {
-            for (int i = 0; i < _contextList.Count; i++)
-            {
-                _contextList[i].Destroy();
-            }
-            _contextList.Clear();
         }
 
 
@@ -470,77 +445,6 @@ namespace Managed.TextFormatting
             }
         }
 
-
-
-        /// <summary>
-        /// Acquire a free TextFormatter context for complex line operation
-        /// </summary>
-        /// <param name="owner">object that becomes the owner of LS context once acquired</param>
-        /// <param name="ploc">matching PLOC</param>
-        /// <returns>Active LS context</returns>
-        /// <SecurityNotes>
-        /// Critical - this sets the owner of the context
-        /// Safe     - this doesn't expose critical info
-        /// </SecurityNotes>
-        internal TextFormatterContext AcquireContext(
-            object      owner,
-            IntPtr      ploc
-            )
-        {
-            Invariant.Assert(owner != null);
-
-            TextFormatterContext context = null;
-
-            int c;
-            int contextCount = _contextList.Count;
-
-            for (c = 0; c < contextCount; c++)
-            {
-                context = (TextFormatterContext)_contextList[c];
-
-                if (ploc == IntPtr.Zero)
-                {
-                    if(context.Owner == null)
-                        break;
-                }
-                else if (ploc == context.Ploc.Value)
-                {
-                    // LS requires that we use the exact same context for line
-                    // destruction or hittesting (part of the reason is that LS
-                    // actually caches some run info in the context). So here
-                    // we use the actual PLSC as the context signature so we
-                    // locate the one we want.
-
-                    Debug.Assert(context.Owner == null);
-                    break;
-                }
-            }
-
-            if (c == contextCount)
-            {
-                if (contextCount == 0 || !_multipleContextProhibited)
-                {
-                    //  no free one exists, create a new one
-                    context = new TextFormatterContext();
-                    _contextList.Add(context);
-                }
-                else
-                {
-                    // This instance of TextFormatter only allows a single context, reentering the
-                    // same TextFormatter in this case is not allowed.
-                    //
-                    // This requirement is currently enforced only during optimal break computation.
-                    // Client implementing nesting of optimal break content inside another must create
-                    // a separate TextFormatter instance for each content in different nesting level.
-                    throw new InvalidOperationException(SR.Get(SRID.TextFormatterReentranceProhibited));
-                }
-            }
-
-            Debug.Assert(context != null);
-
-            context.Owner = owner;
-            return context;
-        }
 
 
         /// <summary>

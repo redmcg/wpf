@@ -112,7 +112,7 @@ namespace System.Windows.Media.TextFormatting
 					presentationnative_works = true;
 			}
 			if (use_managed)
-				return new Managed.TextFormatting.TextFormatterImp(soleContext, textFormattingMode);
+				return new Managed.TextFormatting.TextFormatterImp(textFormattingMode);
 			else
 	            return new MS.Internal.TextFormatting.TextFormatterImp(soleContext, textFormattingMode);
         }
