@@ -21,17 +21,17 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
 
 using MS.Internal;
 using MS.Internal.PresentationCore;
-using MS.Internal.TextFormatting;
 
 using IndexedGlyphRun = System.Windows.Media.TextFormatting.IndexedGlyphRun;
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;
 
 
-namespace System.Windows.Media.TextFormatting
+namespace MS.Internal.TextFormatting
 {
     /// <summary>
     /// TextFormatter context. This class encapsulates the unit of reentrancy of TextFormatter.

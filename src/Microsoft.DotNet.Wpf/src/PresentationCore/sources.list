@@ -252,6 +252,7 @@ MS/internal/TextFormatting/LineServicesCallbacks.cs
 MS/internal/TextFormatting/LineServicesRun.cs
 MS/internal/TextFormatting/NumberSubstitution.cs
 MS/internal/TextFormatting/SimpleTextLine.cs
+MS/internal/TextFormatting/TextFormatterContext.cs
 MS/internal/TextFormatting/TextFormatterImp.cs
 MS/internal/TextFormatting/TextMarkerSource.cs
 MS/internal/TextFormatting/TextMetrics.cs
@@ -1182,7 +1183,6 @@ System/Windows/Media/textformatting/TextEndOfLine.cs
 System/Windows/Media/textformatting/TextEndOfParagraph.cs
 System/Windows/Media/textformatting/TextEndOfSegment.cs
 System/Windows/Media/textformatting/TextFormatter.cs
-System/Windows/Media/textformatting/TextFormatterContext.cs
 System/Windows/Media/textformatting/TextHidden.cs
 System/Windows/Media/textformatting/TextLexicalBreaks.cs
 System/Windows/Media/textformatting/TextLexicalService.cs
