@@ -325,28 +325,16 @@ namespace Managed.TextFormatting
 					result._baselineOffset = result._textAscent;
 
 					// width calculation
-					// FIXME: Use FormattedTextSymbols for this so it matches DrawTextLine
-					CultureInfo digitCulture = null;
-
-					if (!textChars.Properties.Typeface.Symbol)
-						digitCulture = textState.TextStore.Settings.DigitState.DigitCulture;
-
-					// TODO: calculate bidi stuff using TextStore and pass that in
-					var shapeable_symbols_list = ((ITextSymbols)(textChars)).GetTextShapeableSymbols(
+					var formatted = new FormattedTextSymbols(
 						textState.Formatter.GlyphingCache,
-						textChars.CharacterBufferReference,
+						textChars,
 						runLength,
-						false, // rightToLeft
-						textState.TextStore.Settings.Pap.RightToLeft, // isRightToLeftParagraph
-						digitCulture,
-						null, // TextModifierScope
+						false, //rightToLeft
+						TextFormatterImp.ToIdeal, // scalingFactor
+						(float)textState.TextStore.Settings.TextSource.PixelsPerDip,
 						_textFormattingMode,
-						false // isSideways
-						);
-					foreach (var shapeable_symbols in shapeable_symbols_list)
-					{
-						result._textWidth += GetShapeableSymbolsWidth(shapeable_symbols);
-					}
+						false); // isSideways
+					result._textWidth = formatted.UnscaledWidth;
 
 					return result;
 				}
@@ -460,6 +448,7 @@ namespace Managed.TextFormatting
 					else if (ordered.TextRun is TextCharacters)
 					{
 						var textChars = (TextCharacters)ordered.TextRun;
+						//FIXME: Rendering loses precision compared to measurement in Ideal units
 						var formatted = new FormattedTextSymbols(
 							_fullText.Formatter.GlyphingCache,
 							textChars,

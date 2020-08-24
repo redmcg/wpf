@@ -203,6 +203,25 @@ namespace Managed.TextFormatting
 
 
         /// <summary>
+        /// Total formatted width * scalingFactor, as int
+        /// </summary>
+        public int UnscaledWidth
+        {
+            get 
+            {
+                Debug.Assert(_glyphs != null);
+
+                int width = 0;
+                foreach (Glyphs glyphs in _glyphs)
+                {
+                    width += glyphs.UnscaledWidth;
+                }
+                return width;
+            }
+        }
+
+
+        /// <summary>
         /// Total formatted width
         /// </summary>
         public double Width
@@ -305,6 +324,7 @@ namespace Managed.TextFormatting
             private double[]                 _glyphAdvances;
             private IList<Point>             _glyphOffsets;
             private double                   _width;
+			private int						 _unscaledWidth;
 
 
             /// <summary>
@@ -354,6 +374,7 @@ namespace Managed.TextFormatting
                 
                 for (int i = 0; i < glyphAdvances.Length; i++)
                 {
+					_unscaledWidth += glyphAdvances[i];
                     _glyphAdvances[i] = glyphAdvances[i] * ToReal;
                     _width += _glyphAdvances[i];                
 }
@@ -391,6 +412,15 @@ namespace Managed.TextFormatting
                         _glyphIndices = glyphIndices;
                     }
                 }
+            }
+
+
+            /// <summary>
+            /// Total formatted width
+            /// </summary>
+            public int UnscaledWidth
+            {
+                get { return _unscaledWidth; }
             }
 
 
