@@ -136,6 +136,101 @@ namespace Managed.TextFormatting
 			{
 			}
 
+			// For a given line length, return TextMetrics for as manu characters fit in the width
+			private TextMetrics GetLineMetrics(
+                FullTextState           fullText,
+                int                     cpFirst,
+                int                     lineLength,
+                int                     formatWidth,
+                int                     finiteFormatWidth,
+                int                     paragraphWidth,
+                LineFlags               lineFlags,
+                FormattedTextSymbols    collapsingSymbol
+                )
+			{
+                TextMetrics result = new TextMetrics();
+				result._formatter = fullText.Formatter;
+                Debug.Assert(result._formatter != null);
+
+                TextStore store = fullText.TextStore;
+                FormatSettings settings = store.Settings;
+                ParaProp pap = settings.Pap;
+				var pixelsPerDip = settings.TextSource.PixelsPerDip;
+
+				int pos = cpFirst;
+				int content_ascent = 0;
+				int content_descent = 0;
+
+				while (lineLength <= 0 || cpFirst + lineLength > pos)
+				{
+					TextRun textRun;
+					int runLength;
+					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
+
+					if (lineLength > 0 && pos + runLength > cpFirst + lineLength)
+					{
+						runLength = cpFirst + lineLength - pos;
+					}
+
+					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
+					{
+						pos += runLength;
+						result._cchNewline = runLength;
+						break;
+					}
+
+					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, cpFirst, pos, runLength);
+
+					if (content_ascent < runMetrics._textAscent)
+						content_ascent = runMetrics._textAscent;
+
+					if (content_descent < runMetrics._textHeight - runMetrics._textAscent)
+						content_descent = runMetrics._textHeight - runMetrics._textAscent;
+
+					result._textWidth += runMetrics._textWidth;
+
+					pos += runLength;
+				}
+
+				result._pixelsPerDip = pixelsPerDip;
+				result._cchLength = pos - cpFirst;
+				result._textWidthAtTrailing = result._textWidth; // FIXME
+
+				if (pap.LineHeight > 0)
+				{
+                    // Host specifies line height, honor it.
+                    result._height = pap.LineHeight;
+                    result._baselineOffset = (int)Math.Round(
+                        result._height
+                        * pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
+                        / pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
+                        );
+				}
+
+				if (content_ascent > 0)
+				{
+					result._textAscent = content_ascent;
+					result._textHeight = content_ascent + content_descent;
+
+					// TODO: VerticalAdjust
+				}
+				else
+				{
+                    // Line is empty so text height and text baseline are based on the default typeface;
+                    // it doesn't make sense even for an emtpy line to have zero text height
+                    result._textAscent = (int)Math.Round(pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
+                    result._textHeight = (int)Math.Round(pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
+				}
+
+				if (result._height <= 0)
+				{
+                    result._height = result._textHeight;
+                    result._baselineOffset = result._textAscent;
+				}
+
+				return result;
+			}
+
             /// <summary>
             /// format text line using LS
             /// </summary>
@@ -158,16 +253,12 @@ namespace Managed.TextFormatting
                 FormattedTextSymbols    collapsingSymbol
                 )
             {
-                _metrics._formatter = fullText.Formatter;
 				_fullText = fullText;
 				_paragraphWidth = paragraphWidth;
-                Debug.Assert(_metrics._formatter != null);
 
                 TextStore store = fullText.TextStore;
-                TextStore markerStore = fullText.TextMarkerStore;
                 FormatSettings settings = store.Settings;
                 ParaProp pap = settings.Pap;
-				var pixelsPerDip = settings.TextSource.PixelsPerDip;
 
                 _paragraphTextDecorations = pap.TextDecorations;
                 if (_paragraphTextDecorations != null)
@@ -182,77 +273,21 @@ namespace Managed.TextFormatting
                     }
                 }
 
-				int pos = cpFirst;
-				int content_ascent = 0;
-				int content_descent = 0;
+				_metrics = GetLineMetrics(fullText, cpFirst, lineLength, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
 
-				while (lineLength <= 0 || cpFirst + lineLength > pos)
+				// build textRunSpans
+				int pos = cpFirst;
+				int endPos = pos + _metrics._cchLength;
+				while (pos < endPos)
 				{
 					TextRun textRun;
 					int runLength;
 					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
 
-					if (lineLength > 0 && pos + runLength > cpFirst + lineLength)
-					{
-						runLength = cpFirst + lineLength - pos;
-					}
-
-					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
-					{
-						pos += runLength;
-						_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
-						_metrics._cchNewline = runLength;
-						break;
-					}
-
-					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, cpFirst, pos, runLength);
-
-					if (content_ascent < runMetrics._textAscent)
-						content_ascent = runMetrics._textAscent;
-
-					if (content_descent < runMetrics._textHeight - runMetrics._textAscent)
-						content_descent = runMetrics._textHeight - runMetrics._textAscent;
-
-					_metrics._textWidth += runMetrics._textWidth;
-
+					if (pos + runLength > endPos)
+						runLength = endPos - pos;
 					pos += runLength;
 					_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
-				}
-
-				_metrics._pixelsPerDip = pixelsPerDip;
-				_metrics._cchLength = pos - cpFirst;
-				_metrics._textWidthAtTrailing = _metrics._textWidth; // FIXME
-
-				if (pap.LineHeight > 0)
-				{
-                    // Host specifies line height, honor it.
-                    _metrics._height = pap.LineHeight;
-                    _metrics._baselineOffset = (int)Math.Round(
-                        _metrics._height
-                        * pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
-                        / pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode)
-                        );
-				}
-
-				if (content_ascent > 0)
-				{
-					_metrics._textAscent = content_ascent;
-					_metrics._textHeight = content_ascent + content_descent;
-
-					// TODO: VerticalAdjust
-				}
-				else
-				{
-                    // Line is empty so text height and text baseline are based on the default typeface;
-                    // it doesn't make sense even for an emtpy line to have zero text height
-                    _metrics._textAscent = (int)Math.Round(pap.DefaultTypeface.Baseline(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
-                    _metrics._textHeight = (int)Math.Round(pap.DefaultTypeface.LineSpacing(pap.EmSize, Constants.DefaultIdealToReal, pixelsPerDip, _textFormattingMode));
-				}
-
-				if (_metrics._height <= 0)
-				{
-                    _metrics._height = _metrics._textHeight;
-                    _metrics._baselineOffset = _metrics._textAscent;
 				}
 
                 if (collapsingSymbol == null)
