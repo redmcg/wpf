@@ -49,3 +49,9 @@ INT WINAPI MapWindowPointsWrapper(HWND from, HWND to, LPPOINT points, UINT count
 	SetLastError(0);
 	return MapWindowPoints(from, to, points, count);
 }
+
+BOOL WINAPI EnableWindowWrapper(HWND hwnd, BOOL enable)
+{
+	SetLastError(0);
+	return EnableWindow(hwnd, enable);
+}
