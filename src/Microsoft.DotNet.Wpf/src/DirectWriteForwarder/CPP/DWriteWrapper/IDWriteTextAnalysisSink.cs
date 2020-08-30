@@ -19,7 +19,7 @@ namespace MS.Internal.Text.TextInterface
 		void SetLineBreakpoints(
 			uint position,
 			uint length,
-			ref byte breakpoints); /* DWRITE_LINE_BREAKPOINT const* */
+			IntPtr breakpoints); /* DWRITE_LINE_BREAKPOINT const* */
 
 		[MethodImpl (MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
 		void SetBidiLevel(

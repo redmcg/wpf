@@ -5,8 +5,16 @@ namespace MS.Internal.Text.TextInterface
 {
 	internal unsafe class TextAnalyzerSource : IDWriteTextAnalysisSource
 	{
-		char* pText;
+		struct TextSegment
+		{
+			internal IntPtr ptr;
+			internal uint start;
+			internal uint end;
+		}
+
 		uint TextLength;
+
+		TextSegment[] TextSegments;
 		IDWriteNumberSubstitution NumberSubstitution;
 		GCHandle PinnedLocaleName;
 		DWriteReadingDirection ReadingDirection;
@@ -15,38 +23,99 @@ namespace MS.Internal.Text.TextInterface
 			IDWriteFactory factory, bool isRightToLeft, string numberCulture,
 			bool ignoreUserOverride, uint numberSubstitutionMethod)
 		{
-			pText = text;
+			var segment = new TextSegment();
+			segment.ptr = new IntPtr(text);
+			segment.start = 0;
+			segment.end = length;
+			TextSegments = new TextSegment[] { segment };
 			TextLength = length;
 			NumberSubstitution = factory.CreateNumberSubstitution(numberSubstitutionMethod, numberCulture, ignoreUserOverride);
 			PinnedLocaleName = GCHandle.Alloc(culture, GCHandleType.Pinned);
 			ReadingDirection = isRightToLeft ? DWriteReadingDirection.RightToLeft : DWriteReadingDirection.LeftToRight;
 		}
 
+		internal TextAnalyzerSource(IntPtr[] text_ptrs, uint[] lengths, string culture,
+			IDWriteFactory factory, bool isRightToLeft, string numberCulture,
+			bool ignoreUserOverride, uint numberSubstitutionMethod)
+		{
+			TextSegments = new TextSegment[text_ptrs.Length];
+			uint pos=0;
+			for (int i=0; i < text_ptrs.Length; i++)
+			{
+				var segment = new TextSegment();
+				segment.ptr = text_ptrs[i];
+				segment.start = pos;
+				pos += lengths[i];
+				segment.end = pos;
+				TextSegments[i] = segment;
+			}
+			TextLength = pos;
+			NumberSubstitution = factory.CreateNumberSubstitution(numberSubstitutionMethod, numberCulture, ignoreUserOverride);
+			PinnedLocaleName = GCHandle.Alloc(culture, GCHandleType.Pinned);
+			ReadingDirection = isRightToLeft ? DWriteReadingDirection.RightToLeft : DWriteReadingDirection.LeftToRight;
+		}
+
+		private bool FindSegmentAtPosition(uint position, out int segment_index)
+		{
+			int first = 0;
+			int last = TextSegments.Length - 1;
+
+			if (position < 0 || position >= TextSegments[last].end)
+			{
+				segment_index = -1;
+				return false;
+			}
+
+			// binary search
+			while (last > first)
+			{
+				int candidate = (first + last) / 2;
+				var segment = TextSegments[candidate];
+				if (position < segment.start)
+					last = candidate - 1;
+				else if (position >= segment.end)
+					first = candidate + 1;
+				else
+				{
+					segment_index = candidate;
+					return true;
+				}
+			}
+
+			// The array of segments covers the full range, so we can assume we found it.
+			segment_index = first;
+			return true;
+		}
+
 		public void GetTextAtPosition(uint position, out IntPtr text, out uint text_len)
 		{
-			if (position < 0 || position >= TextLength)
+			int index;
+			if (FindSegmentAtPosition(position, out index))
 			{
-				text = IntPtr.Zero;
-				text_len = 0;
+				var segment = TextSegments[index];
+				text = IntPtr.Add(segment.ptr, (int)(position - segment.start));
+				text_len = segment.end - position;
 			}
 			else
 			{
-				text = new IntPtr(pText + position);
-				text_len = TextLength - position;
+				text = IntPtr.Zero;
+				text_len = 0;
 			}
 		}
 
 		public void GetTextBeforePosition(uint position, out IntPtr text, out uint text_len)
 		{
-			if (position <= 0 || position > TextLength)
+			int index;
+			if (position != 0 && FindSegmentAtPosition(position-1, out index))
 			{
-				text = IntPtr.Zero;
-				text_len = 0;
+				var segment = TextSegments[index];
+				text = segment.ptr;
+				text_len = position - segment.start;
 			}
 			else
 			{
-				text = new IntPtr(pText);
-				text_len = position;
+				text = IntPtr.Zero;
+				text_len = 0;
 			}
 		}
 

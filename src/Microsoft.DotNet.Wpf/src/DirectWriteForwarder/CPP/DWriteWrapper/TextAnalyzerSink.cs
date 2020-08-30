@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace MS.Internal.Text.TextInterface
 {
@@ -30,13 +31,25 @@ namespace MS.Internal.Text.TextInterface
 		internal List<TextAnalysisRange<IDWriteNumberSubstitution>> NumberSubstitution = new List<TextAnalysisRange<IDWriteNumberSubstitution>>();
 		internal List<TextAnalysisRange<DWriteScriptAnalysis>> ScriptAnalysis = new List<TextAnalysisRange<DWriteScriptAnalysis>>();
 
+		internal LineBreakpoints LineBreakpoints;
+
 		public void SetScriptAnalysis(uint position, uint length, ref DWriteScriptAnalysis scriptanalysis)
 		{
 			ScriptAnalysis.Add(new TextAnalysisRange<DWriteScriptAnalysis>((int)position, (int)length, scriptanalysis));
 		}
 
-		public void SetLineBreakpoints(uint position, uint length,	ref byte breakpoints)
+		public void InitializeLineBreakpoints(int range_start, int range_end)
 		{
+			LineBreakpoints = new LineBreakpoints(range_start, range_end);
+		}
+
+		public void SetLineBreakpoints(uint position, uint length, IntPtr breakpoints)
+		{
+			Marshal.Copy(
+				breakpoints,
+				LineBreakpoints.DWriteLineBreakpoints,
+				(int)position - LineBreakpoints.RangeStart,
+				(int)length);
 		}
 
 		public void SetBidiLevel(uint position, uint length, byte explicitLevel, byte resolvedLevel)

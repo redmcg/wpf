@@ -26,6 +26,8 @@ using System.Security;
 using SR=MS.Internal.PresentationCore.SR;
 using SRID=MS.Internal.PresentationCore.SRID;
 using MS.Internal;
+using MS.Internal.FontCache;
+using MS.Internal.Text.TextInterface;
 using Common.TextFormatting;
 
 namespace Managed.TextFormatting
@@ -161,6 +163,100 @@ namespace Managed.TextFormatting
                 currentScope
                 );
         }
+
+
+		public LineBreakpoints FindLineBreakpoints(int rangeStart, int rangeLength)
+		{
+			var textRuns = new List<TextRun>();
+			var buffers = new List<CharacterBufferRange>();
+			var lengths = new List<uint>();
+
+			// This is probably slow, but in theory dwrite may need the full line to figure out linebreaks.
+			int lineStart = _cpFirst;
+			int pos = lineStart;
+			while (true)
+			{
+				int runLength;
+				TextRun textRun;
+
+				CharacterBufferRange charString = _settings.FetchTextRun(
+					pos,
+					_cpFirst,
+					out textRun,
+					out runLength
+					);
+
+				if (runLength == 0)
+					break;
+
+				if (textRun is TextEndOfLine)
+				{
+					if (pos < lineStart)
+					{
+						// Previous line in this buffer
+						pos += runLength;
+						lineStart = pos;
+						textRuns.Clear();
+						buffers.Clear();
+						lengths.Clear();
+						continue;
+					}
+					else
+					{
+						// End of current line
+						break;
+					}
+				}
+
+				textRuns.Add(textRun);
+				buffers.Add(charString);
+				lengths.Add((uint)runLength);
+				pos += runLength;
+			}
+
+			// get raw pointers to text
+			IntPtr[] textPtrs = new IntPtr[textRuns.Count];
+			List<GCHandle> pinHandles = new List<GCHandle>(textRuns.Count);
+			LineBreakpoints result;
+
+			try
+			{
+				for (int i=0; i<textRuns.Count; i++)
+				{
+					GCHandle pinHandle;
+					textPtrs[i] = textRuns[i].CharacterBufferReference.CharacterBuffer.PinAndGetCharacterPointer(
+						textRuns[i].CharacterBufferReference.OffsetToFirstChar, out pinHandle);
+					pinHandles.Add(pinHandle);
+				}
+
+				var textAnalyzer = _settings.Formatter.TextAnalyzer;
+
+				result = textAnalyzer.AnalyzeLineBreakpoints(
+					textPtrs,
+					lengths.ToArray(),
+					_settings.Pap.DefaultCultureInfo,
+					DWriteFactory.Instance,
+					(uint)(rangeStart - lineStart),
+					(uint)rangeLength,
+					_settings.Pap.RightToLeft, //isRightToLeft
+					CultureInfo.CurrentCulture, // dummy numberSubstitution values, this probably doesn't matter for linebreaks?
+					false,
+					(uint)NumberSubstitutionMethod.Context);
+
+				result.RangeStart += lineStart;
+			}
+			finally
+			{
+				for (int i=0; i<pinHandles.Count; i++)
+				{
+					textRuns[i].CharacterBufferReference.CharacterBuffer.UnpinCharacterPointer(pinHandles[i]);
+				}
+			}
+
+			//FIXME: Handle inline objects and custom hyphenators
+
+			return result;
+		}
 
 
         /// <summary>

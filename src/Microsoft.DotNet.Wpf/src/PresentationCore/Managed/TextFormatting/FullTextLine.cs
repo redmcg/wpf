@@ -21,6 +21,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal;
+using MS.Internal.Text.TextInterface;
 using MS.Internal.Shaping;
 using Common.TextFormatting;
 using ITextMetrics = MS.Internal.TextFormatting.ITextMetrics;
@@ -274,6 +275,24 @@ namespace Managed.TextFormatting
                 }
 
 				_metrics = GetLineMetrics(fullText, cpFirst, lineLength, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
+
+				// check for line wrap
+				if (pap.Wrap && _metrics._textStart + _metrics._textWidthAtTrailing > finiteFormatWidth)
+				{
+					lineLength = _metrics._cchLength;
+					var lineBreakpoints = store.FindLineBreakpoints(cpFirst, lineLength);
+					for (int i=lineLength-1; i > 0; i--)
+					{
+						if (lineBreakpoints.GetBreakConditionBefore(i+cpFirst) == DWriteBreakCondition.CanBreak)
+						{
+							_metrics = GetLineMetrics(fullText, cpFirst, i, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
+							if (_metrics._textStart + _metrics._textWidthAtTrailing <= finiteFormatWidth)
+							{
+								break;
+							}
+						}
+					}
+				}
 
 				// build textRunSpans
 				int pos = cpFirst;

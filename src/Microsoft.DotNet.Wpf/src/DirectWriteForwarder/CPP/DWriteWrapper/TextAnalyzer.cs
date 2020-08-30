@@ -845,5 +845,39 @@ public class TextAnalyzer
     {
         return ((DWriteScriptAnalysis)itemProps.ScriptAnalysis).Shapes;
     }
+
+	public LineBreakpoints AnalyzeLineBreakpoints(IntPtr[] text_ptrs, uint[] lengths, CultureInfo culture,
+		Factory factory,
+		uint range_start, uint range_length, bool isRightToLeft, CultureInfo numberCulture,
+		bool ignoreUserOverride, uint numberSubstitutionMethod)
+	{
+		IDWriteTextAnalyzer pTextAnalyzer = null;
+		TextAnalyzerSink textAnalyzerSink = null;
+		TextAnalyzerSource textAnalyzerSource = null;
+
+		IDWriteFactory pDWriteFactory = factory.DWriteFactory;
+
+		pTextAnalyzer = pDWriteFactory.CreateTextAnalyzer();
+
+		string numberSubstitutionLocaleName = numberCulture != null ? numberCulture.IetfLanguageTag : null;
+
+		textAnalyzerSource = new TextAnalyzerSource(
+										 text_ptrs,
+										 lengths,
+										 culture.IetfLanguageTag,
+										 pDWriteFactory,
+										 isRightToLeft,
+										 numberSubstitutionLocaleName,
+										 ignoreUserOverride,
+										 numberSubstitutionMethod);
+
+		textAnalyzerSink = new TextAnalyzerSink();
+
+		textAnalyzerSink.InitializeLineBreakpoints((int)range_start, (int)(range_start + range_length));
+
+		pTextAnalyzer.AnalyzeLineBreakpoints(textAnalyzerSource, range_start, range_length, textAnalyzerSink);
+
+		return textAnalyzerSink.LineBreakpoints;
+	}	
 }
 }

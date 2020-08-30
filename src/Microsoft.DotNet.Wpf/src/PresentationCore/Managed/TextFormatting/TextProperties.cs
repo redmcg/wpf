@@ -152,6 +152,11 @@ namespace Managed.TextFormatting
             get { return _paragraphProperties.DefaultTextRunProperties.Typeface; }
         }
 
+        internal CultureInfo DefaultCultureInfo
+        {
+            get { return _paragraphProperties.DefaultTextRunProperties.CultureInfo; }
+        }
+
         internal int EmSize
         {
             get { return _emSize; }
