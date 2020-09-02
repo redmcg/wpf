@@ -119,7 +119,6 @@ namespace Managed.TextFormatting
                 }
                 _metrics = new TextMetrics();
                 _metrics._pixelsPerDip = pixelsPerDip;
-				_textRunSpans = new List<TextSpan<TextRun>> ();
             }
 
 			~FullTextLine()
@@ -301,22 +300,6 @@ namespace Managed.TextFormatting
 							}
 						}
 					}
-				}
-
-				// FIXME: This misuses FetchTextRun, we should probably build this on demand and use TextSource directly
-				// build textRunSpans
-				int pos = cpFirst;
-				int endPos = pos + _metrics._cchLength;
-				while (pos < endPos)
-				{
-					TextRun textRun;
-					int runLength;
-					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out textRun, out runLength);
-
-					if (pos + runLength > endPos)
-						runLength = endPos - pos;
-					pos += runLength;
-					_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
 				}
 
                 if (collapsingSymbol == null)
@@ -596,6 +579,29 @@ namespace Managed.TextFormatting
                     throw new ObjectDisposedException(SR.Get(SRID.TextLineHasBeenDisposed));
                 }
 
+				if (_textRunSpans is null)
+				{
+					var store = _fullText.TextStore;
+					var source = store.Settings.TextSource;
+					int cpFirst = store.CpFirst;
+					int pos = cpFirst;
+					int endPos = pos + _metrics._cchLength;
+					_textRunSpans = new List<TextSpan<TextRun>> ();
+					while (pos < endPos)
+					{
+						TextRun textRun;
+						int runLength;
+
+						// Can't use TextStore here as the cache may give us a run containing the run we need
+						textRun = source.GetTextRun(pos);
+						runLength = textRun.Length;
+
+						if (pos + runLength > endPos)
+							runLength = endPos - pos;
+						pos += runLength;
+						_textRunSpans.Add(new TextSpan<TextRun>(runLength, textRun));
+					}
+				}
 				return new List<TextSpan<TextRun>> (_textRunSpans);
 			}
 
