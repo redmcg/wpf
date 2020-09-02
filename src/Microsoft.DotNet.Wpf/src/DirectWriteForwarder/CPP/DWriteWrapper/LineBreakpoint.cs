@@ -87,6 +87,17 @@ namespace MS.Internal.Text.TextInterface
 			return ((DWriteLineBreakpoints[idx - RangeStart] >> 4) & 1) == 1;
 		}
 
+		public int WhitespaceLengthBefore(int idx)
+		{
+			int result = 0;
+			while (idx > RangeStart && IsWhitespace(idx-1))
+			{
+				idx--;
+				result++;
+			}
+			return result;
+		}
+
 		public bool IsSoftHyphen(int idx)
 		{
 			return ((DWriteLineBreakpoints[idx - RangeStart] >> 5) & 1) == 1;

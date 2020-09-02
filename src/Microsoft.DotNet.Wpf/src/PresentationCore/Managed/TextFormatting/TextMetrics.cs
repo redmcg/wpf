@@ -38,6 +38,7 @@ namespace Managed.TextFormatting
         private int                     _textStart;                 // distance from LS origin to text start
         private int                     _textWidth;                 // text start to end
         private int                     _textWidthAtTrailing;       // text start to end excluding trailing whitespaces    
+		private int						_cchTrailing;				// number of whitespace characters at end of line
         private int                     _paragraphToText;           // paragraph start to text start
         private double                  _pixelsPerDip;              // PixelsPerDip
 
@@ -394,6 +395,12 @@ namespace Managed.TextFormatting
         {
             get { return _formatter.IdealToReal(_textWidth + _textStart, _pixelsPerDip); }
         }
+
+
+		public int TrailingWhitespaceLength
+		{
+			get { return _cchTrailing; }
+		}
 
 
         /// <summary>

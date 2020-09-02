@@ -195,7 +195,7 @@ namespace Managed.TextFormatting
 
 				result._pixelsPerDip = pixelsPerDip;
 				result._cchLength = pos - cpFirst;
-				result._textWidthAtTrailing = result._textWidth; // FIXME
+				result._textWidthAtTrailing = result._textWidth; // will be set later by FormatLine
 
 				if (pap.LineHeight > 0)
 				{
@@ -276,19 +276,27 @@ namespace Managed.TextFormatting
 
 				_metrics = GetLineMetrics(fullText, cpFirst, lineLength, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
 
-				// check for line wrap
-				if (pap.Wrap && _metrics._textStart + _metrics._textWidthAtTrailing > finiteFormatWidth)
+				lineLength = _metrics._cchLength;
+				if (lineLength > _metrics._cchNewline)
 				{
-					lineLength = _metrics._cchLength;
 					var lineBreakpoints = store.FindLineBreakpoints(cpFirst, lineLength);
-					for (int i=lineLength-1; i > 0; i--)
+
+					// check for line wrap
+					if (pap.Wrap && _metrics._textStart + _metrics._textWidthAtTrailing > finiteFormatWidth)
 					{
-						if (lineBreakpoints.GetBreakConditionBefore(i+cpFirst) == DWriteBreakCondition.CanBreak)
+						for (int i=lineLength-1; i > 0; i--)
 						{
-							_metrics = GetLineMetrics(fullText, cpFirst, i, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
-							if (_metrics._textStart + _metrics._textWidthAtTrailing <= finiteFormatWidth)
+							if (lineBreakpoints.GetBreakConditionBefore(i+cpFirst) == DWriteBreakCondition.CanBreak)
 							{
-								break;
+								var trailingWhitespace = lineBreakpoints.WhitespaceLengthBefore(i+cpFirst);
+								var trimmedMetrics = GetLineMetrics(fullText, cpFirst, i - trailingWhitespace, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
+								if (trimmedMetrics._textStart + trimmedMetrics._textWidthAtTrailing <= finiteFormatWidth)
+								{
+									_metrics = GetLineMetrics(fullText, cpFirst, i, formatWidth, finiteFormatWidth, paragraphWidth, lineFlags, collapsingSymbol);
+									_metrics._cchTrailing = trailingWhitespace;
+									_metrics._textWidthAtTrailing = trimmedMetrics._textWidth;
+									break;
+								}
 							}
 						}
 					}
@@ -602,7 +610,7 @@ namespace Managed.TextFormatting
 			{
 				get
 				{
-					throw new NotImplementedException("Managed.TextFormatting.FullTextLine.get_TrailingWhitespaceLength");
+					return _metrics.TrailingWhitespaceLength;
 				}
 			}
 
