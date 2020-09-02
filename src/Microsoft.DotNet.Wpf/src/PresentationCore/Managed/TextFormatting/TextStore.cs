@@ -167,8 +167,7 @@ namespace Managed.TextFormatting
 
 		public LineBreakpoints FindLineBreakpoints(int rangeStart, int rangeLength)
 		{
-			var textRuns = new List<TextRun>();
-			var buffers = new List<CharacterBufferRange>();
+			var ranges = new List<CharacterBufferRange>();
 			var lengths = new List<uint>();
 
 			// This is probably slow, but in theory dwrite may need the full line to figure out linebreaks.
@@ -196,8 +195,7 @@ namespace Managed.TextFormatting
 						// Previous line in this buffer
 						pos += runLength;
 						lineStart = pos;
-						textRuns.Clear();
-						buffers.Clear();
+						ranges.Clear();
 						lengths.Clear();
 						continue;
 					}
@@ -208,24 +206,23 @@ namespace Managed.TextFormatting
 					}
 				}
 
-				textRuns.Add(textRun);
-				buffers.Add(charString);
+				ranges.Add(charString);
 				lengths.Add((uint)runLength);
 				pos += runLength;
 			}
 
 			// get raw pointers to text
-			IntPtr[] textPtrs = new IntPtr[textRuns.Count];
-			List<GCHandle> pinHandles = new List<GCHandle>(textRuns.Count);
+			IntPtr[] textPtrs = new IntPtr[ranges.Count];
+			List<GCHandle> pinHandles = new List<GCHandle>(ranges.Count);
 			LineBreakpoints result;
 
 			try
 			{
-				for (int i=0; i<textRuns.Count; i++)
+				for (int i=0; i<ranges.Count; i++)
 				{
 					GCHandle pinHandle;
-					textPtrs[i] = textRuns[i].CharacterBufferReference.CharacterBuffer.PinAndGetCharacterPointer(
-						textRuns[i].CharacterBufferReference.OffsetToFirstChar, out pinHandle);
+					textPtrs[i] = ranges[i].CharacterBuffer.PinAndGetCharacterPointer(
+						ranges[i].OffsetToFirstChar, out pinHandle);
 					pinHandles.Add(pinHandle);
 				}
 
@@ -249,7 +246,7 @@ namespace Managed.TextFormatting
 			{
 				for (int i=0; i<pinHandles.Count; i++)
 				{
-					textRuns[i].CharacterBufferReference.CharacterBuffer.UnpinCharacterPointer(pinHandles[i]);
+					ranges[i].CharacterBuffer.UnpinCharacterPointer(pinHandles[i]);
 				}
 			}
 
