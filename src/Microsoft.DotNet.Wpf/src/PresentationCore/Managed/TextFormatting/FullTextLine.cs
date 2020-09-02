@@ -171,6 +171,7 @@ namespace Managed.TextFormatting
 					if (lineLength > 0 && pos + runLength > cpFirst + lineLength)
 					{
 						runLength = cpFirst + lineLength - pos;
+						chars = new CharacterBufferRange(chars, 0, runLength);
 					}
 
 					if (textRun is TextEndOfParagraph || textRun is TextEndOfLine)
@@ -180,7 +181,7 @@ namespace Managed.TextFormatting
 						break;
 					}
 
-					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, cpFirst, pos, runLength);
+					TextMetrics runMetrics = GetRunMetrics(fullText, textRun, chars);
 
 					if (content_ascent < runMetrics._textAscent)
 						content_ascent = runMetrics._textAscent;
@@ -302,6 +303,7 @@ namespace Managed.TextFormatting
 					}
 				}
 
+				// FIXME: This misuses FetchTextRun, we should probably build this on demand and use TextSource directly
 				// build textRunSpans
 				int pos = cpFirst;
 				int endPos = pos + _metrics._cchLength;
@@ -371,7 +373,7 @@ namespace Managed.TextFormatting
 				return result;
 			}
 
-			private TextMetrics GetRunMetrics(FullTextState textState, TextRun textRun, int lineStart, int runStart, int runLength)
+			private TextMetrics GetRunMetrics(FullTextState textState, TextRun textRun, CharacterBufferRange chars)
 			{
 				if (textRun is TextCharacters)
 				{
@@ -390,7 +392,7 @@ namespace Managed.TextFormatting
 					var formatted = new FormattedTextSymbols(
 						textState.Formatter.GlyphingCache,
 						textChars,
-						runLength,
+						chars,
 						false, //rightToLeft
 						TextFormatterImp.ToIdeal, // scalingFactor
 						(float)textState.TextStore.Settings.TextSource.PixelsPerDip,
@@ -453,7 +455,7 @@ namespace Managed.TextFormatting
 			{
 				internal int BidiLevel;
 				internal TextRun TextRun;
-				internal int Length;
+				internal CharacterBufferRange Range;
 			}
 
 			private List<OrderedTextRun> ReorderRuns()
@@ -474,14 +476,17 @@ namespace Managed.TextFormatting
 					CharacterBufferRange chars = settings.FetchTextRun(pos, cpFirst, out run, out runLength);
 
 					if (runLength > remaining_length)
+					{
 						runLength = remaining_length;
+						chars = new CharacterBufferRange(chars, 0, runLength);
+					}
 
 					// FIXME: determine bidi level and shorten runLength to keep bidi level constant
 
 					var ordered = new OrderedTextRun();
 					ordered.BidiLevel = 0;
 					ordered.TextRun = run;
-					ordered.Length = runLength;
+					ordered.Range = chars;
 					result.Add(ordered);
 
 					remaining_length -= runLength;
@@ -520,7 +525,7 @@ namespace Managed.TextFormatting
 						var formatted = new FormattedTextSymbols(
 							_fullText.Formatter.GlyphingCache,
 							textChars,
-							ordered.Length,
+							ordered.Range,
 							(ordered.BidiLevel & 1) == 1, // rightToLeft
 							1.0, // scalingFactor
 							(float)_fullText.TextStore.Settings.TextSource.PixelsPerDip,

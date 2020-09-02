@@ -44,7 +44,7 @@ namespace Managed.TextFormatting
         public FormattedTextSymbols(
             GlyphingCache glyphingCache,
             TextRun       textSymbols,
-			int 		  length,
+			CharacterBufferRange chars,
             bool          rightToLeft,
             double        scalingFactor,
             float pixelsPerDip,
@@ -58,14 +58,11 @@ namespace Managed.TextFormatting
 
             Debug.Assert(symbols != null);
 
-			if (length <= 0)
-				length = textSymbols.Length;
-
             // break down a single text run into pieces
             IList<TextShapeableSymbols> shapeables = symbols.GetTextShapeableSymbols(
                 glyphingCache,
-                textSymbols.CharacterBufferReference,
-                length,
+                chars.CharacterBufferReference,
+                chars.Length,
                 rightToLeft,  // This is a bool indicating the RTL
                               // based on the bidi level of text (if applicable). 
                               // For FormattedTextSymbols it is equal to paragraph flow direction.
@@ -87,8 +84,8 @@ namespace Managed.TextFormatting
             _rightToLeft = rightToLeft;
             _glyphs = new Glyphs[shapeables.Count];
 
-            CharacterBuffer charBuffer = textSymbols.CharacterBufferReference.CharacterBuffer;
-            int offsetToFirstChar = textSymbols.CharacterBufferReference.OffsetToFirstChar;
+            CharacterBuffer charBuffer = chars.CharacterBuffer;
+            int offsetToFirstChar = chars.OffsetToFirstChar;
 
             int i = 0;
             int ich = 0;
