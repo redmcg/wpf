@@ -387,10 +387,6 @@ namespace Managed.TextFormatting
                 _shapeable = shapeable;
                 _charArray = charArray;
 
-                // create double array for glyph run creation, because Shaping is all done in 
-                // ideal units. FormattedTextSymbol is used to draw text collapsing symbols 
-                // which usually contains very few glyphs. Using double[] and Point[] directly
-                // is more efficient. 
                 _glyphAdvances = new double[glyphAdvances.Length];
 
                 double ToReal = 1.0 / scalingFactor;
@@ -400,7 +396,7 @@ namespace Managed.TextFormatting
 					_unscaledWidth += glyphAdvances[i];
                     _glyphAdvances[i] = glyphAdvances[i] * ToReal;
                     _width += _glyphAdvances[i];                
-}
+				}
 
                 if (glyphIndices != null)
                 {

@@ -356,14 +356,14 @@ namespace Managed.TextFormatting
 				return result;
 			}
 
-			private FormattedTextSymbols GetFormattedTextSymbols(TextCharacters textRun, CharacterBufferRange chars, double scalingFactor, int bidiLevel)
+			private FormattedTextSymbols GetFormattedTextSymbols(TextCharacters textRun, CharacterBufferRange chars, int bidiLevel)
 			{
 				return new FormattedTextSymbols(
 					_fullText.Formatter.GlyphingCache,
 					textRun,
 					chars,
 					(bidiLevel & 1) == 1, //rightToLeft
-					scalingFactor, // scalingFactor
+					TextFormatterImp.ToIdeal, // scalingFactor
 					(float)_fullText.TextStore.Settings.TextSource.PixelsPerDip,
 					_textFormattingMode,
 					false); // isSideways
@@ -385,7 +385,7 @@ namespace Managed.TextFormatting
 					result._baselineOffset = result._textAscent;
 
 					// width calculation
-					var formatted = GetFormattedTextSymbols(textChars, chars, TextFormatterImp.ToIdeal, 0); // isSideways
+					var formatted = GetFormattedTextSymbols(textChars, chars, 0); // isSideways
 					result._textWidth = formatted.UnscaledWidth;
 
 					return result;
@@ -512,7 +512,7 @@ namespace Managed.TextFormatting
 					{
 						var textChars = (TextCharacters)ordered.TextRun;
 						//FIXME: Rendering loses precision compared to measurement in Ideal units
-						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, 1.0, ordered.BidiLevel);
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, ordered.BidiLevel);
 
 						formatted.Draw(drawingContext, origin);
 
@@ -618,7 +618,7 @@ namespace Managed.TextFormatting
 					else if (ordered.TextRun is TextCharacters)
 					{
 						var textChars = (TextCharacters)ordered.TextRun;
-						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, 1.0, ordered.BidiLevel);
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, ordered.BidiLevel);
 						var cpFirst = ordered.CpFirst;
 
 						foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
