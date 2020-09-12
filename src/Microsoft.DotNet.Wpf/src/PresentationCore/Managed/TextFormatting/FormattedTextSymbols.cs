@@ -237,6 +237,32 @@ namespace Managed.TextFormatting
         }
 
 
+        public List<GlyphRun> GetGlyphRuns(ref Point origin)
+        {
+			var result = new List<GlyphRun>();
+
+            foreach (Glyphs glyphs in _glyphs)
+            {
+                GlyphRun glyphRun = glyphs.CreateGlyphRun(origin, _rightToLeft);
+
+                if (glyphRun != null)
+                {
+					result.Add(glyphRun);
+                }
+
+                if (_rightToLeft)
+                {
+                    origin.X -= glyphs.Width;
+                }
+                else
+                {
+                    origin.X += glyphs.Width;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Draw all formatted glyphruns
         /// </summary>

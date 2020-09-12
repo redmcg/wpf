@@ -356,6 +356,19 @@ namespace Managed.TextFormatting
 				return result;
 			}
 
+			private FormattedTextSymbols GetFormattedTextSymbols(TextCharacters textRun, CharacterBufferRange chars, double scalingFactor, int bidiLevel)
+			{
+				return new FormattedTextSymbols(
+					_fullText.Formatter.GlyphingCache,
+					textRun,
+					chars,
+					(bidiLevel & 1) == 1, //rightToLeft
+					scalingFactor, // scalingFactor
+					(float)_fullText.TextStore.Settings.TextSource.PixelsPerDip,
+					_textFormattingMode,
+					false); // isSideways
+			}
+
 			private TextMetrics GetRunMetrics(FullTextState textState, TextRun textRun, CharacterBufferRange chars)
 			{
 				if (textRun is TextCharacters)
@@ -372,15 +385,7 @@ namespace Managed.TextFormatting
 					result._baselineOffset = result._textAscent;
 
 					// width calculation
-					var formatted = new FormattedTextSymbols(
-						textState.Formatter.GlyphingCache,
-						textChars,
-						chars,
-						false, //rightToLeft
-						TextFormatterImp.ToIdeal, // scalingFactor
-						(float)textState.TextStore.Settings.TextSource.PixelsPerDip,
-						_textFormattingMode,
-						false); // isSideways
+					var formatted = GetFormattedTextSymbols(textChars, chars, TextFormatterImp.ToIdeal, 0); // isSideways
 					result._textWidth = formatted.UnscaledWidth;
 
 					return result;
@@ -437,6 +442,7 @@ namespace Managed.TextFormatting
 			internal struct OrderedTextRun
 			{
 				internal int BidiLevel;
+				internal int CpFirst;
 				internal TextRun TextRun;
 				internal CharacterBufferRange Range;
 			}
@@ -470,6 +476,7 @@ namespace Managed.TextFormatting
 					ordered.BidiLevel = 0;
 					ordered.TextRun = run;
 					ordered.Range = chars;
+					ordered.CpFirst = pos;
 					result.Add(ordered);
 
 					remaining_length -= runLength;
@@ -505,15 +512,7 @@ namespace Managed.TextFormatting
 					{
 						var textChars = (TextCharacters)ordered.TextRun;
 						//FIXME: Rendering loses precision compared to measurement in Ideal units
-						var formatted = new FormattedTextSymbols(
-							_fullText.Formatter.GlyphingCache,
-							textChars,
-							ordered.Range,
-							(ordered.BidiLevel & 1) == 1, // rightToLeft
-							1.0, // scalingFactor
-							(float)_fullText.TextStore.Settings.TextSource.PixelsPerDip,
-							_fullText.TextStore.Settings.TextFormattingMode,
-							false); // isSideways
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, 1.0, ordered.BidiLevel);
 
 						formatted.Draw(drawingContext, origin);
 
@@ -607,7 +606,38 @@ namespace Managed.TextFormatting
 
 			public override IEnumerable<IndexedGlyphRun> GetIndexedGlyphRuns()
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetIndexedGlyphRuns");
+				List<IndexedGlyphRun> result = new List<IndexedGlyphRun>();
+
+				Point origin = new Point(0, 0);
+				foreach (var ordered in ReorderRuns())
+				{
+					if (ordered.TextRun is TextEndOfLine)
+					{
+						break;
+					}
+					else if (ordered.TextRun is TextCharacters)
+					{
+						var textChars = (TextCharacters)ordered.TextRun;
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, 1.0, ordered.BidiLevel);
+						var cpFirst = ordered.CpFirst;
+
+						foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
+						{
+							result.Add(new IndexedGlyphRun(cpFirst, glyphrun.Characters.Count, glyphrun));
+							cpFirst += glyphrun.Characters.Count;
+						}
+					}
+					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else
+					{
+						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetIndexedGlyphRuns for {0}", ordered.TextRun.GetType().FullName));
+					}
+				}
+
+				return result;
 			}
 
 			public override TextLineBreak GetTextLineBreak()
