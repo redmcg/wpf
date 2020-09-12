@@ -543,7 +543,142 @@ namespace Managed.TextFormatting
 
 			public override CharacterHit GetCharacterHitFromDistance(double distance)
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetCharacterHitFromDistance");
+				if (distance < 0)
+					return new CharacterHit(_fullText.TextStore.CpFirst, 0);
+
+				Point origin = new Point(0, 0);
+
+				int index = 0;
+				int length = 0;
+
+				foreach (var ordered in ReorderRuns())
+				{
+					if (ordered.TextRun is TextEndOfLine)
+					{
+						break;
+					}
+					else if (ordered.TextRun is TextCharacters)
+					{
+						var textChars = (TextCharacters)ordered.TextRun;
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, ordered.BidiLevel);
+						var cpFirst = ordered.CpFirst;
+						bool found = false;
+
+						foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
+						{
+							int glyphIndex;
+							double posInGlyph = 0.0;
+							var advanceWidths = glyphrun.AdvanceWidths;
+							var clusterMap = glyphrun.ClusterMap;
+							var caretStops = glyphrun.CaretStops;
+
+							for (glyphIndex = 0; glyphIndex < advanceWidths.Count; glyphIndex++)
+							{
+								if (distance < advanceWidths[glyphIndex])
+								{
+									posInGlyph = distance / advanceWidths[glyphIndex];
+									found = true;
+									break;
+								}
+								distance -= advanceWidths[glyphIndex];
+							}
+
+							if (glyphIndex == advanceWidths.Count)
+							{
+								// Calculate the last possible character hit, just in case
+								glyphIndex = advanceWidths.Count - 1;
+								posInGlyph = 1.0;
+							}
+
+							// Find the character cluster that contains this glyph
+							int clusterCharFirst = 0;
+							int clusterCharEnd = 0;
+							int clusterGlyphFirst = 0;
+							int clusterGlyphEnd = 0;
+							for (int i=0; i < clusterMap.Count; i++)
+							{
+								if (clusterMap[i] <= glyphIndex && clusterMap[i] != clusterGlyphFirst)
+								{
+									clusterCharFirst = i;
+									clusterGlyphFirst = clusterMap[i];
+								}
+								else if (clusterMap[i] > glyphIndex)
+								{
+									clusterCharEnd = i;
+									clusterGlyphEnd = clusterMap[i];
+									break;
+								}
+							}
+							if (clusterCharEnd == 0)
+							{
+								// This is the last cluster in the run
+								clusterCharEnd = clusterMap.Count;
+								clusterGlyphEnd = advanceWidths.Count;
+							}
+
+							// FIXME: We should probably break multi-character clusters by CaretStops and measure them individually
+							double charDistance = ((posInGlyph + glyphIndex - clusterGlyphFirst) / (clusterGlyphEnd - clusterGlyphFirst)) * (clusterCharEnd - clusterCharFirst);
+
+							double charIndex = charDistance + clusterCharFirst;
+
+							int caretFirst, caretEnd;
+							double posInCaret;
+							// Find the caret unit containing charIndex
+							if (glyphrun.CaretStops == null)
+							{
+								caretFirst = Math.Min((int)Math.Floor(charIndex), clusterMap.Count-1);
+								caretEnd = caretFirst + 1;
+								posInCaret = charIndex - caretFirst;
+							}
+							else
+							{
+								int searchStart = Math.Min((int)Math.Floor(charIndex), clusterMap.Count-1);
+								caretFirst = 0;
+								for (int i=searchStart; i>0; i++)
+								{
+									if (glyphrun.CaretStops[i])
+									{
+										caretFirst = i;
+										break;
+									}
+								}
+								caretEnd = glyphrun.GlyphIndices.Count;
+								for (int i=searchStart+1; i < glyphrun.GlyphIndices.Count; i++)
+								{
+									if (glyphrun.CaretStops[i])
+									{
+										caretEnd = i;
+										break;
+									}
+								}
+								posInCaret = (charIndex - caretFirst) / (caretEnd - caretFirst);
+							}
+
+							index = cpFirst + caretFirst;
+							if (posInCaret < 0.5)
+								length = 0;
+							else
+								length = caretEnd - caretFirst;
+
+							if (found)
+								break;
+
+							cpFirst += glyphrun.Characters.Count;
+						}
+						if (found)
+							break;
+					}
+					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else
+					{
+						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetCharacterHitFromDistance for {0}", ordered.TextRun.GetType().FullName));
+					}
+				}
+				
+				return new CharacterHit(index, length);
 			}
 
 			public override double GetDistanceFromCharacterHit(CharacterHit characterHit)
