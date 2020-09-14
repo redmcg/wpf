@@ -646,14 +646,11 @@ namespace Managed.TextFormatting
 
 							foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
 							{
-								var clusterMap = glyphrun.ClusterMap;
 								var glyphAdvances = glyphrun.AdvanceWidths;
 
-								double glyphrun_width = 0;
-								foreach (var advance in glyphAdvances)
-									glyphrun_width += advance;
+								var glyphBox = glyphrun.ComputeAlignmentBox();
 
-								int glyphrun_length = clusterMap.Count;
+								int glyphrun_length = glyphrun.Characters.Count;
 								int subrange_start = Math.Max(firstTextSourceCharacterIndex, glyphrun_start);
 								int subrange_end = Math.Min(firstTextSourceCharacterIndex + textLength,
 									glyphrun_start + glyphrun_length);
@@ -661,31 +658,14 @@ namespace Managed.TextFormatting
 								if (subrange_end <= subrange_start)
 								{
 									glyphrun_start += glyphrun_length;
-									glyphrun_x += glyphrun_width;
+									glyphrun_x += glyphBox.Width;
 									continue;
 								}
 
-								// FIXME: Split up glyph clusters if they contain caret stops
-								int subrange_glyph_start = clusterMap[subrange_start - glyphrun_start];
-								int subrange_glyph_end;
-
-								if (subrange_end - glyphrun_start >= glyphrun_length)
-									subrange_glyph_end = glyphAdvances.Count;
-								else
-									subrange_glyph_end = clusterMap[subrange_end - glyphrun_start];
-
-								double subrange_x = 0;
-								double subrange_width = 0;
-
-								for (int i=0; i<subrange_glyph_start; i++)
-								{
-									subrange_x += glyphAdvances[i];
-								}
-
-								for (int i=subrange_glyph_start; i<subrange_glyph_end; i++)
-								{
-									subrange_width += glyphAdvances[i];
-								}
+								double subrange_x = glyphrun.GetDistanceFromCaretCharacterHit(
+									new CharacterHit(subrange_start, 0));
+								double subrange_width = glyphrun.GetDistanceFromCaretCharacterHit(
+									new CharacterHit(subrange_end - 1, 1)) - subrange_x;
 
 								var subrange_rect = new Rect(x + glyphrun_x + subrange_x, 0, subrange_width, Height);
 
@@ -701,7 +681,7 @@ namespace Managed.TextFormatting
 								runBounds.Add(new TextRunBounds(subrange_rect, subrange_start, subrange_end, ordered.TextRun));
 
 								glyphrun_start += glyphrun_length;
-								glyphrun_x += glyphrun_width;
+								glyphrun_x += glyphBox.Width;
 							}
 
 							{ // extra scope so I can reuse this variable name and then complain about it
