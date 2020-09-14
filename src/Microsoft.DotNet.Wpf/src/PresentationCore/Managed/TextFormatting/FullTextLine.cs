@@ -703,7 +703,116 @@ namespace Managed.TextFormatting
 
 			public override IList<TextBounds> GetTextBounds(int firstTextSourceCharacterIndex, int textLength)
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetTextBounds");
+				var result = new List<TextBounds>();
+				double x = 0.0;
+
+				foreach (var ordered in ReorderRuns())
+				{
+					if (ordered.TextRun is TextEndOfLine)
+					{
+						break;
+					}
+					else if (ordered.TextRun is TextCharacters)
+					{
+						var textChars = (TextCharacters)ordered.TextRun;
+						var formatted = GetFormattedTextSymbols(textChars, ordered.Range, ordered.BidiLevel);
+
+						if (ordered.CpFirst <= firstTextSourceCharacterIndex + textLength - 1 &&
+							ordered.CpFirst + ordered.Range.Length >= firstTextSourceCharacterIndex)
+						{
+							var flowDirection = (ordered.BidiLevel & 1) == 1 ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+							Rect? rectangle = null;
+							var runBounds = new List<TextRunBounds> ();
+							int glyphrun_start = ordered.CpFirst;
+							Point origin = new Point(0,0);
+							double glyphrun_x = 0;
+
+							foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
+							{
+								var clusterMap = glyphrun.ClusterMap;
+								var glyphAdvances = glyphrun.AdvanceWidths;
+
+								double glyphrun_width = 0;
+								foreach (var advance in glyphAdvances)
+									glyphrun_width += advance;
+
+								int glyphrun_length = clusterMap.Count;
+								int subrange_start = Math.Max(firstTextSourceCharacterIndex, glyphrun_start);
+								int subrange_end = Math.Min(firstTextSourceCharacterIndex + textLength,
+									glyphrun_start + glyphrun_length);
+
+								if (subrange_end <= subrange_start)
+								{
+									glyphrun_start += glyphrun_length;
+									glyphrun_x += glyphrun_width;
+									continue;
+								}
+
+								// FIXME: Split up glyph clusters if they contain caret stops
+								int subrange_glyph_start = clusterMap[subrange_start - glyphrun_start];
+								int subrange_glyph_end;
+
+								if (subrange_end - glyphrun_start >= glyphrun_length)
+									subrange_glyph_end = glyphAdvances.Count;
+								else
+									subrange_glyph_end = clusterMap[subrange_end - glyphrun_start];
+
+								double subrange_x = 0;
+								double subrange_width = 0;
+
+								for (int i=0; i<subrange_glyph_start; i++)
+								{
+									subrange_x += glyphAdvances[i];
+								}
+
+								for (int i=subrange_glyph_start; i<subrange_glyph_end; i++)
+								{
+									subrange_width += glyphAdvances[i];
+								}
+
+								var subrange_rect = new Rect(x + glyphrun_x + subrange_x, 0, subrange_width, Height);
+
+								if (rectangle is Rect rectangleValue)
+								{
+									rectangle = Rect.Intersect(subrange_rect, rectangleValue);
+								}
+								else
+								{
+									rectangle = subrange_rect;
+								}
+
+								runBounds.Add(new TextRunBounds(subrange_rect, subrange_start, subrange_end, ordered.TextRun));
+
+								glyphrun_start += glyphrun_length;
+								glyphrun_x += glyphrun_width;
+							}
+
+							{ // extra scope so I can reuse this variable name and then complain about it
+							if (rectangle is Rect rectangleValue)
+							{
+								result.Add(new TextBounds(rectangleValue, flowDirection, runBounds));
+							}
+							}
+						}
+
+						x += formatted.Width;
+					}
+					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else
+					{
+						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetTextBounds for {0}", ordered.TextRun.GetType().FullName));
+					}
+				}
+				
+				if (result.Count == 0)
+				{
+					result.Add(new TextBounds(new Rect(0,0,0,Height), FlowDirection.LeftToRight, null));
+				}
+
+				return result;
 			}
 
 			public override IList<TextSpan<TextRun>> GetTextRunSpans()
