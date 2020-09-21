@@ -603,14 +603,110 @@ namespace Managed.TextFormatting
 				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetDistanceFromCharacterHit");
 			}
 
+			private bool GetRunContainingCp(int index, out OrderedTextRun run)
+			{
+				foreach (var ordered in ReorderRuns())
+				{
+					if (index >= ordered.CpFirst && index < ordered.CpFirst + ordered.Range.Length && !(ordered.TextRun is TextEndOfLine))
+					{
+						run = ordered;
+						return true;
+					}
+				}
+				run = default(OrderedTextRun);
+				return false;
+			}
+
 			public override CharacterHit GetNextCaretCharacterHit(CharacterHit characterHit)
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetNextCaretCharacterHit");
+				int desiredIndex = characterHit.FirstCharacterIndex + characterHit.TrailingLength + 1;
+				OrderedTextRun run;
+				if (!GetRunContainingCp(desiredIndex, out run))
+				{
+					// If it's out of bounds, get the last valid character hit.
+					foreach (var ordered in ReorderRuns())
+					{
+						if (run.TextRun is null || (ordered.CpFirst > run.CpFirst && !(ordered.TextRun is TextEndOfLine)))
+							run = ordered;
+					}
+				}
+				if (run.TextRun is null || run.TextRun is TextEndOfLine)
+				{
+					// No valid character hit on this line.
+					return new CharacterHit(0, 0);
+				}
+				else if (run.TextRun is TextCharacters)
+				{
+					var textChars = (TextCharacters)run.TextRun;
+					var formatted = GetFormattedTextSymbols(textChars, run.Range, run.BidiLevel);
+					int glyphrun_start = run.CpFirst;
+					CharacterHit result = new CharacterHit(0, 0);
+					Point origin = new Point();
+
+					foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
+					{
+						result = glyphrun.GetNextCaretCharacterHit(
+							new CharacterHit(characterHit.FirstCharacterIndex - glyphrun_start,
+								characterHit.TrailingLength));
+
+						var glyphrun_length = glyphrun.Characters.Count;
+
+						if (desiredIndex < glyphrun_start + glyphrun_length)
+							break;
+
+						glyphrun_start += glyphrun_length;
+					}
+					return result;
+				}
+				else
+				{
+					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetNextCharacterHit for {0}", run.TextRun.GetType().FullName));
+				}
 			}
 
 			public override CharacterHit GetPreviousCaretCharacterHit(CharacterHit characterHit)
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetPreviousCaretCharacterHit");
+				int desiredIndex = characterHit.FirstCharacterIndex + characterHit.TrailingLength - 1;
+				OrderedTextRun run;
+				if (!GetRunContainingCp(desiredIndex, out run))
+				{
+					// If it's out of bounds, get the first valid character hit.
+					foreach (var ordered in ReorderRuns())
+					{
+						if (run.TextRun is null || (ordered.CpFirst < run.CpFirst && !(ordered.TextRun is TextEndOfLine)))
+							run = ordered;
+					}
+				}
+				if (run.TextRun is null || run.TextRun is TextEndOfLine)
+				{
+					// No valid character hit on this line.
+					return new CharacterHit(0, 0);
+				}
+				else if (run.TextRun is TextCharacters)
+				{
+					var textChars = (TextCharacters)run.TextRun;
+					var formatted = GetFormattedTextSymbols(textChars, run.Range, run.BidiLevel);
+					int glyphrun_start = run.CpFirst;
+					CharacterHit result = new CharacterHit(run.CpFirst, 0);
+					Point origin = new Point();
+
+					foreach (var glyphrun in formatted.GetGlyphRuns(ref origin))
+					{
+						var glyphrun_length = glyphrun.Characters.Count;
+
+						if (desiredIndex < glyphrun_start + glyphrun_length)
+							result = glyphrun.GetPreviousCaretCharacterHit(
+								new CharacterHit(characterHit.FirstCharacterIndex - glyphrun_start,
+									characterHit.TrailingLength));
+
+						glyphrun_start += glyphrun_length;
+					}
+					return result;
+				}
+				else
+				{
+					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetPreviousCharacterHit for {0}", run.TextRun.GetType().FullName));
+				}
 			}
 
 			public override CharacterHit GetBackspaceCaretCharacterHit(CharacterHit characterHit)
