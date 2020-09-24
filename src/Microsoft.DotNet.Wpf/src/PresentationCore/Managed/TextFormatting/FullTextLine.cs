@@ -711,7 +711,36 @@ namespace Managed.TextFormatting
 
 			public override CharacterHit GetBackspaceCaretCharacterHit(CharacterHit characterHit)
 			{
-				throw new NotImplementedException("Managed.TextFormatting.FullTextLine.GetBackspaceCaretCharacterHit");
+				int desiredIndex = characterHit.FirstCharacterIndex + characterHit.TrailingLength - 1;
+				OrderedTextRun run;
+				if (!GetRunContainingCp(desiredIndex, out run))
+				{
+					// If it's out of bounds, get the first valid character hit.
+					foreach (var ordered in ReorderRuns())
+					{
+						if (run.TextRun is null || (ordered.CpFirst < run.CpFirst && !(ordered.TextRun is TextEndOfLine)))
+							run = ordered;
+					}
+				}
+				if (run.TextRun is null || run.TextRun is TextEndOfLine)
+				{
+					// No valid character hit on this line.
+					return new CharacterHit(0, 0);
+				}
+				else if (run.TextRun is TextCharacters)
+				{
+					var textChars = (TextCharacters)run.TextRun;
+					int glyphrun_start = run.CpFirst;
+
+					if (desiredIndex < glyphrun_start)
+						return new CharacterHit(glyphrun_start, 0);
+					else
+						return new CharacterHit(desiredIndex, 0);
+				}
+				else
+				{
+					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetPreviousCharacterHit for {0}", run.TextRun.GetType().FullName));
+				}
 			}
 
 			public override IList<TextBounds> GetTextBounds(int firstTextSourceCharacterIndex, int textLength)
