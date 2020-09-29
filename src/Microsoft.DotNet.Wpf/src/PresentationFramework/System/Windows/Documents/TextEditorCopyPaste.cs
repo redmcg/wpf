@@ -592,10 +592,19 @@ namespace System.Windows.Documents
 
             try
             {
-                // Define what format our paste mechanism recognizes on the clipbord appropriate for this selection
-                string formatToApply = GetPasteApplyFormat(This, Clipboard.GetDataObject());
+				var dataObject = Clipboard.GetDataObject();
 
-                args.CanExecute = formatToApply.Length > 0;
+				if (dataObject is null)
+				{
+					args.CanExecute = false;
+				}
+				else
+				{
+					// Define what format our paste mechanism recognizes on the clipbord appropriate for this selection
+					string formatToApply = GetPasteApplyFormat(This, dataObject);
+
+					args.CanExecute = formatToApply.Length > 0;
+				}
             }
             catch (ExternalException)
             {
