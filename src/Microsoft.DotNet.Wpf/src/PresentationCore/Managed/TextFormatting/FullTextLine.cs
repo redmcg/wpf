@@ -396,6 +396,24 @@ namespace Managed.TextFormatting
 					// Default should be empty
 					return result;
 				}
+				else if (textRun is TextModifier)
+				{
+					var result = new TextMetrics();
+					// Default should be empty
+					return result;
+				}
+				else if (textRun is TextEmbeddedObject)
+				{
+					var result = new TextMetrics();
+					// Default should be empty
+					return result;
+				}
+				else if (textRun is TextEndOfSegment)
+				{
+					var result = new TextMetrics();
+					// Default should be empty
+					return result;
+				}
 				else
 				{
 					throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetRunMetrics for {0}", textRun.GetType().FullName));
@@ -519,6 +537,18 @@ namespace Managed.TextFormatting
 						origin.X += formatted.Width;
 					}
 					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else if (ordered.TextRun is TextModifier)
+					{
+						// Nothing to do.
+					}
+					else if (ordered.TextRun is TextEmbeddedObject)
+					{
+						// Nothing to do.
+					}
+					else if (ordered.TextRun is TextEndOfSegment)
 					{
 						// Nothing to do.
 					}
