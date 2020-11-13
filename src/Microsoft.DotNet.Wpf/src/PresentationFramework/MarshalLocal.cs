@@ -11,6 +11,7 @@ namespace System.Runtime.InteropServices
         {
             try
             {
+                return true;
                 int unused = Marshal.GetStartComSlot(type);
             }
             catch (ArgumentException)
