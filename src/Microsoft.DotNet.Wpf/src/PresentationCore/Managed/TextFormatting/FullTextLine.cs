@@ -375,6 +375,7 @@ namespace Managed.TextFormatting
 				{
 					var textChars = (TextCharacters)textRun;
 					var result = new TextMetrics();
+					// FIXME: Call TextModifier.ModifyProperties when applicable
 					var props = textChars.Properties;
 					var typeface = props.Typeface;
 					var ideal_emsize = TextFormatterImp.RealToIdeal(props.FontRenderingEmSize);
@@ -394,6 +395,12 @@ namespace Managed.TextFormatting
 				{
 					var result = new TextMetrics();
 					// Default should be empty
+					return result;
+				}
+				else if (textRun is TextModifier || textRun is TextEndOfSegment)
+				{
+					// This just modifies the following runs until TextEndOfSegment, it doesn't display anything on its own.
+					var result = new TextMetrics();
 					return result;
 				}
 				else
@@ -522,6 +529,10 @@ namespace Managed.TextFormatting
 					{
 						// Nothing to do.
 					}
+					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment)
+					{
+						// Nothing to do.
+					}
 					else
 					{
 						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.Draw for {0}", ordered.TextRun.GetType().FullName));
@@ -586,6 +597,10 @@ namespace Managed.TextFormatting
 							break;
 					}
 					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment)
 					{
 						// Nothing to do.
 					}
@@ -823,6 +838,10 @@ namespace Managed.TextFormatting
 					{
 						// Nothing to do.
 					}
+					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment)
+					{
+						// Nothing to do.
+					}
 					else
 					{
 						throw new NotImplementedException(String.Format("Managed.TextFormatting.FullTextLine.GetTextBounds for {0}", ordered.TextRun.GetType().FullName));
@@ -894,6 +913,10 @@ namespace Managed.TextFormatting
 						}
 					}
 					else if (ordered.TextRun is TextHidden)
+					{
+						// Nothing to do.
+					}
+					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment)
 					{
 						// Nothing to do.
 					}
