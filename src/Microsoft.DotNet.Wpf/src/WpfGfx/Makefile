@@ -50,5 +50,9 @@ $(OBJDIR)/wine/%.c.o: ../../../../wine/%.c
 	mkdir -p $(@D)
 	$(MINGW)-gcc -o $@ $(C_FLAGS) $<
 
-$(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o) $(DEF_SRC)
-	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o) $(DEF_SRC)
+$(OBJDIR)/%.rc.res: %.rc
+	mkdir -p $(@D)
+	$(MINGW)-windres $(INCLUDE_DIRS:%=-I%) -o $@ -i $<
+
+$(OBJDIR)/wpfgfx_cor3.dll: $(C_SRCS:%=$(OBJDIR)/%.o) $(OBJDIR)/core/hw/hw.rc.res $(DEF_SRC)
+	$(MINGW)-g++ -o $@ -shared -Wl,--kill-at $(LINK_FLAGS) $(C_SRCS:%=$(OBJDIR)/%.o) $(OBJDIR)/core/hw/hw.rc.res $(DEF_SRC)
