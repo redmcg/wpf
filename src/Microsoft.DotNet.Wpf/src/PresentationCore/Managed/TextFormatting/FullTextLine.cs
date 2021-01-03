@@ -399,7 +399,7 @@ namespace Managed.TextFormatting
 					// Default should be empty
 					return result;
 				}
-				else if (textRun is TextModifier || textRun is TextEndOfSegment)
+				else if (textRun is TextModifier || textRun is TextEndOfSegment || textRun is TextEmbeddedObject)
 				{
 					// This just modifies the following runs until TextEndOfSegment, it doesn't display anything on its own.
 					var result = new TextMetrics();
@@ -545,7 +545,7 @@ namespace Managed.TextFormatting
 					{
 						// Nothing to do.
 					}
-					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment)
+					else if (ordered.TextRun is TextModifier || ordered.TextRun is TextEndOfSegment || ordered.TextRun is TextEmbeddedObject)
 					{
 						// Nothing to do.
 					}
