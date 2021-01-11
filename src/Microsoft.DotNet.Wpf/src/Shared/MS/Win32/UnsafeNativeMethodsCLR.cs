@@ -80,7 +80,7 @@ namespace MS.Win32
 
 #if BASE_NATIVEMETHODS
         [DllImport(ExternDll.Ole32, ExactSpelling = true, CharSet = CharSet.Auto)]
-        public static extern int OleGetClipboard(ref IComDataObject data);
+        public static extern int OleGetClipboard(ref IntPtr data);
         [DllImport(ExternDll.Ole32, ExactSpelling=true, CharSet=CharSet.Auto)]
         public static extern int OleSetClipboard(IComDataObject pDataObj);
         [DllImport(ExternDll.Ole32, ExactSpelling=true, CharSet=CharSet.Auto)]

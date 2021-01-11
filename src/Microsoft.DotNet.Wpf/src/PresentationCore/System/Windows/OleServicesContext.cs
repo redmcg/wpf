@@ -128,7 +128,13 @@ namespace System.Windows
                 throw new ThreadStateException(SR.Get(SRID.OleServicesContext_ThreadMustBeSTA));
             }
 
-            return UnsafeNativeMethods.OleGetClipboard(ref dataObject);
+			IntPtr comPtr = IntPtr.Zero;
+            int result = UnsafeNativeMethods.OleGetClipboard(ref comPtr);
+			if (comPtr == IntPtr.Zero)
+				dataObject = null;
+			else
+				dataObject = (IComDataObject)Marshal.GetObjectForIUnknown(comPtr);
+			return result;
         }
 
         /// <summary>
