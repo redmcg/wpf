@@ -136,7 +136,7 @@ namespace Managed.TextFormatting
 			{
 			}
 
-			// For a given line length, return TextMetrics for as manu characters fit in the width
+			// For a given line length, return TextMetrics for as many characters fit in the width
 			private TextMetrics GetLineMetrics(
                 FullTextState           fullText,
                 int                     cpFirst,
@@ -160,6 +160,8 @@ namespace Managed.TextFormatting
 				int pos = cpFirst;
 				int content_ascent = 0;
 				int content_descent = 0;
+
+				result._textWidth = settings.TextIndent;
 
 				while (lineLength <= 0 || cpFirst + lineLength > pos)
 				{
@@ -409,6 +411,17 @@ namespace Managed.TextFormatting
 				}
 			}
 
+			private Point GetOffsetToFirstRun()
+			{
+				return new Point(_metrics._formatter.IdealToReal(_fullText.TextStore.Settings.TextIndent, PixelsPerDip), 0);
+			}
+
+			private Point AdjustOffset(Point orig)
+			{
+				var ofs = GetOffsetToFirstRun();
+				return new Point(orig.X + ofs.X, orig.Y + ofs.Y);
+			}
+
 			public override void Draw(DrawingContext drawingContext, Point origin, InvertAxes inversion)
 			{
                 if (drawingContext == null)
@@ -426,6 +439,8 @@ namespace Managed.TextFormatting
                     _metrics._formatter.IdealToReal(_paragraphWidth, PixelsPerDip),
                     _metrics._formatter.IdealToReal(_metrics._height, PixelsPerDip)
                     );
+
+				origin = AdjustOffset(origin);
 
                 if (antiInversion == null)
                 {
@@ -507,6 +522,7 @@ namespace Managed.TextFormatting
                 MatrixTransform     antiInversion
                 )
             {
+				origin = AdjustOffset(origin);
 				origin.Y += Baseline;
 
 				foreach (var ordered in ReorderRuns())
@@ -561,6 +577,8 @@ namespace Managed.TextFormatting
 
 				int index = 0;
 				int length = 0;
+
+				distance -= GetOffsetToFirstRun().X;
 
 				foreach (var ordered in ReorderRuns())
 				{
@@ -761,7 +779,7 @@ namespace Managed.TextFormatting
 			public override IList<TextBounds> GetTextBounds(int firstTextSourceCharacterIndex, int textLength)
 			{
 				var result = new List<TextBounds>();
-				double x = 0.0;
+				double x = GetOffsetToFirstRun().X;
 
 				foreach (var ordered in ReorderRuns())
 				{
@@ -893,7 +911,7 @@ namespace Managed.TextFormatting
 			{
 				List<IndexedGlyphRun> result = new List<IndexedGlyphRun>();
 
-				Point origin = new Point(0, 0);
+				Point origin = GetOffsetToFirstRun();
 				foreach (var ordered in ReorderRuns())
 				{
 					if (ordered.TextRun is TextEndOfLine)
