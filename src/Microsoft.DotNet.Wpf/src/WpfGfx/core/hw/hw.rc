@@ -6,7 +6,8 @@
 #include <windows.h>
 
 #include "shaders.h"
-#include "Shaders.rc"
+// Disabled because this leads to attempts to compile shaders, and d3dcompiler is unimplemented
+// #include "Shaders.rc"
 #include "ShaderAssemblies/Shaders.h"
 #include "ShaderAssemblies/EmbeddedShaders.RC"
 
