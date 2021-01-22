@@ -15,10 +15,10 @@ SRID.generated.cs: Resources/Strings.resx $(RESX2SRID)
 	mono $(RESX2SRID) $< SRID MS.Internal.PresentationCore > $@ || rm -f $@
 
 %.resources: %.resx
-	resgen $< $@
+	resgen -useSourcePath $< $@
 
 Resources/ColorProfiles.resources: System/Windows/Media/Resources/ColorProfiles/ColorProfiles.resx
-	resgen $< $@
+	resgen -useSourcePath $< $@
 
 Resources/PresentationCore.g.resources: Fonts/*.CompositeFont
 

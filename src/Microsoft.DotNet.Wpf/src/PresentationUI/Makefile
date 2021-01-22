@@ -27,7 +27,7 @@ $(XAML2CS): $(XAML2CS:.exe=.cs)
 	(mono $(XAML2CS) $< > $@) || (rm $@; false)
 
 %.resources: %.resx
-	resgen $< $@
+	resgen -useSourcePath $< $@
 
 EMBEDDED_RESOURCES=$(shell cat embeddedresources.list)
 

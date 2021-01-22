@@ -12,7 +12,7 @@ LIB_SRCS=$(shell cat sources.list)
 all: PresentationFramework.Classic.dll
 
 %.resources: %.resx
-	resgen $< $@
+	resgen -useSourcePath $< $@
 
 Resources/PresentationFramework.classic.g.resources: Themes/Classic.xaml
 
