@@ -61,8 +61,8 @@
 #include <wmpids.h>
 #include <control.h> // for IVideoWindow
 #include <uuids.h>
-#include <D3d9.h>
-#include <Vmr9.h>
+#include <d3d9.h>
+#include <vmr9.h>
 #include <time.h>
 #include <attributesbase.h>
 #include <objsafe.h>
@@ -75,7 +75,7 @@
 #include "wgx_av_types.h"
 
 #include "StateThread.h"
-#include "MediaEventProxy.h"
+#include "mediaeventproxy.h"
 #include "UniqueList.h"
 #include "CompositionNotifier.h"
 #include "MediaInstance.h"
@@ -90,18 +90,18 @@
 #include "DummyPlayer.h"
 #include "fakepp.h"
 #include "WmpEventHandler.h"
-#include "PlayerState.h"
-#include "WmpStateEngineProxy.h"
+#include "playerstate.h"
 #include "PresenterWrapper.h"
 #include "WmpStateEngine.h"
+#include "WmpStateEngineProxy.h"
 #include "SharedState.h"
 #include "WmpPlayer.h"
 #include "WmpClientSite.h"
 #include "Wmp11ClientSite.h"
 #include "avloader.h"
 #include "EvrFilterWrapper.h"
-#include "HwMediaBuffer.h"
-#include "SwMediaBuffer.h"
+#include "hwmediabuffer.h"
+#include "swmediabuffer.h"
 #include "UpdateState.h"
 
 #include "activate.h"
