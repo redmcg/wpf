@@ -23,6 +23,8 @@
 //
 //------------------------------------------------------------------------------
 
+#pragma once
+
 class CEvrFilterWrapper;
 
 class CAVLoader
