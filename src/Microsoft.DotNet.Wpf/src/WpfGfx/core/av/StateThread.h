@@ -163,7 +163,7 @@ private:
 
         );
 
-    ~CStateThread(
+    virtual ~CStateThread(
         void
         );
 
