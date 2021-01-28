@@ -112,9 +112,20 @@
 // This function is defined in Streams.h but I cannot include that header since it has a naming
 // clash with milcore's queue.h
 //
+static inline
 void WINAPI DeleteMediaType(
     AM_MEDIA_TYPE *pmt
-);
+)
+{
+    CoTaskMemFree(pmt->pbFormat);
+    pmt->pbFormat = NULL;
+    if (pmt->pUnk)
+    {
+        pmt->pUnk->Release();
+        pmt->pUnk = NULL;
+    }
+    CoTaskMemFree(pmt);
+}
 
 
 #define WPP_INIT_TRACING(...)
