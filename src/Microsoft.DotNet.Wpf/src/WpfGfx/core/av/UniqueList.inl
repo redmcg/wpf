@@ -114,8 +114,8 @@ Node(
     void
     )
 {
-    pPrev = NULL;
-    pNext = NULL;
+    ListNodeT<Node>::pPrev = NULL;
+    ListNodeT<Node>::pNext = NULL;
 }
 
 template <typename Type>
