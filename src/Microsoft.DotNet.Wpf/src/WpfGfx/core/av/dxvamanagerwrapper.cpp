@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 #include "precomp.hpp"
-#include "dxvamanagerwrapper.tmh"
+// #include "dxvamanagerwrapper.tmh"
 
 MtDefine(CDXVAManagerWrapper, Mem, "CDXVAManagerWrapper");
 

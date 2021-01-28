@@ -4,7 +4,7 @@
 
 
 #include "precomp.hpp"
-#include "ClockWrapper.tmh"
+// #include "ClockWrapper.tmh"
 
 //+-----------------------------------------------------------------------------
 //

@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 #include "precomp.hpp"
-#include "EvrPresenter.tmh"
+// #include "EvrPresenter.tmh"
 
 MtDefine(EvrPresenter, Mem, "EvrPresenter");
 

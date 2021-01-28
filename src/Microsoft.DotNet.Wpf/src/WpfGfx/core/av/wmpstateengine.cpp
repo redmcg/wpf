@@ -20,7 +20,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "WmpStateEngine.tmh"
+// #include "WmpStateEngine.tmh"
 
 #define SEEK_GRANULARITY 0.001
 

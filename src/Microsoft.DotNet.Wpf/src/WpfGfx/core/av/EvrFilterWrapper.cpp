@@ -18,7 +18,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "EvrFilterWrapper.tmh"
+// #include "EvrFilterWrapper.tmh"
 
 MtDefine(CEvrFilterWrapper, Mem, "CEvrFilterWrapper");
 

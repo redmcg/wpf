@@ -19,7 +19,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "mediaeventproxy.tmh"
+// #include "mediaeventproxy.tmh"
 
 MtDefine(CMediaEventProxy,  Mem, "CMediaEventProxy");
 MtDefine(EventItem,         Mem, "EventItem");

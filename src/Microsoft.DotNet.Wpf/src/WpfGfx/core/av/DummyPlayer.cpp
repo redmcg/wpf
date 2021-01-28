@@ -22,7 +22,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "DummyPlayer.tmh"
+// #include "DummyPlayer.tmh"
 
 MtDefine(DummySurfaceRenderer, Mem, "DummySurfaceRenderer");
 

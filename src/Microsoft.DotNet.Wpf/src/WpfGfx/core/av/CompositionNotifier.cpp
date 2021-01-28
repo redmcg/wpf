@@ -4,7 +4,7 @@
 
 
 #include "precomp.hpp"
-#include "CompositionNotifier.tmh"
+// #include "CompositionNotifier.tmh"
 
 //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // CompositionNotifier implementation

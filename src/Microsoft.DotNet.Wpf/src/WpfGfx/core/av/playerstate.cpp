@@ -21,7 +21,7 @@
 //------------------------------------------------------------------------------
 
 #include "precomp.hpp"
-#include "playerstate.tmh"
+// #include "playerstate.tmh"
 
 
 //

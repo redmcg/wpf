@@ -4,7 +4,7 @@
 
 
 #include "precomp.hpp"
-#include "WmpPlayer.tmh"
+// #include "WmpPlayer.tmh"
 
 MtDefine(CWmpPlayer, Mem, "CWmpPlayer");
 MtDefine(UpdateState, Mem, "UpdateState");

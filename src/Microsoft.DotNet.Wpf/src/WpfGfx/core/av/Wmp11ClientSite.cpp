@@ -4,7 +4,7 @@
 
 
 #include "precomp.hpp"
-#include "Wmp11ClientSite.tmh"
+// #include "Wmp11ClientSite.tmh"
 
 MtDefine(Wmp11ClientSite, Mem, "Wmp11ClientSite");
 

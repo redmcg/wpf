@@ -20,7 +20,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "swmediabuffer.tmh"
+// #include "swmediabuffer.tmh"
 
 MtDefine(CSWMFMediaBuffer, Mem, "CSWMFMediaBuffer");
 

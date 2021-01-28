@@ -19,7 +19,7 @@
 //------------------------------------------------------------------------------
 
 #include "precomp.hpp"
-#include "eventproxy.tmh"
+// #include "eventproxy.tmh"
 
 MtDefine(CEventProxy, Mem, "CEventProxy");
 

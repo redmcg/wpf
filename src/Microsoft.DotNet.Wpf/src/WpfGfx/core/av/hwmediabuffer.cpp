@@ -20,7 +20,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "hwmediabuffer.tmh"
+// #include "hwmediabuffer.tmh"
 
 MtDefine(CHWMFMediaBuffer, Mem, "CHWMFMediaBuffer");
 

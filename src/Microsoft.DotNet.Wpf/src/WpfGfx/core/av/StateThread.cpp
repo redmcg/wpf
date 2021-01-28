@@ -20,7 +20,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "StateThread.tmh"
+// #include "StateThread.tmh"
 
 MtDefine(CStateThread, Mem, "CStateThread");
 MtDefine(CStateThreadItem, Mem, "CStateThreadItem");

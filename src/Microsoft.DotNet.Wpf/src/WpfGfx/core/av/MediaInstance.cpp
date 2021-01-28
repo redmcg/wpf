@@ -18,7 +18,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "MediaInstance.tmh"
+// #include "MediaInstance.tmh"
 
 MtDefine(MediaInstance, Mem, "MediaInstance");
 

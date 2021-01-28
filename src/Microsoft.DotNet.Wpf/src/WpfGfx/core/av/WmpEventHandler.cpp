@@ -4,7 +4,7 @@
 
 
 #include "precomp.hpp"
-#include "WmpEventHandler.tmh"
+// #include "WmpEventHandler.tmh"
 
 MtDefine(CWmpEventHandler, Mem, "CWmpEventHandler");
 MtDefine(AVEvent, Mem, "AVEvent");

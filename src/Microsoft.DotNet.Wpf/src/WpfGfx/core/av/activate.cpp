@@ -20,7 +20,7 @@
 //
 //------------------------------------------------------------------------------
 #include "precomp.hpp"
-#include "activate.tmh"
+// #include "activate.tmh"
 
 MtDefine(MFActivate, Mem, "MFActivate");
 
