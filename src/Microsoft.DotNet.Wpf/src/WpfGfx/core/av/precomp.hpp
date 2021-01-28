@@ -117,3 +117,11 @@ void WINAPI DeleteMediaType(
 );
 
 
+#define WPP_INIT_TRACING(...)
+#define WPP_CLEANUP(...)
+#define LogAVDataX(...)
+#define LogAVDataM(...)
+#define TRACEF(...)
+#define TRACEFID(...)
+#define EXPECT_SUCCESS(...)
+#define EXPECT_SUCCESSID(...)
