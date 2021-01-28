@@ -1204,6 +1204,7 @@ GetStateView(
     StateViewLogicalSample  stateView = { 0 };
     LONG                    readState = kInvalidView;
     LONG                    interlockState = m_viewState;
+    UINT inUseView;
 
     Assert(thread < SampleThreads::NumberOfThreads);
     if (thread >= SampleThreads::NumberOfThreads)
@@ -1260,7 +1261,7 @@ GetStateView(
     // Now that we have a view, copy the view data over from the current view, this will be
     // used by the calling thread to determine the next state view.
     //
-    UINT inUseView = stateView.inUseView[thread];
+    inUseView = stateView.inUseView[thread];
     Assert(inUseView <= SampleThreads::NumberOfThreads && stateView.currentView <= SampleThreads::NumberOfThreads);
     if (inUseView <= SampleThreads::NumberOfThreads && stateView.currentView <= SampleThreads::NumberOfThreads)
     {
