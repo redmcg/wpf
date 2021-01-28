@@ -34,7 +34,7 @@
 #endif
 
 EXTERN const ULONG      gc_ticksPerSecond       EQ(10000 * 1000);
-EXTERN const DWORD      gc_dwordAllFlags        EQ(DWORD_MAX);
+EXTERN const DWORD      gc_dwordAllFlags        EQ(UINT32_MAX);
 EXTERN const LONGLONG   gc_invalidTimerTime     EQ(MAXLONGLONG);
 EXTERN const WCHAR      gc_milcoreName[]        EQ(L"milcore.dll");
 EXTERN const long       gc_defaultAvalonVolume  EQ(50);
