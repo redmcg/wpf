@@ -72,6 +72,7 @@ CEventProxy::CEventProxy() :
 // +---------------------------------------------------------------------------
 CEventProxy::~CEventProxy()
 {
+#ifdef __WIN64__
     // Identifies structured exception with code == EXCEPTION_EXX
     // and args[0] == E_PROCESS_SHUTDOWN_REENTRY
     //
@@ -109,19 +110,17 @@ CEventProxy::~CEventProxy()
     // due to the constraint imposed by compiler error C2712 (cannot use __try in 
     // functions that require object unwinding), so we introduce a separate
     // lambda to handle this. 
-    auto Dispose = [&ExceptionFilter](CEventProxyDescriptor& epd) -> void
+    __try
     {
-        __try
-        {
-            epd.pfnDispose(&epd);
-        }
-        __except (ExceptionFilter(GetExceptionInformation()))
-        {
-            // Do nothing
-        }
-    };
-
-    Dispose(m_epd);
+        m_epd.pfnDispose(&m_epd);
+    }
+    __except (ExceptionFilter(GetExceptionInformation()))
+    {
+        // Do nothing
+    }
+#else
+    m_epd.pfnDispose(&m_epd);
+#endif
 }
 
 // +---------------------------------------------------------------------------
