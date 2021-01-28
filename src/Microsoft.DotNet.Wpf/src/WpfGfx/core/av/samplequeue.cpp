@@ -1705,7 +1705,7 @@ ChooseCompositionSample(
     BYTE        sampleToUse = kInvalidSample;
     BYTE        reservedSample = kInvalidSample;
     BYTE        bestForwardSample = kInvalidSample;
-    LONGLONG    bestForwardDelta = LONGLONG_MIN;
+    LONGLONG    bestForwardDelta = std::numeric_limits<LONGLONG>::min();
 
     //
     // If the current composition sample is kInvalidSample, or we've been told
