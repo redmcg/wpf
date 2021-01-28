@@ -817,7 +817,7 @@ DECLARE_INTERFACE_(IMILMedia, IUnknown)
 
     STDMETHOD(NeedUIFrameUpdate)(
         THIS_
-        );
+        ) PURE;
 
     STDMETHOD(Shutdown)(
         THIS_
@@ -854,7 +854,7 @@ DECLARE_INTERFACE_(IMILEventProxy, IUnknown)
     STDMETHOD(RaiseEvent)(
         __in_bcount(cb) BYTE *pb,
         __in ULONG cb
-        );
+        ) PURE;
 };
 
 /*=========================================================================*\
