@@ -138,7 +138,7 @@ struct PlayerState
     void
     DumpPlayerState(
         __in UINT       uiID,
-        __in char       *description
+        __in const char *description
         ) const;
 
 private:
