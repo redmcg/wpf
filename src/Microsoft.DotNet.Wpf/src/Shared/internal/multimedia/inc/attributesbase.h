@@ -86,6 +86,7 @@ protected:
         )
     {
         HRESULT hr = S_OK;
+        CPropEntry* pTemp;
         _LockStore();
 
         if (cNewEntries <= m_cTotalEntries) {
@@ -97,7 +98,7 @@ protected:
         //
         // allocate more storage
         //
-        CPropEntry* pTemp = new CPropEntry[cNewEntries];
+        pTemp = new CPropEntry[cNewEntries];
         if (!pTemp) {
             hr = E_OUTOFMEMORY;
             goto out;
