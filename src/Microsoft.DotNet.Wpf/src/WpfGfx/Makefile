@@ -20,6 +20,7 @@ INCLUDE_DIRS= \
 	core \
 	core/sw \
 	../Shared/Tracing/native \
+	../Shared/internal/multimedia/inc \
 	core/fxjit/public \
 	core/fxjit/Compiler \
 	../../../../wine \
