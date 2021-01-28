@@ -125,3 +125,5 @@ void WINAPI DeleteMediaType(
 #define TRACEFID(...)
 #define EXPECT_SUCCESS(...)
 #define EXPECT_SUCCESSID(...)
+
+#define LODWORD(x) ((DWORD)x)
