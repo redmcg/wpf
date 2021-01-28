@@ -630,6 +630,7 @@ Init(
     )
 {
     HRESULT hr = S_OK;
+    DWORD   threadId;
 
     TRACEFID(0, &hr);
 
@@ -661,7 +662,7 @@ Init(
         goto Cleanup;
     }
 
-    DWORD   threadId = 0;
+    threadId = 0;
 
     m_thread
         = CreateThread(
