@@ -821,9 +821,9 @@ namespace Managed.TextFormatting
 								}
 
 								double subrange_x = glyphrun.GetDistanceFromCaretCharacterHit(
-									new CharacterHit(subrange_start, 0));
+									new CharacterHit(subrange_start - glyphrun_start, 0));
 								double subrange_width = glyphrun.GetDistanceFromCaretCharacterHit(
-									new CharacterHit(subrange_end - 1, 1)) - subrange_x;
+									new CharacterHit(subrange_end - glyphrun_start - 1, 1)) - subrange_x;
 
 								var subrange_rect = new Rect(x + glyphrun_x + subrange_x, 0, subrange_width, Height);
 
